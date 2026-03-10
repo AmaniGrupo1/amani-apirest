@@ -247,6 +247,24 @@ CREATE TABLE ajustes
         ON DELETE CASCADE
 );
 
+CREATE TABLE archivos
+(
+    id_archivo BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_sesion BIGINT NOT NULL,
+    nombre VARCHAR(200),
+    tipo_mime VARCHAR(100),
+    datos BYTEA NOT NULL,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_archivo_sesion
+        FOREIGN KEY (id_sesion)
+            REFERENCES sesiones (id_sesion)
+            ON DELETE CASCADE
+);
+
+CREATE INDEX idx_archivos_sesion
+    ON archivos(id_sesion);
+
 -- ==============================
 -- Índices
 -- ==============================
