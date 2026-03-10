@@ -4,6 +4,6 @@ import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PsicologoRepository extends JpaRepository<Psicologo, Long>{
+public interface PsicologoRepository extends JpaRepository<Psicologo,  Long>{
 
 }
