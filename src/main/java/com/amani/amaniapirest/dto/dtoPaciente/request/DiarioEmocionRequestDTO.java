@@ -1,4 +1,4 @@
-package com.amani.amaniapirest.dto.request;
+package com.amani.amaniapirest.dto.dtoPaciente.request;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

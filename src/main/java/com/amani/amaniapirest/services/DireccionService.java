@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.services;
 
-import com.amani.amaniapirest.dto.request.DireccionRequestDTO;
-import com.amani.amaniapirest.dto.response.DireccionResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.DireccionRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.models.Direccion;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.repository.DireccionRepository;

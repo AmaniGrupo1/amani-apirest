@@ -34,7 +34,7 @@ public class CitaResponseDTO {
     private Integer durationMinutes;
 
     //Por defecto, el estado de la cita se establece en "pendiente" al crear una nueva cita.
-    private EstadoCita estadoCita = EstadoCita.pendiente;
+    private String estado;
 
     /** Motivo o descripción de la consulta. */
     private String motivo;

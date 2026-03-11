@@ -36,7 +36,7 @@ public class CitaRequestDTO {
     private Integer durationMinutes;
 
     /** Estado de la cita (pendiente, confirmada, cancelada, completada). Opcional. */
-    private EstadoCita estado = EstadoCita.pendiente;
+    private String estado;
 
     /** Motivo o descripción de la consulta. */
     private String motivo;

@@ -1,4 +1,4 @@
-package com.amani.amaniapirest.dto.request;
+package com.amani.amaniapirest.dto.dtoPaciente.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
