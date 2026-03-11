@@ -1,9 +1,13 @@
 package com.amani.amaniapirest.repository;
 
 import com.amani.amaniapirest.models.Sesion;
-import com.amani.amaniapirest.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SesionRepository extends JpaRepository<Sesion, Long>{
-
+/**
+ * Repositorio JPA para operaciones de persistencia sobre la entidad {@link Sesion}.
+ *
+ * <p>Extiende {@link JpaRepository} para proveer operaciones CRUD básicas
+ * y consultas por convención de nombres sin necesidad de implementación manual.</p>
+ */
+public interface SesionRepository extends JpaRepository<Sesion, Long> {
 }
