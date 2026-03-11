@@ -85,7 +85,7 @@ public class CitaService {
         cita.setPsicologo(psicologo);
         cita.setStartDatetime(request.getStartDatetime());
         cita.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : 0);
-        cita.setEstado(request.getEstado() != null ? request.getEstado() : EstadoCita.pendiente);
+        cita.setEstado(parseEstado(request.getEstado()));
         cita.setMotivo(request.getMotivo());
         cita.setCreatedAt(LocalDateTime.now());
         cita.setUpdatedAt(LocalDateTime.now());
@@ -111,7 +111,7 @@ public class CitaService {
         cita.setPsicologo(psicologo);
         cita.setStartDatetime(request.getStartDatetime());
         cita.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : cita.getDurationMinutes());
-        cita.setEstado(request.getEstado() != null ? request.getEstado() : cita.getEstado());
+        cita.setEstado(request.getEstado() != null ? parseEstado(request.getEstado()) : cita.getEstado());
         cita.setMotivo(request.getMotivo());
         cita.setUpdatedAt(LocalDateTime.now());
 
@@ -197,7 +197,7 @@ public class CitaService {
                 cita.getPsicologo() != null ? cita.getPsicologo().getIdPsicologo() : null,
                 cita.getStartDatetime(),
                 cita.getDurationMinutes(),
-                cita.getEstado() != null ? cita.getEstado() : EstadoCita.pendiente,
+                cita.getEstado() != null ? cita.getEstado().name() : EstadoCita.pendiente.name(),
                 cita.getMotivo()
         );
     }

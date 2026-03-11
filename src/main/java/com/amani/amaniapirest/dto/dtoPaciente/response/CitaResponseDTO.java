@@ -38,4 +38,6 @@ public class CitaResponseDTO {
 
     /** Motivo o descripción de la consulta. */
     private String motivo;
+
+
 }
