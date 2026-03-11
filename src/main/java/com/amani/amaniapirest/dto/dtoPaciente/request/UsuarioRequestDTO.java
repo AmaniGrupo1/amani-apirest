@@ -1,4 +1,4 @@
-package com.amani.amaniapirest.dto.request;
+package com.amani.amaniapirest.dto.dtoPaciente.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -7,13 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO de entrada para crear o actualizar un usuario.
- *
- * <p>Contiene los datos obligatorios de registro: nombre, apellido, email,
- * contraseña (minimo 6 caracteres) y rol funcional. El campo {@code activo}
- * es opcional; si no se envía, el servicio lo establece a {@code true}.</p>
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

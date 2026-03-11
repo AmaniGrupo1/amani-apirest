@@ -1,4 +1,4 @@
-package com.amani.amaniapirest.dto.response;
+package com.amani.amaniapirest.dto.dtoPaciente.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,13 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PacienteResponseDTO {
-
-    /** Identificador unico del paciente. */
-    private Long idPaciente;
-
-    /** Identificador del usuario del sistema asociado al paciente. */
-    private Long idUsuario;
-
     /** Fecha de nacimiento del paciente. */
     private LocalDate fechaNacimiento;
 

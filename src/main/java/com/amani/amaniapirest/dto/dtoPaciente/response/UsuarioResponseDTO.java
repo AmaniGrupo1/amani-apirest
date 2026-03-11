@@ -1,5 +1,6 @@
-package com.amani.amaniapirest.dto.response;
+package com.amani.amaniapirest.dto.dtoPaciente.response;
 
+import com.amani.amaniapirest.enums.RolUsuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UsuarioResponseDTO {
 
-    /** Identificador unico del usuario. */
-    private Long idUsuario;
-
     /** Nombre de pila del usuario. */
     private String nombre;
 
@@ -29,8 +27,8 @@ public class UsuarioResponseDTO {
     /** Correo electrónico del usuario. */
     private String email;
 
-    /** Nombre del rol funcional asignado al usuario. */
-    private String rol;
+    // Rol por defecto se establece en paciente si no se especifica otro valor.
+    private RolUsuario rol = RolUsuario.paciente;
 
     /** Indica si la cuenta del usuario está activa. */
     private Boolean activo;

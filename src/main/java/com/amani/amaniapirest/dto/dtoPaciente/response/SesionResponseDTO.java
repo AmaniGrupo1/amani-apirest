@@ -1,4 +1,4 @@
-package com.amani.amaniapirest.dto.response;
+package com.amani.amaniapirest.dto.dtoPaciente.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,21 +16,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SesionResponseDTO {
-
-    /** Identificador unico de la sesión. */
-    private Long idSesion;
-
-    /** Identificador de la cita de la que deriva esta sesión. */
-    private Long idCita;
-
     /** Fecha y hora en que se realizo la sesión. */
     private LocalDateTime sessionDate;
 
     /** Duración efectiva de la sesión en minutos. */
     private Integer durationMinutes;
-
-    /** Notas clínicas registradas por el psicólogo durante la sesión. */
-    private String notas;
 
     /** Recomendaciones emitidas por el psicólogo al finalizar la sesión. */
     private String recomendaciones;

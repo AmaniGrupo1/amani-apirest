@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.services;
 
-import com.amani.amaniapirest.dto.request.PsicologoRequestDTO;
-import com.amani.amaniapirest.dto.response.PsicologoResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.PsicologoResponseDTO;
 import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.PsicologoRepository;

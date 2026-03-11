@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.services;
 
-import com.amani.amaniapirest.dto.request.UsuarioRequestDTO;
-import com.amani.amaniapirest.dto.response.UsuarioResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.UsuarioRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.UsuarioResponseDTO;
 import com.amani.amaniapirest.enums.RolUsuario;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.UsuarioRepository;

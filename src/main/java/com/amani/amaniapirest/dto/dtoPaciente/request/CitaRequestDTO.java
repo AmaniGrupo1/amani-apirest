@@ -1,5 +1,6 @@
-package com.amani.amaniapirest.dto.request;
+package com.amani.amaniapirest.dto.dtoPaciente.request;
 
+import com.amani.amaniapirest.enums.EstadoCita;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,7 +36,7 @@ public class CitaRequestDTO {
     private Integer durationMinutes;
 
     /** Estado de la cita (pendiente, confirmada, cancelada, completada). Opcional. */
-    private String estado;
+    private EstadoCita estado = EstadoCita.pendiente;
 
     /** Motivo o descripción de la consulta. */
     private String motivo;

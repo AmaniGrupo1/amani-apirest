@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.services;
 
-import com.amani.amaniapirest.dto.request.CitaRequestDTO;
-import com.amani.amaniapirest.dto.response.CitaResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.models.Cita;
 import com.amani.amaniapirest.models.Paciente;
