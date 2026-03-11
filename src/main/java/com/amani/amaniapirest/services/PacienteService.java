@@ -1,5 +1,8 @@
 package com.amani.amaniapirest.services;
 
+import com.amani.amaniapirest.dto.dtoAdmin.request.PacienteAdminRequestDTO;
+import com.amani.amaniapirest.dto.dtoAdmin.response.PacienteAdminResponseDTO;
+import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteResponseDTO;
 import com.amani.amaniapirest.models.Paciente;
@@ -14,9 +17,9 @@ import java.util.List;
 /**
  * Servicio de negocio para operaciones CRUD de pacientes.
  *
- * <p>Gestiona el ciclo de vida del perfil clínico del paciente, validando
- * la existencia del usuario vinculado y realizando el mapeo entre
- * entidades {@link Paciente} y DTOs de entrada/salida.</p>
+ * <p>Gestiona el ciclo de vida del perfil clínico del paciente con métodos
+ * específicos por rol: administrador, psicólogo (solo lectura básica) y
+ * paciente (autogestión de su perfil).</p>
  */
 @Service
 public class PacienteService {
@@ -108,6 +111,87 @@ public class PacienteService {
         pacientesRepository.delete(paciente);
     }
 
+    // =========================================================
+    // MÉTODOS PARA ROL: ADMIN
+    // =========================================================
+
+    /**
+     * Obtiene la lista completa de pacientes (vista de administrador).
+     *
+     * @return lista de {@link PacienteAdminResponseDTO} con todos los pacientes
+     */
+    public List<PacienteAdminResponseDTO> findAllAdmin() {
+        return pacientesRepository.findAll().stream().map(this::toAdminResponse).toList();
+    }
+
+    /**
+     * Busca un paciente por su id (vista de administrador).
+     *
+     * @param idPaciente identificador del paciente
+     * @return {@link PacienteAdminResponseDTO} con los datos completos
+     * @throws RuntimeException si no existe el paciente
+     */
+    public PacienteAdminResponseDTO findByIdAdmin(Long idPaciente) {
+        return toAdminResponse(getPacienteOrThrow(idPaciente));
+    }
+
+    /**
+     * Crea un nuevo paciente desde la vista de administrador.
+     *
+     * @param request {@link PacienteAdminRequestDTO} con los datos del paciente
+     * @return {@link PacienteAdminResponseDTO} con los datos del paciente creado
+     * @throws RuntimeException si el usuario referenciado no existe
+     */
+    public PacienteAdminResponseDTO createAdmin(PacienteAdminRequestDTO request) {
+        Usuario usuario = getUsuarioOrThrow(request.getIdUsuario());
+
+        Paciente paciente = new Paciente();
+        paciente.setUsuario(usuario);
+        paciente.setFechaNacimiento(request.getFechaNacimiento());
+        paciente.setGenero(request.getGenero());
+        paciente.setTelefono(request.getTelefono());
+        paciente.setCreatedAt(LocalDateTime.now());
+        paciente.setUpdatedAt(LocalDateTime.now());
+
+        return toAdminResponse(pacientesRepository.save(paciente));
+    }
+
+    /**
+     * Actualiza un paciente desde la vista de administrador.
+     *
+     * @param idPaciente identificador del paciente a actualizar
+     * @param request    {@link PacienteAdminRequestDTO} con los nuevos datos
+     * @return {@link PacienteAdminResponseDTO} con los datos actualizados
+     * @throws RuntimeException si el paciente o el usuario no existen
+     */
+    public PacienteAdminResponseDTO updateAdmin(Long idPaciente, PacienteAdminRequestDTO request) {
+        Paciente paciente = getPacienteOrThrow(idPaciente);
+        Usuario usuario = getUsuarioOrThrow(request.getIdUsuario());
+
+        paciente.setUsuario(usuario);
+        paciente.setFechaNacimiento(request.getFechaNacimiento());
+        paciente.setGenero(request.getGenero());
+        paciente.setTelefono(request.getTelefono());
+        paciente.setUpdatedAt(LocalDateTime.now());
+
+        return toAdminResponse(pacientesRepository.save(paciente));
+    }
+
+    // =========================================================
+    // MÉTODOS PARA ROL: PSICÓLOGO
+    // =========================================================
+
+    /**
+     * Obtiene los datos básicos de un paciente visibles para el psicólogo.
+     *
+     * @param idPaciente identificador del paciente a consultar
+     * @return {@link PacientePsicologoResponseDTO} con los datos básicos
+     * @throws RuntimeException si no existe el paciente
+     */
+    public PacientePsicologoResponseDTO findByIdPsicologo(Long idPaciente) {
+        return toPsicologoResponse(getPacienteOrThrow(idPaciente));
+    }
+
     /**
      * Recupera un paciente por id o lanza excepción si no existe.
      *
@@ -130,6 +214,50 @@ public class PacienteService {
     private Usuario getUsuarioOrThrow(Long idUsuario) {
         return usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + idUsuario));
+    }
+
+    // =========================================================
+    // MÉTODOS PRIVADOS DE MAPEO
+    // =========================================================
+
+    /**
+     * Convierte una entidad {@link Paciente} en {@link PacienteAdminResponseDTO}.
+     *
+     * @param paciente entidad a convertir
+     * @return DTO con la vista completa para administrador
+     */
+    private PacienteAdminResponseDTO toAdminResponse(Paciente paciente) {
+        Usuario u = paciente.getUsuario();
+        return new PacienteAdminResponseDTO(
+                paciente.getIdPaciente(),
+                u != null ? u.getIdUsuario() : null,
+                u != null ? u.getNombre() : null,
+                u != null ? u.getApellido() : null,
+                u != null ? u.getEmail() : null,
+                paciente.getFechaNacimiento(),
+                paciente.getGenero(),
+                paciente.getTelefono(),
+                paciente.getCreatedAt(),
+                paciente.getUpdatedAt()
+        );
+    }
+
+    /**
+     * Convierte una entidad {@link Paciente} en {@link PacientePsicologoResponseDTO}.
+     *
+     * @param paciente entidad a convertir
+     * @return DTO con los datos básicos visibles para el psicólogo
+     */
+    private PacientePsicologoResponseDTO toPsicologoResponse(Paciente paciente) {
+        Usuario u = paciente.getUsuario();
+        return new PacientePsicologoResponseDTO(
+                paciente.getIdPaciente(),
+                u != null ? u.getNombre() : null,
+                u != null ? u.getApellido() : null,
+                paciente.getFechaNacimiento(),
+                paciente.getGenero(),
+                paciente.getTelefono()
+        );
     }
 
     /**

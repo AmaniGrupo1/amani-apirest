@@ -1,4 +1,4 @@
-package com.amani.amaniapirest.dto.dtoPaciente.response;
+package com.amani.amaniapirest.dto.dtoPsicologo.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,21 +7,18 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * DTO de salida con los datos de un registro del historial clínico.
+ * DTO de respuesta para que el psicólogo consulte el historial clínico de sus pacientes.
  *
- * <p>Incluye el identificador del paciente, título, diagnóstico,
- * tratamiento, observaciones y fecha de creación.</p>
+ * <p>Expone los registros clínicos que el psicólogo puede visualizar: título,
+ * diagnóstico, tratamiento, observaciones y fecha de creación del registro.</p>
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HistorialClinicoResponseDTO {
+public class HistorialClinicoPsicologoResponseDTO {
 
-    /** Identificador único del registro clínico. */
+    /** Identificador único del registro del historial. */
     private Long idHistory;
-
-    /** Identificador del paciente al que pertenece el registro. */
-    private Long idPaciente;
 
     /** Título o encabezado del registro clínico. */
     private String titulo;
@@ -29,7 +26,7 @@ public class HistorialClinicoResponseDTO {
     /** Diagnóstico emitido por el psicólogo. */
     private String diagnostico;
 
-    /** Descripción del tratamiento prescrito o aplicado. */
+    /** Tratamiento prescrito o aplicado. */
     private String tratamiento;
 
     /** Observaciones adicionales del profesional. */
@@ -38,3 +35,4 @@ public class HistorialClinicoResponseDTO {
     /** Fecha y hora de creación del registro. */
     private LocalDateTime creadoEn;
 }
+

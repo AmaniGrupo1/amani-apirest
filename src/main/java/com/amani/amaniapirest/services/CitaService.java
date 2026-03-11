@@ -1,5 +1,9 @@
 package com.amani.amaniapirest.services;
 
+import com.amani.amaniapirest.dto.dtoAdmin.request.CitaAdminRequestDTO;
+import com.amani.amaniapirest.dto.dtoAdmin.response.CitaAdminResponseDTO;
+import com.amani.amaniapirest.dto.dtoPsicologo.request.CitaPsicologoRequestDTO;
+import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
@@ -17,10 +21,10 @@ import java.util.List;
 /**
  * Servicio de negocio para gestionar citas entre pacientes y psicólogos.
  *
- * <p>Orquesta la creación, consulta, actualización y eliminación de citas,
- * validando la existencia de las entidades relacionadas ({@link Paciente} y
- * {@link Psicologo}) y resolviendo el estado de la cita a su valor enum
- * correspondiente.</p>
+ * <p>Orquesta la creación, consulta, actualización y eliminación de citas
+ * con métodos específicos por rol: administrador, psicólogo y paciente.
+ * Cada rol accede únicamente a los datos que le corresponden y recibe
+ * el DTO apropiado según su nivel de privilegio.</p>
  */
 @Service
 public class CitaService {
@@ -81,7 +85,7 @@ public class CitaService {
         cita.setPsicologo(psicologo);
         cita.setStartDatetime(request.getStartDatetime());
         cita.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : 0);
-        cita.setEstado(parseEstado(request.getEstado()));
+        cita.setEstado(request.getEstado() != null ? request.getEstado() : EstadoCita.pendiente);
         cita.setMotivo(request.getMotivo());
         cita.setCreatedAt(LocalDateTime.now());
         cita.setUpdatedAt(LocalDateTime.now());
@@ -107,7 +111,7 @@ public class CitaService {
         cita.setPsicologo(psicologo);
         cita.setStartDatetime(request.getStartDatetime());
         cita.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : cita.getDurationMinutes());
-        cita.setEstado(parseEstado(request.getEstado()));
+        cita.setEstado(request.getEstado() != null ? request.getEstado() : cita.getEstado());
         cita.setMotivo(request.getMotivo());
         cita.setUpdatedAt(LocalDateTime.now());
 
@@ -193,7 +197,170 @@ public class CitaService {
                 cita.getPsicologo() != null ? cita.getPsicologo().getIdPsicologo() : null,
                 cita.getStartDatetime(),
                 cita.getDurationMinutes(),
-                cita.getEstado() != null ? cita.getEstado().name() : null,
+                cita.getEstado() != null ? cita.getEstado() : EstadoCita.pendiente,
+                cita.getMotivo()
+        );
+    }
+
+    // =========================================================
+    // MÉTODOS PARA ROL: ADMIN
+    // =========================================================
+
+    /**
+     * Obtiene la lista completa de citas (vista de administrador).
+     *
+     * @return lista de {@link CitaAdminResponseDTO} con todas las citas y sus participantes
+     */
+    public List<CitaAdminResponseDTO> findAllAdmin() {
+        return citaRepository.findAll().stream().map(this::toAdminResponse).toList();
+    }
+
+    /**
+     * Busca una cita por su identificador (vista de administrador).
+     *
+     * @param idCita identificador de la cita
+     * @return {@link CitaAdminResponseDTO} con los datos completos de la cita
+     * @throws RuntimeException si no existe la cita
+     */
+    public CitaAdminResponseDTO findByIdAdmin(Long idCita) {
+        return toAdminResponse(getCitaOrThrow(idCita));
+    }
+
+    /**
+     * Crea una nueva cita desde la vista de administrador.
+     *
+     * @param request {@link CitaAdminRequestDTO} con todos los datos de la cita
+     * @return {@link CitaAdminResponseDTO} con los datos de la cita creada
+     * @throws RuntimeException si el paciente o el psicólogo no existen
+     */
+    public CitaAdminResponseDTO createAdmin(CitaAdminRequestDTO request) {
+        Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
+        Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
+
+        Cita cita = new Cita();
+        cita.setPaciente(paciente);
+        cita.setPsicologo(psicologo);
+        cita.setStartDatetime(request.getStartDatetime());
+        cita.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : 0);
+        cita.setEstado(request.getEstado() != null ? request.getEstado() : EstadoCita.pendiente);
+        cita.setMotivo(request.getMotivo());
+        cita.setCreatedAt(LocalDateTime.now());
+        cita.setUpdatedAt(LocalDateTime.now());
+
+        return toAdminResponse(citaRepository.save(cita));
+    }
+
+    /**
+     * Actualiza una cita existente desde la vista de administrador.
+     *
+     * @param idCita  identificador de la cita a actualizar
+     * @param request {@link CitaAdminRequestDTO} con los nuevos datos
+     * @return {@link CitaAdminResponseDTO} con los datos actualizados
+     * @throws RuntimeException si la cita, el paciente o el psicólogo no existen
+     */
+    public CitaAdminResponseDTO updateAdmin(Long idCita, CitaAdminRequestDTO request) {
+        Cita cita = getCitaOrThrow(idCita);
+        Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
+        Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
+
+        cita.setPaciente(paciente);
+        cita.setPsicologo(psicologo);
+        cita.setStartDatetime(request.getStartDatetime());
+        cita.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : cita.getDurationMinutes());
+        cita.setEstado(request.getEstado() != null ? request.getEstado() : cita.getEstado());
+        cita.setMotivo(request.getMotivo());
+        cita.setUpdatedAt(LocalDateTime.now());
+
+        return toAdminResponse(citaRepository.save(cita));
+    }
+
+    // =========================================================
+    // MÉTODOS PARA ROL: PSICÓLOGO
+    // =========================================================
+
+    /**
+     * Obtiene todas las citas asignadas a un psicólogo concreto.
+     *
+     * @param idPsicologo identificador del psicólogo autenticado
+     * @return lista de {@link CitaPsicologoResponseDTO} con las citas del psicólogo
+     */
+    public List<CitaPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
+        return citaRepository.findByPsicologo_IdPsicologo(idPsicologo)
+                .stream().map(this::toPsicologoResponse).toList();
+    }
+
+    /**
+     * Busca una cita por id desde la perspectiva del psicólogo.
+     *
+     * @param idCita identificador de la cita
+     * @return {@link CitaPsicologoResponseDTO} con los datos visibles para el psicólogo
+     * @throws RuntimeException si no existe la cita
+     */
+    public CitaPsicologoResponseDTO findByIdPsicologo(Long idCita) {
+        return toPsicologoResponse(getCitaOrThrow(idCita));
+    }
+
+    /**
+     * Permite al psicólogo actualizar el estado de una cita asignada a él.
+     *
+     * @param idCita  identificador de la cita a actualizar
+     * @param request {@link CitaPsicologoRequestDTO} con el nuevo estado
+     * @return {@link CitaPsicologoResponseDTO} con los datos actualizados
+     * @throws RuntimeException si no existe la cita
+     */
+    public CitaPsicologoResponseDTO updateEstadoCita(Long idCita, CitaPsicologoRequestDTO request) {
+        Cita cita = getCitaOrThrow(idCita);
+        cita.setEstado(request.getEstado() != null ? request.getEstado() : cita.getEstado());
+        cita.setUpdatedAt(LocalDateTime.now());
+        return toPsicologoResponse(citaRepository.save(cita));
+    }
+
+    // =========================================================
+    // MÉTODOS PRIVADOS DE MAPEO
+    // =========================================================
+
+    /**
+     * Convierte una entidad {@link Cita} en {@link CitaAdminResponseDTO}.
+     *
+     * @param cita entidad a convertir
+     * @return DTO con la vista completa para administrador
+     */
+    private CitaAdminResponseDTO toAdminResponse(Cita cita) {
+        Paciente p = cita.getPaciente();
+        Psicologo ps = cita.getPsicologo();
+        return new CitaAdminResponseDTO(
+                cita.getIdCita(),
+                p != null ? p.getIdPaciente() : null,
+                p != null && p.getUsuario() != null ? p.getUsuario().getNombre() : null,
+                p != null && p.getUsuario() != null ? p.getUsuario().getApellido() : null,
+                ps != null ? ps.getIdPsicologo() : null,
+                ps != null && ps.getUsuario() != null ? ps.getUsuario().getNombre() : null,
+                ps != null && ps.getUsuario() != null ? ps.getUsuario().getApellido() : null,
+                cita.getStartDatetime(),
+                cita.getDurationMinutes(),
+                cita.getEstado() != null ? cita.getEstado() : EstadoCita.pendiente,
+                cita.getMotivo(),
+                cita.getCreatedAt(),
+                cita.getUpdatedAt()
+        );
+    }
+
+    /**
+     * Convierte una entidad {@link Cita} en {@link CitaPsicologoResponseDTO}.
+     *
+     * @param cita entidad a convertir
+     * @return DTO con la vista filtrada para psicólogo
+     */
+    private CitaPsicologoResponseDTO toPsicologoResponse(Cita cita) {
+        Paciente p = cita.getPaciente();
+        return new CitaPsicologoResponseDTO(
+                cita.getIdCita(),
+                p != null ? p.getIdPaciente() : null,
+                p != null && p.getUsuario() != null ? p.getUsuario().getNombre() : null,
+                p != null && p.getUsuario() != null ? p.getUsuario().getApellido() : null,
+                cita.getStartDatetime(),
+                cita.getDurationMinutes(),
+                cita.getEstado() != null ? cita.getEstado() : EstadoCita.pendiente,
                 cita.getMotivo()
         );
     }

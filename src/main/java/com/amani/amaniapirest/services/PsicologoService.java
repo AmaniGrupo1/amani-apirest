@@ -1,5 +1,9 @@
 package com.amani.amaniapirest.services;
 
+import com.amani.amaniapirest.dto.dtoAdmin.request.PsicologoAdminRequestDTO;
+import com.amani.amaniapirest.dto.dtoAdmin.response.PsicologoAdminResponseDTO;
+import com.amani.amaniapirest.dto.dtoPsicologo.request.PsicologoSelfRequestDTO;
+import com.amani.amaniapirest.dto.dtoPsicologo.response.PsicologoSelfResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.PsicologoResponseDTO;
 import com.amani.amaniapirest.models.Psicologo;
@@ -15,8 +19,8 @@ import java.util.List;
  * Servicio de negocio para operaciones CRUD de psicólogos.
  *
  * <p>Gestiona la creación, consulta, actualización y eliminación de perfiles
- * de psicólogo, validando la existencia del usuario vinculado y realizando
- * el mapeo entre entidades y DTOs.</p>
+ * de psicólogo con métodos específicos por rol: administrador (acceso total)
+ * y psicólogo (autogestión de su propio perfil).</p>
  */
 @Service
 public class PsicologoService {
@@ -110,6 +114,109 @@ public class PsicologoService {
         psicologoRepository.delete(psicologo);
     }
 
+    // =========================================================
+    // MÉTODOS PARA ROL: ADMIN
+    // =========================================================
+
+    /**
+     * Obtiene la lista completa de psicólogos (vista de administrador).
+     *
+     * @return lista de {@link PsicologoAdminResponseDTO} con todos los psicólogos
+     */
+    public List<PsicologoAdminResponseDTO> findAllAdmin() {
+        return psicologoRepository.findAll().stream().map(this::toAdminResponse).toList();
+    }
+
+    /**
+     * Busca un psicólogo por su id (vista de administrador).
+     *
+     * @param idPsicologo identificador del psicólogo
+     * @return {@link PsicologoAdminResponseDTO} con los datos completos
+     * @throws RuntimeException si no existe el psicólogo
+     */
+    public PsicologoAdminResponseDTO findByIdAdmin(Long idPsicologo) {
+        return toAdminResponse(getPsicologoOrThrow(idPsicologo));
+    }
+
+    /**
+     * Crea un nuevo psicólogo desde la vista de administrador.
+     *
+     * @param request {@link PsicologoAdminRequestDTO} con los datos del psicólogo
+     * @return {@link PsicologoAdminResponseDTO} con los datos del psicólogo creado
+     * @throws RuntimeException si el usuario referenciado no existe
+     */
+    public PsicologoAdminResponseDTO createAdmin(PsicologoAdminRequestDTO request) {
+        Usuario usuario = getUsuarioOrThrow(request.getIdUsuario());
+
+        Psicologo psicologo = new Psicologo();
+        psicologo.setUsuario(usuario);
+        psicologo.setEspecialidad(request.getEspecialidad());
+        psicologo.setExperiencia(request.getExperiencia() != null ? request.getExperiencia() : 0);
+        psicologo.setDescripcion(request.getDescripcion());
+        psicologo.setLicencia(request.getLicencia());
+        psicologo.setCreatedAt(LocalDateTime.now());
+        psicologo.setUpdatedAt(LocalDateTime.now());
+
+        return toAdminResponse(psicologoRepository.save(psicologo));
+    }
+
+    /**
+     * Actualiza un psicólogo existente desde la vista de administrador.
+     *
+     * @param idPsicologo identificador del psicólogo a actualizar
+     * @param request     {@link PsicologoAdminRequestDTO} con los nuevos datos
+     * @return {@link PsicologoAdminResponseDTO} con los datos actualizados
+     * @throws RuntimeException si el psicólogo o el usuario no existen
+     */
+    public PsicologoAdminResponseDTO updateAdmin(Long idPsicologo, PsicologoAdminRequestDTO request) {
+        Psicologo psicologo = getPsicologoOrThrow(idPsicologo);
+        Usuario usuario = getUsuarioOrThrow(request.getIdUsuario());
+
+        psicologo.setUsuario(usuario);
+        psicologo.setEspecialidad(request.getEspecialidad());
+        psicologo.setExperiencia(request.getExperiencia() != null ? request.getExperiencia() : psicologo.getExperiencia());
+        psicologo.setDescripcion(request.getDescripcion());
+        psicologo.setLicencia(request.getLicencia());
+        psicologo.setUpdatedAt(LocalDateTime.now());
+
+        return toAdminResponse(psicologoRepository.save(psicologo));
+    }
+
+    // =========================================================
+    // MÉTODOS PARA ROL: PSICÓLOGO (autogestión)
+    // =========================================================
+
+    /**
+     * Permite al psicólogo consultar su propio perfil profesional.
+     *
+     * @param idPsicologo identificador del psicólogo autenticado
+     * @return {@link PsicologoSelfResponseDTO} con los datos del perfil propio
+     * @throws RuntimeException si no existe el psicólogo
+     */
+    public PsicologoSelfResponseDTO findSelf(Long idPsicologo) {
+        return toSelfResponse(getPsicologoOrThrow(idPsicologo));
+    }
+
+    /**
+     * Permite al psicólogo actualizar su propio perfil profesional.
+     *
+     * @param idPsicologo identificador del psicólogo autenticado
+     * @param request     {@link PsicologoSelfRequestDTO} con los nuevos datos del perfil
+     * @return {@link PsicologoSelfResponseDTO} con los datos actualizados
+     * @throws RuntimeException si no existe el psicólogo
+     */
+    public PsicologoSelfResponseDTO updateSelf(Long idPsicologo, PsicologoSelfRequestDTO request) {
+        Psicologo psicologo = getPsicologoOrThrow(idPsicologo);
+
+        psicologo.setEspecialidad(request.getEspecialidad());
+        psicologo.setExperiencia(request.getExperiencia() != null ? request.getExperiencia() : psicologo.getExperiencia());
+        psicologo.setDescripcion(request.getDescripcion());
+        psicologo.setLicencia(request.getLicencia());
+        psicologo.setUpdatedAt(LocalDateTime.now());
+
+        return toSelfResponse(psicologoRepository.save(psicologo));
+    }
+
     /**
      * Recupera un psicólogo por id o lanza excepción si no existe.
      *
@@ -132,6 +239,49 @@ public class PsicologoService {
     private Usuario getUsuarioOrThrow(Long idUsuario) {
         return usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + idUsuario));
+    }
+
+    // =========================================================
+    // MÉTODOS PRIVADOS DE MAPEO
+    // =========================================================
+
+    /**
+     * Convierte una entidad {@link Psicologo} en {@link PsicologoAdminResponseDTO}.
+     *
+     * @param psicologo entidad a convertir
+     * @return DTO con la vista completa para administrador
+     */
+    private PsicologoAdminResponseDTO toAdminResponse(Psicologo psicologo) {
+        Usuario u = psicologo.getUsuario();
+        return new PsicologoAdminResponseDTO(
+                psicologo.getIdPsicologo(),
+                u != null ? u.getIdUsuario() : null,
+                u != null ? u.getNombre() : null,
+                u != null ? u.getApellido() : null,
+                u != null ? u.getEmail() : null,
+                psicologo.getEspecialidad(),
+                psicologo.getExperiencia(),
+                psicologo.getDescripcion(),
+                psicologo.getLicencia(),
+                psicologo.getCreatedAt(),
+                psicologo.getUpdatedAt()
+        );
+    }
+
+    /**
+     * Convierte una entidad {@link Psicologo} en {@link PsicologoSelfResponseDTO}.
+     *
+     * @param psicologo entidad a convertir
+     * @return DTO con los datos del perfil propio del psicólogo
+     */
+    private PsicologoSelfResponseDTO toSelfResponse(Psicologo psicologo) {
+        return new PsicologoSelfResponseDTO(
+                psicologo.getIdPsicologo(),
+                psicologo.getEspecialidad(),
+                psicologo.getExperiencia(),
+                psicologo.getDescripcion(),
+                psicologo.getLicencia()
+        );
     }
 
     /**

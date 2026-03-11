@@ -1,28 +1,28 @@
-package com.amani.amaniapirest.dto.dtoPaciente.request;
+package com.amani.amaniapirest.dto.dtoAdmin.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * DTO de entrada para crear o actualizar un registro del historial clínico.
+ * DTO de entrada para que el administrador cree o actualice un registro
+ * de {@code HistorialClinico}.
  *
- * <p>Los campos {@code idPaciente} y {@code titulo} son obligatorios.
- * El diagnóstico, tratamiento y observaciones son opcionales.</p>
+ * <p>Vincula el registro al paciente correspondiente e incluye los campos
+ * clínicos que el administrador puede gestionar directamente.</p>
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HistorialClinicoRequestDTO {
+public class HistorialClinicoAdminRequestDTO {
 
-    /** Identificador del paciente al que pertenece el registro. */
-    @NotNull
+    /**
+     * Identificador del {@code Paciente} al que pertenece este registro.
+     * <p>El paciente debe existir previamente en el sistema.</p>
+     */
     private Long idPaciente;
 
     /** Título o encabezado del registro clínico. */
-    @NotBlank
     private String titulo;
 
     /** Diagnóstico emitido por el psicólogo. */
@@ -34,3 +34,4 @@ public class HistorialClinicoRequestDTO {
     /** Observaciones adicionales del profesional. */
     private String observaciones;
 }
+

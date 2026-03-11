@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.services;
 
-import com.amani.amaniapirest.dto.request.ArchivoRequestDTO;
-import com.amani.amaniapirest.dto.response.ArchivoResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.ArchivoRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.ArchivoResponseDTO;
 import com.amani.amaniapirest.models.Archivo;
 import com.amani.amaniapirest.models.Sesion;
 import com.amani.amaniapirest.repository.ArchivoRepository;

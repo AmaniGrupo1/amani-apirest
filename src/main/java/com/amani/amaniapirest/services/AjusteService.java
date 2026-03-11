@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.services;
 
-import com.amani.amaniapirest.dto.request.AjusteRequestDTO;
-import com.amani.amaniapirest.dto.response.AjusteResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.AjusteRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.AjusteResponseDTO;
 import com.amani.amaniapirest.models.Ajuste;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.AjusteRepository;

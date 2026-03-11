@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.services;
 
-import com.amani.amaniapirest.dto.request.ProgresoEmocionalRequestDTO;
-import com.amani.amaniapirest.dto.response.ProgresoEmocionalResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.ProgresoEmocionalRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.ProgresoEmocionalResponseDTO;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.ProgresoEmocional;
 import com.amani.amaniapirest.repository.PacientesRepository;
