@@ -15,7 +15,7 @@ import java.util.List;
  * Servicio de negocio para operaciones CRUD de psicólogos.
  *
  * <p>Gestiona la creación, consulta, actualización y eliminación de perfiles
- * de psicologo, validando la existencia del usuario vinculado y realizando
+ * de psicólogo, validando la existencia del usuario vinculado y realizando
  * el mapeo entre entidades y DTOs.</p>
  */
 @Service
@@ -45,7 +45,7 @@ public class PsicologoService {
     }
 
     /**
-     * Busca un psicologo por su identificador unico.
+     * Busca un psicólogo por su identificador único.
      *
      * @param idPsicologo identificador del psicólogo a buscar
      * @return {@link PsicologoResponseDTO} con los datos del psicólogo encontrado
@@ -56,7 +56,7 @@ public class PsicologoService {
     }
 
     /**
-     * Crea un nuevo perfil de psicologo a partir de los datos del request.
+     * Crea un nuevo perfil de psicólogo a partir de los datos del request.
      *
      * @param request {@link PsicologoRequestDTO} con la información del psicólogo a crear
      * @return {@link PsicologoResponseDTO} con los datos del psicólogo creado
@@ -78,7 +78,7 @@ public class PsicologoService {
     }
 
     /**
-     * Actualiza los datos de un psicologo existente.
+     * Actualiza los datos de un psicólogo existente.
      *
      * @param idPsicologo identificador del psicólogo a actualizar
      * @param request     {@link PsicologoRequestDTO} con los nuevos datos del psicólogo
@@ -100,7 +100,7 @@ public class PsicologoService {
     }
 
     /**
-     * Elimina el psicologo con el identificador indicado.
+     * Elimina el psicólogo con el identificador indicado.
      *
      * @param idPsicologo identificador del psicólogo a eliminar
      * @throws RuntimeException si no existe un psicólogo con el id proporcionado
@@ -111,7 +111,7 @@ public class PsicologoService {
     }
 
     /**
-     * Recupera un psicologo por id o lanza excepción si no existe.
+     * Recupera un psicólogo por id o lanza excepción si no existe.
      *
      * @param idPsicologo identificador del psicólogo
      * @return entidad {@link Psicologo} encontrada
@@ -119,7 +119,7 @@ public class PsicologoService {
      */
     private Psicologo getPsicologoOrThrow(Long idPsicologo) {
         return psicologoRepository.findById(idPsicologo)
-                .orElseThrow(() -> new RuntimeException("Psicologo no encontrado con id: " + idPsicologo));
+                .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado con id: " + idPsicologo));
     }
 
     /**
@@ -127,7 +127,7 @@ public class PsicologoService {
      *
      * @param idUsuario identificador del usuario
      * @return entidad {@link Usuario} encontrada
-     * @throws RuntimeException si no existe un usuario con el, id proporcionando
+     * @throws RuntimeException si no existe un usuario con el id proporcionado
      */
     private Usuario getUsuarioOrThrow(Long idUsuario) {
         return usuarioRepository.findById(idUsuario)

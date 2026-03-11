@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Servicio de negocio para gestionar citas entre pacientes y psicologos.
+ * Servicio de negocio para gestionar citas entre pacientes y psicólogos.
  *
- * <p>Orquesta la creacion, consulta, actualizacion y eliminacion de citas,
+ * <p>Orquesta la creación, consulta, actualización y eliminación de citas,
  * validando la existencia de las entidades relacionadas ({@link Paciente} y
  * {@link Psicologo}) y resolviendo el estado de la cita a su valor enum
  * correspondiente.</p>
@@ -54,7 +54,7 @@ public class CitaService {
     }
 
     /**
-     * Busca una cita por su identificador unico.
+     * Busca una cita por su identificador único.
      *
      * @param idCita identificador de la cita a buscar
      * @return {@link CitaResponseDTO} con los datos de la cita encontrada
@@ -69,8 +69,8 @@ public class CitaService {
      *
      * @param request {@link CitaRequestDTO} con los datos de la cita a crear
      * @return {@link CitaResponseDTO} con los datos de la cita creada
-     * @throws RuntimeException si el paciente o el psicologo referenciados no existen,
-     *                          o si el estado proporcionado no es valido
+     * @throws RuntimeException si el paciente o el psicólogo referenciados no existen,
+     *                          o si el estado proporcionado no es válido
      */
     public CitaResponseDTO create(CitaRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
@@ -95,8 +95,8 @@ public class CitaService {
      * @param idCita  identificador de la cita a actualizar
      * @param request {@link CitaRequestDTO} con los nuevos datos de la cita
      * @return {@link CitaResponseDTO} con los datos actualizados
-     * @throws RuntimeException si la cita, el paciente o el psicologo no existen,
-     *                          o si el estado proporcionado no es valido
+     * @throws RuntimeException si la cita, el paciente o el psicólogo no existen,
+     *                          o si el estado proporcionado no es válido
      */
     public CitaResponseDTO update(Long idCita, CitaRequestDTO request) {
         Cita cita = getCitaOrThrow(idCita);
@@ -126,7 +126,7 @@ public class CitaService {
     }
 
     /**
-     * Recupera una cita por id o lanza excepcion si no existe.
+     * Recupera una cita por id o lanza excepción si no existe.
      *
      * @param idCita identificador de la cita
      * @return entidad {@link Cita} encontrada
@@ -138,7 +138,7 @@ public class CitaService {
     }
 
     /**
-     * Recupera un paciente por id o lanza excepcion si no existe.
+     * Recupera un paciente por id o lanza excepción si no existe.
      *
      * @param idPaciente identificador del paciente
      * @return entidad {@link Paciente} encontrada
@@ -150,24 +150,24 @@ public class CitaService {
     }
 
     /**
-     * Recupera un psicologo por id o lanza excepcion si no existe.
+     * Recupera un psicólogo por id o lanza excepción si no existe.
      *
-     * @param idPsicologo identificador del psicologo
+     * @param idPsicologo identificador del psicólogo
      * @return entidad {@link Psicologo} encontrada
-     * @throws RuntimeException si no existe un psicologo con el id proporcionado
+     * @throws RuntimeException si no existe un psicólogo con el id proporcionado
      */
     private Psicologo getPsicologoOrThrow(Long idPsicologo) {
         return psicologoRepository.findById(idPsicologo)
-                .orElseThrow(() -> new RuntimeException("Psicologo no encontrado con id: " + idPsicologo));
+                .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado con id: " + idPsicologo));
     }
 
     /**
      * Convierte un texto de estado al enum {@link EstadoCita} correspondiente.
-     * Si el valor es nulo o vacio, devuelve {@link EstadoCita#pendiente} como valor por defecto.
+     * Si el valor es nulo o vacío, devuelve {@link EstadoCita#pendiente} como valor por defecto.
      *
-     * @param estado nombre del estado en texto (insensible a mayusculas)
+     * @param estado nombre del estado en texto (insensible a mayúsculas)
      * @return constante {@link EstadoCita} correspondiente
-     * @throws RuntimeException si el valor no corresponde a ningun estado valido
+     * @throws RuntimeException si el valor no corresponde a ningún estado válido
      */
     private EstadoCita parseEstado(String estado) {
         if (estado == null || estado.isBlank()) {
@@ -176,7 +176,7 @@ public class CitaService {
         try {
             return EstadoCita.valueOf(estado.toLowerCase());
         } catch (IllegalArgumentException ex) {
-            throw new RuntimeException("Estado de cita invalido: " + estado);
+            throw new RuntimeException("Estado de cita inválido: " + estado);
         }
     }
 

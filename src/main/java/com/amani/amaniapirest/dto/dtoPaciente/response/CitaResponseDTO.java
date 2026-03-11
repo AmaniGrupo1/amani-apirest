@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CitaResponseDTO {
 
-    /** Identificador unico de la cita. */
+    /** Identificador único de la cita. */
     private Long idCita;
 
     /** Identificador del paciente que asiste a la cita. */

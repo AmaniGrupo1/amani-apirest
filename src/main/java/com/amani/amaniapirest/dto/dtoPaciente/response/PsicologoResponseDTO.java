@@ -1,4 +1,4 @@
-package com.amani.amaniapirest.dto.dtoPaciente.response;
+package com.amani.amaniapirest.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +17,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PsicologoResponseDTO {
 
+    /** Identificador único del psicólogo. */
+    private Long idPsicologo;
+
+    /** Identificador del usuario del sistema asociado al psicólogo. */
+    private Long idUsuario;
+
     /** Especialidad o área de enfoque terapéutico del psicólogo. */
     private String especialidad;
 
@@ -32,6 +38,6 @@ public class PsicologoResponseDTO {
     /** Fecha y hora de creación del perfil de psicólogo. */
     private LocalDateTime createdAt;
 
-    /** Fecha y hora de la ultima actualización del perfil. */
+    /** Fecha y hora de la última actualización del perfil. */
     private LocalDateTime updatedAt;
 }
