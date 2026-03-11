@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UsuarioResponseDTO {
 
-    /** Identificador unico del usuario. */
+    /** Identificador único del usuario. */
     private Long idUsuario;
 
     /** Nombre de pila del usuario. */

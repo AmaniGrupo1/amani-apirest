@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Servicio de negocio para gestionar usuarios del sistema.
+ * Servicio de negocio para gestionar los usuarios del sistema.
  *
  * <p>Proporciona operaciones CRUD sobre {@link Usuario}, incluyendo el hash
- * seguro de contrasenas mediante BCrypt y la transformacion a DTOs de respuesta
+ * seguro de contraseñas mediante BCrypt y la transformación a DTOs de respuesta
  * para no exponer datos sensibles.</p>
  */
 @Service
@@ -29,7 +29,7 @@ public class UsuarioService {
      * Construye el servicio inyectando sus dependencias.
      *
      * @param usuarioRepository repositorio JPA de {@link Usuario}
-     * @param passwordEncoder   codificador BCrypt para proteger contrasenas
+     * @param passwordEncoder   codificador BCrypt para proteger contraseñas
      */
     public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
@@ -39,14 +39,14 @@ public class UsuarioService {
     /**
      * Obtiene la lista de todos los usuarios registrados.
      *
-     * @return lista de {@link UsuarioResponseDTO} con la informacion publica de cada usuario
+     * @return lista de {@link UsuarioResponseDTO} con la información pública de cada usuario
      */
     public List<UsuarioResponseDTO> findAll() {
         return usuarioRepository.findAll().stream().map(this::toResponse).toList();
     }
 
     /**
-     * Busca un usuario por su identificador unico.
+     * Busca un usuario por su identificador único.
      *
      * @param idUsuario identificador del usuario a buscar
      * @return {@link UsuarioResponseDTO} con los datos del usuario encontrado
@@ -58,11 +58,11 @@ public class UsuarioService {
     }
 
     /**
-     * Crea un nuevo usuario hasheando su contrasena antes de persistir.
+     * Crea un nuevo usuario hasheando su contraseña antes de persistir.
      *
      * @param request {@link UsuarioRequestDTO} con los datos del usuario a crear
      * @return {@link UsuarioResponseDTO} con los datos del usuario creado
-     * @throws RuntimeException si el rol proporcionado no es valido
+     * @throws RuntimeException si el rol proporcionado no es válido
      */
     public UsuarioResponseDTO create(UsuarioRequestDTO request) {
         Usuario usuario = new Usuario();
@@ -79,12 +79,12 @@ public class UsuarioService {
 
     /**
      * Actualiza los datos de un usuario existente.
-     * Si se incluye una nueva contrasena en el request, se hashea antes de guardar.
+     * Si se incluye una nueva contraseña en el request, se hashea antes de guardar.
      *
      * @param idUsuario identificador del usuario a actualizar
      * @param request   {@link UsuarioRequestDTO} con los nuevos datos del usuario
      * @return {@link UsuarioResponseDTO} con los datos actualizados
-     * @throws RuntimeException si el usuario no existe o el rol proporcionado no es valido
+     * @throws RuntimeException si el usuario no existe o el rol proporcionado no es válido
      */
     public UsuarioResponseDTO update(Long idUsuario, UsuarioRequestDTO request) {
         Usuario usuario = getUsuarioOrThrow(idUsuario);
@@ -113,7 +113,7 @@ public class UsuarioService {
     }
 
     /**
-     * Recupera un usuario por id o lanza excepcion si no existe.
+     * Recupera un usuario por id o lanza excepción si no existe.
      *
      * @param idUsuario identificador del usuario
      * @return entidad {@link Usuario} encontrada
@@ -127,15 +127,15 @@ public class UsuarioService {
     /**
      * Convierte un valor de texto al enum {@link RolUsuario} correspondiente.
      *
-     * @param rol nombre del rol en texto (insensible a mayusculas)
+     * @param rol nombre del rol en texto (insensible a mayúsculas)
      * @return constante {@link RolUsuario} correspondiente
-     * @throws RuntimeException si el valor no corresponde a ningun rol valido
+     * @throws RuntimeException si el valor no corresponde a ningún rol válido
      */
     private RolUsuario parseRol(String rol) {
         try {
             return RolUsuario.valueOf(rol.toLowerCase());
         } catch (IllegalArgumentException ex) {
-            throw new RuntimeException("Rol invalido: " + rol);
+            throw new RuntimeException("Rol inválido: " + rol);
         }
     }
 
@@ -143,7 +143,7 @@ public class UsuarioService {
      * Convierte una entidad {@link Usuario} en su DTO de respuesta.
      *
      * @param usuario entidad a convertir
-     * @return {@link UsuarioResponseDTO} con los datos publicos del usuario
+     * @return {@link UsuarioResponseDTO} con los datos públicos del usuario
      */
     private UsuarioResponseDTO toResponse(Usuario usuario) {
         return new UsuarioResponseDTO(

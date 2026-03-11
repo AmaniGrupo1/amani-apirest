@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Servicio de negocio para operaciones CRUD de pacientes.
  *
- * <p>Gestiona el ciclo de vida del perfil clinico del paciente, validando
+ * <p>Gestiona el ciclo de vida del perfil clínico del paciente, validando
  * la existencia del usuario vinculado y realizando el mapeo entre
  * entidades {@link Paciente} y DTOs de entrada/salida.</p>
  */
@@ -45,7 +45,7 @@ public class PacienteService {
     }
 
     /**
-     * Busca un paciente por su identificador unico.
+     * Busca un paciente por su identificador único.
      *
      * @param idPaciente identificador del paciente a buscar
      * @return {@link PacienteResponseDTO} con los datos del paciente encontrado
@@ -58,7 +58,7 @@ public class PacienteService {
     /**
      * Crea un nuevo perfil de paciente a partir de los datos del request.
      *
-     * @param request {@link PacienteRequestDTO} con la informacion del paciente a crear
+     * @param request {@link PacienteRequestDTO} con la información del paciente a crear
      * @return {@link PacienteResponseDTO} con los datos del paciente creado
      * @throws RuntimeException si el usuario referenciado por {@code idUsuario} no existe
      */
@@ -109,7 +109,7 @@ public class PacienteService {
     }
 
     /**
-     * Recupera un paciente por id o lanza excepcion si no existe.
+     * Recupera un paciente por id o lanza excepción si no existe.
      *
      * @param idPaciente identificador del paciente
      * @return entidad {@link Paciente} encontrada
@@ -121,7 +121,7 @@ public class PacienteService {
     }
 
     /**
-     * Recupera un usuario por id o lanza excepcion si no existe.
+     * Recupera un usuario por id o lanza excepción si no existe.
      *
      * @param idUsuario identificador del usuario
      * @return entidad {@link Usuario} encontrada

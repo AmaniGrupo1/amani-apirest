@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  * DTO de entrada para crear o actualizar un usuario.
  *
  * <p>Contiene los datos obligatorios de registro: nombre, apellido, email,
- * contraseña (minimo 6 caracteres) y rol funcional. El campo {@code activo}
+ * contraseña (mínimo 6 caracteres) y rol funcional. El campo {@code activo}
  * es opcional; si no se envía, el servicio lo establece a {@code true}.</p>
  */
 @Data
@@ -32,9 +32,9 @@ public class UsuarioRequestDTO {
     @NotBlank
     private String email;
 
-    /** Contraseña en texto plano. Sera hasheada con BCrypt antes de persistir. */
+    /** Contraseña en texto plano. Será hasheada con BCrypt antes de persistir. */
     @NotBlank
-    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
+    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
 
     /** Rol funcional del usuario (admin, psicólogo, paciente). */

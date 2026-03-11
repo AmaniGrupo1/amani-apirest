@@ -45,18 +45,18 @@ public class SesionService {
     }
 
     /**
-     * Busca una sesion por su identificador unico.
+     * Busca una sesión por su identificador único.
      *
      * @param idSesion identificador de la sesión a buscar
      * @return {@link SesionResponseDTO} con los datos de la sesión encontrada
-     * @throws RuntimeException si no existe una sesión con el id proporcionando
+     * @throws RuntimeException si no existe una sesión con el id proporcionado
      */
     public SesionResponseDTO findById(Long idSesion) {
         return toResponse(getSesionOrThrow(idSesion));
     }
 
     /**
-     * Crea una nueva sesion terapéutica a partir de los datos del request.
+     * Crea una nueva sesión terapéutica a partir de los datos del request.
      * Los identificadores de paciente y psicólogo se resuelven desde la cita vinculada.
      *
      * @param request {@link SesionRequestDTO} con los datos de la sesión a crear
@@ -81,7 +81,7 @@ public class SesionService {
     }
 
     /**
-     * Actualiza los datos de una sesion existente.
+     * Actualiza los datos de una sesión existente.
      *
      * @param idSesion identificador de la sesión a actualizar
      * @param request  {@link SesionRequestDTO} con los nuevos datos de la sesión
@@ -105,10 +105,10 @@ public class SesionService {
     }
 
     /**
-     * Elimina la sesion con el identificador indicado.
+     * Elimina la sesión con el identificador indicado.
      *
      * @param idSesion identificador de la sesión a eliminar
-     * @throws RuntimeException si no existe una sesión con él, id proporcionando
+     * @throws RuntimeException si no existe una sesión con el id proporcionado
      */
     public void delete(Long idSesion) {
         Sesion sesion = getSesionOrThrow(idSesion);
@@ -116,15 +116,15 @@ public class SesionService {
     }
 
     /**
-     * Recupera una sesion por ID o lanza excepción si no existe.
+     * Recupera una sesión por id o lanza excepción si no existe.
      *
      * @param idSesion identificador de la sesión
      * @return entidad {@link Sesion} encontrada
-     * @throws RuntimeException si no existe una sesión con el id proporcionando
+     * @throws RuntimeException si no existe una sesión con el id proporcionado
      */
     private Sesion getSesionOrThrow(Long idSesion) {
         return sesionRepository.findById(idSesion)
-                .orElseThrow(() -> new RuntimeException("Sesion no encontrada con id: " + idSesion));
+                .orElseThrow(() -> new RuntimeException("Sesión no encontrada con id: " + idSesion));
     }
 
     /**
@@ -132,7 +132,7 @@ public class SesionService {
      *
      * @param idCita identificador de la cita
      * @return entidad {@link Cita} encontrada
-     * @throws RuntimeException si no existe una cita con el, id proporcionando
+     * @throws RuntimeException si no existe una cita con el id proporcionado
      */
     private Cita getCitaOrThrow(Long idCita) {
         return citaRepository.findById(idCita)

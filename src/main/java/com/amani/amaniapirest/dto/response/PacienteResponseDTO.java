@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PacienteResponseDTO {
 
-    /** Identificador unico del paciente. */
+    /** Identificador único del paciente. */
     private Long idPaciente;
 
     /** Identificador del usuario del sistema asociado al paciente. */
@@ -36,6 +36,6 @@ public class PacienteResponseDTO {
     /** Fecha y hora de creación del perfil de paciente. */
     private LocalDateTime createdAt;
 
-    /** Fecha y hora de la ultima actualización del perfil. */
+    /** Fecha y hora de la última actualización del perfil. */
     private LocalDateTime updatedAt;
 }

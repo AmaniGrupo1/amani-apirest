@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PsicologoResponseDTO {
 
-    /** Identificador unico del psicólogo. */
+    /** Identificador único del psicólogo. */
     private Long idPsicologo;
 
     /** Identificador del usuario del sistema asociado al psicólogo. */
@@ -38,6 +38,6 @@ public class PsicologoResponseDTO {
     /** Fecha y hora de creación del perfil de psicólogo. */
     private LocalDateTime createdAt;
 
-    /** Fecha y hora de la ultima actualización del perfil. */
+    /** Fecha y hora de la última actualización del perfil. */
     private LocalDateTime updatedAt;
 }

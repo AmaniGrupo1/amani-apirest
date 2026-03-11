@@ -23,7 +23,7 @@ public class SesionRequestDTO {
     @NotNull
     private Long idCita;
 
-    /** Fecha y hora en que se realizo la sesión. */
+    /** Fecha y hora en que se realizó la sesión. */
     @NotNull
     private LocalDateTime sessionDate;
 
