@@ -1,14 +1,9 @@
 package com.amani.amaniapirest.services;
 
-import com.amani.amaniapirest.dto.dtoAdmin.request.HistorialClinicoAdminRequestDTO;
-import com.amani.amaniapirest.dto.dtoAdmin.response.HistorialClinicoAdminResponseDTO;
-import com.amani.amaniapirest.dto.dtoPsicologo.request.HistorialClinicoPsicologoRequestDTO;
-import com.amani.amaniapirest.dto.dtoPsicologo.response.HistorialClinicoPsicologoResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.HistorialClinicoRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.HistorialClinicoResponseDTO;
 import com.amani.amaniapirest.models.HistorialClinico;
 import com.amani.amaniapirest.models.Paciente;
-import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.HistorialClinicoRepository;
 import com.amani.amaniapirest.repository.PacientesRepository;
 import org.springframework.stereotype.Service;
@@ -19,10 +14,8 @@ import java.util.List;
 /**
  * Servicio de negocio para gestionar el historial clínico de los pacientes.
  *
- * <p>Proporciona métodos específicos por rol: el administrador tiene acceso
- * total con información detallada del paciente; el psicólogo puede crear y
- * consultar registros de sus propios pacientes; el paciente solo puede
- * consultar su propio historial.</p>
+ * <p>Permite crear, consultar, actualizar y eliminar registros clínicos,
+ * validando la existencia del paciente referenciado en cada operación.</p>
  */
 @Service
 public class HistorialClinicoService {
@@ -166,149 +159,5 @@ public class HistorialClinicoService {
                 historial.getCreadoEn()
         );
     }
-
-    // =========================================================
-    // MÉTODOS PARA ROL: ADMIN
-    // =========================================================
-
-    /**
-     * Obtiene la lista completa del historial clínico (vista de administrador).
-     *
-     * @return lista de {@link HistorialClinicoAdminResponseDTO} con todos los registros
-     */
-    public List<HistorialClinicoAdminResponseDTO> findAllAdmin() {
-        return historialClinicoRepository.findAll().stream().map(this::toAdminResponse).toList();
-    }
-
-    /**
-     * Busca un registro clínico por su id (vista de administrador).
-     *
-     * @param idHistory identificador del registro
-     * @return {@link HistorialClinicoAdminResponseDTO} con los datos completos
-     * @throws RuntimeException si no existe el registro
-     */
-    public HistorialClinicoAdminResponseDTO findByIdAdmin(Long idHistory) {
-        return toAdminResponse(getHistorialOrThrow(idHistory));
-    }
-
-    /**
-     * Crea un registro clínico desde la vista de administrador.
-     *
-     * @param request {@link HistorialClinicoAdminRequestDTO} con los datos del registro
-     * @return {@link HistorialClinicoAdminResponseDTO} con los datos del registro creado
-     * @throws RuntimeException si el paciente no existe
-     */
-    public HistorialClinicoAdminResponseDTO createAdmin(HistorialClinicoAdminRequestDTO request) {
-        Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
-
-        HistorialClinico historial = new HistorialClinico();
-        historial.setPaciente(paciente);
-        historial.setTitulo(request.getTitulo());
-        historial.setDiagnostico(request.getDiagnostico());
-        historial.setTratamiento(request.getTratamiento());
-        historial.setObservaciones(request.getObservaciones());
-        historial.setCreadoEn(LocalDateTime.now());
-
-        return toAdminResponse(historialClinicoRepository.save(historial));
-    }
-
-    /**
-     * Actualiza un registro clínico desde la vista de administrador.
-     *
-     * @param idHistory identificador del registro a actualizar
-     * @param request   {@link HistorialClinicoAdminRequestDTO} con los nuevos datos
-     * @return {@link HistorialClinicoAdminResponseDTO} con los datos actualizados
-     * @throws RuntimeException si el registro o el paciente no existen
-     */
-    public HistorialClinicoAdminResponseDTO updateAdmin(Long idHistory, HistorialClinicoAdminRequestDTO request) {
-        HistorialClinico historial = getHistorialOrThrow(idHistory);
-        Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
-
-        historial.setPaciente(paciente);
-        historial.setTitulo(request.getTitulo());
-        historial.setDiagnostico(request.getDiagnostico());
-        historial.setTratamiento(request.getTratamiento());
-        historial.setObservaciones(request.getObservaciones());
-
-        return toAdminResponse(historialClinicoRepository.save(historial));
-    }
-
-    // =========================================================
-    // MÉTODOS PARA ROL: PSICÓLOGO
-    // =========================================================
-
-    /**
-     * Obtiene el historial clínico de un paciente desde la perspectiva del psicólogo.
-     *
-     * @param idPaciente identificador del paciente
-     * @return lista de {@link HistorialClinicoPsicologoResponseDTO} del paciente indicado
-     */
-    public List<HistorialClinicoPsicologoResponseDTO> findByPacientePsicologo(Long idPaciente) {
-        return historialClinicoRepository.findByPaciente_IdPaciente(idPaciente)
-                .stream().map(this::toPsicologoResponse).toList();
-    }
-
-    /**
-     * Crea un registro clínico desde la perspectiva del psicólogo.
-     *
-     * @param request {@link HistorialClinicoPsicologoRequestDTO} con los datos del registro
-     * @return {@link HistorialClinicoPsicologoResponseDTO} con los datos del registro creado
-     * @throws RuntimeException si el paciente no existe
-     */
-    public HistorialClinicoPsicologoResponseDTO createPsicologo(HistorialClinicoPsicologoRequestDTO request) {
-        Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
-
-        HistorialClinico historial = new HistorialClinico();
-        historial.setPaciente(paciente);
-        historial.setTitulo(request.getTitulo());
-        historial.setDiagnostico(request.getDiagnostico());
-        historial.setTratamiento(request.getTratamiento());
-        historial.setObservaciones(request.getObservaciones());
-        historial.setCreadoEn(LocalDateTime.now());
-
-        return toPsicologoResponse(historialClinicoRepository.save(historial));
-    }
-
-    // =========================================================
-    // MÉTODOS PRIVADOS DE MAPEO
-    // =========================================================
-
-    /**
-     * Convierte una entidad {@link HistorialClinico} en {@link HistorialClinicoAdminResponseDTO}.
-     *
-     * @param historial entidad a convertir
-     * @return DTO con la vista completa para administrador
-     */
-    private HistorialClinicoAdminResponseDTO toAdminResponse(HistorialClinico historial) {
-        Paciente p = historial.getPaciente();
-        Usuario u = p != null ? p.getUsuario() : null;
-        return new HistorialClinicoAdminResponseDTO(
-                historial.getIdHistory(),
-                p != null ? p.getIdPaciente() : null,
-                u != null ? u.getNombre() : null,
-                u != null ? u.getApellido() : null,
-                historial.getTitulo(),
-                historial.getDiagnostico(),
-                historial.getTratamiento(),
-                historial.getObservaciones(),
-                historial.getCreadoEn()
-        );
-    }
-
-    /**
-     * Convierte una entidad {@link HistorialClinico} en {@link HistorialClinicoPsicologoResponseDTO}.
-     *
-     * @param historial entidad a convertir
-     * @return DTO con la vista filtrada para psicólogo
-     */
-    private HistorialClinicoPsicologoResponseDTO toPsicologoResponse(HistorialClinico historial) {
-        return new HistorialClinicoPsicologoResponseDTO(
-                historial.getIdHistory(),
-                historial.getTitulo(),
-                historial.getDiagnostico(),
-                historial.getTratamiento(),
-                historial.getObservaciones(),
-                historial.getCreadoEn()
-        );
-    }
 }
+
