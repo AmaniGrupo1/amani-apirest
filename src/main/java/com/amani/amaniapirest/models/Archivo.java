@@ -32,7 +32,7 @@ public class Archivo {
     private String tipoMime;
 
     /** Contenido binario del archivo almacenado como bytea en la base de datos. */
-    @Lob
+
     @Column(columnDefinition = "bytea")
     private byte[] datos;
 
