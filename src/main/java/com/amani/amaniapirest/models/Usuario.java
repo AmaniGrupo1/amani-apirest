@@ -3,6 +3,8 @@ package com.amani.amaniapirest.models;
 import com.amani.amaniapirest.enums.RolUsuario;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,6 +44,7 @@ public class Usuario {
 
     /** Rol funcional del usuario segun {@link RolUsuario}. */
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private RolUsuario rol;
 
     /** Indica si la cuenta del usuario esta activa. */

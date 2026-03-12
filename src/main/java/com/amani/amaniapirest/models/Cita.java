@@ -3,6 +3,8 @@ package com.amani.amaniapirest.models;
 import com.amani.amaniapirest.enums.EstadoCita;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -35,6 +37,7 @@ public class Cita {
 
     /** Estado actual de la cita según el enum {@link EstadoCita}. */
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private EstadoCita estado;
 
     /** Motivo o descripción de la consulta. */
