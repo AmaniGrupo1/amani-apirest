@@ -17,9 +17,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PacientePsicologoResponseDTO {
 
-    /** Identificador único del paciente. */
-    private Long idPaciente;
-
     /** Nombre de pila del paciente. */
     private String nombre;
 

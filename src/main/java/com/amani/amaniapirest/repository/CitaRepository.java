@@ -19,7 +19,7 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
      * @param idPsicologo identificador del psicólogo
      * @return lista de citas del psicólogo indicado
      */
-    List<Cita> findByPsicologo_IdPsicologo(Long idPsicologo);
+    List<Cita> findByPsicologoIdPsicologo(Long idPsicologo);
 
     /**
      * Obtiene todas las citas de un paciente.

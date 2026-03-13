@@ -38,7 +38,7 @@ public class CitaPsicologoResponseDTO {
     private Integer durationMinutes;
 
     /** Estado actual de la cita. */
-    private EstadoCita estadoCita;
+    private String estadoCita;
 
     /** Motivo o descripción de la consulta. */
     private String motivo;

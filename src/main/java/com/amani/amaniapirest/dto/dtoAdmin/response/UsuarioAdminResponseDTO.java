@@ -31,7 +31,7 @@ public class UsuarioAdminResponseDTO {
     private String email;
 
     /** Rol funcional del usuario en el sistema. */
-    private RolUsuario rol;
+    private String rol;
 
     /** Indica si la cuenta está activa. */
     private Boolean activo;

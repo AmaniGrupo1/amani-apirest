@@ -1,5 +1,4 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,9 +15,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioResponseDTO {
-
-    /** Identificador único del usuario. */
-    private Long idUsuario;
 
     /** Nombre de pila del usuario. */
     private String nombre;

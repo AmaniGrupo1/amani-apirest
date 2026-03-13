@@ -29,7 +29,7 @@ public class UsuarioPsicologoResponseDTO {
     private String email;
 
     /** Rol del usuario en el sistema (siempre {@code psicologo} en este contexto). */
-    private RolUsuario rol;
+    private String rol;
 
     /** Indica si la cuenta está activa. */
     private Boolean activo;

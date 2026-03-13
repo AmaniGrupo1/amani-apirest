@@ -17,21 +17,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MensajeResponseDTO {
 
-    /** Identificador único del mensaje. */
-    private Long idMensaje;
-
-    /** Identificador del usuario remitente. */
-    private Long idSender;
-
-    /** Identificador del usuario destinatario. */
-    private Long idReceiver;
-
+    private String nombreRemitente;
     /** Contenido textual del mensaje. */
     private String mensaje;
-
-    /** Identificador de la cita relacionada, si aplica. */
-    private Long idCita;
-
     /** Fecha y hora en que el mensaje fue enviado. */
     private LocalDateTime enviadoEn;
 

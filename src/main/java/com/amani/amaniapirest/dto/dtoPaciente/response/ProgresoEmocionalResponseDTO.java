@@ -18,12 +18,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ProgresoEmocionalResponseDTO {
 
-    /** Identificador único del registro de progreso. */
-    private Long idProgress;
-
-    /** Identificador del paciente al que pertenece el registro. */
-    private Long idPaciente;
-
     /** Fecha en que se registró el progreso emocional. */
     private LocalDate fecha;
 

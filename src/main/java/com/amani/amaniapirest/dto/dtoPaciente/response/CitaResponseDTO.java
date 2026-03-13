@@ -7,12 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * DTO de salida con la información de una cita.
- *
- * <p>Incluye los identificadores del paciente y el psicólogo, la fecha y
- * hora de inicio, la duración, el estado y el motivo de la consulta.</p>
- */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,10 +29,8 @@ public class CitaResponseDTO {
     private Integer durationMinutes;
 
     //Por defecto, el estado de la cita se establece en "pendiente" al crear una nueva cita.
-    private String estado;
+    private String estadoCita;
 
     /** Motivo o descripción de la consulta. */
     private String motivo;
-
-
 }

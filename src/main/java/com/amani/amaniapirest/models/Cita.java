@@ -35,10 +35,8 @@ public class Cita {
     /** Duración de la cita en minutos. */
     private int durationMinutes;
 
-    /** Estado actual de la cita según el enum {@link EstadoCita}. */
-    @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    private EstadoCita estado;
+
+    private String estado;
 
     /** Motivo o descripción de la consulta. */
     private String motivo;
@@ -62,4 +60,5 @@ public class Cita {
     /** Sesion terapéutica generada a partir de esta cita. */
     @OneToOne(mappedBy = "cita")
     private Sesion sesion;
+
 }

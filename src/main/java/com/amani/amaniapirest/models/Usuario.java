@@ -42,10 +42,8 @@ public class Usuario {
     /** Contrasena del usuario almacenada con hash BCrypt. */
     private String password;
 
-    /** Rol funcional del usuario segun {@link RolUsuario}. */
-    @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    private RolUsuario rol;
+
+    private String rol;
 
     /** Indica si la cuenta del usuario esta activa. */
     private Boolean activo;
