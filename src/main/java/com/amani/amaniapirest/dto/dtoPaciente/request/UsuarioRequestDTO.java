@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.dto.dtoPaciente.request;
 
+import com.amani.amaniapirest.enums.RolUsuario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -39,7 +40,7 @@ public class UsuarioRequestDTO {
 
     /** Rol funcional del usuario (admin, psicólogo, paciente). */
     @NotBlank
-    private String rol;
+    private RolUsuario rol;
 
     /** Indica si la cuenta está activa. Por defecto {@code true} si no se especifica. */
     private Boolean activo;

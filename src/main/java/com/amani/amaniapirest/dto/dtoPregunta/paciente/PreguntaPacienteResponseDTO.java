@@ -12,5 +12,5 @@ import java.util.List;
 public class PreguntaPacienteResponseDTO {
     private String texto;
     private String tipo;
-    private List<OpcionPacienteResponseDTO> opciones;
+    private List<String> opciones;
 }

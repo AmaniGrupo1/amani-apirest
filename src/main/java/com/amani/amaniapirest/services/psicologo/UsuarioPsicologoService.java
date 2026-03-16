@@ -29,7 +29,7 @@ public class UsuarioPsicologoService {
                 usuario.getNombre(),
                 usuario.getApellido(),
                 usuario.getEmail(),
-                usuario.getRol(),
+                usuario.getRol().name(),
                 usuario.getActivo()
         );
     }

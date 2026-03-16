@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class RespuestaPacientePsicologoResponseDTO {
-    private String nombre;
+    private String nombrePaciente;
     private String pregunta;
     private String respuesta;
     private String opcion;
-    private String creadoEn;
+    private LocalDateTime creadoEn;
 }

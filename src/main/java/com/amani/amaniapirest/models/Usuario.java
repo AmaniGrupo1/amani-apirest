@@ -42,14 +42,22 @@ public class Usuario {
     /** Contrasena del usuario almacenada con hash BCrypt. */
     private String password;
 
-
-    private String rol;
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(columnDefinition = "rol_usuario", nullable = false)
+    private RolUsuario rol;
 
     /** Indica si la cuenta del usuario esta activa. */
     private Boolean activo;
 
     /** Fecha y hora de registro del usuario en el sistema. */
+    @Column(nullable = false, updatable = false)
     private LocalDateTime fechaRegistro;
+    @PrePersist
+    public void prePersist() {
+        this.fechaRegistro = LocalDateTime.now();
+        this.activo = true;
+    }
 
     /** Fecha y hora en que la cuenta fue dada de baja, o {@code null} si sigue activa. */
     private LocalDateTime fechaBaja;

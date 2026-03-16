@@ -18,7 +18,7 @@ public class Opcion {
     private String texto;
     private Integer valor;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pregunta")
     private Pregunta pregunta;
 

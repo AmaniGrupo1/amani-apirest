@@ -1,4 +1,5 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
+import com.amani.amaniapirest.enums.RolUsuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class UsuarioResponseDTO {
     private String email;
 
     /** Nombre del rol funcional asignado al usuario. */
-    private String rol;
+    private RolUsuario rol;
 
     /** Indica si la cuenta del usuario está activa. */
     private Boolean activo;
