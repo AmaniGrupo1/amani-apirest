@@ -13,7 +13,7 @@ import java.util.List;
  * Controlador REST para que los administradores gestionen el progreso emocional completo de los pacientes.
  */
 @RestController
-@RequestMapping("/admin/progreso-emocional")
+@RequestMapping("/api/admin/progreso-emocional")
 public class ProgresoEmocionalAdminController {
 
     private final ProgresoEmocionalAdminService progresoService;
