@@ -1,34 +1,29 @@
 package com.amani.amaniapirest.dto.dtoPaciente.request;
 
-import jakarta.validation.constraints.NotNull;
+import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.RespuestasRequestDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
-/**
- * DTO de entrada para registrar o modificar el perfil de un paciente.
- *
- * <p>Los campos {@code idUsuario} y {@code fechaNacimiento} son obligatorios.
- * El género y el teléfono son opcionales.</p>
- */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PacienteRequestDTO {
-
-    /** Identificador del usuario del sistema al que se vincula el paciente. */
-    @NotNull
-    private Long idUsuario;
-
-    /** Fecha de nacimiento del paciente. */
-    @NotNull
+    private Long idUsuario; // Solo para admin, para vincular con un usuario existente
     private LocalDate fechaNacimiento;
-
-    /** Género del paciente (p.ej. "masculino", "femenino", "no binario"). */
     private String genero;
-
-    /** Número de teléfono de contacto del paciente. */
     private String telefono;
+
+    private UsuarioRequestDTO usuario;
+
+    private List<DireccionRequestDTO> direcciones; // Solo campos necesarios
+    private List<CitaRequestDTO> citas;             // Solo para admin
+    private List<HistorialClinicoRequestDTO> historiales; // Admin y psicólogo
+    private List<RespuestasRequestDTO> respuestas;
 }

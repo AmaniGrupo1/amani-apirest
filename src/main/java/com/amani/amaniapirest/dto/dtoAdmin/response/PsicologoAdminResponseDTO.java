@@ -18,11 +18,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PsicologoAdminResponseDTO {
 
-    /** Identificador único del psicólogo. */
-    private Long idPsicologo;
-
-    /** Identificador del usuario vinculado al psicólogo. */
-    private Long idUsuario;
 
     /** Nombre de pila del usuario vinculado. */
     private String nombreUsuario;

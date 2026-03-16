@@ -57,6 +57,7 @@ public class Usuario {
      */
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(columnDefinition = "rol_usuario", nullable = false)
     private RolUsuario rol;
 
     /**
@@ -64,10 +65,14 @@ public class Usuario {
      */
     private Boolean activo;
 
-    /**
-     * Fecha y hora de registro del usuario en el sistema.
-     */
+    /** Fecha y hora de registro del usuario en el sistema. */
+    @Column(nullable = false, updatable = false)
     private LocalDateTime fechaRegistro;
+    @PrePersist
+    public void prePersist() {
+        this.fechaRegistro = LocalDateTime.now();
+        this.activo = true;
+    }
 
     /**
      * Fecha y hora en que la cuenta fue dada de baja, o {@code null} si sigue activa.

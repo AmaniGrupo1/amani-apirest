@@ -18,12 +18,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class HistorialClinicoAdminResponseDTO {
 
-    /** Identificador único del registro del historial. */
-    private Long idHistory;
-
-    /** Identificador del paciente al que pertenece el historial. */
-    private Long idPaciente;
-
     /** Nombre de pila del paciente. */
     private String nombrePaciente;
 

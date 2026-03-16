@@ -26,11 +26,14 @@ public class Sesion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSesion;
 
-    /** Identificador del paciente derivado de la cita asociada. */
-    private Long idPaciente;
 
-    /** Identificador del psicologo derivado de la cita asociada. */
-    private Long idPsicologo;
+    @ManyToOne
+    @JoinColumn(name = "id_paciente")
+    private Paciente paciente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_psicologo")
+    private Psicologo psicologo;
 
     /** Fecha y hora en que se realizo la sesion. */
     private LocalDateTime sessionDate;

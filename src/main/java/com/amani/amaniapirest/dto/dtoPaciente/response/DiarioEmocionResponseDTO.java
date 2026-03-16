@@ -16,22 +16,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DiarioEmocionResponseDTO {
-
-    /** Identificador único de la entrada del diario. */
-    private Long idDiario;
-
-    /** Identificador del paciente al que pertenece la entrada. */
-    private Long idPaciente;
-
     /** Fecha y hora en que se registró la emoción. */
     private LocalDateTime fecha;
-
     /** Nombre de la emoción registrada. */
     private String emocion;
-
     /** Intensidad de la emoción en escala del 1 al 10. */
     private Integer intensidad;
-
     /** Nota o comentario adicional del paciente. */
     private String nota;
 }

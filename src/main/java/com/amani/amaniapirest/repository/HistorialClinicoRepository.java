@@ -19,6 +19,6 @@ public interface HistorialClinicoRepository extends JpaRepository<HistorialClini
      * @param idPaciente identificador del paciente
      * @return lista de registros clinicos del paciente
      */
-    List<HistorialClinico> findByPaciente_IdPaciente(Long idPaciente);
+    List<HistorialClinico> findByPacienteIdPaciente(Long idPaciente);
 }
 

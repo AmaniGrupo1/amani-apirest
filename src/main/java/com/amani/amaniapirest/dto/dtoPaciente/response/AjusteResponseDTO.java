@@ -1,5 +1,4 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

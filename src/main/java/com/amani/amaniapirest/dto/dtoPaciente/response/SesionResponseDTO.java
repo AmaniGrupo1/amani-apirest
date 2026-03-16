@@ -17,11 +17,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class SesionResponseDTO {
 
-    /** Identificador único de la sesión. */
-    private Long idSesion;
-
-    /** Identificador de la cita de la que deriva esta sesión. */
-    private Long idCita;
 
     /** Fecha y hora en que se realizó la sesión. */
     private LocalDateTime sessionDate;

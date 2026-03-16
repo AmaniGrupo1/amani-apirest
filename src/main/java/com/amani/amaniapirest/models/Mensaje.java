@@ -26,9 +26,6 @@ public class Mensaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idMensaje;
 
-    /** Identificador de la cita relacionada con el mensaje, si aplica. */
-    private Long idCita;
-
     /** Contenido textual del mensaje. */
     private String mensaje;
 
@@ -47,4 +44,9 @@ public class Mensaje {
     @ManyToOne
     @JoinColumn(name = "receiver_id")
     private Usuario receiver;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cita")
+    private Cita cita;
+
 }

@@ -17,18 +17,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class SesionPsicologoResponseDTO {
 
-    /** Identificador único de la sesión. */
-    private Long idSesion;
-
-    /** Identificador del paciente atendido. */
-    private Long idPaciente;
-
-    /** Nombre de pila del paciente. */
     private String nombrePaciente;
 
-    /** Apellido del paciente. */
     private String apellidoPaciente;
-
     /** Fecha y hora en que se realizó la sesión. */
     private LocalDateTime sessionDate;
 

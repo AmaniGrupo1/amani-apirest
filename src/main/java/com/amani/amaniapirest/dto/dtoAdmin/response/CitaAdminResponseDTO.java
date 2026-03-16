@@ -19,12 +19,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CitaAdminResponseDTO {
 
-    /** Identificador único de la cita. */
-    private Long idCita;
-
-    /** Identificador del paciente que asiste a la cita. */
-    private Long idPaciente;
-
     /** Nombre de pila del paciente. */
     private String nombrePaciente;
 
@@ -47,7 +41,7 @@ public class CitaAdminResponseDTO {
     private Integer durationMinutes;
 
     /** Estado actual de la cita. */
-    private EstadoCita estadoCita;
+    private String estadoCita;
 
     /** Motivo o descripción de la consulta. */
     private String motivo;

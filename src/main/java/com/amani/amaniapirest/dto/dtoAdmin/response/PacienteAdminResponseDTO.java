@@ -19,12 +19,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PacienteAdminResponseDTO {
 
-    /** Identificador único del paciente. */
-    private Long idPaciente;
-
-    /** Identificador del usuario vinculado al paciente. */
-    private Long idUsuario;
-
     /** Nombre de pila del usuario vinculado. */
     private String nombreUsuario;
 

@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.models;
 
+import com.amani.amaniapirest.models.modelPreguntasInicial.Respuesta;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -59,4 +60,7 @@ public class Paciente {
     /** Historial clinico del paciente. */
     @OneToMany(mappedBy = "paciente")
     private List<HistorialClinico> historiales;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    private List<Respuesta> respuestas;
 }

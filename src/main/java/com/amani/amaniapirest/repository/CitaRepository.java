@@ -12,8 +12,18 @@ import java.util.List;
  */
 public interface CitaRepository extends JpaRepository<Cita, Long> {
 
+<<<<<<< HEAD
     /** Obtiene todas las citas asignadas a un psicólogo. */
     List<Cita> findByPsicologo_IdPsicologo(Long idPsicologo);
+=======
+    /**
+     * Obtiene todas las citas asignadas a un psicólogo.
+     *
+     * @param idPsicologo identificador del psicólogo
+     * @return lista de citas del psicólogo indicado
+     */
+    List<Cita> findByPsicologoIdPsicologo(Long idPsicologo);
+>>>>>>> origin/main
 
     /** Obtiene todas las citas de un paciente. */
     List<Cita> findByPaciente_IdPaciente(Long idPaciente);

@@ -15,12 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DireccionResponseDTO {
 
-    /** Identificador único de la dirección. */
-    private Long idDireccion;
-
-    /** Identificador del paciente propietario de la dirección. */
-    private Long idPaciente;
-
     /** Nombre de la calle y número. */
     private String calle;
 

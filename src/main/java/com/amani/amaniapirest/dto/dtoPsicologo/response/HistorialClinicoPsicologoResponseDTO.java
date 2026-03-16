@@ -17,9 +17,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class HistorialClinicoPsicologoResponseDTO {
 
-    /** Identificador único del registro del historial. */
-    private Long idHistory;
-
     /** Título o encabezado del registro clínico. */
     private String titulo;
 
