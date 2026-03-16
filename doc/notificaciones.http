@@ -1,0 +1,93 @@
+# Notificaciones Psicólogas
+
+###
+@baseUrl = http://localhost:8080
+# @name Crear cita (paciente)
+POST {{baseUrl}}/api/citas
+Content-Type: application/json
+
+{
+  "idPaciente": 1,
+  "idPsicologo": 1,
+  "startDatetime": "2026-03-20T10:00:00",
+  "durationMinutes": 60,
+  "estado": "pendiente",
+  "motivo": "Ansiedad generalizada"
+}
+
+###
+# @name Crear cita (admin)
+POST {{baseUrl}}/api/citas/admin
+Content-Type: application/json
+
+{
+  "idPaciente": 1,
+  "idPsicologo": 1,
+  "startDatetime": "2026-03-20T10:00:00",
+  "durationMinutes": 60,
+  "estado": "confirmada",
+  "motivo": "Primera sesión"
+}
+
+###
+# @name Cancelar cita (paciente)
+PUT {{baseUrl}}/api/citas/1
+Content-Type: application/json
+
+{
+  "idPaciente": 1,
+  "idPsicologo": 1,
+  "startDatetime": "2026-03-20T10:00:00",
+  "durationMinutes": 60,
+  "estado": "cancelada",
+  "motivo": "No puedo asistir"
+}
+
+###
+# @name Cancelar cita (admin)
+PUT {{baseUrl}}/api/citas/admin/1
+Content-Type: application/json
+
+{
+  "idPaciente": 1,
+  "idPsicologo": 1,
+  "startDatetime": "2026-03-20T10:00:00",
+  "durationMinutes": 60,
+  "estado": "cancelada",
+  "motivo": "Cancelada por admin"
+}
+
+###
+# @name Cancelar cita (psicólogo)
+PATCH {{baseUrl}}/api/citas/psicologo/1/estado
+Content-Type: application/json
+
+{
+  "estado": "cancelada"
+}
+
+###
+# @name Registro de usuario
+POST {{baseUrl}}/api/usuarios
+Content-Type: application/json
+
+{
+  "nombre": "Sofía",
+  "apellido": "Martínez",
+  "email": "sofia@example.com",
+  "password": "mipass123",
+  "rol": "paciente",
+  "activo": true
+}
+
+###
+# @name Nuevo mensaje
+POST {{baseUrl}}/api/mensajes
+Content-Type: application/json
+
+{
+  "idSender": 1,
+  "idReceiver": 2,
+  "mensaje": "Hola, ¿podemos reagendar la sesión?",
+  "idCita": null
+}
