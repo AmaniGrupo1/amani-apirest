@@ -14,7 +14,7 @@ import java.util.List;
  * Controlador REST para que los psicólogos gestionen el progreso emocional de los pacientes.
  */
 @RestController
-@RequestMapping("/psicologo/progreso-emocional")
+@RequestMapping("/api/psicologo/progreso-emocional")
 public class ProgresoEmocionalPsicologoController {
 
     private final ProgresoEmocionalPsicologoService progresoService;
