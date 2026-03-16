@@ -3,10 +3,13 @@ package com.amani.amaniapirest.services;
 import com.amani.amaniapirest.dto.dtoPaciente.request.UsuarioRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.UsuarioResponseDTO;
 import com.amani.amaniapirest.enums.RolUsuario;
+import com.amani.amaniapirest.events.UsuarioRegistradoEvent;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.UsuarioRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -24,16 +27,14 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
 
-    /**
-     * Construye el servicio inyectando sus dependencias.
-     *
-     * @param usuarioRepository repositorio JPA de {@link Usuario}
-     * @param passwordEncoder   codificador BCrypt para proteger contraseñas
-     */
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository,
+                          PasswordEncoder passwordEncoder,
+                          ApplicationEventPublisher eventPublisher) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.eventPublisher = eventPublisher;
     }
 
     /**
@@ -64,6 +65,7 @@ public class UsuarioService {
      * @return {@link UsuarioResponseDTO} con los datos del usuario creado
      * @throws RuntimeException si el rol proporcionado no es válido
      */
+    @Transactional
     public UsuarioResponseDTO create(UsuarioRequestDTO request) {
         Usuario usuario = new Usuario();
         usuario.setNombre(request.getNombre());
@@ -74,7 +76,9 @@ public class UsuarioService {
         usuario.setActivo(request.getActivo() != null ? request.getActivo() : Boolean.TRUE);
         usuario.setFechaRegistro(LocalDateTime.now());
 
-        return toResponse(usuarioRepository.save(usuario));
+        Usuario saved = usuarioRepository.save(usuario);
+        eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, saved.getEmail(), saved.getNombre()));
+        return toResponse(saved);
     }
 
     /**

@@ -2,11 +2,14 @@ package com.amani.amaniapirest.services;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.MensajeRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.MensajeResponseDTO;
+import com.amani.amaniapirest.events.MensajeNuevoEvent;
 import com.amani.amaniapirest.models.Mensaje;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.MensajeRepository;
 import com.amani.amaniapirest.repository.UsuarioRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,16 +26,14 @@ public class MensajeService {
 
     private final MensajeRepository mensajeRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    /**
-     * Construye el servicio inyectando sus repositorios.
-     *
-     * @param mensajeRepository repositorio JPA de {@link Mensaje}
-     * @param usuarioRepository repositorio JPA de {@link Usuario}
-     */
-    public MensajeService(MensajeRepository mensajeRepository, UsuarioRepository usuarioRepository) {
+    public MensajeService(MensajeRepository mensajeRepository,
+                          UsuarioRepository usuarioRepository,
+                          ApplicationEventPublisher eventPublisher) {
         this.mensajeRepository = mensajeRepository;
         this.usuarioRepository = usuarioRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     /**
@@ -84,6 +85,7 @@ public class MensajeService {
      * @return {@link MensajeResponseDTO} con los datos del mensaje creado
      * @throws RuntimeException si el remitente o destinatario no existen
      */
+    @Transactional
     public MensajeResponseDTO create(MensajeRequestDTO request) {
         Usuario sender = getUsuarioOrThrow(request.getIdSender());
         Usuario receiver = getUsuarioOrThrow(request.getIdReceiver());
@@ -96,7 +98,9 @@ public class MensajeService {
         mensaje.setEnviadoEn(LocalDateTime.now());
         mensaje.setLeido(false);
 
-        return toResponse(mensajeRepository.save(mensaje));
+        Mensaje saved = mensajeRepository.save(mensaje);
+        eventPublisher.publishEvent(new MensajeNuevoEvent(this, saved));
+        return toResponse(saved);
     }
 
     /**

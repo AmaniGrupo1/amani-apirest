@@ -7,13 +7,17 @@ import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
+import com.amani.amaniapirest.events.CitaCanceladaEvent;
+import com.amani.amaniapirest.events.CitaCreadaEvent;
 import com.amani.amaniapirest.models.Cita;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.repository.CitaRepository;
 import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.repository.PsicologoRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,20 +36,16 @@ public class CitaService {
     private final CitaRepository citaRepository;
     private final PacientesRepository pacientesRepository;
     private final PsicologoRepository psicologoRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    /**
-     * Construye el servicio inyectando los repositorios necesarios.
-     *
-     * @param citaRepository      repositorio JPA de {@link Cita}
-     * @param pacientesRepository repositorio JPA de {@link Paciente}
-     * @param psicologoRepository repositorio JPA de {@link Psicologo}
-     */
     public CitaService(CitaRepository citaRepository,
                        PacientesRepository pacientesRepository,
-                       PsicologoRepository psicologoRepository) {
+                       PsicologoRepository psicologoRepository,
+                       ApplicationEventPublisher eventPublisher) {
         this.citaRepository = citaRepository;
         this.pacientesRepository = pacientesRepository;
         this.psicologoRepository = psicologoRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     /**
@@ -76,6 +76,7 @@ public class CitaService {
      * @throws RuntimeException si el paciente o el psicólogo referenciados no existen,
      *                          o si el estado proporcionado no es válido
      */
+    @Transactional
     public CitaResponseDTO create(CitaRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
         Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
@@ -90,7 +91,9 @@ public class CitaService {
         cita.setCreatedAt(LocalDateTime.now());
         cita.setUpdatedAt(LocalDateTime.now());
 
-        return toResponse(citaRepository.save(cita));
+        Cita saved = citaRepository.save(cita);
+        eventPublisher.publishEvent(new CitaCreadaEvent(this, saved));
+        return toResponse(saved);
     }
 
     /**
@@ -102,6 +105,7 @@ public class CitaService {
      * @throws RuntimeException si la cita, el paciente o el psicólogo no existen,
      *                          o si el estado proporcionado no es válido
      */
+    @Transactional
     public CitaResponseDTO update(Long idCita, CitaRequestDTO request) {
         Cita cita = getCitaOrThrow(idCita);
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
@@ -111,11 +115,16 @@ public class CitaService {
         cita.setPsicologo(psicologo);
         cita.setStartDatetime(request.getStartDatetime());
         cita.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : cita.getDurationMinutes());
-        cita.setEstado(request.getEstado() != null ? parseEstado(request.getEstado()) : cita.getEstado());
+        EstadoCita nuevoEstado = request.getEstado() != null ? parseEstado(request.getEstado()) : cita.getEstado();
+        cita.setEstado(nuevoEstado);
         cita.setMotivo(request.getMotivo());
         cita.setUpdatedAt(LocalDateTime.now());
 
-        return toResponse(citaRepository.save(cita));
+        Cita saved = citaRepository.save(cita);
+        if (EstadoCita.cancelada == nuevoEstado) {
+            eventPublisher.publishEvent(new CitaCanceladaEvent(this, saved, null));
+        }
+        return toResponse(saved);
     }
 
     /**
@@ -233,6 +242,7 @@ public class CitaService {
      * @return {@link CitaAdminResponseDTO} con los datos de la cita creada
      * @throws RuntimeException si el paciente o el psicólogo no existen
      */
+    @Transactional
     public CitaAdminResponseDTO createAdmin(CitaAdminRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
         Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
@@ -247,7 +257,9 @@ public class CitaService {
         cita.setCreatedAt(LocalDateTime.now());
         cita.setUpdatedAt(LocalDateTime.now());
 
-        return toAdminResponse(citaRepository.save(cita));
+        Cita saved = citaRepository.save(cita);
+        eventPublisher.publishEvent(new CitaCreadaEvent(this, saved));
+        return toAdminResponse(saved);
     }
 
     /**
@@ -258,6 +270,7 @@ public class CitaService {
      * @return {@link CitaAdminResponseDTO} con los datos actualizados
      * @throws RuntimeException si la cita, el paciente o el psicólogo no existen
      */
+    @Transactional
     public CitaAdminResponseDTO updateAdmin(Long idCita, CitaAdminRequestDTO request) {
         Cita cita = getCitaOrThrow(idCita);
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
@@ -267,11 +280,16 @@ public class CitaService {
         cita.setPsicologo(psicologo);
         cita.setStartDatetime(request.getStartDatetime());
         cita.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : cita.getDurationMinutes());
-        cita.setEstado(request.getEstado() != null ? request.getEstado() : cita.getEstado());
+        EstadoCita nuevoEstadoAdmin = request.getEstado() != null ? request.getEstado() : cita.getEstado();
+        cita.setEstado(nuevoEstadoAdmin);
         cita.setMotivo(request.getMotivo());
         cita.setUpdatedAt(LocalDateTime.now());
 
-        return toAdminResponse(citaRepository.save(cita));
+        Cita savedAdmin = citaRepository.save(cita);
+        if (EstadoCita.cancelada == nuevoEstadoAdmin) {
+            eventPublisher.publishEvent(new CitaCanceladaEvent(this, savedAdmin, "administrador"));
+        }
+        return toAdminResponse(savedAdmin);
     }
 
     // =========================================================
@@ -308,11 +326,17 @@ public class CitaService {
      * @return {@link CitaPsicologoResponseDTO} con los datos actualizados
      * @throws RuntimeException si no existe la cita
      */
+    @Transactional
     public CitaPsicologoResponseDTO updateEstadoCita(Long idCita, CitaPsicologoRequestDTO request) {
         Cita cita = getCitaOrThrow(idCita);
-        cita.setEstado(request.getEstado() != null ? request.getEstado() : cita.getEstado());
+        EstadoCita nuevoEstadoPsicologo = request.getEstado() != null ? request.getEstado() : cita.getEstado();
+        cita.setEstado(nuevoEstadoPsicologo);
         cita.setUpdatedAt(LocalDateTime.now());
-        return toPsicologoResponse(citaRepository.save(cita));
+        Cita savedPsi = citaRepository.save(cita);
+        if (EstadoCita.cancelada == nuevoEstadoPsicologo) {
+            eventPublisher.publishEvent(new CitaCanceladaEvent(this, savedPsi, "psicólogo"));
+        }
+        return toPsicologoResponse(savedPsi);
     }
 
     // =========================================================
