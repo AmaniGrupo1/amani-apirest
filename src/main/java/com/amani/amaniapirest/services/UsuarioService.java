@@ -2,7 +2,6 @@ package com.amani.amaniapirest.services;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.UsuarioRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.UsuarioResponseDTO;
-import com.amani.amaniapirest.enums.RolUsuario;
 import com.amani.amaniapirest.events.UsuarioRegistradoEvent;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.UsuarioRepository;
@@ -72,7 +71,7 @@ public class UsuarioService {
         usuario.setApellido(request.getApellido());
         usuario.setEmail(request.getEmail());
         usuario.setPassword(passwordEncoder.encode(request.getPassword()));
-        usuario.setRol(parseRol(request.getRol()));
+        usuario.setRol(request.getRol());
         usuario.setActivo(request.getActivo() != null ? request.getActivo() : Boolean.TRUE);
         usuario.setFechaRegistro(LocalDateTime.now());
 
@@ -95,7 +94,7 @@ public class UsuarioService {
         usuario.setNombre(request.getNombre());
         usuario.setApellido(request.getApellido());
         usuario.setEmail(request.getEmail());
-        usuario.setRol(parseRol(request.getRol()));
+        usuario.setRol(request.getRol());
         usuario.setActivo(request.getActivo() != null ? request.getActivo() : usuario.getActivo());
 
         if (StringUtils.hasText(request.getPassword())) {
@@ -129,21 +128,6 @@ public class UsuarioService {
     }
 
     /**
-     * Convierte un valor de texto al enum {@link RolUsuario} correspondiente.
-     *
-     * @param rol nombre del rol en texto (insensible a mayúsculas)
-     * @return constante {@link RolUsuario} correspondiente
-     * @throws RuntimeException si el valor no corresponde a ningún rol válido
-     */
-    private RolUsuario parseRol(String rol) {
-        try {
-            return RolUsuario.valueOf(rol.toLowerCase());
-        } catch (IllegalArgumentException ex) {
-            throw new RuntimeException("Rol inválido: " + rol);
-        }
-    }
-
-    /**
      * Convierte una entidad {@link Usuario} en su DTO de respuesta.
      *
      * @param usuario entidad a convertir
@@ -151,11 +135,10 @@ public class UsuarioService {
      */
     private UsuarioResponseDTO toResponse(Usuario usuario) {
         return new UsuarioResponseDTO(
-                usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getApellido(),
                 usuario.getEmail(),
-                usuario.getRol() != null ? usuario.getRol().name() : null,
+                usuario.getRol(),
                 usuario.getActivo(),
                 usuario.getFechaRegistro()
         );
