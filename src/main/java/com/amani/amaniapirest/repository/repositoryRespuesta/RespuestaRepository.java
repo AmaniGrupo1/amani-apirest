@@ -1,7 +1,6 @@
 package com.amani.amaniapirest.repository.repositoryRespuesta;
 
 import com.amani.amaniapirest.dto.dtoPregunta.psicologo.RespuestaPacientePsicologoResponseDTO;
-import com.amani.amaniapirest.models.modelPreguntasInicial.Pregunta;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Respuesta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +12,7 @@ public interface RespuestaRepository extends JpaRepository<Respuesta, Long> {
     Respuesta findByPaciente_IdPaciente(Long idPaciente);
 
     @Query("""
-                SELECT new com.amani.amaniapirest.dto.dtoPregunta.psicologo.RespuestaPacientePsicologoResponseDTO(
+                SELECT RespuestaPacientePsicologoResponseDTO(
                     CONCAT(pac.usuario.nombre,' ',pac.usuario.apellido),
                     pre.texto,
                     r.texto,
