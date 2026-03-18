@@ -97,47 +97,25 @@ public class PacienteService {
         return toResponse(pacientesRepository.save(paciente));
     }
 
-    /**
-     * Elimina el paciente con el identificador indicado.
-     *
-     * @param idPaciente identificador del paciente a eliminar
-     * @throws RuntimeException si no existe un paciente con el id proporcionado
-     */
+
     public void delete(Long idPaciente) {
         Paciente paciente = getPacienteOrThrow(idPaciente);
         pacientesRepository.delete(paciente);
     }
 
-    /**
-     * Recupera un paciente por id o lanza excepción si no existe.
-     *
-     * @param idPaciente identificador del paciente
-     * @return entidad {@link Paciente} encontrada
-     * @throws RuntimeException si no existe un paciente con el id proporcionado
-     */
+
     private Paciente getPacienteOrThrow(Long idPaciente) {
         return pacientesRepository.findById(idPaciente)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + idPaciente));
     }
 
-    /**
-     * Recupera un usuario por id o lanza excepción si no existe.
-     *
-     * @param idUsuario identificador del usuario
-     * @return entidad {@link Usuario} encontrada
-     * @throws RuntimeException si no existe un usuario con el id proporcionado
-     */
+
     private Usuario getUsuarioOrThrow(Long idUsuario) {
         return usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + idUsuario));
     }
 
-    /**
-     * Convierte una entidad {@link Paciente} en su DTO de respuesta.
-     *
-     * @param paciente entidad a convertir
-     * @return {@link PacienteResponseDTO} con los datos mapeados
-     */
+
     private PacienteResponseDTO toResponse(Paciente paciente) {
         return new PacienteResponseDTO(
                 paciente.getFechaNacimiento(),

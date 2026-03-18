@@ -2,27 +2,21 @@ package com.amani.amaniapirest.controllers.preguntasController;
 
 
 import com.amani.amaniapirest.dto.dtoPregunta.psicologo.RespuestaPacientePsicologoResponseDTO;
-
-import com.amani.amaniapirest.repository.repositoryRespuesta.RespuestaRepository;
+import com.amani.amaniapirest.services.servicePacientePregunta.preguntaServicios.psicologo.RespuestaPsicologoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/psicologo/respuestas")
+@RequestMapping("/api/psicologo/respuestas")
 @RequiredArgsConstructor
 public class RespuestaPsicologoController {
 
-    private final RespuestaRepository respuestaRepository;
+    private final RespuestaPsicologoService respuestaPsicologoService;
 
-    @GetMapping("/{idPaciente}")
-    public List<RespuestaPacientePsicologoResponseDTO> verRespuestasPaciente(
-            @PathVariable Long idPaciente
-    ){
-
-        return respuestaRepository.obtenerRespuestasPaciente(idPaciente);
-
+    @GetMapping
+    public List<RespuestaPacientePsicologoResponseDTO> getRespuestasPacientes() {
+        return respuestaPsicologoService.getRespuestasPacientes();
     }
-
 }

@@ -11,8 +11,13 @@ import java.time.LocalDateTime;
 @Data
 public class RespuestaPacientePsicologoResponseDTO {
     private String nombrePaciente;
+
     private String pregunta;
+
     private String respuesta;
+
     private String opcion;
+
     private LocalDateTime creadoEn;
+
 }

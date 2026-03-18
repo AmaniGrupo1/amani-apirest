@@ -15,13 +15,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PacienteRequestDTO {
-    private Long idUsuario; // Solo para admin, para vincular con un usuario existente
+    private Long idUsuario;
     private LocalDate fechaNacimiento;
     private String genero;
     private String telefono;
-
     private UsuarioRequestDTO usuario;
-
     private List<DireccionRequestDTO> direcciones; // Solo campos necesarios
     private List<CitaRequestDTO> citas;             // Solo para admin
     private List<HistorialClinicoRequestDTO> historiales; // Admin y psicólogo

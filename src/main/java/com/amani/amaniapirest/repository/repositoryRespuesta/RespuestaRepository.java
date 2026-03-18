@@ -26,4 +26,14 @@ public interface RespuestaRepository extends JpaRepository<Respuesta, Long> {
                 WHERE pac.idPaciente = :idPaciente
             """)
     List<RespuestaPacientePsicologoResponseDTO> obtenerRespuestasPaciente(@Param("idPaciente") Long idPaciente);
+
+    @Query("""
+        SELECT r
+        FROM Respuesta r
+        JOIN FETCH r.pregunta
+        LEFT JOIN FETCH r.opcion
+        JOIN FETCH r.paciente p
+        JOIN FETCH p.usuario
+    """)
+    List<Respuesta> findAllWithPaciente();
 }

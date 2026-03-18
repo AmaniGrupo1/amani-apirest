@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,5 +25,5 @@ public class Pregunta {
         private LocalDateTime creadoEn;
 
         @OneToMany(mappedBy = "pregunta", cascade = CascadeType.ALL, orphanRemoval = true)
-        private List<Opcion> opciones;
+        private List<Opcion> opciones = new ArrayList<>();
 }
