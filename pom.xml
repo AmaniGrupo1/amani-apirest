@@ -100,6 +100,21 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
+        <!-- openapi -->
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
+        <!-- Firebase admin -->
+
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.2.0</version>
+        </dependency>
         <!-- Tests -->
 
         <dependency>
