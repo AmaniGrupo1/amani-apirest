@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entidad que registra la respuesta de un paciente a una pregunta del cuestionario inicial.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

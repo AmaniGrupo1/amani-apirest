@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de negocio para la gestión de citas desde la perspectiva del psicólogo.
+ */
 @Service
 public class CitaServicePsicologo {
 

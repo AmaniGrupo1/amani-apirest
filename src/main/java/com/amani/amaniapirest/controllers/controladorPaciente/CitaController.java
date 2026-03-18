@@ -10,16 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controlador REST para la gestión de citas.
- *
- * <p>Expone endpoints diferenciados por rol:</p>
- * <ul>
- *   <li>Base ({@code /api/citas}) — vista paciente.</li>
- *   <li>{@code /api/citas/admin} — vista administrador.</li>
- *   <li>{@code /api/citas/psicologo} — vista psicólogo.</li>
- * </ul>
- */
 @RestController
 @RequestMapping("/api/citas")
 public class CitaController {

@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Servicio de negocio para gestionar las preguntas del cuestionario inicial de onboarding.
+ */
 @Service
 @RequiredArgsConstructor
 public class PreguntaServicio {

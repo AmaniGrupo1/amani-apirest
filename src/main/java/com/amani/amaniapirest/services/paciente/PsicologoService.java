@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio de solo lectura que expone el directorio de psicólogos al rol paciente.
+ */
 @Service
 public class PsicologoService {
 

@@ -28,7 +28,7 @@ import java.util.List;
  * Cada rol accede únicamente a los datos que le corresponden y recibe
  * el DTO apropiado según su nivel de privilegio.</p>
  */
-@Service
+@Service("citaServiceGeneral")
 public class CitaService {
 
     private final CitaRepository citaRepository;

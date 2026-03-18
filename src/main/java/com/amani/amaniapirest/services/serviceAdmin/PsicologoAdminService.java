@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio de administración para gestionar todos los perfiles de psicólogo del sistema.
+ */
 @Service
 public class PsicologoAdminService {
 

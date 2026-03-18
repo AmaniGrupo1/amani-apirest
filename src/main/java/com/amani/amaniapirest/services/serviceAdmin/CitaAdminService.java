@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de administración para consultar y gestionar todas las citas del sistema.
+ */
 @Service
 public class CitaAdminService {
 

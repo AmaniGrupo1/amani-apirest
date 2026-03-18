@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controlador REST para que los psicólogos gestionen el progreso emocional de los pacientes.
- */
 @RestController
 @RequestMapping("/api/psicologo/progreso-emocional")
 public class ProgresoEmocionalPsicologoController {
@@ -23,13 +20,6 @@ public class ProgresoEmocionalPsicologoController {
         this.progresoService = progresoService;
     }
 
-    /** Listar todos los progresos de un paciente */
-    @GetMapping("/paciente/{idPaciente}")
-    public ResponseEntity<List<ProgresoEmocionalPsicologoResponseDTO>> getAllByPaciente(@PathVariable Long idPaciente) {
-        return ResponseEntity.ok(progresoService.findAllByPaciente(idPaciente));
-    }
-
-    /** Obtener un progreso por ID */
     @GetMapping("/{idProgreso}")
     public ResponseEntity<ProgresoEmocionalPsicologoResponseDTO> getById(@PathVariable Long idProgreso) {
         return ResponseEntity.ok(progresoService.findById(idProgreso));

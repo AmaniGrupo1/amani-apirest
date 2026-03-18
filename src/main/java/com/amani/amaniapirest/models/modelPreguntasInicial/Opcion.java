@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que representa una opción de respuesta predefinida para una {@link Pregunta}.
+ */
 @Table(name = "opciones")
 @Entity
 @Data

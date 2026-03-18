@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio de autogestión del perfil profesional del psicólogo autenticado.
+ */
 @Service
 public class PsicologoSelfService {
 

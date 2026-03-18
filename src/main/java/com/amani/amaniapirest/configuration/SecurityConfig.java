@@ -8,6 +8,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
+/**
+ * Configuración de seguridad HTTP de la aplicación.
+ *
+ * <p>En el estado actual desactiva CSRF y permite todas las peticiones sin
+ * autenticación. Para producción se debe añadir validación JWT y restringir rutas.</p>
+ */
 @Configuration
 public class SecurityConfig {
 

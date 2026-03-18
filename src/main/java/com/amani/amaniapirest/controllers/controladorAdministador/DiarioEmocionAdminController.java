@@ -18,13 +18,6 @@ public class DiarioEmocionAdminController {
         this.diarioService = diarioService;
     }
 
-    /** Listar todas las entradas */
-    @GetMapping
-    public ResponseEntity<List<DiarioEmocionAdminResponseDTO>> getAll() {
-        return ResponseEntity.ok(diarioService.findAll());
-    }
-
-    /** Obtener entrada específica */
     @GetMapping("/{idDiario}")
     public ResponseEntity<DiarioEmocionAdminResponseDTO> getById(@PathVariable Long idDiario) {
         try {

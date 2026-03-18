@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 
+/**
+ * Servicio de administración para gestionar las direcciones de todos los usuarios.
+ */
 @Service
 public class DireccionAdminService {
 

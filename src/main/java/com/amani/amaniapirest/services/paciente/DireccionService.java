@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 
+/**
+ * Servicio de negocio para gestionar las direcciones postales de los pacientes.
+ */
 @Service
 public class DireccionService {
 

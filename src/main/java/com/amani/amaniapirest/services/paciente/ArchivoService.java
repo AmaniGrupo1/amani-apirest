@@ -100,13 +100,6 @@ public class ArchivoService {
         archivoRepository.delete(getArchivoOrThrow(idArchivo));
     }
 
-    /**
-     * Recupera los bytes del archivo para su descarga.
-     *
-     * @param idArchivo identificador del archivo
-     * @return arreglo de bytes con el contenido del archivo
-     * @throws RuntimeException si no existe un archivo con el id proporcionado
-     */
     public byte[] getBytes(Long idArchivo) {
         return getArchivoOrThrow(idArchivo).getDatos();
     }

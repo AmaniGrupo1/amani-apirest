@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio de administración para consultar y gestionar todas las sesiones terapéuticas.
+ */
 @Service
 public class SesionAdminService {
 

@@ -59,12 +59,6 @@ public class WebSocketPresenceTracker {
         });
     }
 
-    /**
-     * Comprueba si el usuario tiene una sesión WebSocket activa en este momento.
-     *
-     * @param userId identificador del usuario
-     * @return {@code true} si el usuario está conectado
-     */
     public boolean isConnected(Long userId) {
         return userId != null && connectedUsers.contains(userId);
     }

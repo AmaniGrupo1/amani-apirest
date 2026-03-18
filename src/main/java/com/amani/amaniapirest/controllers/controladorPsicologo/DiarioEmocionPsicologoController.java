@@ -18,13 +18,6 @@ public class DiarioEmocionPsicologoController {
         this.diarioService = diarioService;
     }
 
-    /** Obtener todas las entradas de un paciente */
-    @GetMapping("/paciente/{idPaciente}")
-    public ResponseEntity<List<DiarioEmocionalPsicologoDTO>> getByPaciente(@PathVariable Long idPaciente) {
-        return ResponseEntity.ok(diarioService.findByPaciente(idPaciente));
-    }
-
-    /** Obtener una entrada específica */
     @GetMapping("/{idDiario}")
     public ResponseEntity<DiarioEmocionalPsicologoDTO> getById(@PathVariable Long idDiario) {
         try {

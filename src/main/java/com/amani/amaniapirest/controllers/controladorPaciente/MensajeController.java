@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controlador REST para la gestión de mensajes entre usuarios.
- *
- * <p>Base URL: {@code /api/mensajes}</p>
- */
 @RestController
 @RequestMapping("/api/mensajes")
 public class MensajeController {

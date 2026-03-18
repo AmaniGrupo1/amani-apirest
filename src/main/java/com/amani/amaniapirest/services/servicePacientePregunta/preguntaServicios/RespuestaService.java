@@ -11,6 +11,9 @@ import com.amani.amaniapirest.repository.repositoryRespuesta.RespuestaRepository
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio de negocio para registrar y consultar las respuestas al cuestionario inicial.
+ */
 @Service
 @RequiredArgsConstructor
 public class RespuestaService {
