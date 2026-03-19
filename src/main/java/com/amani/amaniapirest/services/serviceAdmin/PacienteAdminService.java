@@ -26,19 +26,16 @@ public class PacienteAdminService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    /** Listar todos los pacientes */
     public List<PacienteAdminResponseDTO> findAll() {
         return pacientesRepository.findAll().stream()
                 .map(this::toResponse)
                 .toList();
     }
 
-    /** Buscar paciente por ID */
     public PacienteAdminResponseDTO findById(Long idPaciente) {
         return toResponse(getPacienteOrThrow(idPaciente));
     }
 
-    /** Crear paciente (requiere idUsuario para vincular) */
     public PacienteAdminResponseDTO create(PacienteRequestDTO request) {
         Usuario usuario = getUsuarioOrThrow(request.getIdUsuario());
 
@@ -51,7 +48,9 @@ public class PacienteAdminService {
         return toResponse(pacientesRepository.save(paciente));
     }
 
-    /** Actualizar paciente */
+    /**
+     * Actualizar paciente
+     */
     public PacienteAdminResponseDTO update(Long idPaciente, PacienteRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(idPaciente);
         Usuario usuario = getUsuarioOrThrow(request.getIdUsuario());
@@ -64,13 +63,17 @@ public class PacienteAdminService {
         return toResponse(pacientesRepository.save(paciente));
     }
 
-    /** Eliminar paciente */
+    /**
+     * Eliminar paciente
+     */
     public void delete(Long idPaciente) {
         Paciente paciente = getPacienteOrThrow(idPaciente);
         pacientesRepository.delete(paciente);
     }
 
-    /** ------------------- Helpers ------------------- */
+    /**
+     * ------------------- Helpers -------------------
+     */
     private Paciente getPacienteOrThrow(Long idPaciente) {
         return pacientesRepository.findById(idPaciente)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + idPaciente));
@@ -83,14 +86,16 @@ public class PacienteAdminService {
 
     private PacienteAdminResponseDTO toResponse(Paciente paciente) {
         return new PacienteAdminResponseDTO(
-                paciente.getUsuario() != null ? paciente.getUsuario().getNombre() : null,
-                paciente.getUsuario() != null ? paciente.getUsuario().getApellido() : null,
-                paciente.getUsuario() != null ? paciente.getUsuario().getEmail() : null,
+                paciente.getIdPaciente(),
+                paciente.getUsuario().getNombre(),
+                paciente.getUsuario().getApellido(),
+                paciente.getUsuario().getEmail(),
                 paciente.getFechaNacimiento(),
                 paciente.getGenero(),
                 paciente.getTelefono(),
                 paciente.getCreatedAt(),
-                paciente.getUpdatedAt()
+                paciente.getUpdatedAt(),
+                paciente.getUsuario().getActivo()
         );
     }
 }

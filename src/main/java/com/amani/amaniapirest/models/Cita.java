@@ -44,10 +44,8 @@ public class Cita {
     /** Fecha y hora de creación del registro. */
     private LocalDateTime createdAt;
 
-    /** Fecha y hora de la ultima modificación del registro. */
     private LocalDateTime updatedAt;
 
-    /** Paciente que asiste a la cita. */
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;

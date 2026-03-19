@@ -1,48 +1,35 @@
 package com.amani.amaniapirest.controllers.preguntasController;
 
-
-import com.amani.amaniapirest.dto.dtoPregunta.admin.OpcionAdminResponseDTO;
 import com.amani.amaniapirest.dto.dtoPregunta.paciente.PreguntaPacienteResponseDTO;
 import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.RespuestasRequestDTO;
-import com.amani.amaniapirest.models.Paciente;
-import com.amani.amaniapirest.services.servicePacientePregunta.preguntaServicios.PreguntaServicio;
-import com.amani.amaniapirest.services.servicePacientePregunta.preguntaServicios.RespuestaService;
+import com.amani.amaniapirest.services.servicePacientePregunta.preguntaServicios.paciente.PreguntaPacienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/paciente/preguntas")
+@RequestMapping("/api/paciente/preguntas")
 @RequiredArgsConstructor
 public class PreguntaPacienteController {
 
-    private final PreguntaServicio preguntaService;
-    private final RespuestaService respuestaService;
+    private final PreguntaPacienteService preguntaPacienteService;
 
-    // VER PREGUNTAS
-    @PreAuthorize("hasRole('paciente')")
     @GetMapping
-    public ResponseEntity<List<PreguntaPacienteResponseDTO>> obtenerPreguntas() {
-        var list = preguntaService.obtenerPreguntaPacientes();
-        if (list.isEmpty()) {
+    public ResponseEntity<List<PreguntaPacienteResponseDTO>> getPreguntas() {
+        List<PreguntaPacienteResponseDTO> pacienteResponseDTOS = preguntaPacienteService.getPreguntas();
+        if (pacienteResponseDTOS.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(pacienteResponseDTOS);
     }
 
-    @PreAuthorize("hasRole('paciente')")
-    @PostMapping("/responder")
-    public ResponseEntity<Void> responderPregunta(
-            @RequestBody RespuestasRequestDTO dto,
-            @AuthenticationPrincipal Paciente paciente
+    @PostMapping("/responder/{idPaciente}")
+    public void responder(
+            @PathVariable Long idPaciente,
+            @RequestBody List<RespuestasRequestDTO> respuestas
     ) {
-
-        respuestaService.responderPregunta(dto, paciente);
-
-        return ResponseEntity.ok().build();
+        preguntaPacienteService.responder(idPaciente, respuestas);
     }
 }

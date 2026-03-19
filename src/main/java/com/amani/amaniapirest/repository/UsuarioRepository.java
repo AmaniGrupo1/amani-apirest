@@ -2,7 +2,9 @@ package com.amani.amaniapirest.repository;
 
 import com.amani.amaniapirest.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,4 +17,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     /** Busca un usuario por su email (usado en autenticación y en el DataInitializer). */
     Optional<Usuario> findByEmail(String email);
+
 }

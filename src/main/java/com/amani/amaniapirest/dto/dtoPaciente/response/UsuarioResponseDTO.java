@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioResponseDTO {
-
     /** Nombre de pila del usuario. */
     private String nombre;
 

@@ -3,28 +3,29 @@ package com.amani.amaniapirest.services.serviceAdmin;
 
 import com.amani.amaniapirest.dto.dtoAdmin.response.PsicologoAdminResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
+import com.amani.amaniapirest.models.Cita;
 import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.models.Usuario;
+import com.amani.amaniapirest.repository.CitaRepository;
 import com.amani.amaniapirest.repository.PsicologoRepository;
 import com.amani.amaniapirest.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Servicio de administración para gestionar todos los perfiles de psicólogo del sistema.
  */
 @Service
+@RequiredArgsConstructor
 public class PsicologoAdminService {
 
     private final PsicologoRepository psicologoRepository;
     private final UsuarioRepository usuarioRepository;
-
-    public PsicologoAdminService(PsicologoRepository psicologoRepository, UsuarioRepository usuarioRepository) {
-        this.psicologoRepository = psicologoRepository;
-        this.usuarioRepository = usuarioRepository;
-    }
+    private final CitaRepository citaRepository;
 
     public List<PsicologoAdminResponseDTO> findAll() {
         return psicologoRepository.findAll().stream().map(this::toResponse).toList();
@@ -72,17 +73,18 @@ public class PsicologoAdminService {
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado con id: " + idPsicologo));
     }
 
+    public List<PsicologoAdminResponseDTO> getPacientesConPsicologo() {
+       return citaRepository.getPacientesConPsicologo();
+    }
+
     private PsicologoAdminResponseDTO toResponse(Psicologo psicologo) {
         Usuario usuario = psicologo.getUsuario();
         return new PsicologoAdminResponseDTO(
                 usuario.getNombre(),
-                usuario.getApellido() ,
+                usuario.getApellido(),
+                usuario.getNombre(),
+                usuario.getApellido(),
                 usuario.getEmail(),
-                psicologo.getEspecialidad(),
-                psicologo.getExperiencia(),
-                psicologo.getDescripcion(),
-                psicologo.getLicencia(),
-                psicologo.getCreatedAt(),
                 psicologo.getUpdatedAt()
         );
     }

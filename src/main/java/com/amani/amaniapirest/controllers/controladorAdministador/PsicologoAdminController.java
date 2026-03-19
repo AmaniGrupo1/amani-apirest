@@ -3,6 +3,7 @@ package com.amani.amaniapirest.controllers.controladorAdministador;
 import com.amani.amaniapirest.dto.dtoAdmin.response.PsicologoAdminResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
 import com.amani.amaniapirest.services.serviceAdmin.PsicologoAdminService;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,13 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/psicologos")
+@RequiredArgsConstructor
 public class PsicologoAdminController {
 
     private final PsicologoAdminService service;
-
-    public PsicologoAdminController(PsicologoAdminService service) {
-        this.service = service;
-    }
 
     @GetMapping
     public ResponseEntity<List<PsicologoAdminResponseDTO>> getAll() {
@@ -31,14 +29,13 @@ public class PsicologoAdminController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PsicologoAdminResponseDTO> getById(@PathVariable Long id) {
-        var s =  service.findById(id);
+        var s = service.findById(id);
         if (s == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(s);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PsicologoAdminResponseDTO> create(@RequestBody PsicologoRequestDTO request) {
         var psicologo = service.create(request);
@@ -50,7 +47,7 @@ public class PsicologoAdminController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PsicologoAdminResponseDTO> update(@PathVariable Long id,
-                                            @RequestBody PsicologoRequestDTO request) {
+                                                            @RequestBody PsicologoRequestDTO request) {
         var s = service.update(id, request);
         if (s == null) {
             return ResponseEntity.notFound().build();
@@ -61,5 +58,14 @@ public class PsicologoAdminController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @GetMapping("/pacientes")
+    public ResponseEntity<List<PsicologoAdminResponseDTO>> findAllPacientesAndPsicologos() {
+        List<PsicologoAdminResponseDTO> c = service.getPacientesConPsicologo();
+        if (c.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(c);
     }
 }
