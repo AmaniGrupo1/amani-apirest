@@ -2,6 +2,7 @@ package com.amani.amaniapirest.dto.loginDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * DTO de respuesta devuelto tras una autenticación exitosa.
@@ -11,6 +12,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class LoginResponseDTO {
 
     /** Identificador único del usuario autenticado. */

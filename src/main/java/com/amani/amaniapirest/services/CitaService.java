@@ -301,7 +301,7 @@ public class CitaService {
      * @return lista de {@link CitaPsicologoResponseDTO} con las citas del psicólogo
      */
     public List<CitaPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
-        return citaRepository.findByPsicologo_IdPsicologo(idPsicologo)
+        return citaRepository.findByPsicologoIdPsicologo(idPsicologo)
                 .stream().map(this::toPsicologoResponse).toList();
     }
 

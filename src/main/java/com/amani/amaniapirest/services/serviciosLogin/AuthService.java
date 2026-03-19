@@ -41,7 +41,8 @@ public class AuthService {
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
-                usuario.getRol().name()
+                usuario.getRol().name(),
+                null
         );
     }
 
@@ -75,7 +76,8 @@ public class AuthService {
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
-                usuario.getRol().name()
+                usuario.getRol().name(),
+                null
         );
     }
 
@@ -103,7 +105,7 @@ public class AuthService {
 
         usuarioRepository.save(usuario);
 
-        return new LoginResponseDTO(usuario.getIdUsuario(), usuario.getNombre(), usuario.getRol().name());
+        return new LoginResponseDTO(usuario.getIdUsuario(), usuario.getNombre(), usuario.getRol().name(), null);
     }
 
     public LoginResponseDTO registerPsicologo(RegistryRequestDTO request) {
@@ -117,7 +119,7 @@ public class AuthService {
 
         usuarioRepository.save(usuario);
 
-        return new LoginResponseDTO(usuario.getIdUsuario(), usuario.getNombre(), usuario.getRol().name());
+        return new LoginResponseDTO(usuario.getIdUsuario(), usuario.getNombre(), usuario.getRol().name(), null);
     }
 
 }
