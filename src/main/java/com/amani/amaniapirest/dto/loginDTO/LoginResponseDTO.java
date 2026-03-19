@@ -21,4 +21,5 @@ public class LoginResponseDTO {
 
     /** Rol funcional del usuario (admin, psicologo, paciente). */
     private String rol;
+    private String token;
 }
