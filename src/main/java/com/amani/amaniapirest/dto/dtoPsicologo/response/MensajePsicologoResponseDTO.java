@@ -7,7 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
+/**
+ * DTO de respuesta para que el psicólogo consulte los mensajes de su bandeja de entrada o enviados.
+ *
+ * <p>Incluye los nombres del remitente y destinatario, el contenido del mensaje,
+ * la fecha de envío y el estado de lectura.</p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

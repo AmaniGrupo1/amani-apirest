@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entidad que representa una pregunta del cuestionario inicial de onboarding del paciente.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

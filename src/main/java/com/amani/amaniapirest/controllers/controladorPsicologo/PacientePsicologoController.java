@@ -24,14 +24,6 @@ public class PacientePsicologoController {
         this.pacienteService = pacienteService;
     }
 
-    /** Listar todos los pacientes */
-    @GetMapping
-    public ResponseEntity<List<PacientePsicologoResponseDTO>> getAllPacientes() {
-        List<PacientePsicologoResponseDTO> pacientes = pacienteService.findAll();
-        return ResponseEntity.ok(pacientes);
-    }
-
-    /** Obtener un paciente por ID */
     @GetMapping("/{id}")
     public ResponseEntity<PacientePsicologoResponseDTO> getPacienteById(@PathVariable Long id) {
         return ResponseEntity.ok(pacienteService.findById(id));

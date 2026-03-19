@@ -6,6 +6,9 @@ import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio de solo lectura que expone los datos de perfil del usuario autenticado como psicólogo.
+ */
 @Service
 public class UsuarioPsicologoService {
 

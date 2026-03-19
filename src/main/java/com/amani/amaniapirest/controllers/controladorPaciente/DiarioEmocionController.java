@@ -11,11 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controlador REST para la gestión del diario emocional de pacientes.
- *
- * <p>Base URL: {@code /api/diario-emocion}</p>
- */
 @RestController
 @RequestMapping("/api/diario-emocion")
 public class DiarioEmocionController {

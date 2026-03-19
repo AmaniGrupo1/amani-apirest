@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio de negocio para gestionar sesiones terapéuticas desde la perspectiva del psicólogo.
+ */
 @Service
 public class SesionPsicologoService {
 

@@ -265,6 +265,55 @@ CREATE TABLE archivos
 CREATE INDEX idx_archivos_sesion
     ON archivos(id_sesion);
 
+CREATE TABLE preguntas
+(
+    id_pregunta BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    texto       TEXT NOT NULL,
+    tipo        VARCHAR(50) DEFAULT 'texto', -- texto, opcion_multiple, escala, etc.
+    creado_en   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ==============================
+-- Tabla opciones (si la pregunta tiene opciones)
+-- ==============================
+CREATE TABLE opciones
+(
+    id_opcion BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_pregunta BIGINT NOT NULL,
+    texto       VARCHAR(200) NOT NULL,
+    valor       INT, -- opcional: para escalas de 1-5, por ejemplo
+    FOREIGN KEY (id_pregunta)
+        REFERENCES preguntas (id_pregunta)
+        ON DELETE CASCADE
+);
+
+-- ==============================
+-- Respuestas del paciente
+-- ==============================
+CREATE TABLE respuestas
+(
+    id_respuesta BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente  BIGINT NOT NULL,
+    id_pregunta  BIGINT NOT NULL,
+    id_opcion    BIGINT, -- si es opción múltiple
+    texto        TEXT,   -- si es respuesta abierta
+    creado_en    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_respuesta_paciente
+        FOREIGN KEY (id_paciente)
+            REFERENCES pacientes (id_paciente)
+            ON DELETE CASCADE,
+
+    CONSTRAINT fk_respuesta_pregunta
+        FOREIGN KEY (id_pregunta)
+            REFERENCES preguntas (id_pregunta)
+            ON DELETE CASCADE,
+
+    CONSTRAINT fk_respuesta_opcion
+        FOREIGN KEY (id_opcion)
+            REFERENCES opciones (id_opcion)
+            ON DELETE SET NULL
+);
 -- ==============================
 -- Índices
 -- ==============================

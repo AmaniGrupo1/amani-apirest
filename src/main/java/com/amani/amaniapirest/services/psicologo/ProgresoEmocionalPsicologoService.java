@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Servicio de negocio para que el psicólogo gestione el progreso emocional de sus pacientes.
+ */
 @Service
 public class ProgresoEmocionalPsicologoService {
 

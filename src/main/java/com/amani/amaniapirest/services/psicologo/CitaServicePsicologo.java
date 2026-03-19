@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de negocio para la gestión de citas desde la perspectiva del psicólogo.
+ */
 @Service
 public class CitaServicePsicologo {
 
@@ -29,7 +32,7 @@ public class CitaServicePsicologo {
 
     public List<CitaPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
 
-        return citaRepository.findByPsicologoIdPsicologo(idPsicologo)
+        return citaRepository.findByPsicologo_IdPsicologo(idPsicologo)
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
@@ -56,7 +59,7 @@ public class CitaServicePsicologo {
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
 
-        cita.setEstado(request.getEstado());
+        cita.setEstado(parseEstado(request.getEstado()).name());
         cita.setUpdatedAt(LocalDateTime.now());
 
         return toResponse(citaRepository.save(cita));

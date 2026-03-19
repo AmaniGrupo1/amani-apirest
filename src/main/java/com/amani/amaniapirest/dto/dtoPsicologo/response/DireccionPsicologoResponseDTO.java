@@ -5,7 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+/**
+ * DTO de respuesta para que el psicólogo consulte la dirección postal de uno de sus pacientes.
+ *
+ * <p>Incluye el nombre completo del paciente y todos los campos de la dirección.</p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

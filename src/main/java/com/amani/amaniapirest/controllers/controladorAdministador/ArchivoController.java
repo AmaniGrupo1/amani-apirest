@@ -11,11 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controlador REST para la gestión de archivos adjuntos de sesiones.
- *
- * <p>Base URL: {@code /api/archivos}</p>
- */
 @RestController
 @RequestMapping("/api/archivos")
 public class ArchivoController {

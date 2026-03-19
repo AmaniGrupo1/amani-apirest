@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio que permite al psicólogo consultar el diario emocional de sus pacientes.
+ */
 @Service
 public class DiarioEmocionPsicologoService {
 

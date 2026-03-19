@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio de administración para consultar y gestionar todos los mensajes del sistema.
+ */
 @Service
 public class MensajeAdminService {
 

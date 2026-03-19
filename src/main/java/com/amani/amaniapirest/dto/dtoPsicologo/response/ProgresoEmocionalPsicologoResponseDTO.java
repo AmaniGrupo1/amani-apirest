@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * DTO de respuesta para que el psicólogo consulte el progreso emocional de un paciente.
+ *
+ * <p>Expone la fecha del registro y los niveles de estrés, ansiedad y ánimo
+ * en una escala del 1 al 10.</p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

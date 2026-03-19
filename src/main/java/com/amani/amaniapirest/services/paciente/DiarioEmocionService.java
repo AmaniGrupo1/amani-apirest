@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio de negocio para gestionar el diario emocional de los pacientes.
+ */
 @Service
 public class DiarioEmocionService {
 

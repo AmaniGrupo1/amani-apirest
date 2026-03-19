@@ -1,13 +1,17 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
 
-import com.amani.amaniapirest.enums.EstadoCita;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
+/**
+ * DTO de respuesta con la información de una cita desde la perspectiva del paciente.
+ *
+ * <p>Expone los identificadores del paciente y del psicólogo, la fecha, duración,
+ * estado actual y motivo de la consulta.</p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +32,7 @@ public class CitaResponseDTO {
     /** Duración de la cita en minutos. */
     private Integer durationMinutes;
 
-    //Por defecto, el estado de la cita se establece en "pendiente" al crear una nueva cita.
+    /** Estado actual de la cita; por defecto {@code pendiente} al crearse. */
     private String estadoCita;
 
     /** Motivo o descripción de la consulta. */

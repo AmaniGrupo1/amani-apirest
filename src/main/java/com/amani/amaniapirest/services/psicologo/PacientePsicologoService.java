@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio de solo lectura que permite al psicólogo consultar los pacientes asignados a él.
+ */
 @Service
 public class PacientePsicologoService {
 

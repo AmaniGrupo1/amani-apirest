@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de administración para consultar los diarios emocionales de todos los pacientes.
+ */
 @Service
 public class DiarioEmocionAdminService {
 

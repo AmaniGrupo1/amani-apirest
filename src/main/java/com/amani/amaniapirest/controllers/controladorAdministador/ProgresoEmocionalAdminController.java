@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controlador REST para que los administradores gestionen el progreso emocional completo de los pacientes.
- */
 @RestController
 @RequestMapping("/api/admin/progreso-emocional")
 public class ProgresoEmocionalAdminController {
@@ -22,13 +19,6 @@ public class ProgresoEmocionalAdminController {
         this.progresoService = progresoService;
     }
 
-    /** Listar todos los progresos */
-    @GetMapping
-    public ResponseEntity<List<ProgresoEmocionalAdminResponseDTO>> getAll() {
-        return ResponseEntity.ok(progresoService.findAll());
-    }
-
-    /** Obtener un progreso por ID */
     @GetMapping("/{idProgreso}")
     public ResponseEntity<ProgresoEmocionalAdminResponseDTO> getById(@PathVariable Long idProgreso) {
         return ResponseEntity.ok(progresoService.findById(idProgreso));

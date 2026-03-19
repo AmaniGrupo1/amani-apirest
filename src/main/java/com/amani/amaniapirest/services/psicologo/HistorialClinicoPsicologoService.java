@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de negocio para que el psicólogo gestione el historial clínico de sus pacientes.
+ */
 @Service
 public class HistorialClinicoPsicologoService {
 

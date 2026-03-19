@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio de negocio para gestionar las direcciones del psicólogo autenticado.
+ */
 @Service
 public class DireccionPsicologoService {
 

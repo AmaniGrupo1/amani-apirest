@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controlador REST para la gestión de direcciones postales de pacientes.
- *
- * <p>Base URL: {@code /api/direcciones}</p>
- */
 @RestController
 @RequestMapping("/api/direcciones")
 public class DireccionController {

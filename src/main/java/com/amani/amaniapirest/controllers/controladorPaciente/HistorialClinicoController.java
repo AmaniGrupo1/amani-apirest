@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controlador REST para la gestión del historial clínico de pacientes.
- *
- * <p>Base URL: {@code /api/historial-clinico}</p>
- */
 @RestController
 @RequestMapping("/api/historial-clinico")
 public class HistorialClinicoController {

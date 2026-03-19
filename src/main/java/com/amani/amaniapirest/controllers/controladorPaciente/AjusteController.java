@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controlador REST para la gestión de ajustes de configuración de usuarios.
- *
- * <p>Base URL: {@code /api/ajustes}</p>
- */
 @RestController
 @RequestMapping("/api/ajustes")
 public class AjusteController {

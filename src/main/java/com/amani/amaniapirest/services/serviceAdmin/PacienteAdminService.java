@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio de administración para gestionar todos los perfiles de paciente del sistema.
+ */
 @Service
 public class PacienteAdminService {
 

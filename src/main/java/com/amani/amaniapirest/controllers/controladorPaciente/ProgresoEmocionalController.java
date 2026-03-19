@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controlador REST para la gestión del progreso emocional de pacientes.
- *
- * <p>Base URL: {@code /api/progreso-emocional}</p>
- */
 @RestController
 @RequestMapping("/api/progreso-emocional")
 public class ProgresoEmocionalController {

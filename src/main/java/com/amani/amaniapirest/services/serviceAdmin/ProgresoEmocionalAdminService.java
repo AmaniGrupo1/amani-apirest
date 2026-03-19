@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Servicio de administración para consultar el progreso emocional de todos los pacientes.
+ */
 @Service
 public class ProgresoEmocionalAdminService {
 

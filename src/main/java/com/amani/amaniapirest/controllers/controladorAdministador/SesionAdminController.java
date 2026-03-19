@@ -17,17 +17,11 @@ public class SesionAdminController {
         this.sesionAdminService = sesionAdminService;
     }
 
-    /**
-     * Listar todas las sesiones
-     */
     @GetMapping
     public List<SesionAdminResponseDTO> getAll() {
         return sesionAdminService.findAll();
     }
 
-    /**
-     * Obtener sesión por ID
-     */
     @GetMapping("/{idSesion}")
     public SesionAdminResponseDTO getById(@PathVariable Long idSesion) {
         return sesionAdminService.findById(idSesion);

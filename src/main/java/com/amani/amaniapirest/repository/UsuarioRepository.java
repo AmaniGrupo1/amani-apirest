@@ -9,11 +9,13 @@ import java.util.Optional;
 
 /**
  * Repositorio JPA para operaciones de persistencia sobre la entidad {@link Usuario}.
- *
- * <p>Extiende {@link JpaRepository} para proveer operaciones CRUD basicas
- * y consultas por convención de nombres sin necesidad de implementación manual.</p>
  */
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+
+    /** Comprueba si ya existe un usuario con el email indicado (para evitar duplicados). */
+    boolean existsByEmail(String email);
+
+    /** Busca un usuario por su email (usado en autenticación y en el DataInitializer). */
     Optional<Usuario> findByEmail(String email);
 
 }

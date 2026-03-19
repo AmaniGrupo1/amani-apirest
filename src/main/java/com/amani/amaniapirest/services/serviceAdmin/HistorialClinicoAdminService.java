@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de administración para gestionar el historial clínico de todos los pacientes.
+ */
 @Service
 public class HistorialClinicoAdminService {
 

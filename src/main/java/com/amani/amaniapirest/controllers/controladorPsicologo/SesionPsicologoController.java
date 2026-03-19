@@ -17,17 +17,11 @@ public class SesionPsicologoController {
         this.sesionPsicologoService = sesionPsicologoService;
     }
 
-    /**
-     * Obtener todas las sesiones de un psicólogo
-     */
     @GetMapping("/psicologo/{idPsicologo}")
     public List<SesionPsicologoResponseDTO> getAllByPsicologo(@PathVariable Long idPsicologo) {
         return sesionPsicologoService.findAllByPsicologo(idPsicologo);
     }
 
-    /**
-     * Obtener sesión por ID
-     */
     @GetMapping("/{idSesion}")
     public SesionPsicologoResponseDTO getById(@PathVariable Long idSesion) {
         return sesionPsicologoService.findById(idSesion);

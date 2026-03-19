@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servicio de administración para gestionar todos los perfiles de psicólogo del sistema.
+ */
 @Service
 @RequiredArgsConstructor
 public class PsicologoAdminService {
