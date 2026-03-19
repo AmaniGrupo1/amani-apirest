@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MensajeResponseDTO {
 
+    /** Nombre del usuario que envió el mensaje. */
     private String nombreRemitente;
     /** Contenido textual del mensaje. */
     private String mensaje;

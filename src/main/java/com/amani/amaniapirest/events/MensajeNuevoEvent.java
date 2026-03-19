@@ -1,6 +1,7 @@
 package com.amani.amaniapirest.events;
 
 import com.amani.amaniapirest.models.Mensaje;
+import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.context.ApplicationEvent;
  * </ul>
  * </p>
  */
+@Getter
 public class MensajeNuevoEvent extends ApplicationEvent {
 
     private final Mensaje mensaje;
@@ -22,8 +24,5 @@ public class MensajeNuevoEvent extends ApplicationEvent {
         this.mensaje = mensaje;
     }
 
-    public Mensaje getMensaje() {
-        return mensaje;
-    }
 }
 

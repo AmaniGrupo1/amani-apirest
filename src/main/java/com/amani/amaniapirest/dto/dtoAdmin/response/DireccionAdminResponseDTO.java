@@ -6,6 +6,12 @@
 
     import java.time.LocalDateTime;
 
+    /**
+     * DTO de respuesta para la vista de administrador sobre la dirección postal de un paciente.
+     *
+     * <p>Incluye el nombre completo del paciente junto con todos los campos de la dirección
+     * y las marcas de tiempo de auditoría.</p>
+     */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor

@@ -1,6 +1,7 @@
 package com.amani.amaniapirest.events;
 
 import com.amani.amaniapirest.models.Cita;
+import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.context.ApplicationEvent;
  * <p>Incluye la cita afectada y el email del actor que realizó la cancelación
  * (paciente, psicólogo o administrador) para personalizar la notificación.</p>
  */
+@Getter
 public class CitaCanceladaEvent extends ApplicationEvent {
 
     private final Cita cita;
@@ -21,12 +23,5 @@ public class CitaCanceladaEvent extends ApplicationEvent {
         this.canceladaPor = canceladaPor;
     }
 
-    public Cita getCita() {
-        return cita;
-    }
-
-    public String getCanceladaPor() {
-        return canceladaPor;
-    }
 }
 

@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.events;
 
+import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -8,6 +9,7 @@ import org.springframework.context.ApplicationEvent;
  * <p>{@link com.amani.amaniapirest.listeners.UsuarioRegistradoListener} escucha
  * este evento en fase AFTER_COMMIT para enviar el correo de bienvenida.</p>
  */
+@Getter
 public class UsuarioRegistradoEvent extends ApplicationEvent {
 
     private final String email;
@@ -19,12 +21,5 @@ public class UsuarioRegistradoEvent extends ApplicationEvent {
         this.nombre = nombre;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
 }
 

@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO de respuesta para la vista de administrador sobre una entrada del diario emocional.
+ *
+ * <p>Incluye los datos de identificación del paciente, la emoción registrada,
+ * su intensidad, la nota libre y las marcas de tiempo de auditoría.</p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

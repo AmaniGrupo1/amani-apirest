@@ -1,6 +1,7 @@
 package com.amani.amaniapirest.events;
 
 import com.amani.amaniapirest.models.Cita;
+import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.context.ApplicationEvent;
  *
  * <p>Solo se envía notificación por email (sin push) para evitar saturar al usuario.</p>
  */
+@Getter
 public class CitaRecordatorioEvent extends ApplicationEvent {
 
     private final Cita cita;
@@ -21,8 +23,5 @@ public class CitaRecordatorioEvent extends ApplicationEvent {
         this.cita = cita;
     }
 
-    public Cita getCita() {
-        return cita;
-    }
 }
 

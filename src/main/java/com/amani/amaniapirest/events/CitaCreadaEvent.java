@@ -1,6 +1,7 @@
 package com.amani.amaniapirest.events;
 
 import com.amani.amaniapirest.models.Cita;
+import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.context.ApplicationEvent;
  * <p>Los listeners pueden usar este evento para notificar por email y/o
  * push al paciente y al psicólogo sobre la nueva cita.</p>
  */
+@Getter
 public class CitaCreadaEvent extends ApplicationEvent {
 
     private final Cita cita;
@@ -19,8 +21,5 @@ public class CitaCreadaEvent extends ApplicationEvent {
         this.cita = cita;
     }
 
-    public Cita getCita() {
-        return cita;
-    }
 }
 
