@@ -2,7 +2,9 @@ package com.amani.amaniapirest.services.serviciosLogin;
 
 
 
+import com.amani.amaniapirest.configuration.JwtUtil;
 import com.amani.amaniapirest.configuration.SecurityConfig;
+import com.amani.amaniapirest.configuration.UserDetailsServiceImpl;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginResponseDTO;
@@ -14,6 +16,7 @@ import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,6 +29,8 @@ public class AuthService {
     private final UsuarioRepository usuarioRepository;
     private final SecurityConfig securityConfig;
     private final PacientesRepository pacienteRepository;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsServiceImpl userDetailsService;
 
     public LoginResponseDTO login(LoginRequestDTO request) {
 
@@ -35,14 +40,18 @@ public class AuthService {
 
         var encoder = securityConfig.passwordEncoder();
         if (!encoder.matches(request.getPassword(), usuario.getPassword())) {
-            log.error("Contraseña incorrecta");
+            throw new RuntimeException("Contraseña incorrecta");
         }
+
+        // Generar token JWT
+        UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
+        String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
-                null
+                token
         );
     }
 
@@ -72,12 +81,16 @@ public class AuthService {
         // 3. Guardar paciente
         pacienteRepository.save(paciente);
 
-        // 4. Respuesta
+        // 4. Generar token JWT
+        UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
+        String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
+
+        // 5. Respuesta
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
-                null
+                token
         );
     }
 
@@ -100,12 +113,15 @@ public class AuthService {
         usuario.setApellido(request.getApellido());
         usuario.setEmail(request.getEmail());
         usuario.setPassword(securityConfig.passwordEncoder().encode(request.getPassword()));
-        usuario.setRol(RolUsuario.admin); // asigna rol de admin
+        usuario.setRol(RolUsuario.admin);
         usuario.setActivo(true);
 
         usuarioRepository.save(usuario);
 
-        return new LoginResponseDTO(usuario.getIdUsuario(), usuario.getNombre(), usuario.getRol().name(), null);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
+        String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
+
+        return new LoginResponseDTO(usuario.getIdUsuario(), usuario.getNombre(), usuario.getRol().name(), token);
     }
 
     public LoginResponseDTO registerPsicologo(RegistryRequestDTO request) {
@@ -114,12 +130,15 @@ public class AuthService {
         usuario.setApellido(request.getApellido());
         usuario.setEmail(request.getEmail());
         usuario.setPassword(securityConfig.passwordEncoder().encode(request.getPassword()));
-        usuario.setRol(RolUsuario.psicologo); // asigna rol de admin
+        usuario.setRol(RolUsuario.psicologo);
         usuario.setActivo(true);
 
         usuarioRepository.save(usuario);
 
-        return new LoginResponseDTO(usuario.getIdUsuario(), usuario.getNombre(), usuario.getRol().name(), null);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
+        String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
+
+        return new LoginResponseDTO(usuario.getIdUsuario(), usuario.getNombre(), usuario.getRol().name(), token);
     }
 
 }
