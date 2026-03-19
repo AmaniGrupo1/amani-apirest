@@ -3,6 +3,7 @@ package com.amani.amaniapirest.controllers.controladorAdministador;
 import com.amani.amaniapirest.dto.dtoAdmin.response.PacienteAdminResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.services.serviceAdmin.PacienteAdminService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pacientes")
+@RequiredArgsConstructor
 public class PacienteAdminControlador {
 
     private final PacienteAdminService pacienteService;
-    PacienteAdminControlador(PacienteAdminService pacienteService) {
 
-        this.pacienteService = pacienteService;
-    }
 
 
     /** GET /api/pacientes/admin — Lista todos los pacientes con datos completos (admin). */
@@ -57,5 +56,6 @@ public class PacienteAdminControlador {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 }

@@ -9,13 +9,6 @@ import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Entidad base de autenticación e identidad de los usuarios del sistema.
- *
- * <p>Centraliza datos de acceso (email y contraseña hasheada) y perfil basico.
- * Según el {@link RolUsuario} asignado, el usuario puede estar vinculado a un
- * perfil de {@link Paciente} o de {@link Psicologo}.</p>
- */
 @Entity
 @Getter
 @Setter

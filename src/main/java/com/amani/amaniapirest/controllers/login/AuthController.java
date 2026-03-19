@@ -1,10 +1,12 @@
 package com.amani.amaniapirest.controllers.login;
 
+import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginResponseDTO;
 import com.amani.amaniapirest.dto.loginDTO.RegistryRequestDTO;
 import com.amani.amaniapirest.services.serviciosLogin.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +23,12 @@ public class AuthController {
     }
 
     @PostMapping("/register-paciente")
-    public LoginResponseDTO registerPaciente(@RequestBody RegistryRequestDTO request){
+    public LoginResponseDTO registerPaciente(@RequestBody PacienteRequestDTO request){
+        return authService.registerPaciente(request);
+    }
+
+    @PostMapping("/registry/pacienteAdmin")
+    public LoginResponseDTO registrarPacienteAdmin(@RequestBody PacienteRequestDTO request){
         return authService.registerPaciente(request);
     }
 
@@ -33,5 +40,11 @@ public class AuthController {
     @PostMapping("/register-psicologo")
     public LoginResponseDTO registerPsicologo(@RequestBody RegistryRequestDTO request){
         return authService.registerPsicologo(request);
+    }
+
+    @PutMapping("/pacientes/{id}/baja")
+    public ResponseEntity<String> darBajaPaciente(@PathVariable Long id) {
+        authService.darBajaPaciente(id);
+        return ResponseEntity.ok("Paciente dado de baja correctamente");
     }
 }
