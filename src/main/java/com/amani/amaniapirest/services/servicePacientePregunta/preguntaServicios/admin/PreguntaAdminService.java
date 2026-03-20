@@ -14,6 +14,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio de administracion para gestionar preguntas y opciones del test inicial.
+ *
+ * <p>Permite listar, crear y eliminar preguntas con sus opciones asociadas.</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class PreguntaAdminService {
@@ -21,6 +26,11 @@ public class PreguntaAdminService {
     private final PreguntaRepository preguntaRepository;
     private final OpcionRepository opcionRepository;
 
+    /**
+     * Lista todas las preguntas con sus opciones como texto.
+     *
+     * @return lista de DTOs con pregunta, tipo y opciones.
+     */
     public List<OpcionAdminResponseDTO> findAll() {
         return preguntaRepository.findAll()
                 .stream()
@@ -42,6 +52,12 @@ public class PreguntaAdminService {
                 .toList();
     }
 
+    /**
+     * Crea una nueva pregunta con sus opciones y la persiste en base de datos.
+     *
+     * @param request datos de la pregunta y textos de sus opciones.
+     * @return DTO de la pregunta creada.
+     */
     public PreguntaPacienteResponseDTO create(PreguntaRequestDTO request) {
 
         Pregunta pregunta = new Pregunta();
@@ -63,12 +79,20 @@ public class PreguntaAdminService {
         return miPregunta(pregunta);
     }
 
+    /**
+     * Elimina una pregunta por su identificador (en cascada se eliminan sus opciones).
+     *
+     * @param idPregunta identificador de la pregunta a eliminar.
+     */
     public void delete(Long idPregunta) {
 
         preguntaRepository.deleteById(idPregunta);
 
     }
 
+    /**
+     * Convierte una entidad {@link Pregunta} a su DTO de respuesta para paciente.
+     */
     private PreguntaPacienteResponseDTO miPregunta(Pregunta pregunta) {
         List<String> opciones = pregunta.getOpciones()
                 .stream()

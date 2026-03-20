@@ -9,6 +9,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * Componente que se ejecuta al arrancar la aplicacion para garantizar que
+ * exista al menos un usuario administrador en la base de datos.
+ *
+ * <p>Si no se encuentra ningun usuario con rol {@link com.amani.amaniapirest.enums.RolUsuario#admin},
+ * se crea uno con credenciales por defecto ({@code admin@amani.com / admin1234}).</p>
+ */
 @Log4j
 @Component
 @RequiredArgsConstructor
@@ -17,6 +24,12 @@ public class DataInitializer implements CommandLineRunner {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Verifica si existe un admin en el sistema y, en caso contrario, crea uno
+     * con credenciales por defecto.
+     *
+     * @param args argumentos de linea de comandos (no utilizados).
+     */
     @Override
     public void run(String... args) {
         boolean adminExiste = usuarioRepository.existsByRol((RolUsuario.admin));

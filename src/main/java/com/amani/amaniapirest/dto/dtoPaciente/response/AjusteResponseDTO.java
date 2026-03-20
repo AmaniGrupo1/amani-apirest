@@ -1,4 +1,5 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,26 +14,27 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(name = "AjusteResponse", description = "Preferencias de configuración de un usuario")
 public class AjusteResponseDTO {
 
-    /** Identificador único del ajuste. */
+    @Schema(description = "Identificador único del ajuste", example = "1")
     private Long idAjuste;
 
-    /** Identificador del usuario propietario de estos ajustes. */
+    @Schema(description = "Identificador del usuario propietario", example = "1")
     private Long idUsuario;
 
-    /** Idioma preferido del usuario. */
+    @Schema(description = "Idioma preferido del usuario", example = "es")
     private String idioma;
 
-    /** Indica si las notificaciones están activadas. */
+    @Schema(description = "Indica si las notificaciones están activadas", example = "true")
     private Boolean notificaciones;
 
-    /** Indica si el modo oscuro está activado. */
+    @Schema(description = "Indica si el modo oscuro está activado", example = "false")
     private Boolean darkMode;
 
-    /** Zona horaria configurada por el usuario. */
+    @Schema(description = "Zona horaria configurada", example = "Europe/Madrid")
     private String timezone;
 
-    /** Fecha y hora de la última actualización de los ajustes. */
+    @Schema(description = "Fecha y hora de la última actualización", example = "2026-03-20T10:30:00")
     private LocalDateTime updatedAt;
 }

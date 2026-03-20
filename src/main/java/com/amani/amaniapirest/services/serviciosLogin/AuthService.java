@@ -21,6 +21,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+/**
+ * Servicio de autenticacion y registro de usuarios del sistema.
+ *
+ * <p>Gestiona el login con JWT, el registro de pacientes (publico),
+ * el registro de administradores y psicologos (protegido) y la baja de pacientes.</p>
+ */
 @Log4j
 @Service
 @RequiredArgsConstructor
@@ -32,6 +38,13 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
 
+    /**
+     * Autentica un usuario verificando email y contrasena, y genera un token JWT.
+     *
+     * @param request credenciales del usuario (email y password).
+     * @return datos del usuario autenticado con token JWT.
+     * @throws RuntimeException si el usuario no existe o la contrasena es incorrecta.
+     */
     public LoginResponseDTO login(LoginRequestDTO request) {
 
         Usuario usuario = usuarioRepository
@@ -55,6 +68,12 @@ public class AuthService {
         );
     }
 
+    /**
+     * Registra un nuevo paciente creando su usuario y perfil clinico.
+     *
+     * @param request datos del paciente y su usuario.
+     * @return datos del paciente registrado con token JWT.
+     */
     public LoginResponseDTO registerPaciente(PacienteRequestDTO request) {
 
         // 1. Crear usuario
@@ -95,6 +114,13 @@ public class AuthService {
     }
 
 
+    /**
+     * Da de baja a un paciente desactivando su cuenta de usuario
+     * y registrando la fecha de baja.
+     *
+     * @param idPaciente identificador del usuario del paciente.
+     * @throws RuntimeException si el paciente no existe.
+     */
     public void darBajaPaciente(Long idPaciente) {
         Paciente paciente = pacienteRepository.findByUsuario_IdUsuario(idPaciente)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
@@ -107,6 +133,12 @@ public class AuthService {
         usuarioRepository.save(paciente.getUsuario());
     }
 
+    /**
+     * Registra un nuevo usuario administrador.
+     *
+     * @param request datos del nuevo admin (nombre, apellido, email, password).
+     * @return datos del admin registrado con token JWT.
+     */
     public LoginResponseDTO registerAdmin(RegistryRequestDTO request) {
         Usuario usuario = new Usuario();
         usuario.setNombre(request.getNombre());
@@ -124,6 +156,12 @@ public class AuthService {
         return new LoginResponseDTO(usuario.getIdUsuario(), usuario.getNombre(), usuario.getRol().name(), token);
     }
 
+    /**
+     * Registra un nuevo usuario psicologo.
+     *
+     * @param request datos del nuevo psicologo (nombre, apellido, email, password).
+     * @return datos del psicologo registrado con token JWT.
+     */
     public LoginResponseDTO registerPsicologo(RegistryRequestDTO request) {
         Usuario usuario = new Usuario();
         usuario.setNombre(request.getNombre());
