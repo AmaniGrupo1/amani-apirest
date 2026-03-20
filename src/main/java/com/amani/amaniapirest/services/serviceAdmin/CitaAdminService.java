@@ -120,7 +120,7 @@ public class CitaAdminService {
 
                 cita.getStartDatetime(),
                 cita.getDurationMinutes(),
-                cita.getEstado(),
+                cita.getEstado().name(),
                 cita.getMotivo(),
 
                 cita.getCreatedAt(),

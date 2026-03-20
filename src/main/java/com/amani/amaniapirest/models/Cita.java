@@ -35,8 +35,9 @@ public class Cita {
     /** Duración de la cita en minutos. */
     private int durationMinutes;
 
-
-    private String estado;
+    @Enumerated(EnumType.STRING) // ← Esto es clave para PostgreSQL ENUM
+    @Column(name = "estado", nullable = false)
+    private EstadoCita estado;
 
     /** Motivo o descripción de la consulta. */
     private String motivo;

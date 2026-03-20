@@ -50,7 +50,7 @@ public class CitaRecordatorioScheduler {
         LocalDateTime hasta = LocalDateTime.now().plusHours(25);
 
         List<Cita> citasProximas = citaRepository
-                .findByStartDatetimeBetweenAndEstado(desde, hasta, EstadoCita.confirmada.name());
+                .findByStartDatetimeBetweenAndEstado(desde, hasta, EstadoCita.confirmada);
 
         if (citasProximas.isEmpty()) {
             log.debug("[Scheduler] Sin citas próximas en la ventana [{} – {}]", desde, hasta);

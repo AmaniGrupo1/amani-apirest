@@ -58,7 +58,7 @@ public class CitaServicePsicologo {
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
 
-        cita.setEstado(parseEstado(request.getEstado()).name());
+        cita.setEstado(request.getEstado());
         cita.setUpdatedAt(LocalDateTime.now());
 
         return toResponse(citaRepository.save(cita));
@@ -81,7 +81,7 @@ public class CitaServicePsicologo {
                 cita.getStartDatetime(),
                 cita.getDurationMinutes(),
 
-                cita.getEstado(),
+                cita.getEstado().name(),
                 cita.getMotivo()
         );
     }
