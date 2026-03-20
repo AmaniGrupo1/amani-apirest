@@ -31,7 +31,7 @@ public class CitaServicePsicologo {
 
     public List<CitaPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
 
-        return citaRepository.findByPsicologoIdPsicologo(idPsicologo)
+        return citaRepository.findByPsicologo_IdPsicologo(idPsicologo)
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());

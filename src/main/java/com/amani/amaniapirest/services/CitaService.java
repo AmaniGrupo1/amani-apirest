@@ -20,6 +20,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio central de gestion de citas.
+ *
+ * <p>Agrupa la logica de negocio para tres perfiles de usuario:
+ * <ul>
+ *   <li><b>General (paciente)</b> — CRUD completo de citas.</li>
+ *   <li><b>Administrador</b>     — CRUD con respuesta enriquecida ({@link CitaAdminResponseDTO}).</li>
+ *   <li><b>Psicologo</b>         — Consulta y cambio de estado de citas propias.</li>
+ * </ul>
+ *
+ * <p>Publica eventos de dominio ({@link CitaCreadaEvent}, {@link CitaCanceladaEvent})
+ * para desacoplar las notificaciones del flujo principal.</p>
+ */
 @Service("citaServiceGeneral")
 public class CitaService {
 
@@ -42,14 +55,33 @@ public class CitaService {
     // MÉTODOS GENERALES
     // =========================================================
 
+    /**
+     * Obtiene todas las citas registradas en el sistema.
+     *
+     * @return lista de {@link CitaResponseDTO} con todas las citas
+     */
     public List<CitaResponseDTO> findAll() {
         return citaRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Busca una cita por su identificador.
+     *
+     * @param idCita identificador de la cita
+     * @return DTO con la informacion de la cita
+     * @throws RuntimeException si la cita no existe
+     */
     public CitaResponseDTO findById(Long idCita) {
         return toResponse(getCitaOrThrow(idCita));
     }
 
+    /**
+     * Crea una nueva cita y publica un {@link CitaCreadaEvent}.
+     *
+     * @param request datos de la cita a crear
+     * @return DTO con la cita recien creada
+     * @throws RuntimeException si el paciente o el psicologo no existen
+     */
     @Transactional
     public CitaResponseDTO create(CitaRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
@@ -70,6 +102,15 @@ public class CitaService {
         return toResponse(saved);
     }
 
+    /**
+     * Actualiza una cita existente. Si el nuevo estado es {@code cancelada},
+     * publica un {@link CitaCanceladaEvent}.
+     *
+     * @param idCita  identificador de la cita a actualizar
+     * @param request datos actualizados de la cita
+     * @return DTO con la cita actualizada
+     * @throws RuntimeException si la cita, el paciente o el psicologo no existen
+     */
     @Transactional
     public CitaResponseDTO update(Long idCita, CitaRequestDTO request) {
         Cita cita = getCitaOrThrow(idCita);
@@ -92,26 +133,60 @@ public class CitaService {
         return toResponse(saved);
     }
 
+    /**
+     * Elimina una cita por su identificador.
+     *
+     * @param idCita identificador de la cita a eliminar
+     * @throws RuntimeException si la cita no existe
+     */
     public void delete(Long idCita) {
         Cita cita = getCitaOrThrow(idCita);
         citaRepository.delete(cita);
     }
 
+    /**
+     * Obtiene una cita o lanza excepcion si no existe.
+     *
+     * @param idCita identificador de la cita
+     * @return la entidad {@link Cita} encontrada
+     * @throws RuntimeException si no se encuentra la cita
+     */
     private Cita getCitaOrThrow(Long idCita) {
         return citaRepository.findById(idCita)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada con id: " + idCita));
     }
 
+    /**
+     * Obtiene un paciente o lanza excepcion si no existe.
+     *
+     * @param idPaciente identificador del paciente
+     * @return la entidad {@link Paciente} encontrada
+     * @throws RuntimeException si no se encuentra el paciente
+     */
     private Paciente getPacienteOrThrow(Long idPaciente) {
         return pacientesRepository.findById(idPaciente)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + idPaciente));
     }
 
+    /**
+     * Obtiene un psicologo o lanza excepcion si no existe.
+     *
+     * @param idPsicologo identificador del psicologo
+     * @return la entidad {@link Psicologo} encontrada
+     * @throws RuntimeException si no se encuentra el psicologo
+     */
     private Psicologo getPsicologoOrThrow(Long idPsicologo) {
         return psicologoRepository.findById(idPsicologo)
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado con id: " + idPsicologo));
     }
 
+    /**
+     * Convierte un texto a {@link EstadoCita}. Si es nulo o vacio, devuelve {@code pendiente}.
+     *
+     * @param estado texto con el nombre del estado
+     * @return el enum {@link EstadoCita} correspondiente
+     * @throws RuntimeException si el texto no corresponde a ningun estado valido
+     */
     private EstadoCita parseEstado(String estado) {
         if (estado == null || estado.isBlank()) {
             return EstadoCita.pendiente;
@@ -123,6 +198,12 @@ public class CitaService {
         }
     }
 
+    /**
+     * Convierte una entidad {@link Cita} en {@link CitaResponseDTO} (vista paciente).
+     *
+     * @param cita entidad a mapear
+     * @return DTO de respuesta para el perfil paciente
+     */
     private CitaResponseDTO toResponse(Cita cita) {
         return new CitaResponseDTO(
                 cita.getIdCita(),
@@ -139,14 +220,33 @@ public class CitaService {
     // MÉTODOS ADMIN
     // =========================================================
 
+    /**
+     * Obtiene todas las citas con informacion enriquecida para el administrador.
+     *
+     * @return lista de {@link CitaAdminResponseDTO}
+     */
     public List<CitaAdminResponseDTO> findAllAdmin() {
         return citaRepository.findAll().stream().map(this::toAdminResponse).toList();
     }
 
+    /**
+     * Busca una cita por identificador y devuelve la respuesta de administrador.
+     *
+     * @param idCita identificador de la cita
+     * @return DTO enriquecido con datos de paciente y psicologo
+     * @throws RuntimeException si la cita no existe
+     */
     public CitaAdminResponseDTO findByIdAdmin(Long idCita) {
         return toAdminResponse(getCitaOrThrow(idCita));
     }
 
+    /**
+     * Crea una nueva cita desde el panel de administracion y publica un {@link CitaCreadaEvent}.
+     *
+     * @param request datos de la cita a crear
+     * @return DTO de administrador con la cita recien creada
+     * @throws RuntimeException si el paciente o el psicologo no existen
+     */
     @Transactional
     public CitaAdminResponseDTO createAdmin(CitaRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
@@ -167,6 +267,15 @@ public class CitaService {
         return toAdminResponse(saved);
     }
 
+    /**
+     * Actualiza una cita desde el panel de administracion. Si el nuevo estado es
+     * {@code cancelada}, publica un {@link CitaCanceladaEvent} con origen "administrador".
+     *
+     * @param idCita  identificador de la cita a actualizar
+     * @param request datos actualizados de la cita
+     * @return DTO de administrador con la cita actualizada
+     * @throws RuntimeException si la cita, el paciente o el psicologo no existen
+     */
     @Transactional
     public CitaAdminResponseDTO updateAdmin(Long idCita, CitaRequestDTO request) {
         Cita cita = getCitaOrThrow(idCita);
@@ -193,15 +302,37 @@ public class CitaService {
     // MÉTODOS PSICÓLOGO
     // =========================================================
 
+    /**
+     * Obtiene todas las citas asignadas a un psicologo.
+     *
+     * @param idPsicologo identificador del psicologo
+     * @return lista de {@link CitaPsicologoResponseDTO}
+     */
     public List<CitaPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
-        return citaRepository.findByPsicologoIdPsicologo(idPsicologo)
+        return citaRepository.findByPsicologo_IdPsicologo(idPsicologo)
                 .stream().map(this::toPsicologoResponse).toList();
     }
 
+    /**
+     * Busca una cita por identificador y devuelve la respuesta para el psicologo.
+     *
+     * @param idCita identificador de la cita
+     * @return DTO con la informacion relevante para el psicologo
+     * @throws RuntimeException si la cita no existe
+     */
     public CitaPsicologoResponseDTO findByIdPsicologo(Long idCita) {
         return toPsicologoResponse(getCitaOrThrow(idCita));
     }
 
+    /**
+     * Permite al psicologo cambiar el estado de una cita. Si el nuevo estado es
+     * {@code cancelada}, publica un {@link CitaCanceladaEvent} con origen "psicologo".
+     *
+     * @param idCita  identificador de la cita
+     * @param request DTO que contiene el nuevo estado
+     * @return DTO con la cita actualizada
+     * @throws RuntimeException si la cita no existe
+     */
     @Transactional
     public CitaPsicologoResponseDTO updateEstadoCita(Long idCita, CitaRequestDTO request) {
         Cita cita = getCitaOrThrow(idCita);
@@ -220,6 +351,12 @@ public class CitaService {
     // MÉTODOS DE MAPEADO
     // =========================================================
 
+    /**
+     * Convierte una entidad {@link Cita} en {@link CitaAdminResponseDTO}.
+     *
+     * @param cita entidad a mapear
+     * @return DTO de respuesta para el perfil administrador
+     */
     private CitaAdminResponseDTO toAdminResponse(Cita cita) {
         Paciente p = cita.getPaciente();
         Psicologo ps = cita.getPsicologo();
@@ -238,6 +375,12 @@ public class CitaService {
         );
     }
 
+    /**
+     * Convierte una entidad {@link Cita} en {@link CitaPsicologoResponseDTO}.
+     *
+     * @param cita entidad a mapear
+     * @return DTO de respuesta para el perfil psicologo
+     */
     private CitaPsicologoResponseDTO toPsicologoResponse(Cita cita) {
         Paciente p = cita.getPaciente();
         return new CitaPsicologoResponseDTO(
