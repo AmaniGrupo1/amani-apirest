@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
 
+import com.amani.amaniapirest.enums.EstadoCita;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,7 @@ public class CitaResponseDTO {
     private Integer durationMinutes;
 
     /** Estado actual de la cita; por defecto {@code pendiente} al crearse. */
-    private String estadoCita;
+    private EstadoCita estadoCita;
 
     /** Motivo o descripción de la consulta. */
     private String motivo;

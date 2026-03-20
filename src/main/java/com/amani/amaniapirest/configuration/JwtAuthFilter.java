@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import java.io.IOException;
  * lo valida y, si es correcto, establece la autenticación en el
  * {@link SecurityContextHolder} para el resto de la cadena de filtros.</p>
  */
+@Log4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -34,10 +36,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+        //Excluir rutas publicas
+        String path = request.getServletPath();
+
+        // Excluir solo login y register-paciente
+        if (path.equals("/auth/login") || path.equals("/auth/register-paciente")) {
+            log.info("Ruta pública, saltando filtro JWT: " + path);
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            log.warn("No se envió token JWT o formato incorrecto. Authorization: " + authHeader);
             filterChain.doFilter(request, response);
             return;
         }

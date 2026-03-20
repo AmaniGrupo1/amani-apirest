@@ -48,26 +48,30 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                // Autenticación y registro de paciente: públicos
-                .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
-                // Registro de admin y psicólogo: solo ADMIN
-                .requestMatchers("/auth/register-admin", "/auth/register-psicologo").hasRole("admin")
-                // Swagger / OpenAPI: público
-                .requestMatchers("/docs", "/docs/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                // WebSocket: público
-                .requestMatchers("/ws/**").permitAll()
-                // Rutas de administrador
-                .requestMatchers("/api/admin/**", "/admin/**").hasRole("admin")
-                // Rutas exclusivas de psicólogo (y admin)
-                .requestMatchers("/api/psicologo/**", "/psicologo/**").hasAnyRole("admin", "psicologo")
-                // Resto de rutas: autenticado
-                .anyRequest().authenticated()
-            )
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+
+                        // 🔓 Públicos
+                        .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
+
+                        // 🔒 ADMIN
+                        .requestMatchers("/auth/registry/pacienteAdmin").hasRole("ADMIN")
+                        .requestMatchers("/auth/register-admin", "/auth/register-psicologo").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/auth/pacientes/**").hasRole("ADMIN")
+
+                        // 🔒 PSICOLOGO + ADMIN
+                        .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
+
+                        // 🔓 Otros
+                        .requestMatchers("/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+
+                        // 🔒 Todo lo demás
+                        .anyRequest().authenticated()
+                )
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -23,3 +23,28 @@
 2026-03-16 12:10:55 INFO  com.amani.amaniapirest.AmaniApirestApplication:13 - Amani API arrancada correctamente.
 2026-03-18 09:52:27 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
 2026-03-18 13:09:22 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-19 09:54:27 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-19 11:00:04 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-19 11:52:53 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-19 12:26:36 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-19 12:43:59 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-19 13:38:55 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-19 14:25:02 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-19 17:44:49 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 08:10:03 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 09:30:00 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 09:42:00 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 09:50:29 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 09:57:04 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 10:03:47 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 10:16:18 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 10:19:09 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 10:22:20 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 10:22:42 WARN  com.amani.amaniapirest.configuration.JwtAuthFilter:52 - No se envió token JWT o formato incorrecto. Authorization: null
+2026-03-20 10:57:18 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 11:01:02 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 11:34:20 INFO  com.amani.amaniapirest.AmaniApirestApplication:16 - Amani API arrancada correctamente.
+2026-03-20 11:37:53 INFO  com.amani.amaniapirest.configuration.JwtAuthFilter:44 - Ruta pública, saltando filtro JWT: /auth/login
+2026-03-20 11:37:56 INFO  com.amani.amaniapirest.configuration.JwtAuthFilter:44 - Ruta pública, saltando filtro JWT: /auth/login
+2026-03-20 11:47:20 INFO  com.amani.amaniapirest.configuration.JwtAuthFilter:44 - Ruta pública, saltando filtro JWT: /auth/login
+2026-03-20 11:47:44 INFO  com.amani.amaniapirest.configuration.JwtAuthFilter:44 - Ruta pública, saltando filtro JWT: /auth/login

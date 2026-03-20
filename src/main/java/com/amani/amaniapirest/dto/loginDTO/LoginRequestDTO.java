@@ -10,10 +10,6 @@ import lombok.Data;
  */
 @Data
 public class LoginRequestDTO {
-
-    /** Correo electrónico del usuario registrado. */
     private String email;
-
-    /** Contraseña en texto plano; se compara contra el hash BCrypt almacenado. */
     private String password;
 }

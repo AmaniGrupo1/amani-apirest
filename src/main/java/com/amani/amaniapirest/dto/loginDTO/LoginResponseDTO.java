@@ -13,13 +13,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class LoginResponseDTO {
 
-    /** Identificador único del usuario autenticado. */
     private Long idUsuario;
-
-    /** Nombre de pila del usuario autenticado. */
     private String nombre;
-
-    /** Rol funcional del usuario (admin, psicologo, paciente). */
     private String rol;
     private String token;
 }

@@ -14,15 +14,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class RegistryRequestDTO {
 
-    /** Nombre de pila del nuevo usuario. */
     private String nombre;
 
-    /** Apellido del nuevo usuario. */
     private String apellido;
 
-    /** Correo electrónico; debe ser único en el sistema. */
     private String email;
 
-    /** Contraseña en texto plano; será hasheada con BCrypt antes de persistir. */
     private String password;
 }

@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CitaRequestDTO {
 
-    /** Identificador del paciente que solicita la cita. */
     @NotNull
     private Long idPaciente;
 
@@ -36,7 +35,7 @@ public class CitaRequestDTO {
     private Integer durationMinutes;
 
     /** Estado de la cita (pendiente, confirmada, cancelada, completada). Opcional. */
-    private String estado;
+    private EstadoCita estado;
 
     /** Motivo o descripción de la consulta. */
     private String motivo;
