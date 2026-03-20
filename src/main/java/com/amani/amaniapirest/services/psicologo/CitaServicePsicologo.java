@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Service
 public class CitaServicePsicologo {
 
-    @Autowired
     private final CitaRepository citaRepository;
 
     public CitaServicePsicologo(CitaRepository citaRepository) {
@@ -32,7 +31,7 @@ public class CitaServicePsicologo {
 
     public List<CitaPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
 
-        return citaRepository.findByPsicologo_IdPsicologo(idPsicologo)
+        return citaRepository.findByPsicologoIdPsicologo(idPsicologo)
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());

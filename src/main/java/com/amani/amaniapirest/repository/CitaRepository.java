@@ -16,6 +16,8 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 
     List<Cita> findByPaciente_IdPaciente(Long idPaciente);
 
+    List<Cita> findByStartDatetimeBetweenAndEstado(LocalDateTime desde, LocalDateTime hasta, String estado);
+
     @Query("""
                 SELECT new com.amani.amaniapirest.dto.dtoAdmin.response.PsicologoAdminResponseDTO(
                     psi.usuario.nombre, psi.usuario.apellido,
