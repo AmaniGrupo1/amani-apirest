@@ -2,6 +2,7 @@ package com.amani.amaniapirest.services.serviciosLogin;
 
 import com.amani.amaniapirest.configuration.JwtUtil;
 import com.amani.amaniapirest.configuration.SecurityConfig;
+import com.amani.amaniapirest.dto.dtoAdmin.response.AdministradorDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginResponseDTO;
@@ -43,14 +44,14 @@ public class AuthService {
             throw new RuntimeException("Contraseña incorrecta");
         }
 
-        // ✅ UserDetails con autoridad correcta
+        // UserDetails con autoridad correcta
         UserDetails userDetails = new User(
                 usuario.getEmail(),
                 usuario.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name().toUpperCase()))
         );
 
-        // ✅ Generar token JWT incluyendo el rol
+        // Generar token JWT incluyendo el rol
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
         return new LoginResponseDTO(
@@ -71,7 +72,8 @@ public class AuthService {
         usuario.setPassword(securityConfig.passwordEncoder().encode(request.getUsuario().getPassword()));
         usuario.setRol(RolUsuario.paciente);
         usuario.setActivo(true);
-        usuario.setFechaRegistro(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        usuario.setFechaRegistro(now);
         usuarioRepository.save(usuario);
 
         Paciente paciente = new Paciente();
@@ -123,6 +125,22 @@ public class AuthService {
                 usuario.getRol().name(),
                 token
         );
+    }
+
+    //Listo los administradores
+    public List<AdministradorDTO> listarAdministradores() {
+        List<Usuario> usuarios = usuarioRepository.findByRol(RolUsuario.admin);
+
+        return usuarios.stream()
+                .map(u -> new AdministradorDTO(
+                        u.getIdUsuario(),
+                        u.getNombre(),
+                        u.getApellido(),
+                        u.getEmail(),
+                        u.getRol().name(),
+                        u.getActivo()
+                ))
+                .toList();
     }
 
     // ================= REGISTER PSICOLOGO =================

@@ -15,10 +15,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PsicologoSelfResponseDTO {
 
-    /** Identificador único del psicólogo. */
     private Long idPsicologo;
 
-    /** Especialidad o área de enfoque terapéutico. */
+    private String nombre;
+
+    private String apellido;
+
     private String especialidad;
 
     /** Años de experiencia profesional. */

@@ -4,27 +4,33 @@ package com.amani.amaniapirest.services.serviceAdmin;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.dtoAdmin.response.PacienteAdminResponseDTO;
 import com.amani.amaniapirest.models.Paciente;
+import com.amani.amaniapirest.models.Psicologo;
+import com.amani.amaniapirest.models.PsicologoPaciente;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.PacientesRepository;
+import com.amani.amaniapirest.repository.PsicologoPacienteRepository;
+import com.amani.amaniapirest.repository.PsicologoRepository;
 import com.amani.amaniapirest.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Servicio de administración para gestionar todos los perfiles de paciente del sistema.
  */
 @Service
+@RequiredArgsConstructor
 public class PacienteAdminService {
 
     private final PacientesRepository pacientesRepository;
     private final UsuarioRepository usuarioRepository;
+    private final PsicologoRepository psicologoRepository;
+    private final PsicologoPacienteRepository psicologoPacienteRepository;
 
-    public PacienteAdminService(PacientesRepository pacientesRepository,
-                                UsuarioRepository usuarioRepository) {
-        this.pacientesRepository = pacientesRepository;
-        this.usuarioRepository = usuarioRepository;
-    }
 
     public List<PacienteAdminResponseDTO> findAll() {
         return pacientesRepository.findAll().stream()
@@ -71,6 +77,36 @@ public class PacienteAdminService {
         pacientesRepository.delete(paciente);
     }
 
+    @Transactional
+    public boolean asignarPsicologo(Long pacienteId, Long psicologoId) {
+
+        Paciente paciente = pacientesRepository.findById(pacienteId)
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+
+        Psicologo psicologo = psicologoRepository.findById(psicologoId)
+                .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
+
+        // Cierra cualquier asignación anterior del paciente
+        PsicologoPaciente asignacionActual = psicologoPacienteRepository
+                .findByPacienteIdPacienteAndFechaFinIsNull(pacienteId);
+
+        if (asignacionActual != null) {
+            asignacionActual.setFechaFin(LocalDateTime.now());
+            psicologoPacienteRepository.save(asignacionActual);
+        }
+
+        // Crear nueva asignación
+        PsicologoPaciente nuevaAsignacion = new PsicologoPaciente();
+        nuevaAsignacion.setPaciente(paciente);
+        nuevaAsignacion.setPsicologo(psicologo);
+        nuevaAsignacion.setFechaInicio(LocalDateTime.now());
+        nuevaAsignacion.setFechaFin(null);
+        System.out.println("Guardando asignación...");
+        psicologoPacienteRepository.save(nuevaAsignacion);
+        System.out.println("Asignación guardada");
+
+        return true;
+    }
     /**
      * ------------------- Helpers -------------------
      */

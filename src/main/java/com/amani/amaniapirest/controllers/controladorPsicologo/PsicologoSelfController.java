@@ -20,10 +20,6 @@ public class PsicologoSelfController {
         return service.findById(id);
     }
 
-    @PostMapping
-    public PsicologoSelfResponseDTO create(@RequestBody PsicologoRequestDTO request) {
-        return service.create(request);
-    }
 
     @PutMapping("/{id}")
     public PsicologoSelfResponseDTO update(@PathVariable Long id,

@@ -1,13 +1,17 @@
 package com.amani.amaniapirest.controllers.login;
 
+import com.amani.amaniapirest.dto.dtoAdmin.response.AdministradorDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginResponseDTO;
 import com.amani.amaniapirest.dto.loginDTO.RegistryRequestDTO;
+import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.services.serviciosLogin.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,9 +31,15 @@ public class AuthController {
         return authService.registerPaciente(request);
     }
 
-    @PostMapping("/registry/pacienteAdmin")
-    public LoginResponseDTO registrarPacienteAdmin(@RequestBody PacienteRequestDTO request){
-        return authService.registerPaciente(request);
+
+    //Listo los administradores
+    @GetMapping("/admins")
+    public ResponseEntity<List<AdministradorDTO>> listarAdmins() {
+        List<AdministradorDTO> user = authService.listarAdministradores();
+        if (user.isEmpty()){
+            ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/register-admin")

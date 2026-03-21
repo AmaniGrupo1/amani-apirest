@@ -194,7 +194,7 @@ public class CitaService {
     // =========================================================
 
     public List<CitaPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
-        return citaRepository.findByPsicologoIdPsicologo(idPsicologo)
+        return citaRepository.findByPsicologo_IdPsicologo(idPsicologo)
                 .stream().map(this::toPsicologoResponse).toList();
     }
 
