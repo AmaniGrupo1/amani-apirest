@@ -17,6 +17,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio que gestiona las preguntas del test inicial para pacientes.
+ *
+ * <p>Permite obtener las preguntas disponibles y registrar las respuestas
+ * de un paciente asociando cada respuesta a su pregunta y opcion correspondiente.</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class PreguntaPacienteService {
@@ -27,6 +33,9 @@ public class PreguntaPacienteService {
     private final OpcionRepository opcionRepository;
 
     // Método privado que convierte una Pregunta en DTO
+    /**
+     * Convierte una entidad {@link Pregunta} a su DTO de respuesta para paciente.
+     */
     private PreguntaPacienteResponseDTO mapToDTO(Pregunta pregunta){
         List<String> opciones = pregunta.getOpciones()
                 .stream()
@@ -41,6 +50,11 @@ public class PreguntaPacienteService {
     }
 
     // Devuelve todas las preguntas convertidas a DTO
+    /**
+     * Obtiene todas las preguntas disponibles convertidas a DTO.
+     *
+     * @return lista de preguntas con sus opciones.
+     */
     public List<PreguntaPacienteResponseDTO> getPreguntas(){
         return preguntaRepository.findAllWithOpciones()
                 .stream()
@@ -48,6 +62,13 @@ public class PreguntaPacienteService {
                 .toList();
     }
 
+    /**
+     * Registra las respuestas de un paciente al test inicial.
+     *
+     * @param idPaciente identificador del paciente que responde.
+     * @param respuestas lista de respuestas con pregunta, opcion y texto.
+     * @throws RuntimeException si el paciente, pregunta u opcion no existen.
+     */
     public void responder(Long idPaciente, List<RespuestasRequestDTO> respuestas){
 
         Paciente paciente = pacienteRepository.findById(idPaciente)

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * DTO de salida con los datos del progreso emocional de un paciente.
@@ -16,20 +17,31 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(name = "ProgresoEmocionalResponse", description = "Progreso emocional de un paciente")
 public class ProgresoEmocionalResponseDTO {
 
     /** Fecha en que se registró el progreso emocional. */
+    @Schema(description = "Fecha del registro", example = "2026-03-20")
+
     private LocalDate fecha;
 
     /** Nivel de estrés del paciente (escala 1-10). */
+    @Schema(description = "Nivel de estrés (1-10)", example = "5")
+
     private Integer nivelEstres;
 
     /** Nivel de ansiedad del paciente (escala 1-10). */
+    @Schema(description = "Nivel de ansiedad (1-10)", example = "4")
+
     private Integer nivelAnsiedad;
 
     /** Nivel de ánimo general del paciente (escala 1-10). */
+    @Schema(description = "Nivel de ánimo (1-10)", example = "7")
+
     private Integer nivelAnimo;
 
     /** Fecha y hora de creación del registro. */
+    @Schema(description = "Fecha de creación del registro", example = "2026-03-20T10:30:00")
+
     private LocalDateTime createdAt;
 }

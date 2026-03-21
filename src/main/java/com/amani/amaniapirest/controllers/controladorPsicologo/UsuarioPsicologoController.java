@@ -2,8 +2,15 @@ package com.amani.amaniapirest.controllers.controladorPsicologo;
 
 import com.amani.amaniapirest.dto.dtoPsicologo.response.UsuarioPsicologoResponseDTO;
 import com.amani.amaniapirest.services.psicologo.UsuarioPsicologoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * Controlador REST que expone los datos de perfil del usuario autenticado
@@ -13,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/psicologo/usuario")
+@Tag(name = "Usuario Psicologo", description = "Consulta de perfil de usuario del psicologo")
 public class UsuarioPsicologoController {
 
     private final UsuarioPsicologoService usuarioPsicologoService;
@@ -29,6 +37,13 @@ public class UsuarioPsicologoController {
      * @param id identificador del usuario psicólogo
      * @return {@code 200 OK} con el DTO de perfil, o {@code 404 Not Found} si no existe
      */
+    @Operation(summary = "Obtener perfil", description = "Obtiene los datos de perfil del psicologo por su ID de usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioPsicologoResponseDTO> findById(@PathVariable Long id) {
         try {
@@ -38,4 +53,3 @@ public class UsuarioPsicologoController {
         }
     }
 }
-
