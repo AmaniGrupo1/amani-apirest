@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+
+    <!--
+        Exclusiones para código generado por Lombok.
+        SpotBugs analiza el bytecode, donde ya están los getters, setters,
+        constructores, builders, etc. generados por Lombok, y reporta
+        falsos positivos que no tienen sentido corregir manualmente.
+    -->
+
+    <!-- 1. Ignorar EI_EXPOSE_REP y EI_EXPOSE_REP2 en modelos JPA (@Entity) -->
+    <!--    Lombok genera getters/setters que no hacen copia defensiva,       -->
+    <!--    pero en entidades JPA es el comportamiento esperado.               -->
+    <Match>
+        <Package name="com.amani.amaniapirest.models" />
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+    </Match>
+
+    <Match>
+        <Package name="com.amani.amaniapirest.models.modelPreguntasInicial" />
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+    </Match>
+
+    <!-- 2. Ignorar EI_EXPOSE_REP2 en DTOs (generados por Lombok @Data/@Builder/@AllArgsConstructor) -->
+    <Match>
+        <Package name="~com\.amani\.amaniapirest\.dto\..*" />
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+    </Match>
+
+    <!-- 3. Ignorar EI_EXPOSE_REP2 en Controllers -->
+    <!--    Lombok genera constructores (@RequiredArgsConstructor) para inyección de dependencias. -->
+    <!--    SpotBugs lo reporta como "storing externally mutable object", pero es inyección de Spring. -->
+    <Match>
+        <Package name="~com\.amani\.amaniapirest\.controllers\..*" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+
+    <!-- 4. Ignorar EI_EXPOSE_REP2 en Configuration (misma razón: inyección por constructor con Lombok) -->
+    <Match>
+        <Package name="com.amani.amaniapirest.configuration" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+
+    <!-- 5. Ignorar EI_EXPOSE_REP/EI_EXPOSE_REP2 en Events -->
+    <!--    Lombok genera getters/constructores en clases de eventos.          -->
+    <Match>
+        <Package name="com.amani.amaniapirest.events" />
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+    </Match>
+
+    <!-- 6. Ignorar SE_BAD_FIELD en Events -->
+    <!--    Las clases de evento extienden ApplicationEvent (Serializable),    -->
+    <!--    pero los campos inyectados por Lombok no son serializables.        -->
+    <Match>
+        <Package name="com.amani.amaniapirest.events" />
+        <Bug pattern="SE_BAD_FIELD" />
+    </Match>
+
+    <!-- 7. Ignorar cualquier bug en clases internas generadas por Lombok (Builders) -->
+    <Match>
+        <Class name="~.*\$.*Builder" />
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+    </Match>
+
+    <!-- 8. Ignorar advertencias en métodos anotados con @lombok.Generated -->
+    <Match>
+        <Annotation name="lombok.Generated" />
+    </Match>
+
+</FindBugsFilter>
+
