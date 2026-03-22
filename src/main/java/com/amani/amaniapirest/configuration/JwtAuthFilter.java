@@ -56,7 +56,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         final String token = authHeader.substring(7);
         final String email;
+        log.info("PATH: " + request.getServletPath());
 
+        final String authHeaderr = request.getHeader("Authorization");
+        log.info("Authorization Header: " + authHeaderr);
         try {
             email = jwtUtil.extractEmail(token);
         } catch (Exception e) {
@@ -67,7 +70,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-
+            log.info("EMAIL del token: " + email);
             if (jwtUtil.isTokenValid(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
@@ -75,6 +78,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                log.info("TOKEN VÁLIDO, autenticando usuario...");
             }
         }
 

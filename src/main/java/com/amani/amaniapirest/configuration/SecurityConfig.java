@@ -52,22 +52,26 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔓 Públicos
+                        //  Públicos
                         .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
 
-                        // 🔒 ADMIN
+                        //  ADMIN
                         .requestMatchers("/auth/registry/pacienteAdmin").hasRole("ADMIN")
                         .requestMatchers("/auth/register-admin", "/auth/register-psicologo").hasRole("ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/auth/pacientes/**").hasRole("ADMIN")
-
-                        // 🔒 PSICOLOGO + ADMIN
+                        .requestMatchers("/auth/admins").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/psicologos").hasRole("ADMIN") //Listamos psicologo
+                        .requestMatchers("/api/admin/psicologos/create").hasRole("ADMIN") //creamos psicologo con admin
+                        .requestMatchers("/api/admin/psicologos/asignar-psicologo").hasRole("ADMIN") //creamos psicologo con admin
+                        .requestMatchers("/api/admin/psicologos/pacientes").hasRole("ADMIN") //creamos psicologo con admin
+                        //  PSICOLOGO + ADMIN
                         .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
 
-                        // 🔓 Otros
+                        //  Otros
                         .requestMatchers("/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
 
-                        // 🔒 Todo lo demás
+                        //  Todo lo demás
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())

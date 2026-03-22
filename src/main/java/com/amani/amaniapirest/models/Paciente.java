@@ -49,6 +49,10 @@ public class Paciente {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    @OneToOne
+    @JoinColumn(name = "id_psicologo")
+    private Psicologo psicologo;
+
     /** Lista de direcciones registradas para el paciente. */
     @OneToMany(mappedBy = "paciente")
     private List<Direccion> direcciones;

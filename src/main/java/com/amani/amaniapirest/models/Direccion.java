@@ -45,4 +45,5 @@ public class Direccion {
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;
+
 }
