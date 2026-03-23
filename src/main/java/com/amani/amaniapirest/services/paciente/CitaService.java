@@ -1,6 +1,7 @@
 package com.amani.amaniapirest.services.paciente;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.AgendaPacienteItemDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.models.Cita;
@@ -11,8 +12,12 @@ import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.repository.PsicologoRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Servicio de negocio para gestionar citas entre pacientes y psicólogos.
@@ -186,5 +191,24 @@ public class CitaService {
         );
     }
 
+    // Agenda mensual del paciente
+    public List<AgendaPacienteItemDTO> getAgendaPacienteMes(Long idPaciente, String month) {
+        // Parsear el mes recibido (YYYY-MM)
+        YearMonth yearMonth = YearMonth.parse(month);
+        LocalDateTime start = yearMonth.atDay(1).atStartOfDay();
+        LocalDateTime end = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
+        // Buscar citas del paciente en ese rango
+        List<Cita> citas = citaRepository.findByPaciente_IdPaciente(idPaciente).stream()
+                .filter(c -> !c.getStartDatetime().isBefore(start) && !c.getStartDatetime().isAfter(end))
+                .collect(Collectors.toList());
+        // Mapear a DTO
+        return citas.stream().map(cita -> new AgendaPacienteItemDTO(
+                cita.getStartDatetime().toLocalDate(),
+                cita.getStartDatetime().toLocalTime(),
+                cita.getStartDatetime().toLocalTime().plusMinutes(cita.getDurationMinutes()),
+                cita.getEstado() != null ? cita.getEstado().name() : null,
+                cita.getMotivo(),
+                cita.getIdCita()
+        )).collect(Collectors.toList());
+    }
 }
-

@@ -17,8 +17,26 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 
     List<Cita> findByStartDatetimeBetweenAndEstado(LocalDateTime desde, LocalDateTime hasta, String estado);
 
+    List<Cita> findByPaciente_IdPacienteAndStartDatetimeBetween(
+            Long idPaciente,
+            LocalDateTime desde,
+            LocalDateTime hasta
+    );
+
+    List<Cita> findByPsicologo_IdPsicologoAndStartDatetimeBetween(
+            Long idPsicologo,
+            LocalDateTime desde,
+            LocalDateTime hasta
+    );
+
+    List<Cita> findByPsicologo_IdPsicologoAndStartDatetimeBetweenAndEstadoNot(
+            Long idPsicologo,
+            LocalDateTime desde,
+            LocalDateTime hasta,
+            EstadoCita estado
+    );
+
 
 
     List<Cita> findByStartDatetimeBetweenAndEstado(LocalDateTime desde, LocalDateTime hasta, EstadoCita name);
 }
-

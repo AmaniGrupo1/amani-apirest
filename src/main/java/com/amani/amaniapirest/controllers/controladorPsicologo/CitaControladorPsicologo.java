@@ -1,7 +1,12 @@
 package com.amani.amaniapirest.controllers.controladorPsicologo;
 
+import com.amani.amaniapirest.dto.dtoAgenda.request.BloqueoRequestDTO;
+import com.amani.amaniapirest.dto.dtoAgenda.request.HorarioRequestDTO;
+import com.amani.amaniapirest.dto.dtoAgenda.response.AgendaItemDTO;
+import com.amani.amaniapirest.dto.dtoAgenda.response.DisponibilidadDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO;
+import com.amani.amaniapirest.services.CitaAgendaService;
 import com.amani.amaniapirest.services.psicologo.CitaServicePsicologo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,9 +21,11 @@ import java.util.List;
 public class CitaControladorPsicologo {
 
     private final CitaServicePsicologo citaService;
+    private final CitaAgendaService citaAgendaService;
 
-    public CitaControladorPsicologo(CitaServicePsicologo citaService) {
+    public CitaControladorPsicologo(CitaServicePsicologo citaService, CitaAgendaService citaAgendaService) {
         this.citaService = citaService;
+        this.citaAgendaService = citaAgendaService;
     }
     // =========================================================
     // VISTA PSICÓLOGO
@@ -53,5 +60,70 @@ public class CitaControladorPsicologo {
         } catch (RuntimeException ex) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * GET /api/citas/psicologo/{idPsicologo}/agenda?month=YYYY-MM
+     * Devuelve la agenda consolidada del psicólogo para el mes indicado.
+     */
+    @GetMapping("/psicologo/{idPsicologo}/agenda")
+    public ResponseEntity<List<AgendaItemDTO>> getAgendaPsicologoMes(
+            @PathVariable Long idPsicologo,
+            @RequestParam("month") String month // formato YYYY-MM
+    ) {
+        return ResponseEntity.ok(citaAgendaService.getAgendaPsicologo(idPsicologo, month));
+    }
+
+    /**
+     * GET /api/citas/psicologo/{idPsicologo}/disponibilidad?fecha=YYYY-MM-DD
+     * Devuelve la disponibilidad del psicólogo para un día concreto.
+     */
+    @GetMapping("/psicologo/{idPsicologo}/disponibilidad")
+    public ResponseEntity<DisponibilidadDTO> getDisponibilidadPsicologo(
+            @PathVariable Long idPsicologo,
+            @RequestParam("fecha") String fecha
+    ) {
+        return ResponseEntity.ok(citaAgendaService.getDisponibilidad(idPsicologo, fecha));
+    }
+
+    /**
+     * PATCH /api/citas/{id}/cancelar — Cancela una cita.
+     */
+    @PatchMapping("/{id}/cancelar")
+    public ResponseEntity<AgendaItemDTO> cancelarCita(@PathVariable Long id) {
+        return ResponseEntity.ok(citaAgendaService.cancelarCita(id));
+    }
+
+    /**
+     * PUT /api/citas/psicologo/{idPsicologo}/horario — Actualiza el horario del psicólogo.
+     */
+    @PutMapping("/psicologo/{idPsicologo}/horario")
+    public ResponseEntity<Void> actualizarHorarioPsicologo(
+            @PathVariable Long idPsicologo,
+            @RequestBody HorarioRequestDTO horarioRequest
+    ) {
+        citaAgendaService.actualizarHorario(idPsicologo, horarioRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * POST /api/citas/psicologo/{idPsicologo}/dias-no-disponibles — Añade un día no disponible.
+     */
+    @PostMapping("/psicologo/{idPsicologo}/dias-no-disponibles")
+    public ResponseEntity<Void> agregarDiaNoDisponible(
+            @PathVariable Long idPsicologo,
+            @RequestBody BloqueoRequestDTO diaNoDisponibleRequest
+    ) {
+        citaAgendaService.addBloqueo(idPsicologo, diaNoDisponibleRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * DELETE /api/citas/psicologo/{idPsicologo}/dias-no-disponibles/{fecha} — Elimina un día no disponible.
+     */
+    @DeleteMapping("/psicologo/{idPsicologo}/dias-no-disponibles/{fecha}")
+    public ResponseEntity<Void> eliminarDiaNoDisponible(@PathVariable Long idPsicologo, @PathVariable String fecha) {
+        citaAgendaService.removeBloqueo(idPsicologo, fecha);
+        return ResponseEntity.noContent().build();
     }
 }

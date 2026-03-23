@@ -1,7 +1,10 @@
 package com.amani.amaniapirest.controllers.controladorPaciente;
 
+import com.amani.amaniapirest.dto.dtoAgenda.request.CrearCitaRequestDTO;
+import com.amani.amaniapirest.dto.dtoAgenda.response.AgendaItemDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
+import com.amani.amaniapirest.services.CitaAgendaService;
 import com.amani.amaniapirest.services.paciente.CitaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,9 +26,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class CitaController {
 
     private final CitaService citaService;
+    private final CitaAgendaService citaAgendaService;
 
-    public CitaController(CitaService citaService) {
+    public CitaController(CitaService citaService, CitaAgendaService citaAgendaService) {
         this.citaService = citaService;
+        this.citaAgendaService = citaAgendaService;
     }
 
     // =========================================================
@@ -72,9 +77,9 @@ public class CitaController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PostMapping
-    public ResponseEntity<CitaResponseDTO> create(@Valid @RequestBody CitaRequestDTO request) {
+    public ResponseEntity<AgendaItemDTO> create(@RequestBody CrearCitaRequestDTO request) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(citaService.create(request));
+            return ResponseEntity.status(HttpStatus.CREATED).body(citaAgendaService.crearCita(request));
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().build();
         }
@@ -116,6 +121,18 @@ public class CitaController {
         } catch (RuntimeException ex) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * GET /api/citas/paciente/{idPaciente}/agenda?month=YYYY-MM
+     * Devuelve la agenda del paciente para el mes indicado.
+     */
+    @GetMapping("/paciente/{idPaciente}/agenda")
+    public ResponseEntity<List<AgendaItemDTO>> getAgendaPacienteMes(
+            @PathVariable Long idPaciente,
+            @RequestParam("month") String month // formato YYYY-MM
+    ) {
+        return ResponseEntity.ok(citaAgendaService.getAgendaPaciente(idPaciente, month));
     }
 
 }

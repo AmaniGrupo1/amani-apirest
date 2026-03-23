@@ -54,6 +54,7 @@ public class SecurityConfig {
 
                         //  Públicos
                         .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
+                        .requestMatchers("/auth/oauth2/**", "/login/oauth2/**", "/oauth2/**").permitAll()
 
                         //  ADMIN
                         .requestMatchers("/auth/registry/pacienteAdmin").hasRole("ADMIN")
