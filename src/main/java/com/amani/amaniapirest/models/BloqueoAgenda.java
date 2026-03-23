@@ -9,7 +9,7 @@ import java.time.LocalTime;
 
 
 @Entity
-@Table(name = "bloqueo_agenda")
+@Table(name = "bloqueos_agenda")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,4 +37,3 @@ public class BloqueoAgenda {
         createdAt = LocalDateTime.now();
     }
 }
-
