@@ -67,6 +67,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/psicologos/asignar-psicologo").hasRole("ADMIN") //creamos psicologo con admin
                         .requestMatchers("/api/admin/psicologos/pacientes").hasRole("ADMIN") //creamos psicologo con admin
                         //  PSICOLOGO + ADMIN
+                        .requestMatchers("/api/citas/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
                         .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
 
                         //  Otros
