@@ -35,8 +35,9 @@ public class Cita {
     /** Duración de la cita en minutos. */
     private int durationMinutes;
 
-    @Enumerated(EnumType.STRING) // ← Esto es clave para PostgreSQL ENUM
-    @Column(name = "estado", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "estado", columnDefinition = "estado_cita", nullable = false)
     private EstadoCita estado;
 
     /** Motivo o descripción de la consulta. */

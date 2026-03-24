@@ -396,3 +396,8 @@ INSERT INTO usuarios (nombre, apellido, email, password, rol, activo)
 VALUES ('Admin', 'Principal', 'felixb@example.com',
         '$2a$10$f6IeTQIpuzXWdeXYJ5O8zugtvd2rQESGanenPgsdDqtlRe3xrZIhO',
         'admin', TRUE);
+
+SELECT p.id_psicologo, u.id_usuario, u.email
+FROM psicologos p
+         JOIN usuarios u ON u.id_usuario = p.id_usuario
+WHERE u.email = 'Lorena.garcia@amani.com';
