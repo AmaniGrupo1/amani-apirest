@@ -2,6 +2,7 @@ package com.amani.amaniapirest.controllers.controladorPsicologo;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.PsicologoSelfResponseDTO;
+import com.amani.amaniapirest.dto.profile.PsicologoDTO;
 import com.amani.amaniapirest.services.psicologo.PsicologoSelfService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +17,8 @@ public class PsicologoSelfController {
     }
 
     @GetMapping("/{id}")
-    public PsicologoSelfResponseDTO getById(@PathVariable Long id) {
-        return service.findById(id);
+    public PsicologoDTO getById(@PathVariable Long id) {
+        return service.findProfileById(id);
     }
 
 

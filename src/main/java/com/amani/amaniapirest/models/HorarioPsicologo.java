@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class HorarioPsicologo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_horario")
     private Long idHorario;
+    @JsonIgnoreProperties({"usuario", "pacientes", "citas"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_psicologo", nullable = false)
     private Psicologo psicologo;

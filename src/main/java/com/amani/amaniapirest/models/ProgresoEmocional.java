@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -43,6 +44,7 @@ public class ProgresoEmocional {
     private LocalDateTime createdAt;
 
     /** Paciente al que pertenece este registro de progreso. */
+    @JsonIgnoreProperties({"usuario", "psicologo", "direcciones", "citas", "historiales", "respuestas"})
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;

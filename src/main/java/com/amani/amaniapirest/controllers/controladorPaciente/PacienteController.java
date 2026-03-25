@@ -2,7 +2,7 @@ package com.amani.amaniapirest.controllers.controladorPaciente;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteResponseDTO;
-import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
+import com.amani.amaniapirest.dto.profile.PacienteDTO;
 import com.amani.amaniapirest.services.paciente.PacienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -50,7 +50,7 @@ public class PacienteController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<PacienteResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<PacienteDTO> findById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(pacienteService.findById(id));
         } catch (RuntimeException ex) {

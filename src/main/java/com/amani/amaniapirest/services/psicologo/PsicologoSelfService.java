@@ -2,9 +2,12 @@ package com.amani.amaniapirest.services.psicologo;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.PsicologoSelfResponseDTO;
+import com.amani.amaniapirest.dto.profile.PsicologoDTO;
 import com.amani.amaniapirest.enums.RolUsuario;
+import com.amani.amaniapirest.mappers.ProfileMapper;
 import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.models.Usuario;
+import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.repository.PsicologoRepository;
 import com.amani.amaniapirest.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,8 @@ public class PsicologoSelfService {
 
     private final PsicologoRepository psicologoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final PacientesRepository pacientesRepository;
+    private final ProfileMapper profileMapper;
     private final PasswordEncoder passwordEncoder; //  Usamos el encoder inyectado
 
     /** Obtener todos los psicólogos */
@@ -34,6 +39,15 @@ public class PsicologoSelfService {
     /** Obtener psicólogo por id */
     public PsicologoSelfResponseDTO findById(Long idPsicologo) {
         return toResponse(getPsicologoOrThrow(idPsicologo));
+    }
+
+    /** Obtener perfil profesional por id */
+    public PsicologoDTO findProfileById(Long idPsicologo) {
+        Psicologo psicologo = getPsicologoOrThrow(idPsicologo);
+        return profileMapper.toPsicologoDTO(
+                psicologo,
+                pacientesRepository.findIdsByPsicologoId(idPsicologo)
+        );
     }
 
     /** Crear usuario + perfil de psicólogo completo */

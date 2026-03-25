@@ -1,6 +1,7 @@
 package com.amani.amaniapirest.dto.loginDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import com.amani.amaniapirest.dto.profile.UsuarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,8 @@ import lombok.NoArgsConstructor;
 /**
  * DTO de respuesta devuelto tras una autenticación exitosa.
  *
- * <p>Proporciona al cliente el identificador del usuario, su nombre para mostrar
- * y su rol, necesarios para configurar la sesión en el frontend.</p>
+ * <p>Proporciona al cliente los datos básicos del usuario autenticado y
+ * el token JWT necesarios para configurar la sesión en el frontend.</p>
  */
 @Data
 @AllArgsConstructor
@@ -17,17 +18,9 @@ import lombok.NoArgsConstructor;
 @Schema(name = "LoginResponse", description = "Respuesta tras autenticación exitosa con token JWT")
 public class LoginResponseDTO {
 
-    /** Identificador único del usuario autenticado. */
-    @Schema(description = "Identificador único del usuario", example = "1")
-    private Long idUsuario;
-
-    /** Nombre para mostrar del usuario. */
-    @Schema(description = "Nombre del usuario", example = "Laura")
-    private String nombre;
-
-    /** Rol asignado al usuario (paciente, psicologo, admin). */
-    @Schema(description = "Rol del usuario en el sistema", example = "paciente")
-    private String rol;
+    /** Datos del usuario autenticado. */
+    @Schema(description = "Datos del usuario autenticado")
+    private UsuarioDTO usuario;
 
     /** Token JWT generado para las peticiones autenticadas. */
     @Schema(description = "Token JWT para autorización en cabecera Bearer", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")

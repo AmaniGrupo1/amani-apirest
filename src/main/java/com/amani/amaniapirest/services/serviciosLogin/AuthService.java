@@ -8,6 +8,7 @@ import com.amani.amaniapirest.dto.loginDTO.LoginRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginResponseDTO;
 import com.amani.amaniapirest.dto.loginDTO.RegistryRequestDTO;
 import com.amani.amaniapirest.enums.RolUsuario;
+import com.amani.amaniapirest.mappers.ProfileMapper;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.PacientesRepository;
@@ -38,6 +39,7 @@ public class AuthService {
     private final PacientesRepository pacienteRepository;
     private final SecurityConfig securityConfig;
     private final JwtUtil jwtUtil;
+    private final ProfileMapper profileMapper;
 
     // ================= LOGIN =================
     /**
@@ -69,9 +71,7 @@ public class AuthService {
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
         return new LoginResponseDTO(
-                usuario.getIdUsuario(),
-                usuario.getNombre(),
-                usuario.getRol().name(),
+                profileMapper.toUsuarioDTO(usuario),
                 token
         );
     }
@@ -112,9 +112,7 @@ public class AuthService {
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
         return new LoginResponseDTO(
-                usuario.getIdUsuario(),
-                usuario.getNombre(),
-                usuario.getRol().name(),
+                profileMapper.toUsuarioDTO(usuario),
                 token
         );
     }
@@ -146,9 +144,7 @@ public class AuthService {
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
         return new LoginResponseDTO(
-                usuario.getIdUsuario(),
-                usuario.getNombre(),
-                usuario.getRol().name(),
+                profileMapper.toUsuarioDTO(usuario),
                 token
         );
     }
@@ -196,9 +192,7 @@ public class AuthService {
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
         return new LoginResponseDTO(
-                usuario.getIdUsuario(),
-                usuario.getNombre(),
-                usuario.getRol().name(),
+                profileMapper.toUsuarioDTO(usuario),
                 token
         );
     }
@@ -212,7 +206,7 @@ public class AuthService {
      * @throws RuntimeException si no se encuentra el paciente con ese id
      */
     public void darBajaPaciente(Long idPaciente) {
-        Paciente paciente = pacienteRepository.findByUsuario_IdUsuario(idPaciente)
+        Paciente paciente = pacienteRepository.findByUsuarioId(idPaciente)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
         paciente.getUsuario().setActivo(false);

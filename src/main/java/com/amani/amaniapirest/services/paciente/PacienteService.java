@@ -2,6 +2,8 @@ package com.amani.amaniapirest.services.paciente;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteResponseDTO;
+import com.amani.amaniapirest.dto.profile.PacienteDTO;
+import com.amani.amaniapirest.mappers.ProfileMapper;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.PacientesRepository;
@@ -23,6 +25,7 @@ public class PacienteService {
 
     private final PacientesRepository pacientesRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ProfileMapper profileMapper;
 
     /**
      * Construye el servicio inyectando sus repositorios.
@@ -30,9 +33,12 @@ public class PacienteService {
      * @param pacientesRepository repositorio JPA de {@link Paciente}
      * @param usuarioRepository   repositorio JPA de {@link Usuario}
      */
-    public PacienteService(PacientesRepository pacientesRepository, UsuarioRepository usuarioRepository) {
+    public PacienteService(PacientesRepository pacientesRepository,
+                           UsuarioRepository usuarioRepository,
+                           ProfileMapper profileMapper) {
         this.pacientesRepository = pacientesRepository;
         this.usuarioRepository = usuarioRepository;
+        this.profileMapper = profileMapper;
     }
 
     /**
@@ -48,11 +54,11 @@ public class PacienteService {
      * Busca un paciente por su identificador único.
      *
      * @param idPaciente identificador del paciente a buscar
-     * @return {@link PacienteResponseDTO} con los datos del paciente encontrado
+     * @return {@link PacienteDTO} con los datos del paciente encontrado
      * @throws RuntimeException si no existe un paciente con el id proporcionado
      */
-    public PacienteResponseDTO findById(Long idPaciente) {
-        return toResponse(getPacienteOrThrow(idPaciente));
+    public PacienteDTO findById(Long idPaciente) {
+        return profileMapper.toPacienteDTO(getPacienteOrThrow(idPaciente));
     }
 
     /**
@@ -126,4 +132,3 @@ public class PacienteService {
         );
     }
 }
-
