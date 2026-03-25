@@ -51,14 +51,17 @@ public class AuthService {
      */
     public LoginResponseDTO login(LoginRequestDTO request) {
 
+        log.info("Login iniciado para: " + request.getEmail());
         Usuario usuario = usuarioRepository
                 .findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        log.info("Usuario encontrado: id=" + usuario.getIdUsuario());
 
         var encoder = securityConfig.passwordEncoder();
         if (!encoder.matches(request.getPassword(), usuario.getPassword())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
+        log.info("Contraseña verificada correctamente");
 
         // UserDetails con autoridad correcta
         UserDetails userDetails = new User(
@@ -70,10 +73,12 @@ public class AuthService {
         // Generar token JWT incluyendo el rol
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
-        return new LoginResponseDTO(
+        LoginResponseDTO response = new LoginResponseDTO(
                 profileMapper.toUsuarioDTO(usuario),
                 token
         );
+        log.info("Token generado, devolviendo LoginResponseDTO");
+        return response;
     }
 
     // ================= REGISTER PACIENTE =================

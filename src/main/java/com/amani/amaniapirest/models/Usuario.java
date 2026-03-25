@@ -10,11 +10,11 @@ import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@JsonIgnoreProperties({"psicologo", "paciente"})
+@JsonIgnoreProperties({"psicologo", "paciente", "enviados", "recibidos", "hibernateLazyInitializer"})
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"paciente", "psicologo", "enviados", "recibidos"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

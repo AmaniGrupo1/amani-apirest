@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"usuario", "citas"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "psicologos")
