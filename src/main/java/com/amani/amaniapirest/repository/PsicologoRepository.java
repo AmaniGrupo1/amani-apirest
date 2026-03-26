@@ -14,4 +14,6 @@ public interface PsicologoRepository extends JpaRepository<Psicologo, Long> {
 
     @Query("SELECT p FROM Psicologo p JOIN FETCH p.usuario u WHERE u.idUsuario = :idUsuario")
     Optional<Psicologo> findByUsuarioId(@Param("idUsuario") Long idUsuario);
+
+    Optional<Psicologo> findByUsuarioIdUsuario(Long idUsuario);
 }

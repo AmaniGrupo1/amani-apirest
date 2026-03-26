@@ -20,4 +20,5 @@ public class UsuarioDTO {
     private String rol;
 
     private Boolean activo;
+    private Long idPsicologo;
 }
