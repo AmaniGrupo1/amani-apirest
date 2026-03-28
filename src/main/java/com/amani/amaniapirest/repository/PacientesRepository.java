@@ -23,4 +23,10 @@ public interface PacientesRepository extends JpaRepository<Paciente, Long> {
                  LEFT JOIN FETCH p.tutores t
             """)
     List<Paciente> findAllWithSituacionesAndTutores();
+
+    @Query("""
+    SELECT p.idPaciente FROM Paciente p
+    WHERE p.psicologo.idPsicologo = :idPsicologo
+""")
+    List<Long> findIdsByPsicologoId(Long idPsicologo);
 }
