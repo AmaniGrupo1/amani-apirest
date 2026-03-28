@@ -20,9 +20,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UsuarioRequestDTO {
 
+    private Long id;
+
     /** Nombre de pila del usuario. No puede estar vacío. */
     @NotBlank
     private String nombre;
+
+    @NotBlank
+    private String dni;
 
     /** Apellido del usuario. No puede estar vacío. */
     @NotBlank

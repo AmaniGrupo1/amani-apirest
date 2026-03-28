@@ -15,14 +15,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PreguntaRequestDTO {
+public class OpcionAdminResDTO {
 
-    /** Enunciado de la pregunta. */
+    private Long id;
+    /**
+     * Enunciado de la pregunta.
+     */
     private String texto;
 
-    /** Tipo de pregunta (p.ej. "abierta", "opciones", "escala"). */
+    /**
+     * Tipo de pregunta (p.ej. "abierta", "opciones", "escala").
+     */
     private String tipo;
 
-    /** Opciones de respuesta disponibles; requeridas cuando el tipo es "opciones". */
+    /**
+     * Opciones de respuesta disponibles; requeridas cuando el tipo es "opciones".
+     */
     private List<String> opciones;
 }

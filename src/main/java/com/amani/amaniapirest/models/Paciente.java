@@ -1,12 +1,18 @@
 package com.amani.amaniapirest.models;
 
+import com.amani.amaniapirest.enums.EstadoPago;
+import com.amani.amaniapirest.enums.MetodoPago;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Respuesta;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Entidad que representa el perfil clínico de un paciente.
@@ -42,6 +48,16 @@ public class Paciente {
     private LocalDateTime createdAt;
 
     /** Fecha y hora de la ultima actualización del perfil. */
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;  // ← esto es lo que faltaba
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
     private LocalDateTime updatedAt;
 
     /** Usuario del sistema asociado a este paciente. */
@@ -67,4 +83,26 @@ public class Paciente {
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<Respuesta> respuestas;
+
+
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)  // ← esto es la clave
+    @Column(name = "metodo_pago", nullable = false)
+    private MetodoPago metodoPago;
+
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)  // ← esto es la clave
+    @Column(name = "estado_pago", nullable = false)
+    private EstadoPago estadoPago = EstadoPago.PENDIENTE;
+
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    private Set<PacienteSituacion> pacienteSituaciones;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    private List<Consentimiento> consentimientos;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    private Set<Tutor> tutores;
+
 }

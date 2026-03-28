@@ -29,7 +29,4 @@ public class DireccionResponseDTO {
 
     /** País de residencia. */
     private String pais;
-
-    /** Descripción adicional o referencia de la ubicación. */
-    private String descripcion;
 }

@@ -80,7 +80,6 @@ public class DireccionService {
         direccion.setProvincia(request.getProvincia());
         direccion.setCodigoPostal(request.getCodigoPostal());
         direccion.setPais(request.getPais());
-        direccion.setDescripcion(request.getDescripcion());
 
         return toResponse(direccionRepository.save(direccion));
     }
@@ -103,8 +102,6 @@ public class DireccionService {
         direccion.setProvincia(request.getProvincia());
         direccion.setCodigoPostal(request.getCodigoPostal());
         direccion.setPais(request.getPais());
-        direccion.setDescripcion(request.getDescripcion());
-
         return toResponse(direccionRepository.save(direccion));
     }
 
@@ -154,8 +151,7 @@ public class DireccionService {
                 direccion.getCiudad(),
                 direccion.getProvincia(),
                 direccion.getCodigoPostal(),
-                direccion.getPais(),
-                direccion.getDescripcion()
+                direccion.getPais()
         );
     }
 }

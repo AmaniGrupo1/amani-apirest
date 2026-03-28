@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.controllers.preguntasController;
 
+import com.amani.amaniapirest.dto.dtoPregunta.ResultadoTestResponseDTO;
 import com.amani.amaniapirest.dto.dtoPregunta.paciente.PreguntaPacienteResponseDTO;
 import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.RespuestasRequestDTO;
 import com.amani.amaniapirest.services.servicePacientePregunta.preguntaServicios.paciente.PreguntaPacienteService;
@@ -26,10 +27,15 @@ public class PreguntaPacienteController {
     }
 
     @PostMapping("/responder/{idPaciente}")
-    public void responder(
+    public ResponseEntity<ResultadoTestResponseDTO> responder(
             @PathVariable Long idPaciente,
             @RequestBody List<RespuestasRequestDTO> respuestas
     ) {
-        preguntaPacienteService.responder(idPaciente, respuestas);
+
+        ResultadoTestResponseDTO resultado =
+                preguntaPacienteService.responder(idPaciente, respuestas);
+
+        return ResponseEntity.ok(resultado);
     }
+
 }

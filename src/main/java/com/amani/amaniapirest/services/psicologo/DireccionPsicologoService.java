@@ -50,7 +50,6 @@ public class DireccionPsicologoService {
         direccion.setProvincia(request.getProvincia());
         direccion.setCodigoPostal(request.getCodigoPostal());
         direccion.setPais(request.getPais());
-        direccion.setDescripcion(request.getDescripcion());
 
         return toResponse(direccionRepository.save(direccion));
     }
@@ -66,7 +65,6 @@ public class DireccionPsicologoService {
         direccion.setProvincia(request.getProvincia());
         direccion.setCodigoPostal(request.getCodigoPostal());
         direccion.setPais(request.getPais());
-        direccion.setDescripcion(request.getDescripcion());
 
         return toResponse(direccionRepository.save(direccion));
     }

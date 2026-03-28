@@ -1,6 +1,7 @@
 package com.amani.amaniapirest.services.servicePacientePregunta.preguntaServicios.paciente;
 
 
+import com.amani.amaniapirest.dto.dtoPregunta.ResultadoTestResponseDTO;
 import com.amani.amaniapirest.dto.dtoPregunta.paciente.PreguntaPacienteResponseDTO;
 import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.RespuestasRequestDTO;
 import com.amani.amaniapirest.models.Paciente;
@@ -48,14 +49,20 @@ public class PreguntaPacienteService {
                 .toList();
     }
 
-    public void responder(Long idPaciente, List<RespuestasRequestDTO> respuestas){
+    public ResultadoTestResponseDTO responder(
+            Long idPaciente,
+            List<RespuestasRequestDTO> respuestas
+    ) {
 
         Paciente paciente = pacienteRepository.findById(idPaciente)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
+        int total = 0;
+
         for (RespuestasRequestDTO r : respuestas) {
 
             Respuesta respuesta = new Respuesta();
+
             Pregunta pregunta = preguntaRepository.findById(r.getIdPregunta())
                     .orElseThrow(() -> new RuntimeException("Pregunta no encontrada"));
 
@@ -65,12 +72,38 @@ public class PreguntaPacienteService {
             respuesta.setCreadoEn(LocalDateTime.now());
 
             if (r.getIdOpcion() != null) {
+
                 Opcion opcion = opcionRepository.findById(r.getIdOpcion())
                         .orElseThrow(() -> new RuntimeException("Opción no encontrada"));
+
                 respuesta.setOpcion(opcion);
+
+                if (opcion.getValor() != null) {
+                    total += opcion.getValor();
+                }
             }
 
             respuestaRepository.save(respuesta);
         }
+
+        String nivel = calcularNivel(total);
+
+        return new ResultadoTestResponseDTO(
+                idPaciente,
+                total,
+                nivel
+        );
+    }
+    private String calcularNivel(int total) {
+
+        if (total <= 5) {
+            return "BAJO";
+        }
+
+        if (total <= 10) {
+            return "MEDIO";
+        }
+
+        return "ALTO";
     }
 }

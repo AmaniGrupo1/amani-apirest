@@ -54,6 +54,7 @@ public class SecurityConfig {
 
                         //  Públicos
                         .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
+                        .requestMatchers("/api/situaciones").permitAll()
 
                         //  ADMIN
                         .requestMatchers("/auth/registry/pacienteAdmin").hasRole("ADMIN")

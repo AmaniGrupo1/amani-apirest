@@ -44,7 +44,6 @@ public class DireccionAdminService {
         direccion1.setProvincia(direccion.getProvincia());
         direccion1.setCodigoPostal(direccion.getCodigoPostal());
         direccion1.setPais(direccion.getPais());
-        direccion1.setDescripcion(direccion.getDescripcion());
 
         return toResponse(direccionRepository.save(direccion1));
     }

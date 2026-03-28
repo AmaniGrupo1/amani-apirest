@@ -3,7 +3,7 @@ package com.amani.amaniapirest.services.servicePacientePregunta.preguntaServicio
 
 import com.amani.amaniapirest.dto.dtoPregunta.admin.OpcionAdminResponseDTO;
 import com.amani.amaniapirest.dto.dtoPregunta.paciente.PreguntaPacienteResponseDTO;
-import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.PreguntaRequestDTO;
+import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.OpcionAdminResDTO;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Opcion;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Pregunta;
 import com.amani.amaniapirest.repository.repositoryRespuesta.OpcionRepository;
@@ -19,7 +19,7 @@ import java.util.List;
 public class PreguntaAdminService {
 
     private final PreguntaRepository preguntaRepository;
-    private final OpcionRepository opcionRepository;
+
 
     public List<OpcionAdminResponseDTO> findAll() {
         return preguntaRepository.findAll()
@@ -42,7 +42,7 @@ public class PreguntaAdminService {
                 .toList();
     }
 
-    public PreguntaPacienteResponseDTO create(PreguntaRequestDTO request) {
+    public PreguntaPacienteResponseDTO create(OpcionAdminResDTO request) {
 
         Pregunta pregunta = new Pregunta();
         pregunta.setTexto(request.getTexto());

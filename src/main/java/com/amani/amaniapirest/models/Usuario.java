@@ -36,6 +36,8 @@ public class Usuario {
      */
     private String apellido;
 
+
+    private String dni;
     /**
      * Correo electronico unico utilizado para el inicio de sesion.
      */
@@ -59,9 +61,12 @@ public class Usuario {
      */
     private Boolean activo;
 
-    /** Fecha y hora de registro del usuario en el sistema. */
+    /**
+     * Fecha y hora de registro del usuario en el sistema.
+     */
     @Column(nullable = false, updatable = false)
     private LocalDateTime fechaRegistro;
+
     @PrePersist
     public void prePersist() {
         this.fechaRegistro = LocalDateTime.now();

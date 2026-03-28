@@ -17,6 +17,6 @@ public class RespuestaPsicologoController {
 
     @GetMapping
     public List<RespuestaPacientePsicologoResponseDTO> getRespuestasPacientes() {
-        return respuestaPsicologoService.getRespuestasPacientes();
+        return respuestaPsicologoService.getResultadosPacientes();
     }
 }

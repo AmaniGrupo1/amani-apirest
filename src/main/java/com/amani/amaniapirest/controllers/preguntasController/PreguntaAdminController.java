@@ -3,7 +3,7 @@ package com.amani.amaniapirest.controllers.preguntasController;
 
 import com.amani.amaniapirest.dto.dtoPregunta.admin.OpcionAdminResponseDTO;
 import com.amani.amaniapirest.dto.dtoPregunta.paciente.PreguntaPacienteResponseDTO;
-import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.PreguntaRequestDTO;
+import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.OpcionAdminResDTO;
 import com.amani.amaniapirest.services.servicePacientePregunta.preguntaServicios.admin.PreguntaAdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class PreguntaAdminController {
     }
 
     @PostMapping
-    public ResponseEntity<PreguntaPacienteResponseDTO> create(@RequestBody PreguntaRequestDTO request) {
+    public ResponseEntity<PreguntaPacienteResponseDTO> create(@RequestBody OpcionAdminResDTO request) {
         var pre = preguntaAdminService.create(request);
         if (pre == null) {
             return ResponseEntity.notFound().build();
