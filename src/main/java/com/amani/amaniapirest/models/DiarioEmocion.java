@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +39,7 @@ public class DiarioEmocion {
     private String nota;
 
     /** Paciente al que pertenece esta entrada del diario. */
+    @JsonIgnoreProperties({"usuario", "psicologo", "direcciones", "citas", "historiales", "respuestas"})
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;

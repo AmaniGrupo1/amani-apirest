@@ -6,7 +6,17 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * Repositorio JPA para operaciones de persistencia sobre la entidad {@link Pregunta}.
+ */
 public interface PreguntaRepository extends JpaRepository<Pregunta, Long> {
+
+    /**
+     * Obtiene todas las preguntas con sus opciones cargadas eagerly (FETCH JOIN)
+     * para evitar el problema N+1.
+     *
+     * @return lista de preguntas con opciones.
+     */
     @Query("""
                 SELECT DISTINCT p
                 FROM Pregunta p

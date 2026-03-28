@@ -1,6 +1,7 @@
 package com.amani.amaniapirest.models;
 
 import com.amani.amaniapirest.enums.EstadoCita;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -35,8 +36,9 @@ public class Cita {
     /** Duración de la cita en minutos. */
     private int durationMinutes;
 
-    @Enumerated(EnumType.STRING) // ← Esto es clave para PostgreSQL ENUM
-    @Column(name = "estado", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "estado", columnDefinition = "estado_cita", nullable = false)
     private EstadoCita estado;
 
     /** Motivo o descripción de la consulta. */
@@ -47,16 +49,19 @@ public class Cita {
 
     private LocalDateTime updatedAt;
 
+    @JsonIgnoreProperties({"usuario", "psicologo", "paciente"})
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;
 
     /** Psicologo que atiende la cita. */
+    @JsonIgnoreProperties({"usuario", "pacientes"})
     @ManyToOne
     @JoinColumn(name = "id_psicologo")
     private Psicologo psicologo;
 
     /** Sesion terapéutica generada a partir de esta cita. */
+    @JsonIgnoreProperties({"cita"})
     @OneToOne(mappedBy = "cita")
     private Sesion sesion;
 

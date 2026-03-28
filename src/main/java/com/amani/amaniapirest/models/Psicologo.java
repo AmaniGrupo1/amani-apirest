@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,10 +14,11 @@ import java.util.List;
  * y licencia del profesional. Cada psicologo está vinculado a un
  * {@link Usuario} del sistema y puede tener multiples {@link Cita citas} asignadas.</p>
  */
+@JsonIgnoreProperties({"usuario", "pacientes"})
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"usuario", "citas"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "psicologos")
@@ -46,11 +48,12 @@ public class Psicologo {
     private LocalDateTime updatedAt;
 
     /** Usuario del sistema asociado a este psicologo. */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
     /** Lista de citas asignadas a este psicologo. */
+    @JsonIgnoreProperties({"psicologo", "paciente"})
     @OneToMany(mappedBy = "psicologo")
     private List<Cita> citas;
 }

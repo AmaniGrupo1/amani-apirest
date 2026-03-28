@@ -1,6 +1,7 @@
 package com.amani.amaniapirest.models;
 
 import com.amani.amaniapirest.enums.RolUsuario;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -9,10 +10,11 @@ import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@JsonIgnoreProperties({"psicologo", "paciente", "enviados", "recibidos", "hibernateLazyInitializer"})
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"paciente", "psicologo", "enviados", "recibidos"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -92,13 +94,13 @@ public class Usuario {
     /**
      * Perfil de paciente asociado a este usuario, si aplica.
      */
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
     private Paciente paciente;
 
     /**
      * Perfil de psicologo asociado a este usuario, si aplica.
      */
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
     private Psicologo psicologo;
 
     /**

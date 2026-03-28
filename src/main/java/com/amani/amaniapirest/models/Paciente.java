@@ -3,6 +3,7 @@ package com.amani.amaniapirest.models;
 import com.amani.amaniapirest.enums.EstadoPago;
 import com.amani.amaniapirest.enums.MetodoPago;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Respuesta;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnTransformer;
@@ -21,10 +22,11 @@ import java.util.Set;
  * historial clínico y direcciones. Cada paciente está vinculado a un
  * {@link Usuario} del sistema para autenticación e identidad.</p>
  */
+@JsonIgnoreProperties({"usuario", "psicologo"})
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"usuario", "psicologo", "direcciones", "citas", "historiales", "respuestas"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "pacientes")
@@ -61,26 +63,30 @@ public class Paciente {
     private LocalDateTime updatedAt;
 
     /** Usuario del sistema asociado a este paciente. */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_psicologo")
     private Psicologo psicologo;
 
     /** Lista de direcciones registradas para el paciente. */
+    @JsonIgnoreProperties({"paciente"})
     @OneToMany(mappedBy = "paciente")
     private List<Direccion> direcciones;
 
     /** Lista de citas del paciente. */
+    @JsonIgnoreProperties({"paciente", "psicologo"})
     @OneToMany(mappedBy = "paciente")
     private List<Cita> citas;
 
     /** Historial clinico del paciente. */
+    @JsonIgnoreProperties({"paciente"})
     @OneToMany(mappedBy = "paciente")
     private List<HistorialClinico> historiales;
 
+    @JsonIgnoreProperties({"paciente"})
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<Respuesta> respuestas;
 

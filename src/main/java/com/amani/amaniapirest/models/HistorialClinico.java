@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,6 +42,7 @@ public class HistorialClinico {
     private LocalDateTime creadoEn;
 
     /** Paciente al que pertenece este registro clinico. */
+    @JsonIgnoreProperties({"usuario", "psicologo", "direcciones", "citas", "historiales", "respuestas"})
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;

@@ -8,9 +8,23 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * Repositorio JPA para operaciones de persistencia sobre la entidad {@link Respuesta}.
+ *
+ * <p>Incluye queries personalizadas para proyectar respuestas como DTOs
+ * y para cargar eagerly las relaciones con pregunta, opcion y paciente.</p>
+ */
 public interface RespuestaRepository extends JpaRepository<Respuesta, Long> {
+
+    /** Busca la respuesta de un paciente. @param idPaciente identificador del paciente. @return la respuesta encontrada. */
     Respuesta findByPaciente_IdPaciente(Long idPaciente);
 
+    /**
+     * Obtiene las respuestas de un paciente proyectadas como DTO para el psicologo.
+     *
+     * @param idPaciente identificador del paciente.
+     * @return lista de respuestas con datos de pregunta y opcion.
+     */
     @Query("""
                 SELECT RespuestaPacientePsicologoResponseDTO(
                     CONCAT(pac.usuario.nombre,' ',pac.usuario.apellido),
@@ -27,6 +41,12 @@ public interface RespuestaRepository extends JpaRepository<Respuesta, Long> {
             """)
     List<RespuestaPacientePsicologoResponseDTO> obtenerRespuestasPaciente(@Param("idPaciente") Long idPaciente);
 
+    /**
+     * Obtiene todas las respuestas con sus relaciones cargadas eagerly
+     * (pregunta, opcion, paciente y usuario) para evitar el problema N+1.
+     *
+     * @return lista completa de respuestas.
+     */
     @Query("""
         SELECT r
         FROM Respuesta r

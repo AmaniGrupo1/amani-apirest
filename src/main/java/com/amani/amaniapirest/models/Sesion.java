@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,10 +28,12 @@ public class Sesion {
     private Long idSesion;
 
 
+    @JsonIgnoreProperties({"usuario", "psicologo", "paciente"})
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;
 
+    @JsonIgnoreProperties({"usuario", "pacientes"})
     @ManyToOne
     @JoinColumn(name = "id_psicologo")
     private Psicologo psicologo;
@@ -54,6 +57,7 @@ public class Sesion {
     private LocalDateTime updatedAt;
 
     /** Cita terapeutica de la que deriva esta sesion. */
+    @JsonIgnoreProperties({"paciente", "psicologo", "sesion"})
     @OneToOne
     @JoinColumn(name = "id_cita")
     private Cita cita;

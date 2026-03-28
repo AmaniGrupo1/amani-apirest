@@ -1,8 +1,9 @@
 package com.amani.amaniapirest.models;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,11 +17,13 @@ public class PsicologoPaciente {
     private Long id;
 
     // Relación con paciente
+    @JsonIgnoreProperties({"usuario", "psicologo", "direcciones", "citas", "historiales", "respuestas"})
     @ManyToOne
     @JoinColumn(name = "id_paciente", nullable = false)
     private Paciente paciente;
 
     // Relación con psicólogo
+    @JsonIgnoreProperties({"usuario", "pacientes", "citas"})
     @ManyToOne
     @JoinColumn(name = "id_psicologo", nullable = false)
     private Psicologo psicologo;

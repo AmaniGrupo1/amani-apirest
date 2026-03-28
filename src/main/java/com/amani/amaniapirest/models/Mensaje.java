@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,15 +37,18 @@ public class Mensaje {
     private boolean leido;
 
     /** Usuario que envia el mensaje. */
+    @JsonIgnoreProperties({"paciente", "psicologo", "enviados", "recibidos"})
     @ManyToOne
     @JoinColumn(name = "sender_id")
     private Usuario sender;
 
     /** Usuario que recibe el mensaje. */
+    @JsonIgnoreProperties({"paciente", "psicologo", "enviados", "recibidos"})
     @ManyToOne
     @JoinColumn(name = "receiver_id")
     private Usuario receiver;
 
+    @JsonIgnoreProperties({"paciente", "psicologo", "sesion"})
     @ManyToOne
     @JoinColumn(name = "id_cita")
     private Cita cita;

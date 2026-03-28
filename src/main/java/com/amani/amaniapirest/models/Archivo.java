@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,6 +41,7 @@ public class Archivo {
     private LocalDateTime creadoEn;
 
     /** Sesion a la que pertenece este archivo. */
+    @JsonIgnoreProperties({"paciente", "psicologo", "cita"})
     @ManyToOne
     @JoinColumn(name = "id_sesion")
     private Sesion sesion;
