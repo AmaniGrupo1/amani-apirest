@@ -2,6 +2,7 @@ package com.amani.amaniapirest.services.serviceAdmin;
 
 import com.amani.amaniapirest.dto.dtoAdmin.TutorResonseDTO;
 import com.amani.amaniapirest.dto.dtoAdmin.response.PacienteAdminResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.dto.situacion.SituacionDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.UsuarioRequestDTO;
@@ -34,7 +35,7 @@ public class PacienteAdminService {
 
     /** Listar todos los pacientes */
     public List<PacienteAdminResponseDTO> findAll() {
-        return pacientesRepository.findAllWithSituacionesAndTutores().stream()
+        return pacientesRepository.findAllWithSituacionesTutoresYDirecciones().stream()
                 .map(this::toResponse)
                 .toList();
     }
@@ -209,6 +210,18 @@ public class PacienteAdminService {
                 .toList()
                 : List.of(); // vacío si no es menor o no tiene tutores
 
+        List<DireccionResponseDTO> direcciones = paciente.getDirecciones() != null
+                ? paciente.getDirecciones().stream()
+                .map(d -> new DireccionResponseDTO(
+                        d.getCalle(),
+                        d.getCiudad(),
+                        d.getProvincia(),
+                        d.getCodigoPostal(),
+                        d.getPais()
+                ))
+                .toList()
+                : List.of();
+
         return new PacienteAdminResponseDTO(
                 paciente.getIdPaciente(),
                 paciente.getUsuario().getNombre(),
@@ -223,7 +236,8 @@ public class PacienteAdminService {
                 paciente.getEstadoPago() != null ? paciente.getEstadoPago().name() : "PENDIENTE",
                 paciente.getMetodoPago() != null ? paciente.getMetodoPago().name() : "PRESENCIAL",
                 situaciones,
-                tutores
+                tutores,
+                direcciones
         );
     }
 }

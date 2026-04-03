@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.services;
 
+import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
 import com.amani.amaniapirest.models.BloqueoAgenda;
 import com.amani.amaniapirest.models.Cita;
 import com.amani.amaniapirest.models.HorarioPsicologo;
@@ -19,6 +21,7 @@ import com.amani.amaniapirest.dto.dtoAgenda.response.DisponibilidadDTO;
 import com.amani.amaniapirest.dto.dtoAgenda.response.SlotDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,6 +38,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CitaAgendaService {
 
     private static final int SLOT_MINUTOS = 50;
@@ -44,20 +48,8 @@ public class CitaAgendaService {
     private final BloqueoAgendaRepository bloqueoRepository;
     private final PsicologoRepository psicologoRepository;
     private final PacientesRepository pacienteRepository;
+    private final CitaService citaService;
 
-    public CitaAgendaService(
-            CitaRepository citaRepository,
-            HorarioPsicologoRepository horarioRepository,
-            BloqueoAgendaRepository bloqueoRepository,
-            PsicologoRepository psicologoRepository,
-            PacientesRepository pacienteRepository
-    ) {
-        this.citaRepository = citaRepository;
-        this.horarioRepository = horarioRepository;
-        this.bloqueoRepository = bloqueoRepository;
-        this.psicologoRepository = psicologoRepository;
-        this.pacienteRepository = pacienteRepository;
-    }
 
     // ─────────────────────────────────────────────────────────
     // GET /api/citas/paciente/{id}/agenda?month=YYYY-MM
@@ -87,7 +79,7 @@ public class CitaAgendaService {
 
         // Bloqueos del mes
         LocalDate inicio = rango[0].toLocalDate();
-        LocalDate fin    = rango[1].toLocalDate();
+        LocalDate fin = rango[1].toLocalDate();
         bloqueoRepository
                 .findByPsicologoIdPsicologoAndFechaBetween(idPsicologo, inicio, fin)
                 .stream()
@@ -142,8 +134,15 @@ public class CitaAgendaService {
         LocalDateTime finDia = fecha.plusDays(1).atStartOfDay();
         citaRepository.findByPsicologo_IdPsicologoAndStartDatetimeBetweenAndEstadoNot(
                 idPsicologo, inicioDia, finDia, EstadoCita.cancelada
-        )
-                .forEach(c -> ocupados.add(c.getStartDatetime().toLocalTime()));
+        ).forEach(c -> {
+            LocalTime t = c.getStartDatetime().toLocalTime();
+            LocalTime fin = t.plusMinutes(c.getDurationMinutes());
+
+            while (t.isBefore(fin)) {
+                ocupados.add(t);
+                t = t.plusMinutes(SLOT_MINUTOS);
+            }
+        });
 
         // Franjas parcialmente bloqueadas
         bloqueoRepository.findByPsicologoIdPsicologoAndFecha(idPsicologo, fecha)
@@ -183,35 +182,58 @@ public class CitaAgendaService {
     // ─────────────────────────────────────────────────────────
     @Transactional
     public AgendaItemDTO crearCita(CrearCitaRequestDTO req) {
-        LocalDateTime start = LocalDateTime.parse(req.getStartDatetime());
 
-        // Validar disponibilidad
+        LocalDateTime start = LocalDateTime.parse(req.getStartDatetime());
+        int duracion = req.getDuracionMinutos() != null ? req.getDuracionMinutos() : SLOT_MINUTOS;
+
+        // 1. Validar disponibilidad (rápido - lógica)
         DisponibilidadDTO disp = getDisponibilidad(
                 req.getIdPsicologo(), start.toLocalDate().toString());
 
         boolean slotLibre = !disp.isDiaCompleto() && disp.getSlotsLibres().stream()
-                .anyMatch(s -> s.getHoraInicio().equals(start.toLocalTime()));
+                .anyMatch(s ->
+                        s.getHoraInicio().equals(start.toLocalTime()) &&
+                                !s.getHoraFin().isBefore(start.toLocalTime().plusMinutes(duracion))
+                );
 
         if (!slotLibre) {
             throw new IllegalStateException("El horario solicitado no está disponible");
         }
 
-        Psicologo psicologo = psicologoRepository.findById(req.getIdPsicologo())
-                .orElseThrow(() -> new NoSuchElementException("Psicólogo no encontrado"));
-        Paciente paciente = pacienteRepository.findById(req.getIdPaciente())
-                .orElseThrow(() -> new NoSuchElementException("Paciente no encontrado"));
+        // 2. Validación REAL contra BD (evita doble reserva)
+        boolean conflicto = citaRepository
+                .findByPsicologo_IdPsicologoAndStartDatetimeBetweenAndEstadoNot(
+                        req.getIdPsicologo(),
+                        start.minusMinutes(duracion),
+                        start.plusMinutes(duracion),
+                        EstadoCita.cancelada
+                )
+                .stream()
+                .anyMatch(c ->
+                        c.getStartDatetime().isBefore(start.plusMinutes(duracion)) &&
+                                c.getStartDatetime().plusMinutes(c.getDurationMinutes()).isAfter(start)
+                );
 
-        Cita cita = new Cita();
-        cita.setPsicologo(psicologo);
-        cita.setPaciente(paciente);
-        cita.setStartDatetime(start);
-        cita.setDurationMinutes(req.getDuracionMinutos() != null ? req.getDuracionMinutos() : SLOT_MINUTOS);
-        cita.setEstado(EstadoCita.pendiente);
-        cita.setMotivo(req.getMotivo());
-        cita.setCreatedAt(LocalDateTime.now());
-        cita.setUpdatedAt(LocalDateTime.now());
+        if (conflicto) {
+            throw new IllegalStateException("Conflicto: ya existe una cita en ese horario");
+        }
 
-        return citaToAgendaItem(citaRepository.save(cita));
+        // 3. Crear cita (usar SOLO el service)
+        CitaRequestDTO dto = new CitaRequestDTO();
+        dto.setIdPaciente(req.getIdPaciente());
+        dto.setIdPsicologo(req.getIdPsicologo());
+        dto.setStartDatetime(start);
+        dto.setDurationMinutes(duracion);
+        dto.setMotivo(req.getMotivo());
+        dto.setEstado(EstadoCita.pendiente);
+
+        CitaResponseDTO creada = citaService.create(dto);
+
+        // 4. Obtener entidad y mapear a agenda
+        Cita cita = citaRepository.findById(creada.getIdCita())
+                .orElseThrow(() -> new NoSuchElementException("Error al recuperar la cita creada"));
+
+        return citaToAgendaItem(cita);
     }
 
     // ─────────────────────────────────────────────────────────
@@ -266,7 +288,7 @@ public class CitaAgendaService {
                 .psicologo(psicologo)
                 .fecha(LocalDate.parse(req.getFecha()))
                 .horaInicio(req.getHoraInicio() != null ? LocalTime.parse(req.getHoraInicio()) : null)
-                .horaFin(req.getHoraFin()       != null ? LocalTime.parse(req.getHoraFin())    : null)
+                .horaFin(req.getHoraFin() != null ? LocalTime.parse(req.getHoraFin()) : null)
                 .motivo(req.getMotivo())
                 .build();
 
@@ -306,7 +328,7 @@ public class CitaAgendaService {
                 .id(b.getIdBloqueo())
                 .fecha(b.getFecha())
                 .horaInicio(b.getHoraInicio() != null ? b.getHoraInicio() : LocalTime.of(0, 0))
-                .horaFin(b.getHoraFin()       != null ? b.getHoraFin()   : LocalTime.of(23, 59))
+                .horaFin(b.getHoraFin() != null ? b.getHoraFin() : LocalTime.of(23, 59))
                 .tipo("bloqueo")
                 .motivo(b.getMotivo())
                 .build();
@@ -316,9 +338,11 @@ public class CitaAgendaService {
         return u.getNombre() + (u.getApellido() != null ? " " + u.getApellido() : "");
     }
 
-    /** Devuelve [inicioMes, finMes) como LocalDateTime */
+    /**
+     * Devuelve [inicioMes, finMes) como LocalDateTime
+     */
     private LocalDateTime[] rangoMes(String month) {
-        YearMonth ym     = YearMonth.parse(month);
+        YearMonth ym = YearMonth.parse(month);
         LocalDateTime ini = ym.atDay(1).atStartOfDay();
         LocalDateTime fin = ym.atEndOfMonth().plusDays(1).atStartOfDay();
         return new LocalDateTime[]{ini, fin};

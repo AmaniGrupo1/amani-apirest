@@ -23,5 +23,6 @@ public class HorarioRequestDTO {
         private String horaInicio;
         private String horaFin;
         private boolean activo;
+        private String motivo;
     }
 }

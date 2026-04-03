@@ -17,12 +17,13 @@ public interface PacientesRepository extends JpaRepository<Paciente, Long> {
     Optional<Paciente> findByUsuario_IdUsuario(Long idUsuario);
 
     @Query("""
-                SELECT DISTINCT p FROM Paciente p
-                LEFT JOIN FETCH p.pacienteSituaciones ps
-                LEFT JOIN FETCH ps.situacion
-                 LEFT JOIN FETCH p.tutores t
-            """)
-    List<Paciente> findAllWithSituacionesAndTutores();
+    SELECT DISTINCT p FROM Paciente p
+    LEFT JOIN FETCH p.pacienteSituaciones ps
+    LEFT JOIN FETCH ps.situacion
+    LEFT JOIN FETCH p.tutores t
+    LEFT JOIN FETCH p.direcciones d
+""")
+    List<Paciente> findAllWithSituacionesTutoresYDirecciones();
 
     @Query("""
     SELECT p.idPaciente FROM Paciente p

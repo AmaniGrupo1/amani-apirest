@@ -41,9 +41,11 @@ public class AuthService {
     private final PacientesRepository pacienteRepository;
     private final SituacionRepository situacionRepository;
     private final PacienteSituacionRepository pacienteSituacionRepository;
+    private final PsicologoPacienteRepository psicologoPacienteRepository;
     private final ConsentimientoService consentimientoService;
     private final DireccionRepository direccionRepository;
     private final TutorRepository tutorRepository;
+    private final PsicologoRepository psicologoRepository;
     private final SecurityConfig securityConfig;
     private final JwtUtil jwtUtil;
 
@@ -299,4 +301,5 @@ public class AuthService {
         paciente.getUsuario().setFechaBaja(LocalDateTime.now());
         usuarioRepository.save(paciente.getUsuario());
     }
+
 }

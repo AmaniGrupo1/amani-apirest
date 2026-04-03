@@ -15,9 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DireccionRequestDTO {
-
-    /** Identificador del paciente al que pertenece la dirección. */
-    @NotNull
+        /** Identificador del paciente al que pertenece esta dirección. */
     private Long idPaciente;
 
     /** Nombre de la calle y número. */
