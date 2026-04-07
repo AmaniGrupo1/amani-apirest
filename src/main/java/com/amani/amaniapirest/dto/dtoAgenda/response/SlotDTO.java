@@ -14,6 +14,8 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SlotDTO {
-    private LocalTime horaInicio;
-    private LocalTime horaFin;
+    private LocalTime hora;
+    private LocalTime horaFin; // agregado
+    private boolean ocupado;
+    private String descripcion;
 }

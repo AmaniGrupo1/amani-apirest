@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.dto.dtoPsicologo.response;
 
+import com.amani.amaniapirest.enums.EstadoPago;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,29 +20,31 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(name = "PacientePsicologoResponse", description = "Datos básicos de un paciente — vista psicólogo")
 public class PacientePsicologoResponseDTO {
 
+    private Long idPaciente;
     /** Nombre de pila del paciente. */
     @Schema(description = "Nombre del paciente", example = "Laura")
-
     private String nombre;
 
     /** Apellido del paciente. */
     @Schema(description = "Apellido del paciente", example = "Martínez")
-
     private String apellido;
 
     /** Fecha de nacimiento del paciente. */
     @Schema(description = "Fecha de nacimiento", example = "1990-05-15")
-
     private LocalDate fechaNacimiento;
 
+    private String email;
     /** Género del paciente. */
     @Schema(description = "Género", example = "femenino")
-
     private String genero;
 
     /** Número de teléfono del paciente. */
     @Schema(description = "Teléfono", example = "+34612345678")
-
     private String telefono;
+
+    private String direccion;
+
+    private EstadoPago estadoPago;
+
 }
 

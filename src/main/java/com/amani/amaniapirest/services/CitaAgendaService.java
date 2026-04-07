@@ -162,7 +162,7 @@ public class CitaAgendaService {
             while (!t.plusMinutes(SLOT_MINUTOS).isAfter(franja.getHoraFin())) {
                 if (!ocupados.contains(t)) {
                     libres.add(SlotDTO.builder()
-                            .horaInicio(t)
+                            .hora(t)
                             .horaFin(t.plusMinutes(SLOT_MINUTOS))
                             .build());
                 }
@@ -192,8 +192,8 @@ public class CitaAgendaService {
 
         boolean slotLibre = !disp.isDiaCompleto() && disp.getSlotsLibres().stream()
                 .anyMatch(s ->
-                        s.getHoraInicio().equals(start.toLocalTime()) &&
-                                !s.getHoraFin().isBefore(start.toLocalTime().plusMinutes(duracion))
+                        s.getHora().equals(start.toLocalTime()) &&
+                                !s.getHora().isBefore(start.toLocalTime().plusMinutes(duracion))
                 );
 
         if (!slotLibre) {
