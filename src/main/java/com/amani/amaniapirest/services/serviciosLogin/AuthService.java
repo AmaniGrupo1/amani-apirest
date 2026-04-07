@@ -71,11 +71,19 @@ public class AuthService {
         // Generar token JWT incluyendo el rol
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
+        // Para psicólogos, obtener el idPsicologo
+        Long idPsicologo = null;
+        if (usuario.getRol() == RolUsuario.psicologo) {
+            Psicologo p = psicologoRepository.findByUsuarioIdUsuario(usuario.getIdUsuario()).orElse(null);
+            if (p != null) idPsicologo = p.getIdPsicologo();
+        }
+
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
-                token
+                token,
+                idPsicologo
         );
     }
 
@@ -217,7 +225,8 @@ public class AuthService {
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
-                token
+                token,
+                null  // idPsicologo — pacientes no tienen
         );
     }
     // ================= REGISTER ADMIN =================
@@ -244,7 +253,8 @@ public class AuthService {
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
-                token
+                token,
+                null  // idPsicologo — admins no tienen
         );
     }
 
@@ -284,11 +294,19 @@ public class AuthService {
 
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
+        // Para psicólogos, obtener el idPsicologo
+        Long idPsicologo = null;
+        if (usuario.getRol() == RolUsuario.psicologo) {
+            Psicologo p = psicologoRepository.findByUsuarioIdUsuario(usuario.getIdUsuario()).orElse(null);
+            if (p != null) idPsicologo = p.getIdPsicologo();
+        }
+
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
-                token
+                token,
+                idPsicologo
         );
     }
 

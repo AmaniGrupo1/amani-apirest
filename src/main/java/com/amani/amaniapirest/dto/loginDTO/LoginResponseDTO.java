@@ -18,4 +18,5 @@ public class LoginResponseDTO {
     private String nombre;
     private String rol;
     private String token;
+    private Long idPsicologo;  // null para pacientes y admins
 }
