@@ -74,7 +74,7 @@ public class CitaControladorPsicologo {
         return ResponseEntity.ok(citaAgendaService.getAgendaPsicologo(idPsicologo, month));
     }
 
-    /**
+    /**b
      * GET /api/citas/psicologo/{idPsicologo}/disponibilidad?fecha=YYYY-MM-DD
      * Devuelve la disponibilidad del psicólogo para un día concreto.
      */

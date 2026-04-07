@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.repository;
 
 
-import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteResponseDTO;
+import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
 import com.amani.amaniapirest.models.PsicologoPaciente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,14 +18,14 @@ public interface PsicologoPacienteRepository extends JpaRepository<PsicologoPaci
     PsicologoPaciente findByPacienteIdPacienteAndFechaFinIsNull(Long idPaciente);
 
     @Query("""
-    SELECT new com.amani.amaniapirest.dto.PacienteResponseDTO(
+    SELECT new com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO(
         p.idPaciente,
         u.nombre,
         u.apellido,
-        u.email,
-        p.telefono,
         p.fechaNacimiento,
+        u.email,
         p.genero,
+        p.telefono,
         p.estadoPago
     )
     FROM PsicologoPaciente pp
@@ -34,5 +34,5 @@ public interface PsicologoPacienteRepository extends JpaRepository<PsicologoPaci
     WHERE pp.psicologo.idPsicologo = :idPsicologo
     AND pp.fechaFin IS NULL
 """)
-    List<PacienteResponseDTO> obtenerPacientesActivos(@Param("idPsicologo") Long idPsicologo);
+    List<PacientePsicologoResponseDTO> obtenerPacientesActivos(@Param("idPsicologo") Long idPsicologo);
 }
