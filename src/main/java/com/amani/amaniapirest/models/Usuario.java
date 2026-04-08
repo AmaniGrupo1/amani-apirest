@@ -71,10 +71,17 @@ public class Usuario {
     @Column(nullable = false, updatable = false)
     private LocalDateTime fechaRegistro;
 
+    /** URL del avatar por defecto, servido como recurso estático por Spring Boot. */
+    public static final String AVATAR_DEFAULT = "/avatar-default.svg";
+
     @PrePersist
     public void prePersist() {
         this.fechaRegistro = LocalDateTime.now();
         this.activo = true;
+        // Si no se asignó foto al crear el usuario, se usa el avatar por defecto
+        if (this.fotoPerfilUrl == null || this.fotoPerfilUrl.isBlank()) {
+            this.fotoPerfilUrl = AVATAR_DEFAULT;
+        }
     }
 
     /**

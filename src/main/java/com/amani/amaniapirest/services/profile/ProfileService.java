@@ -25,9 +25,10 @@ public class ProfileService {
 
         Usuario usuario = psicologo.getUsuario();
 
-        // Borrar foto anterior del disco si ya existía (evita archivos huérfanos)
-        if (usuario.getFotoPerfilUrl() != null) {
-            fileStorageService.deleteFile(usuario.getFotoPerfilUrl());
+        // Borrar foto anterior del disco solo si NO es el avatar por defecto
+        String fotoActual = usuario.getFotoPerfilUrl();
+        if (fotoActual != null && !fotoActual.equals(Usuario.AVATAR_DEFAULT)) {
+            fileStorageService.deleteFile(fotoActual);
         }
 
         String urlFoto = fileStorageService.storeFile(file);
