@@ -69,6 +69,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/pacientes/admin").hasRole("ADMIN") //Listamos pacientes
                         //  PSICOLOGO + ADMIN
                         .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
+                        .requestMatchers("/api/psicologo/pacientes/getAll/{idPsicologo}").hasRole( "PSICOLOGO")
+                        // Permitir a psicólogos y admin acceder a cualquier endpoint de psicólogo
+
 
                         //  Otros
                         .requestMatchers("/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()

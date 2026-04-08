@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PsicologoPacienteRepository extends JpaRepository<PsicologoPaciente, Long> {
 
@@ -17,22 +18,5 @@ public interface PsicologoPacienteRepository extends JpaRepository<PsicologoPaci
     // Asignación activa de un paciente
     PsicologoPaciente findByPacienteIdPacienteAndFechaFinIsNull(Long idPaciente);
 
-    @Query("""
-    SELECT new com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO(
-        p.idPaciente,
-        u.nombre,
-        u.apellido,
-        p.fechaNacimiento,
-        u.email,
-        p.genero,
-        p.telefono,
-        p.estadoPago
-    )
-    FROM PsicologoPaciente pp
-    JOIN pp.paciente p
-    JOIN p.usuario u
-    WHERE pp.psicologo.idPsicologo = :idPsicologo
-    AND pp.fechaFin IS NULL
-""")
-    List<PacientePsicologoResponseDTO> obtenerPacientesActivos(@Param("idPsicologo") Long idPsicologo);
+    Optional<PsicologoPaciente> findByPaciente_Usuario_IdUsuario(Long idUsuario);
 }

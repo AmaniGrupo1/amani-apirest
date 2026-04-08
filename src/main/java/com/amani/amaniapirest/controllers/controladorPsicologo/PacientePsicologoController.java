@@ -2,9 +2,12 @@ package com.amani.amaniapirest.controllers.controladorPsicologo;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
+import com.amani.amaniapirest.repository.PsicologoPacienteRepository;
 import com.amani.amaniapirest.services.psicologo.PacientePsicologoService;
+import com.amani.amaniapirest.services.serviceAdmin.PsicologoAdminService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +27,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 @RequestMapping("/api/psicologo/pacientes")
 @Tag(name = "Pacientes (Psicologo)", description = "Gestion de pacientes — vista psicologo")
+@RequiredArgsConstructor
 public class PacientePsicologoController {
 
     private final PacientePsicologoService pacienteService;
+   private final PsicologoPacienteRepository psicologoPacienteRepository;
+   private final PsicologoAdminService psicologoAdminService;
 
-    public PacientePsicologoController(PacientePsicologoService pacienteService) {
-        this.pacienteService = pacienteService;
-    }
 
     @Operation(summary = "Obtener paciente", description = "Obtiene un paciente por su ID")
     @ApiResponses(value = {
@@ -50,6 +53,17 @@ public class PacientePsicologoController {
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
+
+    //Listo todos los pacientes activos del psicólogo logueado
+    @GetMapping("/getAll")
+    public ResponseEntity<List<PacientePsicologoResponseDTO>> getPacientes() {
+        List<PacientePsicologoResponseDTO> pacientes = psicologoAdminService.getPacientesDelPsicologoLogueado();
+        if (pacientes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(pacientes);
+    }
+
     @PostMapping
     /** Crear un nuevo paciente (solo datos básicos) */
     public ResponseEntity<PacientePsicologoResponseDTO> crearPaciente(@RequestBody PacienteRequestDTO request) {

@@ -9,16 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UsuarioDTO {
 
-    private Long id;
-
+    private Long idUsuario;
     private String nombre;
-
     private String apellido;
-
     private String email;
-
-    private String rol;
-
-    private Boolean activo;
-    private Long idPsicologo;
+    private String fotoPerfilUrl;
 }

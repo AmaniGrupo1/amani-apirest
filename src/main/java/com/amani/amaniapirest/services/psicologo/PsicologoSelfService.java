@@ -45,8 +45,7 @@ public class PsicologoSelfService {
     public PsicologoDTO findProfileById(Long idPsicologo) {
         Psicologo psicologo = getPsicologoOrThrow(idPsicologo);
         return profileMapper.toPsicologoDTO(
-                psicologo,
-                pacientesRepository.findIdsByPsicologoId(idPsicologo)
+                psicologo
         );
     }
 

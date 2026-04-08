@@ -10,14 +10,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PacienteDTO {
-
-    private Long id;
-
-    private LocalDate fechaNacimiento;
-
-    private String genero;
-
+    private Long idPaciente;
+    // Datos paciente
     private String telefono;
-
-    private Long idPsicologo;
+    private String genero;
+    private LocalDate fechaNacimiento;
+    private UsuarioDTO usuario;
 }

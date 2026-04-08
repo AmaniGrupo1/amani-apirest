@@ -11,15 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 public class PsicologoDTO {
 
-    private Long id;
-
+    private Long idPsicologo;
     private String especialidad;
-
-    private String licencia;
-
     private Integer experiencia;
-
     private String descripcion;
-
-    private List<Long> pacientes;
+    private String licencia;
+    private UsuarioDTO usuario;
 }

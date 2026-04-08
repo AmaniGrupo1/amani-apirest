@@ -47,10 +47,10 @@ public class AuthController {
         return authService.registerAdmin(request);
     }
 
-    @PostMapping("/register-psicologo")
+   /** @PostMapping("/register-psicologo")
     public LoginResponseDTO registerPsicologo(@RequestBody RegistryRequestDTO request){
         return authService.registerPsicologo(request);
-    }
+    } **/
 
     @PutMapping("/pacientes/{id}/baja")
     public ResponseEntity<String> darBajaPaciente(@PathVariable Long id) {

@@ -45,6 +45,8 @@ public class Usuario {
      */
     private String email;
 
+    private String fotoPerfilUrl;
+
     /**
      * Contrasena del usuario almacenada con hash BCrypt.
      */

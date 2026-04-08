@@ -61,21 +61,36 @@ public class AuthService {
             throw new RuntimeException("Contraseña incorrecta");
         }
 
-        // UserDetails con autoridad correcta
         UserDetails userDetails = new User(
                 usuario.getEmail(),
                 usuario.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name().toUpperCase()))
         );
 
-        // Generar token JWT incluyendo el rol
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
+
+        Long idPsicologo = null;
+
+        // 🔥 CLAVE: decidir qué devolver
+        if (usuario.getRol() == RolUsuario.psicologo) {
+            idPsicologo = psicologoRepository
+                    .findByUsuarioIdUsuario(usuario.getIdUsuario())
+                    .map(Psicologo::getIdPsicologo)
+                    .orElse(null);
+        } else if (usuario.getRol() == RolUsuario.paciente) {
+            // buscar el psicólogo asignado
+            idPsicologo = psicologoPacienteRepository
+                    .findByPaciente_Usuario_IdUsuario(usuario.getIdUsuario())
+                    .map(rel -> rel.getPsicologo().getIdPsicologo())
+                    .orElse(null);
+        }
 
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
-                token
+                token,
+                idPsicologo   // 👈 AQUÍ
         );
     }
 
@@ -213,13 +228,20 @@ public class AuthService {
 
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
+        Long idPsicologo = psicologoPacienteRepository
+                .findByPaciente_Usuario_IdUsuario(usuario.getIdUsuario())
+                .map(rel -> rel.getPsicologo().getIdPsicologo())
+                .orElse(null);
+
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
-                token
+                token,
+                idPsicologo
         );
     }
+
     // ================= REGISTER ADMIN =================
     public LoginResponseDTO registerAdmin(RegistryRequestDTO request) {
 
@@ -237,6 +259,18 @@ public class AuthService {
                 usuario.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name().toUpperCase()))
         );
+        Long idPsicologo = null;
+
+        if (usuario.getRol() == RolUsuario.psicologo) {
+            // si el usuario es psicólogo, devolvemos su propio ID
+            idPsicologo = usuario.getIdUsuario();
+        } else if (usuario.getRol() == RolUsuario.paciente) {
+            // si es paciente, buscamos el psicólogo asignado
+            idPsicologo = psicologoPacienteRepository
+                    .findByPaciente_Usuario_IdUsuario(usuario.getIdUsuario())
+                    .map(rel -> rel.getPsicologo().getIdPsicologo())
+                    .orElse(null); // null si no hay psicólogo asignado
+        }
 
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
@@ -244,7 +278,8 @@ public class AuthService {
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
-                token
+                token,
+                idPsicologo   // 👈 AQUÍ
         );
     }
 
@@ -265,7 +300,7 @@ public class AuthService {
     }
 
     // ================= REGISTER PSICOLOGO =================
-    public LoginResponseDTO registerPsicologo(RegistryRequestDTO request) {
+  /**  public LoginResponseDTO registerPsicologo(RegistryRequestDTO request) {
 
         Usuario usuario = new Usuario();
         usuario.setNombre(request.getNombre());
@@ -276,6 +311,16 @@ public class AuthService {
         usuario.setActivo(true);
         usuarioRepository.save(usuario);
 
+        Psicologo psicologo = new Psicologo();
+        psicologo.setUsuario(usuario);
+
+// opcional: otros campos
+        psicologo.setEspecialidad();
+        psicologo.setExperiencia(0);
+
+        psicologo = psicologoRepository.save(psicologo);
+
+        Long idPsicologo = psicologo.getIdPsicologo(); // ✅ ESTE es el bueno
         UserDetails userDetails = new User(
                 usuario.getEmail(),
                 usuario.getPassword(),
@@ -288,9 +333,11 @@ public class AuthService {
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
-                token
+                token,
+                idPsicologo   // 👈 AQUÍ
         );
     }
+   **/
 
     // ================= BAJA =================
     public void darBajaPaciente(Long idPaciente) {

@@ -24,15 +24,15 @@ public class PsicologoAdminController {
 
     // Asignar paciente a psicólogo
     @PostMapping("/asignar-psicologo")
-    public ResponseEntity<String> asignarPsicologo(@RequestBody AsignarPacienteAlPsicologoRequestDTO request) {
+    public ResponseEntity<Boolean> asignarPsicologo(@RequestBody AsignarPacienteAlPsicologoRequestDTO request) {
         boolean resultado = psicologoPacienteService.asignarPsicologo(
                 request.getIdPaciente(),
                 request.getIdPsicologo()
         );
         if (resultado) {
-            return ResponseEntity.ok("Psicólogo asignado correctamente");
+            return ResponseEntity.ok(true);
         } else {
-            return ResponseEntity.badRequest().body("Error al asignar psicólogo");
+            return ResponseEntity.badRequest().body(false);
         }
     }
 

@@ -12,8 +12,8 @@
         /** Comprueba si ya existe un psicólogo asociado a este usuario */
         boolean existsByUsuario(Usuario usuario);
 
-        @Query("SELECT p FROM Psicologo p JOIN FETCH p.usuario u WHERE u.idUsuario = :idUsuario")
-        Optional<Psicologo> findByUsuarioId(@Param("idUsuario") Long idUsuario);
-
         Optional<Psicologo> findByUsuarioIdUsuario(Long idUsuario);
+
+
+        Optional<Psicologo> findByUsuarioEmail(String email);
     }

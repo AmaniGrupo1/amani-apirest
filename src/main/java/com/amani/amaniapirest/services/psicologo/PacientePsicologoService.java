@@ -2,6 +2,7 @@ package com.amani.amaniapirest.services.psicologo;
 
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
 import com.amani.amaniapirest.models.Cita;
 import com.amani.amaniapirest.models.Direccion;
@@ -11,10 +12,9 @@ import com.amani.amaniapirest.repository.PacientesRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * Servicio de solo lectura que permite al psicólogo consultar los pacientes asignados a él.
@@ -98,20 +98,27 @@ public class PacientePsicologoService {
         dto.setGenero(paciente.getGenero());
         dto.setTelefono(paciente.getTelefono());
         dto.setEstadoPago(paciente.getEstadoPago());
+        dto.setDni(usuario != null ? usuario.getDni() : null);
 
-        // Dirección: concatenar la primera dirección disponible
+        // Dirección: mapear la primera dirección disponible a DireccionResponseDTO
         List<Direccion> dirs = paciente.getDirecciones();
         if (dirs != null && !dirs.isEmpty()) {
             Direccion d = dirs.get(0);
-            dto.setDireccion(d.toString());
+            dto.setDireccion(new DireccionResponseDTO(
+                    d.getCalle(),
+                    d.getCiudad(),
+                    d.getProvincia(),
+                    d.getCodigoPostal(),
+                    d.getPais()
+            ));
         }
 
-        // Hora inicio / fin: tomar de la próxima cita (o la más reciente)
+        // Hora inicio / fin: tomar la próxima cita pendiente o confirmada
         List<Cita> citas = paciente.getCitas();
         if (citas != null && !citas.isEmpty()) {
             citas.stream()
-                    .filter(c -> c.getStartDatetime() != null)
-                    .max(Comparator.comparing(Cita::getStartDatetime))
+                    .filter(c -> c.getEstado().equals("pendiente") || c.getEstado().equals("confirmada"))
+                    .min(Comparator.comparing(Cita::getStartDatetime)) // próxima cita
                     .ifPresent(cita -> {
                         LocalDateTime start = cita.getStartDatetime();
                         dto.setHoraInicio(start.toLocalTime());

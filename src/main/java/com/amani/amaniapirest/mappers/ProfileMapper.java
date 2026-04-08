@@ -16,56 +16,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProfileMapper {
 
-    private final PsicologoRepository psicologoRepository;
-
     public UsuarioDTO toUsuarioDTO(Usuario usuario) {
         if (usuario == null) return null;
-
-        Long idPsicologo = null;
-        if (usuario.getRol() != null && "psicologo".equals(usuario.getRol().name())) {
-            idPsicologo = psicologoRepository
-                    .findByUsuarioIdUsuario(usuario.getIdUsuario())
-                    .map(Psicologo::getIdPsicologo)
-                    .orElse(null);
-        }
 
         return new UsuarioDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getApellido(),
                 usuario.getEmail(),
-                usuario.getRol() != null ? usuario.getRol().name() : null,
-                usuario.getActivo(),
-                idPsicologo
+                usuario.getFotoPerfilUrl() // solo los datos que quieres mostrar
+        );
+    }
+
+    public PsicologoDTO toPsicologoDTO(Psicologo psicologo) {
+        if (psicologo == null) return null;
+
+        return new PsicologoDTO(
+                psicologo.getIdPsicologo(),
+                psicologo.getEspecialidad(),
+                psicologo.getExperiencia(),
+                psicologo.getDescripcion(),
+                psicologo.getLicencia(),
+                toUsuarioDTO(psicologo.getUsuario())
         );
     }
 
     public PacienteDTO toPacienteDTO(Paciente paciente) {
         if (paciente == null) return null;
 
-        Long idPsicologo = paciente.getPsicologo() != null
-                ? paciente.getPsicologo().getIdPsicologo()
-                : null;
-
         return new PacienteDTO(
                 paciente.getIdPaciente(),
-                paciente.getFechaNacimiento(),
-                paciente.getGenero(),
                 paciente.getTelefono(),
-                idPsicologo
-        );
-    }
-
-    public PsicologoDTO toPsicologoDTO(Psicologo psicologo, List<Long> pacientes) {
-        if (psicologo == null) return null;
-
-        return new PsicologoDTO(
-                psicologo.getIdPsicologo(),
-                psicologo.getEspecialidad(),
-                psicologo.getLicencia(),
-                psicologo.getExperiencia(),
-                psicologo.getDescripcion(),
-                pacientes
+                paciente.getGenero(),
+                paciente.getFechaNacimiento(),
+                toUsuarioDTO(paciente.getUsuario())
         );
     }
 }

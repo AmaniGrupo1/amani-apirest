@@ -49,17 +49,19 @@ public class PacienteAdminService {
     @Transactional
     public boolean asignarPsicologo(Long pacienteId, Long psicologoId) {
         // Obtener paciente
-        Paciente paciente = getPacienteOrThrow(pacienteId);
+        Paciente paciente = pacientesRepository.findById(pacienteId)
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
         // Obtener psicólogo
         Psicologo psicologo = psicologoRepository.findById(psicologoId)
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
 
-        // Comprobar si ya tiene asignación activa y cerrarla
+        // Comprobar si ya existe asignación activa
         PsicologoPaciente asignacionActual = psicologoPacienteRepository
                 .findByPacienteIdPacienteAndFechaFinIsNull(pacienteId);
 
         if (asignacionActual != null) {
+            // Cerrar la asignación anterior
             asignacionActual.setFechaFin(LocalDateTime.now());
             psicologoPacienteRepository.save(asignacionActual);
         }
@@ -76,9 +78,8 @@ public class PacienteAdminService {
         paciente.setPsicologo(psicologo);
         pacientesRepository.save(paciente);
 
-        return true;
+        return true; // devuelve boolean
     }
-
     /** Crear paciente con usuario y situaciones opcionales */
     @Transactional
     public PacienteAdminResponseDTO create(PacienteRequestDTO request) {

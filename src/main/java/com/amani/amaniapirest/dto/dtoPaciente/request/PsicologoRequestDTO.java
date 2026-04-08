@@ -19,6 +19,8 @@ public class PsicologoRequestDTO {
     @Email
     @NotBlank
     private String email;
+
+    @NotBlank
     private String password;
 
     @NotBlank

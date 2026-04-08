@@ -1,14 +1,20 @@
 package com.amani.amaniapirest.services.serviceAdmin;
 
+import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
+import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
 import com.amani.amaniapirest.dto.loginDTO.PacientesAsignadoDTO;
 import com.amani.amaniapirest.dto.loginDTO.PsicologoConPacientesDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
+import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.repository.PsicologoPacienteRepository;
 import com.amani.amaniapirest.repository.PsicologoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,4 +114,65 @@ public class PsicologoAdminService {
                 pacientes
         );
     }
+
+
+    // Otros métodos relacionados con psicólogos y pacientes pueden ir aquí
+
+    //OBTNER PSICOLOGO LOGUEADO
+    public Psicologo getPsicologoLogueado() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName(); // email del JWT
+
+        return psicologoRepository.findByUsuarioEmail(email)
+                .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado con email: " + email));
+    }
+
+    public List<PacientePsicologoResponseDTO> getPacientesDelPsicologoLogueado() {
+        Psicologo psicologo = getPsicologoLogueado();
+
+        return psicologoPacienteRepository
+                .findByPsicologoIdPsicologoAndFechaFinIsNull(psicologo.getIdPsicologo())
+                .stream()
+                .map(pp -> mapPaciente(pp.getPaciente()))
+                .toList();
+    }
+
+    private PacientePsicologoResponseDTO mapPaciente(Paciente paciente) {
+        var usuario = paciente.getUsuario();
+
+        // Mapear dirección
+        DireccionResponseDTO direccion = null;
+        if (paciente.getDirecciones() != null && !paciente.getDirecciones().isEmpty()) {
+            var d = paciente.getDirecciones().get(0);
+            direccion = new DireccionResponseDTO(d.getCalle(), d.getCiudad(), d.getProvincia(), d.getCodigoPostal(), d.getPais());
+        }
+
+        // Próxima cita
+        var cita = paciente.getCitas() != null && !paciente.getCitas().isEmpty()
+                ? paciente.getCitas().stream()
+                .filter(c -> c.getEstado().equals("pendiente") || c.getEstado().equals("confirmada"))
+                .sorted((c1, c2) -> c1.getStartDatetime().compareTo(c2.getStartDatetime()))
+                .findFirst().orElse(null)
+                : null;
+
+        LocalTime horaInicio = cita != null ? cita.getStartDatetime().toLocalTime() : null;
+        LocalTime horaFin = cita != null ? cita.getStartDatetime().plusMinutes(cita.getDurationMinutes()).toLocalTime() : null;
+
+        PacientePsicologoResponseDTO dto = new PacientePsicologoResponseDTO();
+        dto.setIdPaciente(paciente.getIdPaciente());
+        dto.setNombre(usuario.getNombre());
+        dto.setApellido(usuario.getApellido());
+        dto.setDni(usuario.getDni());
+        dto.setFechaNacimiento(paciente.getFechaNacimiento());
+        dto.setEmail(usuario.getEmail());
+        dto.setGenero(paciente.getGenero());
+        dto.setTelefono(paciente.getTelefono());
+        dto.setEstadoPago(paciente.getEstadoPago());
+        dto.setDireccion(direccion);
+        dto.setHoraInicio(horaInicio);
+        dto.setHoraFin(horaFin);
+
+        return dto;
+    }
+
 }
