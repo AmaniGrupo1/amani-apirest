@@ -24,6 +24,12 @@ public class ProfileService {
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
 
         Usuario usuario = psicologo.getUsuario();
+
+        // Borrar foto anterior del disco si ya existía (evita archivos huérfanos)
+        if (usuario.getFotoPerfilUrl() != null) {
+            fileStorageService.deleteFile(usuario.getFotoPerfilUrl());
+        }
+
         String urlFoto = fileStorageService.storeFile(file);
         usuario.setFotoPerfilUrl(urlFoto);
         usuarioRepository.save(usuario);
