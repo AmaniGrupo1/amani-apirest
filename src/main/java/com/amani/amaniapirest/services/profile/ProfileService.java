@@ -1,9 +1,12 @@
 package com.amani.amaniapirest.services.profile;
 
 import com.amani.amaniapirest.dto.profile.PsicologoDTO;
+import com.amani.amaniapirest.dto.profile.UsuarioDTO;
 import com.amani.amaniapirest.mappers.ProfileMapper;
+import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.models.Usuario;
+import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.repository.PsicologoRepository;
 import com.amani.amaniapirest.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ public class ProfileService {
     private final ProfileMapper profileMapper;
     private final UsuarioRepository usuarioRepository;
     private final PsicologoRepository psicologoRepository;
+    private final PacientesRepository pacientesRepository;
     private final FileStorageService fileStorageService; // servicio para manejar almacenamiento de archivos
 
 
@@ -43,5 +47,35 @@ public class ProfileService {
         Psicologo psicologo = psicologoRepository.findById(idPsicologo)
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
         return profileMapper.toPsicologoDTO(psicologo);
+    }
+
+
+    public PsicologoDTO obtenerPsicologoAsignado(Long idPaciente) {
+        Paciente paciente = pacientesRepository.findPacienteWithPsicologo(idPaciente)
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+
+        var psicologo = paciente.getPsicologo();
+        if (psicologo == null) {
+            return null; // o lanzar excepción si no tiene psicólogo asignado
+        }
+
+        var usuario = psicologo.getUsuario();
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO(
+                usuario.getIdUsuario(),
+                usuario.getNombre(),
+                usuario.getApellido(),
+                usuario.getEmail(),
+                usuario.getFotoPerfilUrl()
+        );
+
+        return new PsicologoDTO(
+                psicologo.getIdPsicologo(),
+                psicologo.getEspecialidad(),
+                psicologo.getExperiencia(),
+                psicologo.getDescripcion(),
+                psicologo.getLicencia(),
+                usuarioDTO
+        );
     }
 }

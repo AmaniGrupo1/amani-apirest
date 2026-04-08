@@ -2,8 +2,8 @@ package com.amani.amaniapirest.controllers.profileController;
 
 import com.amani.amaniapirest.configuration.ErrorResponse;
 import com.amani.amaniapirest.dto.profile.PsicologoDTO;
+import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.services.profile.ProfileService;
-import com.amani.amaniapirest.services.psicologo.PsicologoSelfService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,4 +38,11 @@ public class ProfileController {
              //return
         }
     }
+
+    @GetMapping("/pacientes/{idPaciente}/psicologo")
+    public ResponseEntity<PsicologoDTO> getPsicologoAsignado(@PathVariable Long idPaciente) {
+        PsicologoDTO dto = psicologoSelfService.obtenerPsicologoAsignado(idPaciente);
+        return ResponseEntity.ok(dto);
+    }
+
 }

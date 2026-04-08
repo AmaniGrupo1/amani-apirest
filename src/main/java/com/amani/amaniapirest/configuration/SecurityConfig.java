@@ -55,6 +55,7 @@ public class SecurityConfig {
                         //  Públicos
                         .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
                         .requestMatchers("/api/situaciones").permitAll()
+                        .requestMatchers("/api/pacientes/*/psicologo").hasRole( "PACIENTE") // Endpoint para que el paciente vea su psicólogo asignado
 
                         //  ADMIN
                         .requestMatchers("/auth/registry/pacienteAdmin").hasRole("ADMIN")
