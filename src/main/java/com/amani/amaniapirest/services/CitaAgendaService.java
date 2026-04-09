@@ -93,9 +93,19 @@ public class CitaAgendaService {
 
     // ─────────────────────────────────────────────────────────
     // GET /api/citas/psicologo/{id}/disponibilidad?fecha=YYYY-MM-DD
+    // Versión original sin parámetro de duración (mantiene compatibilidad)
     // ─────────────────────────────────────────────────────────
     public DisponibilidadDTO getDisponibilidad(Long idPsicologo, String fechaStr) {
+        return getDisponibilidadConDuracion(idPsicologo, fechaStr, SLOT_MINUTOS);
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // Nuevo método sobrecargado que acepta duración personalizada
+    // GET /api/citas/psicologo/{id}/disponibilidad?fecha=YYYY-MM-DD&duracion=60
+    // ─────────────────────────────────────────────────────────
+    public DisponibilidadDTO getDisponibilidadConDuracion(Long idPsicologo, String fechaStr, Integer duracionMinutos) {
         LocalDate fecha = LocalDate.parse(fechaStr);
+        int duracionSlot = (duracionMinutos != null && duracionMinutos > 0) ? duracionMinutos : SLOT_MINUTOS;
 
         // ¿Día completo bloqueado?
         boolean diaCompleto = bloqueoRepository
@@ -126,10 +136,10 @@ public class CitaAgendaService {
                     .build();
         }
 
-        // Generar todos los slots posibles
+        // Generar todos los slots posibles basados en la duración solicitada
         Set<LocalTime> ocupados = new HashSet<>();
 
-        // Slots ya citados
+        // Slots ya citados - marcar como ocupados en intervalos según SLOT_MINUTOS base
         LocalDateTime inicioDia = fecha.atStartOfDay();
         LocalDateTime finDia = fecha.plusDays(1).atStartOfDay();
         citaRepository.findByPsicologo_IdPsicologoAndStartDatetimeBetweenAndEstadoNot(
@@ -159,14 +169,15 @@ public class CitaAgendaService {
         List<SlotDTO> libres = new ArrayList<>();
         for (HorarioPsicologo franja : franjas) {
             LocalTime t = franja.getHoraInicio();
-            while (!t.plusMinutes(SLOT_MINUTOS).isAfter(franja.getHoraFin())) {
+            // Usar la duración personalizada para generar los slots
+            while (!t.plusMinutes(duracionSlot).isAfter(franja.getHoraFin())) {
                 if (!ocupados.contains(t)) {
                     libres.add(SlotDTO.builder()
                             .hora(t)
-                            .horaFin(t.plusMinutes(SLOT_MINUTOS))
+                            .horaFin(t.plusMinutes(duracionSlot))
                             .build());
                 }
-                t = t.plusMinutes(SLOT_MINUTOS);
+                t = t.plusMinutes(duracionSlot);
             }
         }
 
@@ -185,15 +196,18 @@ public class CitaAgendaService {
 
         LocalDateTime start = LocalDateTime.parse(req.getStartDatetime());
         int duracion = req.getDuracionMinutos() != null ? req.getDuracionMinutos() : SLOT_MINUTOS;
+        LocalDateTime end = start.plusMinutes(duracion);
 
-        // 1. Validar disponibilidad (rápido - lógica)
-        DisponibilidadDTO disp = getDisponibilidad(
-                req.getIdPsicologo(), start.toLocalDate().toString());
+        // 1. Validar disponibilidad usando el método con duración
+        DisponibilidadDTO disp = getDisponibilidadConDuracion(
+                req.getIdPsicologo(),
+                start.toLocalDate().toString(),
+                duracion);
 
         boolean slotLibre = !disp.isDiaCompleto() && disp.getSlotsLibres().stream()
-                .anyMatch(s ->
-                        s.getHora().equals(start.toLocalTime()) &&
-                                !s.getHora().isBefore(start.toLocalTime().plusMinutes(duracion))
+                .anyMatch(slot ->
+                        slot.getHora().equals(start.toLocalTime()) &&
+                                slot.getHoraFin().equals(end.toLocalTime())
                 );
 
         if (!slotLibre) {
@@ -205,13 +219,13 @@ public class CitaAgendaService {
                 .findByPsicologo_IdPsicologoAndStartDatetimeBetweenAndEstadoNot(
                         req.getIdPsicologo(),
                         start.minusMinutes(duracion),
-                        start.plusMinutes(duracion),
+                        end.plusMinutes(duracion),
                         EstadoCita.cancelada
                 )
                 .stream()
                 .anyMatch(c ->
-                        c.getStartDatetime().isBefore(start.plusMinutes(duracion)) &&
-                                c.getStartDatetime().plusMinutes(c.getDurationMinutes()).isAfter(start)
+                        !(c.getStartDatetime().isAfter(end) ||
+                                c.getStartDatetime().plusMinutes(c.getDurationMinutes()).isBefore(start))
                 );
 
         if (conflicto) {
