@@ -19,4 +19,5 @@ public class LoginResponseDTO {
     private String rol;
     private String token;
     private Long idPsicologo;  // Solo se llena si el usuario es un psicólogo
+    private Long idPaciente;    // Solo se llena si el usuario es un paciente
 }

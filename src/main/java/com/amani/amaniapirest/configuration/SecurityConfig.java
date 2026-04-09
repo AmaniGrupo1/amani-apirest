@@ -55,7 +55,7 @@ public class SecurityConfig {
                         //  Públicos
                         .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
                         .requestMatchers("/api/situaciones").permitAll()
-                        .requestMatchers("/api/pacientes/*/psicologo").hasRole( "PACIENTE") // Endpoint para que el paciente vea su psicólogo asignado
+                        .requestMatchers("/api/psicologo/pacientes/*/psicologo").hasRole( "PACIENTE") // Endpoint para que el paciente vea su psicólogo asignado
 
                         //  ADMIN
                         .requestMatchers("/auth/registry/pacienteAdmin").hasRole("ADMIN")
@@ -70,7 +70,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/pacientes/admin").hasRole("ADMIN") //Listamos pacientes
                         //  PSICOLOGO + ADMIN
                         .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
-                        .requestMatchers("/api/psicologo/pacientes/getAll/{idPsicologo}").hasRole( "PSICOLOGO")
+                        .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole( "PSICOLOGO")
                         // Permitir a psicólogos y admin acceder a cualquier endpoint de psicólogo
 
 
