@@ -1,15 +1,14 @@
 package com.amani.amaniapirest.dto.dtoPsicologo.response;
 
-import com.amani.amaniapirest.dto.dtoPaciente.request.DireccionRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.enums.EstadoPago;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * DTO de respuesta para que el psicólogo consulte los datos básicos de un {@code Paciente}.

@@ -4,17 +4,16 @@ import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.AgendaPsicologoItemDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.DisponibilidadPsicologoDTO;
-import java.util.ArrayList;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.models.Cita;
 import com.amani.amaniapirest.repository.CitaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.time.LocalTime;
+import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

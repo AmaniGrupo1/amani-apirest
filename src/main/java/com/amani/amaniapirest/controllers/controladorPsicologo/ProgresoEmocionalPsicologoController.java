@@ -5,17 +5,13 @@ import com.amani.amaniapirest.dto.dtoPaciente.request.ProgresoEmocionalRequestDT
 import com.amani.amaniapirest.dto.dtoPsicologo.response.ProgresoEmocionalPsicologoResponseDTO;
 import com.amani.amaniapirest.services.psicologo.ProgresoEmocionalPsicologoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/psicologo/progreso-emocional")

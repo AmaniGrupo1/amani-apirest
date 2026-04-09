@@ -6,7 +6,6 @@ import com.amani.amaniapirest.dto.dtoPregunta.paciente.PreguntaPacienteResponseD
 import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.OpcionAdminResDTO;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Opcion;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Pregunta;
-import com.amani.amaniapirest.repository.repositoryRespuesta.OpcionRepository;
 import com.amani.amaniapirest.repository.repositoryRespuesta.PreguntaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

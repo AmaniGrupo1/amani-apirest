@@ -8,7 +8,7 @@ import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Opcion;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Pregunta;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Respuesta;
-import com.amani.amaniapirest.repository.*;
+import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.repository.repositoryRespuesta.OpcionRepository;
 import com.amani.amaniapirest.repository.repositoryRespuesta.PreguntaRepository;
 import com.amani.amaniapirest.repository.repositoryRespuesta.RespuestaRepository;

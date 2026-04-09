@@ -5,7 +5,6 @@ import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginResponseDTO;
 import com.amani.amaniapirest.dto.loginDTO.RegistryRequestDTO;
-import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.services.serviciosLogin.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

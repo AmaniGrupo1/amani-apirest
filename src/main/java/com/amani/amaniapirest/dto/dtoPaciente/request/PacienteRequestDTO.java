@@ -1,10 +1,7 @@
 package com.amani.amaniapirest.dto.dtoPaciente.request;
 
-import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.RespuestasRequestDTO;
-
 import com.amani.amaniapirest.enums.EstadoPago;
 import com.amani.amaniapirest.enums.MetodoPago;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

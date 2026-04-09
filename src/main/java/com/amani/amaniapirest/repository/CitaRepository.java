@@ -3,7 +3,6 @@ package com.amani.amaniapirest.repository;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.models.Cita;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;

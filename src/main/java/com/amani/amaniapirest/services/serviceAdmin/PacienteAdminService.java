@@ -2,10 +2,10 @@ package com.amani.amaniapirest.services.serviceAdmin;
 
 import com.amani.amaniapirest.dto.dtoAdmin.TutorResonseDTO;
 import com.amani.amaniapirest.dto.dtoAdmin.response.PacienteAdminResponseDTO;
-import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
-import com.amani.amaniapirest.dto.situacion.SituacionDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.UsuarioRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
+import com.amani.amaniapirest.dto.situacion.SituacionDTO;
 import com.amani.amaniapirest.enums.EstadoPago;
 import com.amani.amaniapirest.enums.MetodoPago;
 import com.amani.amaniapirest.models.*;

@@ -1,8 +1,6 @@
 package com.amani.amaniapirest.controllers.profileController;
 
-import com.amani.amaniapirest.configuration.ErrorResponse;
 import com.amani.amaniapirest.dto.profile.PsicologoDTO;
-import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.services.profile.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

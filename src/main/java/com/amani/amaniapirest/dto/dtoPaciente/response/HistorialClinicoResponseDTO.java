@@ -1,11 +1,11 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * DTO de salida con los datos de un registro del historial clínico.

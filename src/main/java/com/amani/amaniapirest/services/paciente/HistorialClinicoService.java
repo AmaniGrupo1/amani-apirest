@@ -1,7 +1,6 @@
 package com.amani.amaniapirest.services.paciente;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.HistorialClinicoRequestDTO;
-
 import com.amani.amaniapirest.dto.dtoPaciente.response.HistorialClinicoResponseDTO;
 import com.amani.amaniapirest.models.HistorialClinico;
 import com.amani.amaniapirest.models.Paciente;

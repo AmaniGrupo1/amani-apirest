@@ -1,11 +1,11 @@
 package com.amani.amaniapirest.dto.dtoPregunta.paciente;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * DTO de respuesta para que el paciente consulte una pregunta del cuestionario de evaluación inicial.

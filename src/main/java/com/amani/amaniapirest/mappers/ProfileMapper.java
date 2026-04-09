@@ -6,11 +6,8 @@ import com.amani.amaniapirest.dto.profile.UsuarioDTO;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.models.Usuario;
-import com.amani.amaniapirest.repository.PsicologoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

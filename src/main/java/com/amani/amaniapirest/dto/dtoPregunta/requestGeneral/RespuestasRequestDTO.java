@@ -1,9 +1,9 @@
 package com.amani.amaniapirest.dto.dtoPregunta.requestGeneral;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * DTO de entrada para registrar las respuestas de un paciente a una pregunta del cuestionario.

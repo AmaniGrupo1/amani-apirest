@@ -3,10 +3,10 @@ package com.amani.amaniapirest.services.psicologo;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.ProgresoEmocionalRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.ProgresoEmocionalPsicologoResponseDTO;
-import com.amani.amaniapirest.models.ProgresoEmocional;
 import com.amani.amaniapirest.models.Paciente;
-import com.amani.amaniapirest.repository.ProgresoEmocionalRepository;
+import com.amani.amaniapirest.models.ProgresoEmocional;
 import com.amani.amaniapirest.repository.PacientesRepository;
+import com.amani.amaniapirest.repository.ProgresoEmocionalRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

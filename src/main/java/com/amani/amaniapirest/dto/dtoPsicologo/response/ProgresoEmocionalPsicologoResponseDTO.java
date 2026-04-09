@@ -1,12 +1,12 @@
 package com.amani.amaniapirest.dto.dtoPsicologo.response;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * DTO de respuesta para que el psicólogo consulte el progreso emocional de un paciente.

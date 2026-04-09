@@ -4,16 +4,14 @@ import com.amani.amaniapirest.dto.dtoAdmin.response.HistorialClinicoAdminRespons
 import com.amani.amaniapirest.dto.dtoPaciente.request.HistorialClinicoRequestDTO;
 import com.amani.amaniapirest.services.serviceAdmin.HistorialClinicoAdminService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * Controlador REST de administracion para la gestion CRUD de historiales clinicos.

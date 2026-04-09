@@ -1,10 +1,10 @@
 package com.amani.amaniapirest.services.serviceAdmin;
 
+import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
 import com.amani.amaniapirest.dto.loginDTO.PacientesAsignadoDTO;
 import com.amani.amaniapirest.dto.loginDTO.PsicologoConPacientesDTO;
-import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.repository.PsicologoPacienteRepository;

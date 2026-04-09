@@ -1,25 +1,20 @@
 package com.amani.amaniapirest.services;
 
-import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
-import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
-import com.amani.amaniapirest.models.BloqueoAgenda;
-import com.amani.amaniapirest.models.Cita;
-import com.amani.amaniapirest.models.HorarioPsicologo;
-import com.amani.amaniapirest.models.Paciente;
-import com.amani.amaniapirest.models.Psicologo;
-import com.amani.amaniapirest.models.Usuario;
-import com.amani.amaniapirest.repositories.BloqueoAgendaRepository;
-import com.amani.amaniapirest.repository.CitaRepository;
-import com.amani.amaniapirest.repository.HorarioPsicologoRepository;
-import com.amani.amaniapirest.repository.PacientesRepository;
-import com.amani.amaniapirest.repository.PsicologoRepository;
 import com.amani.amaniapirest.dto.dtoAgenda.request.BloqueoRequestDTO;
 import com.amani.amaniapirest.dto.dtoAgenda.request.CrearCitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoAgenda.request.HorarioRequestDTO;
 import com.amani.amaniapirest.dto.dtoAgenda.response.AgendaItemDTO;
 import com.amani.amaniapirest.dto.dtoAgenda.response.DisponibilidadDTO;
 import com.amani.amaniapirest.dto.dtoAgenda.response.SlotDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
+import com.amani.amaniapirest.models.*;
+import com.amani.amaniapirest.repositories.BloqueoAgendaRepository;
+import com.amani.amaniapirest.repository.CitaRepository;
+import com.amani.amaniapirest.repository.HorarioPsicologoRepository;
+import com.amani.amaniapirest.repository.PacientesRepository;
+import com.amani.amaniapirest.repository.PsicologoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,13 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service

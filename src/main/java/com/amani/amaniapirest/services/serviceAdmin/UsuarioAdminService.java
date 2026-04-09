@@ -1,12 +1,10 @@
 package com.amani.amaniapirest.services.serviceAdmin;
 
 
-import com.amani.amaniapirest.configuration.SecurityConfig;
 import com.amani.amaniapirest.dto.dtoAdmin.response.UsuarioAdminResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.UsuarioRequestDTO;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.UsuarioRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
