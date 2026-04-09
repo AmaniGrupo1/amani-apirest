@@ -16,16 +16,17 @@ CREATE TYPE estado_cita AS ENUM ('pendiente', 'confirmada', 'cancelada', 'comple
 
 CREATE TABLE usuarios
 (
-    id_usuario     BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nombre         VARCHAR(100)        NOT NULL,
-    apellido       VARCHAR(100),
-    email          VARCHAR(150) UNIQUE NOT NULL,
-    password       VARCHAR(255)        NOT NULL,
-    rol            rol_usuario         NOT NULL,
-    activo         BOOLEAN             NOT NULL DEFAULT TRUE,
-    fecha_registro TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    fecha_baja     TIMESTAMP,
-    fcm_token      VARCHAR(100)
+    id_usuario      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nombre          VARCHAR(100)        NOT NULL,
+    apellido        VARCHAR(100),
+    email           VARCHAR(150) UNIQUE NOT NULL,
+    password        VARCHAR(255)        NOT NULL,
+    rol             rol_usuario         NOT NULL,
+    activo          BOOLEAN             NOT NULL DEFAULT TRUE,
+    fecha_registro  TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_baja      TIMESTAMP,
+    fcm_token       VARCHAR(100),
+    foto_perfil_url VARCHAR(500)
 );
 
 CREATE TABLE pacientes
