@@ -77,12 +77,6 @@ jobs:
 
       # --- Inicializar el esquema de la base de datos ---
       - name: "Initialize database schema"
-        env:
-          PGHOST: localhost
-          PGPORT: 5432
-          PGUSER: amani
-          PGPASSWORD: amani
-          PGDATABASE: psicologia_app
         run: |
           # Esperar a que PostgreSQL esté listo
           for i in $(seq 1 30); do
@@ -93,8 +87,13 @@ jobs:
             echo "Waiting for PostgreSQL... ($i/30)"
             sleep 1
           done
-          # Ejecutar el script DDL para crear tablas y datos iniciales
-          psql -f src/main/resources/amani.sql
+          # Ejecutar el script DDL con parámetros de conexión explícitos
+          PGPASSWORD=amani psql \
+            -h localhost \
+            -p 5432 \
+            -U amani \
+            -d psicologia_app \
+            -f src/main/resources/amani.sql
 
       # --- Configurar JDK 21 (coincide con <java.version> del pom.xml) ---
       - name: "Set up JDK 21"
