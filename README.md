@@ -38,7 +38,7 @@ API REST para la plataforma de psicología clínica **Amani**. Gestiona el flujo
 1. **Clonar el repositorio:**
 
    ```bash
-   git clone https://github.com/tu-usuario/amani-apirest.git
+   git clone https://github.com/AmaniGrupo1/amani-apirest.git
    cd amani-apirest
    ```
 
@@ -57,9 +57,9 @@ API REST para la plataforma de psicología clínica **Amani**. Gestiona el flujo
    Edita `src/main/resources/application.properties` con tus datos:
 
    ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5433/tu_base
-   spring.datasource.username=tu_usuario
-   spring.datasource.password=tu_password
+   spring.datasource.url=jdbc:postgresql://localhost:5433/psicologia_app
+   spring.datasource.username=postgres
+   spring.datasource.password=Sandia4you
    ```
 
 4. **(Opcional) Configurar Firebase:**
