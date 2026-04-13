@@ -1,8 +1,8 @@
 # =============================================================================
 # CI – Build & Artifact
 # =============================================================================
-# Requisito: distributionManagement ya configurado en pom.xml para GitHub
-# Packages (AmaniGrupo1/amani-apirest).
+# distributionManagement ya configurado en pom.xml para GitHub Packages
+# (AmaniGrupo1/amani-apirest).
 # =============================================================================
 
 name: "CI – Build & Artifact"
@@ -54,10 +54,47 @@ jobs:
     name: "Verify – Compile & Test"
     runs-on: ubuntu-latest
 
+    # --- Servicio PostgreSQL para los tests de integración ---
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: psicologia_app
+          POSTGRES_USER: amani
+          POSTGRES_PASSWORD: amani
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       # --- Checkout del código fuente ---
       - name: "Checkout repository"
         uses: actions/checkout@v4
+
+      # --- Inicializar el esquema de la base de datos ---
+      - name: "Initialize database schema"
+        env:
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: amani
+          PGPASSWORD: amani
+          PGDATABASE: psicologia_app
+        run: |
+          # Esperar a que PostgreSQL esté listo
+          for i in $(seq 1 30); do
+            if pg_isready -h localhost -p 5432 -U amani; then
+              echo "PostgreSQL is ready"
+              break
+            fi
+            echo "Waiting for PostgreSQL... ($i/30)"
+            sleep 1
+          done
+          # Ejecutar el script DDL para crear tablas y datos iniciales
+          psql -f src/main/resources/amani.sql
 
       # --- Configurar JDK 21 (coincide con <java.version> del pom.xml) ---
       - name: "Set up JDK 21"
@@ -71,7 +108,7 @@ jobs:
       - name: "Grant execute permission to mvnw"
         run: chmod +x ./mvnw
 
-      # --- Compilar y ejecutar tests (verify incluye compile, test y análisis) ---
+      # --- Compilar y ejecutar tests con perfil de test (CI) ---
       - name: "Compile & test (verify)"
         run: ./mvnw --batch-mode --no-transfer-progress verify
 
