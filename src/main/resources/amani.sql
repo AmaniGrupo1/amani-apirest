@@ -21,13 +21,14 @@ CREATE TABLE usuarios
     id_usuario      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombre          VARCHAR(100)        NOT NULL,
     apellido        VARCHAR(100),
+    dni             VARCHAR(50),
     email           VARCHAR(150) UNIQUE NOT NULL,
     password        VARCHAR(255)        NOT NULL,
     rol             rol_usuario         NOT NULL,
     activo          BOOLEAN             NOT NULL DEFAULT TRUE,
     fecha_registro  TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fecha_baja      TIMESTAMP,
-    fcm_token       VARCHAR(100),
+    fcm_token       VARCHAR(512),
     foto_perfil_url VARCHAR(500)
 );
 

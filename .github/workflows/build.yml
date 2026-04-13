@@ -11,9 +11,10 @@ name: "CI – Build & Artifact"
 # Permisos globales del workflow
 # ---------------------------------------------------------------------------
 permissions:
-  contents: read       # lectura del repo (checkout)
-  checks: write       # escritura de checks (test-reporter)
-  packages: write     # publicación en GitHub Packages (deploy)
+  contents: read        # lectura del repo (checkout)
+  checks: write         # escritura de checks (test-reporter)
+  packages: write       # publicación en GitHub Packages (deploy)
+  pull-requests: write  # comentarios de test-reporter en PRs
 
 # ---------------------------------------------------------------------------
 # Evitar ejecuciones paralelas en la misma rama
@@ -118,7 +119,7 @@ jobs:
       # --- Publicar resultados de tests como check de GitHub ---
       - name: "Publish test results"
         if: always()
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v1.9.1
         with:
           name: Test Results
           path: '**/target/surefire-reports/*.xml'
