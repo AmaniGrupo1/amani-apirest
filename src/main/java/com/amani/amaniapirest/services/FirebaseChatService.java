@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,13 @@ import java.util.Map;
 /**
  * Servicio que escribe los mensajes en Firebase Realtime Database para entrega en tiempo real
  * a clientes que escuchan la ruta /chats/{roomId}/messages.
+ *
+ * <p>Solo se instancia si {@link FirebaseApp} está disponible (es decir, si
+ * {@code serviceAccountKey.json} existe en el classpath). En entornos donde Firebase
+ * no está configurado (p.ej. CI), este bean se omite y la aplicación arranca correctamente.</p>
  */
 @Service
+@ConditionalOnBean(FirebaseApp.class)
 public class FirebaseChatService {
 
     private static final Logger log = LoggerFactory.getLogger(FirebaseChatService.class);

@@ -5,6 +5,7 @@ import com.amani.amaniapirest.models.Mensaje;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.services.FirebaseChatService;
 import com.amani.amaniapirest.services.FirebaseNotificationService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
@@ -15,8 +16,12 @@ import org.springframework.transaction.event.TransactionalEventListener;
  *
  * <p>Al recibir un {@link MensajeNuevoEvent} escribe el mensaje en Firebase RTDB
  * para entrega en tiempo real a los clientes y desencadena notificación push.</p>
+ *
+ * <p>Solo se instancia si {@link FirebaseChatService} está disponible (es decir,
+ * si Firebase está configurado). En entornos sin Firebase este bean se omite.</p>
  */
 @Component
+@ConditionalOnBean(FirebaseChatService.class)
 public class MensajeEventListener {
 
     private final FirebaseChatService firebaseChatService;
