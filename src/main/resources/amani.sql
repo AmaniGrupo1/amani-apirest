@@ -279,6 +279,69 @@ CREATE TABLE psicologo_paciente
 );
 
 -- ==============================
+-- SITUACIONES Y CONSENTIMIENTOS
+-- ==============================
+
+-- Catálogo de situaciones (contexto del paciente: duelo, ansiedad, etc.)
+CREATE TABLE situaciones
+(
+    id_situacion BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nombre       VARCHAR(150) NOT NULL,
+    categoria    VARCHAR(100),
+    descripcion  TEXT,
+    activo       BOOLEAN      DEFAULT TRUE,
+    created_at   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tutores legales de pacientes menores de edad
+CREATE TABLE tutores
+(
+    id_tutor    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente BIGINT       NOT NULL,
+    nombre      VARCHAR(255) NOT NULL,
+    telefono    VARCHAR(30),
+    email       VARCHAR(150),
+    dni         VARCHAR(20),
+    tipo        VARCHAR(50)  NOT NULL,  -- MADRE / PADRE / TUTOR
+
+    FOREIGN KEY (id_paciente)
+        REFERENCES pacientes (id_paciente)
+        ON DELETE CASCADE
+);
+
+-- Consentimientos informados aceptados por el paciente
+CREATE TABLE consentimientos
+(
+    id_consentimiento      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente            BIGINT    NOT NULL,
+    fecha_aceptacion       TIMESTAMP NOT NULL,
+    version_documento      VARCHAR(255) NOT NULL,
+    acepta_videoconferencia BOOLEAN   DEFAULT FALSE,
+    acepta_comunicacion    BOOLEAN   DEFAULT FALSE,
+
+    FOREIGN KEY (id_paciente)
+        REFERENCES pacientes (id_paciente)
+        ON DELETE CASCADE
+);
+
+-- Relación N:M entre pacientes y situaciones
+CREATE TABLE paciente_situacion
+(
+    id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente     BIGINT    NOT NULL,
+    id_situacion    BIGINT    NOT NULL,
+    fecha_registro  TIMESTAMP,
+
+    FOREIGN KEY (id_paciente)
+        REFERENCES pacientes (id_paciente)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (id_situacion)
+        REFERENCES situaciones (id_situacion)
+        ON DELETE CASCADE
+);
+
+-- ==============================
 -- AGENDA DE PSICÓLOGOS
 -- ==============================
 
