@@ -65,7 +65,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U amani -d psicologia_app"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -80,7 +80,7 @@ jobs:
         run: |
           # Esperar a que PostgreSQL esté listo
           for i in $(seq 1 30); do
-            if pg_isready -h localhost -p 5432 -U amani; then
+            if pg_isready -h localhost -p 5432 -U amani -d psicologia_app; then
               echo "PostgreSQL is ready"
               break
             fi

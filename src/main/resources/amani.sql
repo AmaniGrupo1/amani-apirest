@@ -9,6 +9,8 @@ SET search_path TO psicologia_app;
 
 CREATE TYPE rol_usuario AS ENUM ('admin', 'psicologo', 'paciente');
 CREATE TYPE estado_cita AS ENUM ('pendiente', 'confirmada', 'cancelada', 'completada');
+CREATE TYPE metodo_pago AS ENUM ('PRESENCIAL', 'ONLINE');
+CREATE TYPE estado_pago AS ENUM ('PENDIENTE', 'PAGADO');
 
 -- ==============================
 -- TABLAS
@@ -37,6 +39,8 @@ CREATE TABLE pacientes
     fecha_nacimiento DATE,
     genero           VARCHAR(30),
     telefono         VARCHAR(30),
+    metodo_pago      metodo_pago NOT NULL DEFAULT 'PRESENCIAL',
+    estado_pago      estado_pago NOT NULL DEFAULT 'PENDIENTE',
     created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
