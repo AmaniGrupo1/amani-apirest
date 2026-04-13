@@ -2,7 +2,7 @@
 # CI – Build & Artifact
 # =============================================================================
 # distributionManagement ya configurado en pom.xml para GitHub Packages
-# (AmaniGrupo1/amani-apirest).
+# (amanigrupo1/amani-apirest).
 # =============================================================================
 
 name: "CI – Build & Artifact"
@@ -174,6 +174,27 @@ jobs:
             target/*.war
           if-no-files-found: error
           retention-days: 30
+
+      # --- Validar que artifactId sea todo minúsculas (GitHub Packages lo exige) ---
+      - name: "Validate lowercase artifactId"
+        run: |
+          ARTIFACT_ID=$(./mvnw -q help:evaluate -Dexpression=project.artifactId -DforceStdout)
+          echo "artifactId detectado: $ARTIFACT_ID"
+          if [[ "$ARTIFACT_ID" =~ [A-Z] ]]; then
+            echo "ERROR: artifactId inválido para GitHub Packages (contiene mayúsculas): $ARTIFACT_ID"
+            exit 1
+          fi
+          echo "OK: artifactId '$ARTIFACT_ID' es válido para GitHub Packages."
+
+      # --- Imprimir coordenadas Maven efectivas antes del deploy ---
+      - name: "Debug Maven coordinates"
+        run: |
+          echo "=== Coordenadas Maven efectivas ==="
+          echo -n "groupId:    " && ./mvnw -q help:evaluate -Dexpression=project.groupId -DforceStdout && echo
+          echo -n "artifactId: " && ./mvnw -q help:evaluate -Dexpression=project.artifactId -DforceStdout && echo
+          echo -n "version:    " && ./mvnw -q help:evaluate -Dexpression=project.version -DforceStdout && echo
+          echo -n "finalName:  " && ./mvnw -q help:evaluate -Dexpression=project.build.finalName -DforceStdout && echo
+          echo -n "registry:   " && ./mvnw -q help:evaluate -Dexpression=project.distributionManagement.repository.url -DforceStdout && echo
 
       # --- Publicar en GitHub Packages (solo desde main) ---
       - name: "Deploy to GitHub Packages"

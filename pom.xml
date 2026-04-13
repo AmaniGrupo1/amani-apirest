@@ -13,7 +13,7 @@
     </parent>
 
     <groupId>com.amani</groupId>
-    <artifactId>amaniApirest</artifactId>
+    <artifactId>amani-apirest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>amani-apirest</name>
     <description>amani-apirest</description>
@@ -128,31 +128,14 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket-test</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
 
     <build>
+        <finalName>amani-apirest</finalName>
         <plugins>
 
             <plugin>
@@ -349,7 +332,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/AmaniGrupo1/amani-apirest</url>
+            <url>https://maven.pkg.github.com/amanigrupo1/amani-apirest</url>
         </repository>
     </distributionManagement>
 </project>
