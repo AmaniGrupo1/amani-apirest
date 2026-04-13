@@ -1,18 +1,8 @@
 # =============================================================================
 # CI – Build & Artifact
 # =============================================================================
-# NOTA: Para que el paso de deploy a GitHub Packages funcione,
-# añadir al final de pom.xml (antes de </project>):
-#
-#   <distributionManagement>
-#     <repository>
-#       <id>github</id>
-#       <name>GitHub Packages</name>
-#       <url>https://maven.pkg.github.com/OWNER/REPO</url>
-#     </repository>
-#   </distributionManagement>
-#
-# Reemplazar OWNER/REPO con el propietario y nombre del repositorio.
+# Requisito: distributionManagement ya configurado en pom.xml para GitHub
+# Packages (AmaniGrupo1/amani-apirest).
 # =============================================================================
 
 name: "CI – Build & Artifact"
@@ -83,7 +73,7 @@ jobs:
 
       # --- Compilar y ejecutar tests (verify incluye compile, test y análisis) ---
       - name: "Compile & test (verify)"
-        run: ./mvnw --batch-mode --update-snapshots verify
+        run: ./mvnw --batch-mode --no-transfer-progress verify
 
       # --- Publicar resultados de tests como check de GitHub ---
       - name: "Publish test results"
@@ -104,6 +94,11 @@ jobs:
     if: github.event_name == 'push'  # Solo en push, no en pull_request
     runs-on: ubuntu-latest
 
+    # --- Variables de entorno para autenticación con GitHub Packages ---
+    env:
+      MAVEN_USERNAME: ${{ github.actor }}
+      MAVEN_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       # --- Checkout del código fuente ---
       - name: "Checkout repository"
@@ -117,8 +112,8 @@ jobs:
           java-version: '21'
           cache: 'maven'
           server-id: github
-          server-username: GITHUB_ACTOR
-          server-password: GITHUB_TOKEN
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_TOKEN
 
       # --- Dar permisos de ejecución al Maven Wrapper ---
       - name: "Grant execute permission to mvnw"
@@ -126,27 +121,20 @@ jobs:
 
       # --- Empaquetar sin re-ejecutar tests (ya pasaron en Job 1) ---
       - name: "Package JAR"
-        run: ./mvnw --batch-mode -DskipTests package
-
-      # --- Copiar artefactos a carpeta de staging ---
-      - name: "Stage artifacts"
-        run: |
-          mkdir -p staging
-          cp target/*.jar staging/ 2>/dev/null || true
-          cp target/*.war staging/ 2>/dev/null || true
+        run: ./mvnw --batch-mode --no-transfer-progress -DskipTests package
 
       # --- Subir artefacto al workflow run ---
       - name: "Upload artifact"
         uses: actions/upload-artifact@v4
         with:
-          name: maven-artifact-${{ github.sha }}
-          path: staging/
-          retention-days: 30
+          name: maven-artifact-${{ github.run_number }}
+          path: |
+            target/*.jar
+            target/*.war
           if-no-files-found: error
+          retention-days: 30
 
       # --- Publicar en GitHub Packages (solo desde main) ---
       - name: "Deploy to GitHub Packages"
         if: github.ref == 'refs/heads/main'
-        run: ./mvnw --batch-mode -DskipTests deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./mvnw --batch-mode --no-transfer-progress -DskipTests deploy
