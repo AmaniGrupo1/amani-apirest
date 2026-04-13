@@ -108,9 +108,13 @@ jobs:
       - name: "Grant execute permission to mvnw"
         run: chmod +x ./mvnw
 
-      # --- Compilar y ejecutar tests con perfil de test (CI) ---
+      # --- Compilar y ejecutar tests (propiedades de BD sobreescribas por env vars) ---
       - name: "Compile & test (verify)"
         run: ./mvnw --batch-mode --no-transfer-progress verify
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/psicologia_app
+          SPRING_DATASOURCE_USERNAME: amani
+          SPRING_DATASOURCE_PASSWORD: amani
 
       # --- Publicar resultados de tests como check de GitHub ---
       - name: "Publish test results"
