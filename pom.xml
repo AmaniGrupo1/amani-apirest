@@ -116,7 +116,7 @@
             <version>9.2.0</version>
         </dependency>
 
- 
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
@@ -343,4 +343,11 @@
         </plugins>
     </reporting>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/AmaniGrupo1/amani-apirest</url>
+        </repository>
+    </distributionManagement>
 </project>
