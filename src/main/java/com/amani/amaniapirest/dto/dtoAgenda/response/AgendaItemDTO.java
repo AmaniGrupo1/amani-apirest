@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.dto.dtoAgenda.response;
 
+import com.amani.amaniapirest.dto.terapiasDTO.TerapiaResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,4 +26,5 @@ public class AgendaItemDTO {
     private Integer duracionMinutos;
     private String nombrePaciente;
     private String nombrePsicologo;
+    private TerapiaResponseDTO terapia;
 }

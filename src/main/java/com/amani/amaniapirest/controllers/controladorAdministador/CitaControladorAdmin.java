@@ -62,4 +62,6 @@ public class CitaControladorAdmin {
 
         return ResponseEntity.ok(citaService.updateAdmin(id, request));
     }
+
+
 }

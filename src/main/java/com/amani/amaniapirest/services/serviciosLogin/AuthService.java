@@ -152,12 +152,6 @@ public class AuthService {
         paciente.setFechaNacimiento(request.getFechaNacimiento());
         paciente.setGenero(request.getGenero());
         paciente.setTelefono(request.getTelefono());
-        paciente.setEstadoPago(
-                request.getEstadoPago() != null ? request.getEstadoPago() : EstadoPago.PENDIENTE
-        );
-        paciente.setMetodoPago(
-                request.getMetodoPago() != null ? request.getMetodoPago() : MetodoPago.PRESENCIAL
-        );
         paciente.setCreatedAt(now);
 
         paciente = pacienteRepository.save(paciente);

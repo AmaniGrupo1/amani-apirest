@@ -65,4 +65,12 @@ public class Cita {
     @OneToOne(mappedBy = "cita")
     private Sesion sesion;
 
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_terapia")
+    private TiposTerapia tipoTerapia;
+
+    @OneToOne(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"cita"})
+    private Pago pago;
+
 }

@@ -41,6 +41,7 @@ public class Psicologo {
     /** Numero de licencia o colegiación profesional. */
     private String licencia;
 
+    private Integer duracionDefault = 50; // Duración por defecto de las citas en minutos
     /** Fecha y hora de creación del perfil. */
     private LocalDateTime createdAt;
 

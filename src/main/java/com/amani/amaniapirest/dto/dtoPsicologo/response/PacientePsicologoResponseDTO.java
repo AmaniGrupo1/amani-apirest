@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.dto.dtoPsicologo.response;
 
+import com.amani.amaniapirest.dto.dtoAdmin.TutorResonseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.DireccionRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.enums.EstadoPago;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -26,7 +29,7 @@ public class PacientePsicologoResponseDTO {
     public PacientePsicologoResponseDTO(Long idPaciente, String nombre, String apellido, String dni,
                                         LocalDate fechaNacimiento, String email, String genero,
                                         String telefono, DireccionResponseDTO direccion,
-                                        LocalTime horaInicio, LocalTime horaFin) {
+                                        LocalTime horaInicio, LocalTime horaFin, List<TutorResonseDTO> tutor) {
         this.idPaciente = idPaciente;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -38,6 +41,7 @@ public class PacientePsicologoResponseDTO {
         this.direccion = direccion;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
+        this.tutor = tutor;
     }
 
     private Long idPaciente;
@@ -76,5 +80,7 @@ public class PacientePsicologoResponseDTO {
     /** Hora de fin de la sesión. */
     @Schema(description = "Hora de fin", example = "10:00")
     private LocalTime horaFin;
+
+    private List<TutorResonseDTO> tutor;
 
 }

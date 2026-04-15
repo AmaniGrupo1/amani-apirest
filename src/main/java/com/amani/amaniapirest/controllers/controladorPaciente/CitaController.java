@@ -1,6 +1,5 @@
 package com.amani.amaniapirest.controllers.controladorPaciente;
 
-import com.amani.amaniapirest.dto.dtoAgenda.request.CrearCitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoAgenda.response.AgendaItemDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
@@ -9,14 +8,11 @@ import com.amani.amaniapirest.services.paciente.CitaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
@@ -67,23 +63,7 @@ public class CitaController {
         }
     }
 
-    /** POST /api/citas — Crea una nueva cita. */
-    @Operation(summary = "Crear cita", description = "Crea una nueva cita")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
-            @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
-    })
-    @PostMapping
-    public ResponseEntity<AgendaItemDTO> create(@RequestBody CrearCitaRequestDTO request) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(citaAgendaService.crearCita(request));
-        } catch (RuntimeException ex) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+
 
     /** PUT /api/citas/{id} — Actualiza una cita. */
     @Operation(summary = "Actualizar cita", description = "Actualiza una cita existente")

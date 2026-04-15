@@ -1,12 +1,15 @@
 package com.amani.amaniapirest.dto.dtoPaciente.request;
 
 import com.amani.amaniapirest.enums.EstadoCita;
+import com.amani.amaniapirest.enums.EstadoPago;
+import com.amani.amaniapirest.enums.MetodoPago;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -45,7 +48,19 @@ public class CitaRequestDTO {
     @Schema(description = "Estado de la cita (pendiente, confirmada, cancelada, completada)", example = "pendiente")
     private EstadoCita estado;
 
+    @NotNull
+    private MetodoPago metodoPago;
+
+    @NotNull
+    private EstadoPago estadoPago;
+
+    @NotNull
+    private BigDecimal monto;
     /** Motivo o descripción de la consulta. */
     @Schema(description = "Motivo o descripción de la consulta", example = "Sesión de seguimiento semanal")
     private String motivo;
+    
+    @NotNull
+    @Schema(description = "ID del tipo de terapia", example = "1")
+    private Long idTipoTerapia;
 }

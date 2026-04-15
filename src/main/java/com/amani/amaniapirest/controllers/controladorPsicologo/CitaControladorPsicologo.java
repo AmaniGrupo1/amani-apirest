@@ -6,15 +6,21 @@ import com.amani.amaniapirest.dto.dtoAgenda.response.AgendaItemDTO;
 import com.amani.amaniapirest.dto.dtoAgenda.response.DisponibilidadDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO;
+import com.amani.amaniapirest.dto.terapiasDTO.TerapiaResponseDTO;
+import com.amani.amaniapirest.repository.PsicologoRepository;
 import com.amani.amaniapirest.services.CitaAgendaService;
+import com.amani.amaniapirest.services.paciente.PsicologoService;
 import com.amani.amaniapirest.services.psicologo.CitaServicePsicologo;
+import com.amani.amaniapirest.services.terapiaService.TerapiaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/citas")
 @Tag(name = "Citas (Psicologo)", description = "Gestion de citas — vista psicologo")
@@ -22,11 +28,9 @@ public class CitaControladorPsicologo {
 
     private final CitaServicePsicologo citaService;
     private final CitaAgendaService citaAgendaService;
+    private final TerapiaService terapiaService;
 
-    public CitaControladorPsicologo(CitaServicePsicologo citaService, CitaAgendaService citaAgendaService) {
-        this.citaService = citaService;
-        this.citaAgendaService = citaAgendaService;
-    }
+
     // =========================================================
     // VISTA PSICÓLOGO
     // =========================================================
@@ -74,6 +78,16 @@ public class CitaControladorPsicologo {
         return ResponseEntity.ok(citaAgendaService.getAgendaPsicologo(idPsicologo, month));
     }
 
+    @PutMapping("/psicologo/{idPsicologo}/duracion")
+    public ResponseEntity<Void> actualizarDuracion(
+            @PathVariable Long idPsicologo,
+            @RequestParam Integer duracion
+    ) {
+        citaAgendaService.actualizarDuracionPsicologo(idPsicologo, duracion);
+        return ResponseEntity.noContent().build();
+    }
+
+
     /**b
      * GET /api/citas/psicologo/{idPsicologo}/disponibilidad?fecha=YYYY-MM-DD
      * Devuelve la disponibilidad del psicólogo para un día concreto.
@@ -81,11 +95,26 @@ public class CitaControladorPsicologo {
     @GetMapping("/psicologo/{idPsicologo}/disponibilidad")
     public ResponseEntity<DisponibilidadDTO> getDisponibilidadPsicologo(
             @PathVariable Long idPsicologo,
-            @RequestParam("fecha") String fecha
+            @RequestParam("fecha") String fecha,
+            @RequestParam(value = "duracion", required = false) Integer duracion
     ) {
-        return ResponseEntity.ok(citaAgendaService.getDisponibilidad(idPsicologo, fecha));
-    }
 
+        Integer duracionFinal;
+
+        if (duracion != null) {
+            duracionFinal = duracion;
+        } else {
+            duracionFinal = citaAgendaService.getDuracionDefault(idPsicologo);
+        }
+
+        return ResponseEntity.ok(
+                citaAgendaService.getDisponibilidadConDuracion(
+                        idPsicologo,
+                        fecha,
+                        duracionFinal
+                )
+        );
+    }
     /**
      * PATCH /api/citas/{id}/cancelar — Cancela una cita.
      */
@@ -126,4 +155,38 @@ public class CitaControladorPsicologo {
         citaAgendaService.removeBloqueo(idPsicologo, fecha);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * POST /api/citas/psicologo/cita - Crea una nueva cita (vista psicólogo)
+     */
+    @Operation(summary = "Crear cita", description = "Crea una nueva cita desde la vista del psicólogo")
+    @PostMapping("/psicologo/cita")
+    public ResponseEntity<AgendaItemDTO> crearCita(@RequestBody CitaRequestDTO request) {
+        try {
+            return ResponseEntity.ok(citaAgendaService.crearCita(request));
+        } catch (IllegalStateException e) {
+            // Esto captura casos donde el slot no está libre o hay conflicto
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+
+    @Operation(
+            summary = "Obtener tipos de terapia",
+            description = "Devuelve todas las terapias disponibles para seleccionar en la UI"
+    )
+    @GetMapping("/psicologo/terapias")
+    public ResponseEntity<List<TerapiaResponseDTO>> getTerapias() {
+        return ResponseEntity.ok(terapiaService.getAllTerapias());
+    }
+
+    @GetMapping("/psicologo/{idPsicologo}/horario-actual")
+    public ResponseEntity<HorarioRequestDTO> getHorarioActual(
+            @PathVariable Long idPsicologo
+    ) {
+        return ResponseEntity.ok(
+                citaAgendaService.getHorarioActual(idPsicologo)
+        );
+    }
+
 }
