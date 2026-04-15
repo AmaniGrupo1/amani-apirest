@@ -4,6 +4,9 @@ import com.amani.amaniapirest.dto.dtoPaciente.request.ArchivoRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.ArchivoResponseDTO;
 import com.amani.amaniapirest.services.paciente.ArchivoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,15 +15,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+/**
+ * Controlador REST para la gestión de archivos adjuntos a sesiones.
+ *
+ * <p>Base path: {@code /api/archivos}. Permite listar, obtener, descargar, subir y eliminar archivos.</p>
+ */
 @RestController
 @RequestMapping("/api/archivos")
-@Tag(name = "Archivos", description = "Gestion de archivos adjuntos a sesiones")
+@Tag(name = "Archivos", description = "Gestión de archivos adjuntos a sesiones")
 public class ArchivoController {
 
     private final ArchivoService archivoService;
@@ -29,12 +32,16 @@ public class ArchivoController {
         this.archivoService = archivoService;
     }
 
-    /** GET /api/archivos — Lista todos los archivos. */
-    @Operation(summary = "Listar archivos", description = "Lista todos los archivos del sistema")
+    /**
+     * Lista todos los archivos del sistema.
+     *
+     * @return lista de archivos
+     */
+    @Operation(summary = "Listar archivos", description = "Obtiene la lista de todos los archivos del sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "204", description = "No hay archivos registrados", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping
@@ -42,8 +49,13 @@ public class ArchivoController {
         return ResponseEntity.ok(archivoService.findAll());
     }
 
-    /** GET /api/archivos/{id} — Obtiene un archivo por ID. */
-    @Operation(summary = "Obtener archivo", description = "Obtiene metadatos de un archivo por ID")
+    /**
+     * Obtiene los metadatos de un archivo por su identificador.
+     *
+     * @param id identificador del archivo
+     * @return los metadatos del archivo o 404 si no existe
+     */
+    @Operation(summary = "Obtener archivo", description = "Obtiene la informacion de un archivo por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
@@ -59,10 +71,16 @@ public class ArchivoController {
         }
     }
 
-    /** GET /api/archivos/sesion/{idSesion} — Lista los archivos de una sesión. */
-    @Operation(summary = "Archivos por sesion", description = "Lista los archivos adjuntos a una sesion")
+    /**
+     * Lista los archivos adjuntos a una sesión.
+     *
+     * @param idSesion identificador de la sesion
+     * @return lista de archivos de la sesión
+     */
+    @Operation(summary = "Archivos por sesion", description = "Obtiene la lista de archivos adjuntos a una sesion especifica")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "204", description = "No hay archivos para esta sesión", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
@@ -73,8 +91,10 @@ public class ArchivoController {
     }
 
     /**
-     * GET /api/archivos/{id}/download — Descarga el contenido binario de un archivo.
-     * Devuelve los bytes con el tipo MIME original del archivo.
+     * Descarga el contenido binario de un archivo.
+     *
+     * @param id identificador del archivo
+     * @return el contenido binario del archivo con sus metadatos
      */
     @Operation(summary = "Descargar archivo", description = "Descarga el contenido binario de un archivo")
     @ApiResponses(value = {
@@ -99,13 +119,17 @@ public class ArchivoController {
         }
     }
 
-    /** POST /api/archivos — Sube un nuevo archivo adjunto a una sesión (contenido en Base64). */
+    /**
+     * Sube un nuevo archivo adjunto a una sesión (contenido en Base64).
+     *
+     * @param request datos del archivo a subir
+     * @return el archivo recien creado
+     */
     @Operation(summary = "Subir archivo", description = "Sube un nuevo archivo adjunto (contenido en Base64)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PostMapping
@@ -117,7 +141,12 @@ public class ArchivoController {
         }
     }
 
-    /** DELETE /api/archivos/{id} — Elimina un archivo. */
+    /**
+     * Elimina un archivo por su identificador.
+     *
+     * @param id identificador del archivo a eliminar
+     * @return 204 No Content si se elimino correctamente, 404 si no existe
+     */
     @Operation(summary = "Eliminar archivo", description = "Elimina un archivo por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),

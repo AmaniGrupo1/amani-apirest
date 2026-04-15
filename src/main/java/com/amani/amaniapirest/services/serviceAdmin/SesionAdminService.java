@@ -12,6 +12,8 @@ import java.util.List;
 
 /**
  * Servicio de administración para consultar y gestionar todas las sesiones terapéuticas.
+ *
+ * @see com.amani.amaniapirest.dto.dtoAdmin.response.SesionAdminResponseDTO
  */
 @Service
 public class SesionAdminService {

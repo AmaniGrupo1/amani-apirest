@@ -1,11 +1,8 @@
 package com.amani.amaniapirest.repository;
 
 
-import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
 import com.amani.amaniapirest.models.PsicologoPaciente;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;

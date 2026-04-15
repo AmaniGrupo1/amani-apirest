@@ -7,6 +7,12 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+/**
+ * Entidad que define el horario de atencion de un psicologo.
+ *
+ * <p>Establece los dias de la semana y las franjas horarias en las que
+ * el psicologo se encuentra disponible para atender pacientes.</p>
+ */
 @Entity
 @Table(name = "horario_psicologo")
 @Getter

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * Servicio de solo lectura que expone los datos de perfil del usuario autenticado como psicólogo.
+ *
+ * @see com.amani.amaniapirest.dto.dtoPsicologo.response.UsuarioPsicologoResponseDTO
  */
 @Service
 public class UsuarioPsicologoService {

@@ -9,6 +9,8 @@ SET search_path TO psicologia_app;
 
 CREATE TYPE rol_usuario AS ENUM ('admin', 'psicologo', 'paciente');
 CREATE TYPE estado_cita AS ENUM ('pendiente', 'confirmada', 'cancelada', 'completada');
+CREATE TYPE metodo_pago AS ENUM ('PRESENCIAL', 'ONLINE');
+CREATE TYPE estado_pago AS ENUM ('PENDIENTE', 'PAGADO');
 
 -- ==============================
 -- TABLAS
@@ -16,16 +18,18 @@ CREATE TYPE estado_cita AS ENUM ('pendiente', 'confirmada', 'cancelada', 'comple
 
 CREATE TABLE usuarios
 (
-    id_usuario     BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nombre         VARCHAR(100)        NOT NULL,
-    apellido       VARCHAR(100),
-    email          VARCHAR(150) UNIQUE NOT NULL,
-    password       VARCHAR(255)        NOT NULL,
-    rol            rol_usuario         NOT NULL,
-    activo         BOOLEAN             NOT NULL DEFAULT TRUE,
-    fecha_registro TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    fecha_baja     TIMESTAMP,
-    fcm_token      VARCHAR(100)
+    id_usuario      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nombre          VARCHAR(100)        NOT NULL,
+    apellido        VARCHAR(100),
+    dni             VARCHAR(50),
+    email           VARCHAR(150) UNIQUE NOT NULL,
+    password        VARCHAR(255)        NOT NULL,
+    rol             rol_usuario         NOT NULL,
+    activo          BOOLEAN             NOT NULL DEFAULT TRUE,
+    fecha_registro  TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_baja      TIMESTAMP,
+    fcm_token       VARCHAR(512),
+    foto_perfil_url VARCHAR(500)
 );
 
 CREATE TABLE pacientes
@@ -36,6 +40,8 @@ CREATE TABLE pacientes
     fecha_nacimiento DATE,
     genero           VARCHAR(30),
     telefono         VARCHAR(30),
+    metodo_pago      metodo_pago NOT NULL DEFAULT 'PRESENCIAL',
+    estado_pago      estado_pago NOT NULL DEFAULT 'PENDIENTE',
     created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -274,6 +280,69 @@ CREATE TABLE psicologo_paciente
 
     FOREIGN KEY (id_psicologo)
         REFERENCES psicologos (id_psicologo)
+        ON DELETE CASCADE
+);
+
+-- ==============================
+-- SITUACIONES Y CONSENTIMIENTOS
+-- ==============================
+
+-- Catálogo de situaciones (contexto del paciente: duelo, ansiedad, etc.)
+CREATE TABLE situaciones
+(
+    id_situacion BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nombre       VARCHAR(150) NOT NULL,
+    categoria    VARCHAR(100),
+    descripcion  TEXT,
+    activo       BOOLEAN      DEFAULT TRUE,
+    created_at   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tutores legales de pacientes menores de edad
+CREATE TABLE tutores
+(
+    id_tutor    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente BIGINT       NOT NULL,
+    nombre      VARCHAR(255) NOT NULL,
+    telefono    VARCHAR(30),
+    email       VARCHAR(150),
+    dni         VARCHAR(20),
+    tipo        VARCHAR(50)  NOT NULL,  -- MADRE / PADRE / TUTOR
+
+    FOREIGN KEY (id_paciente)
+        REFERENCES pacientes (id_paciente)
+        ON DELETE CASCADE
+);
+
+-- Consentimientos informados aceptados por el paciente
+CREATE TABLE consentimientos
+(
+    id_consentimiento      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente            BIGINT    NOT NULL,
+    fecha_aceptacion       TIMESTAMP NOT NULL,
+    version_documento      VARCHAR(255) NOT NULL,
+    acepta_videoconferencia BOOLEAN   DEFAULT FALSE,
+    acepta_comunicacion    BOOLEAN   DEFAULT FALSE,
+
+    FOREIGN KEY (id_paciente)
+        REFERENCES pacientes (id_paciente)
+        ON DELETE CASCADE
+);
+
+-- Relación N:M entre pacientes y situaciones
+CREATE TABLE paciente_situacion
+(
+    id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente     BIGINT    NOT NULL,
+    id_situacion    BIGINT    NOT NULL,
+    fecha_registro  TIMESTAMP,
+
+    FOREIGN KEY (id_paciente)
+        REFERENCES pacientes (id_paciente)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (id_situacion)
+        REFERENCES situaciones (id_situacion)
         ON DELETE CASCADE
 );
 

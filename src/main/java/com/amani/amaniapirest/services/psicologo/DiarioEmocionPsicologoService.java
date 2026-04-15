@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 /**
  * Servicio que permite al psicólogo consultar el diario emocional de sus pacientes.
+ *
+ * @see com.amani.amaniapirest.dto.dtoPsicologo.response.DiarioEmocionalPsicologoDTO
  */
 @Service
 public class DiarioEmocionPsicologoService {

@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Servicio de negocio para gestionar sesiones terapéuticas desde la perspectiva del psicólogo.
+ *
+ * @see com.amani.amaniapirest.dto.dtoPsicologo.response.SesionPsicologoResponseDTO
  */
 @Service
 public class SesionPsicologoService {

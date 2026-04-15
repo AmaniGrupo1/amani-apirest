@@ -1,8 +1,8 @@
 package com.amani.amaniapirest.services.serviceAdmin;
 
 
-import com.amani.amaniapirest.dto.dtoPaciente.request.MensajeRequestDTO;
 import com.amani.amaniapirest.dto.dtoAdmin.response.MensajeAdminResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.MensajeRequestDTO;
 import com.amani.amaniapirest.models.Mensaje;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.MensajeRepository;

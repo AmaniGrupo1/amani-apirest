@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * DTO de respuesta para representar un item de agenda de un psicólogo.
+ *
+ * <p>Contiene la información de eventos en la agenda del psicólogo,
+ * incluyendo citas y bloqueos, con detalles sobre tipo y referencia.</p>
+ */
 @AllArgsConstructor
 @Data
 @NoArgsConstructor

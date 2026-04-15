@@ -6,6 +6,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * DTO de respuesta para representar un psicólogo con la lista de sus pacientes asignados.
+ *
+ * <p>Incluye la información completa del psicólogo y una lista de los pacientes
+ * bajo su responsabilidad clínica.</p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

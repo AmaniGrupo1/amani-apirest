@@ -6,6 +6,7 @@ import com.amani.amaniapirest.models.Mensaje;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.MensajeRepository;
 import com.amani.amaniapirest.repository.UsuarioRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,10 +20,12 @@ public class MensajePsicologoService {
 
     private final MensajeRepository mensajeRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public MensajePsicologoService(MensajeRepository mensajeRepository, UsuarioRepository usuarioRepository) {
+    public MensajePsicologoService(MensajeRepository mensajeRepository, UsuarioRepository usuarioRepository, ApplicationEventPublisher eventPublisher) {
         this.mensajeRepository = mensajeRepository;
         this.usuarioRepository = usuarioRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     public List<MensajePsicologoResponseDTO> findEnviados(Long idUsuario) {
@@ -46,7 +49,10 @@ public class MensajePsicologoService {
         mensaje.setEnviadoEn(LocalDateTime.now());
         mensaje.setLeido(false);
 
-        return toResponse(mensajeRepository.save(mensaje));
+        Mensaje saved = mensajeRepository.save(mensaje);
+        // Publicar evento para que el listener procese entrega en RTDB/FCM
+        eventPublisher.publishEvent(new com.amani.amaniapirest.events.MensajeNuevoEvent(this, saved));
+        return toResponse(saved);
     }
 
     public MensajePsicologoResponseDTO marcarLeido(Long idMensaje) {

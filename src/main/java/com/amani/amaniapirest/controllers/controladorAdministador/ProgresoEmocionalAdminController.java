@@ -4,18 +4,20 @@ import com.amani.amaniapirest.dto.dtoAdmin.response.ProgresoEmocionalAdminRespon
 import com.amani.amaniapirest.dto.dtoPaciente.request.ProgresoEmocionalRequestDTO;
 import com.amani.amaniapirest.services.serviceAdmin.ProgresoEmocionalAdminService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
+/**
+ * Controlador REST de administración para la gestión del progreso emocional.
+ *
+ * <p>Base path: {@code /api/admin/progreso-emocional}. Permite obtener, crear, actualizar y eliminar
+ * registros de progreso emocional.</p>
+ */
 @RestController
 @RequestMapping("/api/admin/progreso-emocional")
 @Tag(name = "Progreso Emocional (Admin)", description = "CRUD de progreso emocional — vista administrador")
@@ -27,10 +29,17 @@ public class ProgresoEmocionalAdminController {
         this.progresoService = progresoService;
     }
 
-    @Operation(summary = "Obtener progreso", description = "Obtiene un registro de progreso emocional por ID")
+    /**
+     * Obtiene un registro de progreso emocional por su identificador.
+     *
+     * @param idProgreso identificador del progreso emocional
+     * @return el progreso emocional encontrado
+     */
+    @Operation(summary = "Obtener progreso emocional", description = "Obtiene los detalles de un registro de progreso emocional por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{idProgreso}")
@@ -65,11 +74,17 @@ public class ProgresoEmocionalAdminController {
         return ResponseEntity.ok(progresoService.update(idProgreso, request));
     }
 
-    /** Eliminar un progreso emocional */
-    @Operation(summary = "Eliminar progreso", description = "Elimina un registro de progreso emocional")
+    /**
+     * Elimina un registro de progreso emocional por su identificador.
+     *
+     * @param idProgreso identificador del progreso a eliminar
+     * @return 204 No Content si se elimino correctamente
+     */
+    @Operation(summary = "Eliminar progreso emocional", description = "Elimina un registro de progreso emocional por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{idProgreso}")

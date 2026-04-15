@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 /**
  * Servicio de administración para consultar y gestionar todas las citas del sistema.
+ *
+ * @see com.amani.amaniapirest.dto.dtoAdmin.response.CitaAdminResponseDTO
  */
 @Service
 public class CitaAdminService {

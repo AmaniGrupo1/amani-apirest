@@ -3,37 +3,34 @@ package com.amani.amaniapirest.listeners;
 import com.amani.amaniapirest.events.MensajeNuevoEvent;
 import com.amani.amaniapirest.models.Mensaje;
 import com.amani.amaniapirest.models.Usuario;
+import com.amani.amaniapirest.services.FirebaseChatService;
 import com.amani.amaniapirest.services.FirebaseNotificationService;
-import com.amani.amaniapirest.services.WebSocketPresenceTracker;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
- * Listener del dominio {@link Mensaje}.
+ * Listener del dominio {@link Mensaje} adaptado para no usar WebSocket.
  *
- * <p>Al recibir un {@link MensajeNuevoEvent} decide la vía de entrega:</p>
- * <ul>
- *   <li>Si el destinatario tiene sesión WebSocket activa → entrega por STOMP
- *       al canal personal {@code /queue/mensajes}.</li>
- *   <li>Si está offline → envía notificación push via Firebase.</li>
- * </ul>
+ * <p>Al recibir un {@link MensajeNuevoEvent} escribe el mensaje en Firebase RTDB
+ * para entrega en tiempo real a los clientes y desencadena notificación push.</p>
+ *
+ * <p>Solo se instancia si {@link FirebaseChatService} está disponible (es decir,
+ * si Firebase está configurado). En entornos sin Firebase este bean se omite.</p>
  */
 @Component
+@ConditionalOnBean(FirebaseChatService.class)
 public class MensajeEventListener {
 
-    private final SimpMessagingTemplate messagingTemplate;
+    private final FirebaseChatService firebaseChatService;
     private final FirebaseNotificationService firebaseService;
-    private final WebSocketPresenceTracker presenceTracker;
 
-    public MensajeEventListener(SimpMessagingTemplate messagingTemplate,
-                                 FirebaseNotificationService firebaseService,
-                                 WebSocketPresenceTracker presenceTracker) {
-        this.messagingTemplate = messagingTemplate;
+    public MensajeEventListener(FirebaseChatService firebaseChatService,
+                                FirebaseNotificationService firebaseService) {
+        this.firebaseChatService = firebaseChatService;
         this.firebaseService = firebaseService;
-        this.presenceTracker = presenceTracker;
     }
 
     @Async
@@ -41,47 +38,18 @@ public class MensajeEventListener {
     public void onMensajeNuevo(MensajeNuevoEvent event) {
         Mensaje mensaje = event.getMensaje();
         Usuario receiver = mensaje.getReceiver();
-        Usuario sender   = mensaje.getSender();
+        Usuario sender = mensaje.getSender();
 
         if (receiver == null) return;
 
-        Long receiverId = receiver.getIdUsuario();
-        String nombreRemitente = (sender != null) ? sender.getNombre() + " " + sender.getApellido() : "Alguien";
+        // Escribir en Realtime Database para entrega en tiempo real
+        firebaseChatService.enviarMensaje(mensaje);
 
-        if (presenceTracker.isConnected(receiverId)) {
-            // Usuario online → entrega en tiempo real por WebSocket
-            MensajePayload payload = new MensajePayload(
-                    mensaje.getIdMensaje(),
-                    sender != null ? sender.getIdUsuario() : null,
-                    nombreRemitente,
-                    mensaje.getMensaje(),
-                    mensaje.getEnviadoEn()
-            );
-            messagingTemplate.convertAndSendToUser(
-                    String.valueOf(receiverId),
-                    "/queue/mensajes",
-                    payload
-            );
-        } else {
-            // Usuario offline → push notification
-            firebaseService.enviarPush(
-                    receiver.getFcmToken(),
-                    "Nuevo mensaje de " + nombreRemitente,
-                    mensaje.getMensaje()
-            );
+        // Además, enviar notificación push si tiene token
+        if (receiver.getFcmToken() != null && !receiver.getFcmToken().isBlank()) {
+            String nombreRemitente = (sender != null) ? sender.getNombre() + " " + sender.getApellido() : "Alguien";
+            firebaseService.enviarPush(receiver.getFcmToken(), "Nuevo mensaje de " + nombreRemitente, mensaje.getMensaje());
         }
     }
-
-    // ----------------------------------------------------------------
-    // DTO interno ligero para la entrega WebSocket
-    // ----------------------------------------------------------------
-
-    public record MensajePayload(
-            Long idMensaje,
-            Long idSender,
-            String nombreSender,
-            String contenido,
-            java.time.LocalDateTime enviadoEn
-    ) {}
 }
 

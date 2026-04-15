@@ -1,9 +1,9 @@
 package com.amani.amaniapirest.services;
 
 import com.amani.amaniapirest.dto.dtoAdmin.response.CitaAdminResponseDTO;
-import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
+import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.events.CitaCanceladaEvent;
 import com.amani.amaniapirest.events.CitaCreadaEvent;

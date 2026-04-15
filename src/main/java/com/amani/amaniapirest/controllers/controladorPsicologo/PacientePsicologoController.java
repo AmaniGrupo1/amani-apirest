@@ -6,17 +6,15 @@ import com.amani.amaniapirest.repository.PsicologoPacienteRepository;
 import com.amani.amaniapirest.services.psicologo.PacientePsicologoService;
 import com.amani.amaniapirest.services.serviceAdmin.PsicologoAdminService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * Controlador para la gestión de pacientes desde la perspectiva del psicólogo.
@@ -39,6 +37,7 @@ public class PacientePsicologoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
@@ -46,15 +45,13 @@ public class PacientePsicologoController {
         return ResponseEntity.ok(pacienteService.findById(id));
     }
 
-    @Operation(summary = "Crear paciente", description = "Crea un nuevo paciente (datos basicos)")
+    @Operation(summary = "Listar pacientes", description = "Lista todos los pacientes activos del psicólogo logueado")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "204", description = "No hay pacientes registrados"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-
-    //Listo todos los pacientes activos del psicólogo logueado
     @GetMapping("/getAll")
     public ResponseEntity<List<PacientePsicologoResponseDTO>> getPacientes() {
         List<PacientePsicologoResponseDTO> pacientes = psicologoAdminService.getPacientesDelPsicologoLogueado();
@@ -64,22 +61,28 @@ public class PacientePsicologoController {
         return ResponseEntity.ok(pacientes);
     }
 
+    @Operation(summary = "Crear paciente", description = "Crea un nuevo paciente con los datos proporcionados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+    })
     @PostMapping
-    /** Crear un nuevo paciente (solo datos básicos) */
     public ResponseEntity<PacientePsicologoResponseDTO> crearPaciente(@RequestBody PacienteRequestDTO request) {
         PacientePsicologoResponseDTO paciente = pacienteService.create(request);
         return ResponseEntity.ok(paciente);
     }
 
-    @Operation(summary = "Actualizar paciente", description = "Actualiza un paciente existente")
+    @Operation(summary = "Actualizar paciente", description = "Actualiza los datos de un paciente existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/{id}")
-    /** Actualizar un paciente existente */
     public ResponseEntity<PacientePsicologoResponseDTO> actualizarPaciente(
             @PathVariable Long id,
             @RequestBody PacienteRequestDTO request) {
@@ -91,10 +94,10 @@ public class PacientePsicologoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{id}")
-    /** Eliminar un paciente */
     public ResponseEntity<Void> eliminarPaciente(@PathVariable Long id) {
         pacienteService.delete(id);
         return ResponseEntity.noContent().build();

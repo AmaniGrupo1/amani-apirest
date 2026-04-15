@@ -5,6 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que representa a un tutor legal de un paciente.
+ *
+ * <p>Almacena los datos de contacto y la relacion familiar o legal
+ * con el paciente, incluyendo nombre, telefono, email y dni.</p>
+ */
 @Entity
 @Table(name = "tutores")
 @Data

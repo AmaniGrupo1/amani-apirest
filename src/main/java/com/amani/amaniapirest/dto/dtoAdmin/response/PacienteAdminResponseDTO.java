@@ -1,12 +1,8 @@
 package com.amani.amaniapirest.dto.dtoAdmin.response;
 
 import com.amani.amaniapirest.dto.dtoAdmin.TutorResonseDTO;
-import com.amani.amaniapirest.dto.dtoPaciente.request.TutorRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
-import com.amani.amaniapirest.dto.dtoPregunta.psicologo.RespuestaPacientePsicologoResponseDTO;
 import com.amani.amaniapirest.dto.situacion.SituacionDTO;
-import com.amani.amaniapirest.models.Tutor;
-import com.amani.amaniapirest.models.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

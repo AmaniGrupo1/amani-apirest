@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * DTO de entrada para crear o actualizar una pregunta del cuestionario.
+ * DTO de respuesta para representar una opción de respuesta en un cuestionario.
  *
- * <p>El tipo determina cómo se muestra la pregunta al paciente; si el tipo es
- * de opción múltiple, la lista {@code opciones} debe contener al menos dos elementos.</p>
+ * <p>Contiene la información de una opción de respuesta predefinida que
+ * puede ser asociada a una pregunta del cuestionario psicológico.</p>
  */
 @AllArgsConstructor
 @NoArgsConstructor

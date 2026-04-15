@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 /**
  * Servicio de administración para gestionar el historial clínico de todos los pacientes.
+ *
+ * @see com.amani.amaniapirest.dto.dtoAdmin.response.HistorialClinicoAdminResponseDTO
  */
 @Service
 public class HistorialClinicoAdminService {

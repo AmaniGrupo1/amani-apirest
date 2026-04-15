@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 /**
  * Servicio de negocio para que el psicólogo gestione el historial clínico de sus pacientes.
+ *
+ * @see com.amani.amaniapirest.dto.dtoPsicologo.response.HistorialClinicoPsicologoResponseDTO
  */
 @Service
 public class HistorialClinicoPsicologoService {

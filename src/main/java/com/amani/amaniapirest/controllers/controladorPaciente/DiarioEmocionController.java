@@ -1,10 +1,12 @@
 package com.amani.amaniapirest.controllers.controladorPaciente;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.DiarioEmocionRequestDTO;
-
 import com.amani.amaniapirest.dto.dtoPaciente.response.DiarioEmocionResponseDTO;
 import com.amani.amaniapirest.services.paciente.DiarioEmocionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -12,11 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/diario-emocion")
@@ -29,12 +26,16 @@ public class DiarioEmocionController {
         this.diarioEmocionService = diarioEmocionService;
     }
 
-    /** GET /api/diario-emocion — Lista todas las entradas del diario. */
-    @Operation(summary = "Listar entradas", description = "Lista todas las entradas del diario emocional")
+    /**
+     * Lista todas las entradas del diario emocional del paciente autenticado.
+     *
+     * @return lista de entradas del diario emocional
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Listar entradas", description = "Recupera todas las entradas del diario emocional del paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Entradas del diario emocional retornadas correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping
@@ -42,12 +43,18 @@ public class DiarioEmocionController {
         return ResponseEntity.ok(diarioEmocionService.findAll());
     }
 
-    /** GET /api/diario-emocion/{id} — Obtiene una entrada por ID. */
-    @Operation(summary = "Obtener entrada", description = "Obtiene una entrada del diario por su ID")
+    /**
+     * Obtiene una entrada del diario emocional por su identificador único.
+     *
+     * @param id identificador único de la entrada del diario emocional
+     * @return entrada del diario emocional
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Obtener entrada", description = "Recupera una entrada específica del diario emocional por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Entrada del diario emocional retornada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ninguna entrada con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
@@ -59,12 +66,18 @@ public class DiarioEmocionController {
         }
     }
 
-    /** GET /api/diario-emocion/paciente/{idPaciente} — Lista las entradas de un paciente. */
-    @Operation(summary = "Entradas por paciente", description = "Lista las entradas del diario de un paciente")
+    /**
+     * Lista todas las entradas del diario emocional de un paciente específico.
+     *
+     * @param idPaciente identificador único del paciente
+     * @return lista de entradas del diario emocional del paciente
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Entradas por paciente", description = "Recupera todas las entradas del diario emocional de un paciente por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Entradas del diario emocional del paciente retornadas correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró al paciente con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/paciente/{idPaciente}")
@@ -72,11 +85,17 @@ public class DiarioEmocionController {
         return ResponseEntity.ok(diarioEmocionService.findByPaciente(idPaciente));
     }
 
-    /** POST /api/diario-emocion — Crea una nueva entrada en el diario. */
-    @Operation(summary = "Crear entrada", description = "Crea una nueva entrada en el diario emocional")
+    /**
+     * Crea una nueva entrada en el diario emocional del paciente autenticado.
+     *
+     * @param request datos para crear la entrada del diario emocional
+     * @return entrada del diario emocional creada
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Crear entrada", description = "Crea una nueva entrada en el diario emocional del paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "201", description = "Entrada del diario emocional creada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
@@ -90,13 +109,20 @@ public class DiarioEmocionController {
         }
     }
 
-    /** PUT /api/diario-emocion/{id} — Actualiza una entrada del diario. */
-    @Operation(summary = "Actualizar entrada", description = "Actualiza una entrada del diario emocional")
+    /**
+     * Actualiza una entrada existente del diario emocional.
+     *
+     * @param id      identificador único de la entrada del diario emocional a actualizar
+     * @param request nuevos datos para la entrada del diario emocional
+     * @return entrada del diario emocional actualizada
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Actualizar entrada", description = "Actualiza una entrada existente del diario emocional")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "200", description = "Entrada del diario emocional actualizada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ninguna entrada con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/{id}")
@@ -110,12 +136,17 @@ public class DiarioEmocionController {
         }
     }
 
-    /** DELETE /api/diario-emocion/{id} — Elimina una entrada del diario. */
-    @Operation(summary = "Eliminar entrada", description = "Elimina una entrada del diario emocional")
+    /**
+     * Elimina una entrada del diario emocional por su identificador único.
+     *
+     * @param id identificador único de la entrada del diario emocional a eliminar
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Eliminar entrada", description = "Elimina una entrada del diario emocional por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
+            @ApiResponse(responseCode = "204", description = "Entrada del diario emocional eliminada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ninguna entrada con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{id}")

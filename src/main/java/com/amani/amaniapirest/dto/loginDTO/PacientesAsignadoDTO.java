@@ -4,6 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO de respuesta para representar un paciente asignado a un psicólogo.
+ *
+ * <p>Devuelve los datos básicos del paciente (identificador, nombre, apellido y email)
+ * cuando un psicólogo consulta la lista de sus pacientes asignados.</p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -6,17 +6,15 @@ import com.amani.amaniapirest.dto.dtoPregunta.paciente.PreguntaPacienteResponseD
 import com.amani.amaniapirest.dto.dtoPregunta.requestGeneral.OpcionAdminResDTO;
 import com.amani.amaniapirest.services.servicePacientePregunta.preguntaServicios.admin.PreguntaAdminService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * Controlador REST de administracion para gestionar las preguntas del test inicial.

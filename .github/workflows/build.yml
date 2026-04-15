@@ -1,0 +1,202 @@
+# =============================================================================
+# CI – Build & Artifact
+# =============================================================================
+# distributionManagement ya configurado en pom.xml para GitHub Packages
+# (amanigrupo1/amani-apirest).
+# =============================================================================
+
+name: "CI – Build & Artifact"
+
+# ---------------------------------------------------------------------------
+# Permisos globales del workflow
+# ---------------------------------------------------------------------------
+permissions:
+  contents: read        # lectura del repo (checkout)
+  checks: write         # escritura de checks (test-reporter)
+  packages: write       # publicación en GitHub Packages (deploy)
+  pull-requests: write  # comentarios de test-reporter en PRs
+
+# ---------------------------------------------------------------------------
+# Evitar ejecuciones paralelas en la misma rama
+# ---------------------------------------------------------------------------
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# ---------------------------------------------------------------------------
+# Variables de entorno globales
+# ---------------------------------------------------------------------------
+env:
+  JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
+
+# ---------------------------------------------------------------------------
+# Disparadores del workflow
+# ---------------------------------------------------------------------------
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'release/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+# =============================================================================
+# JOBS
+# =============================================================================
+jobs:
+
+  # ===========================================================================
+  # Job 1: Verificar compilación y ejecutar tests
+  # ===========================================================================
+  verify:
+    name: "Verify – Compile & Test"
+    runs-on: ubuntu-latest
+
+    # --- Servicio PostgreSQL para los tests de integración ---
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: psicologia_app
+          POSTGRES_USER: amani
+          POSTGRES_PASSWORD: amani
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U amani -d psicologia_app"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # --- Checkout del código fuente ---
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      # --- Inicializar el esquema de la base de datos ---
+      - name: "Initialize database schema"
+        run: |
+          # Esperar a que PostgreSQL esté listo
+          for i in $(seq 1 30); do
+            if pg_isready -h localhost -p 5432 -U amani -d psicologia_app; then
+              echo "PostgreSQL is ready"
+              break
+            fi
+            echo "Waiting for PostgreSQL... ($i/30)"
+            sleep 1
+          done
+          # Ejecutar el script DDL con parámetros de conexión explícitos
+          PGPASSWORD=amani psql \
+            -h localhost \
+            -p 5432 \
+            -U amani \
+            -d psicologia_app \
+            -f src/main/resources/amani.sql
+
+      # --- Configurar JDK 21 (coincide con <java.version> del pom.xml) ---
+      - name: "Set up JDK 21"
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      # --- Dar permisos de ejecución al Maven Wrapper ---
+      - name: "Grant execute permission to mvnw"
+        run: chmod +x ./mvnw
+
+      # --- Compilar y ejecutar tests (propiedades de BD sobreescribas por env vars) ---
+      - name: "Compile & test (verify)"
+        run: ./mvnw --batch-mode --no-transfer-progress verify
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/psicologia_app
+          SPRING_DATASOURCE_USERNAME: amani
+          SPRING_DATASOURCE_PASSWORD: amani
+
+      # --- Publicar resultados de tests como check de GitHub ---
+      - name: "Publish test results"
+        if: always()
+        uses: dorny/test-reporter@v1.9.1
+        with:
+          name: Test Results
+          path: '**/target/surefire-reports/*.xml'
+          reporter: java-junit
+          fail-on-error: true
+
+  # ===========================================================================
+  # Job 2: Construir artefacto y publicar en GitHub Packages
+  # ===========================================================================
+  build-artifact:
+    name: "Build – Maven Artifact"
+    needs: [verify]                  # Solo se ejecuta si verify pasó
+    if: github.event_name == 'push'  # Solo en push, no en pull_request
+    runs-on: ubuntu-latest
+
+    # --- Variables de entorno para autenticación con GitHub Packages ---
+    env:
+      MAVEN_USERNAME: ${{ github.actor }}
+      MAVEN_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      # --- Checkout del código fuente ---
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      # --- Configurar JDK 21 con credenciales para GitHub Packages ---
+      - name: "Set up JDK 21"
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+          server-id: github
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_TOKEN
+
+      # --- Dar permisos de ejecución al Maven Wrapper ---
+      - name: "Grant execute permission to mvnw"
+        run: chmod +x ./mvnw
+
+      # --- Empaquetar sin re-ejecutar tests (ya pasaron en Job 1) ---
+      - name: "Package JAR"
+        run: ./mvnw --batch-mode --no-transfer-progress -DskipTests package
+
+      # --- Subir artefacto al workflow run ---
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven-artifact-${{ github.run_number }}
+          path: |
+            target/*.jar
+            target/*.war
+          if-no-files-found: error
+          retention-days: 30
+
+      # --- Validar que artifactId sea todo minúsculas (GitHub Packages lo exige) ---
+      - name: "Validate lowercase artifactId"
+        run: |
+          ARTIFACT_ID=$(./mvnw -q help:evaluate -Dexpression=project.artifactId -DforceStdout)
+          echo "artifactId detectado: $ARTIFACT_ID"
+          if [[ "$ARTIFACT_ID" =~ [A-Z] ]]; then
+            echo "ERROR: artifactId inválido para GitHub Packages (contiene mayúsculas): $ARTIFACT_ID"
+            exit 1
+          fi
+          echo "OK: artifactId '$ARTIFACT_ID' es válido para GitHub Packages."
+
+      # --- Imprimir coordenadas Maven efectivas antes del deploy ---
+      - name: "Debug Maven coordinates"
+        run: |
+          echo "=== Coordenadas Maven efectivas ==="
+          echo -n "groupId:    " && ./mvnw -q help:evaluate -Dexpression=project.groupId -DforceStdout && echo
+          echo -n "artifactId: " && ./mvnw -q help:evaluate -Dexpression=project.artifactId -DforceStdout && echo
+          echo -n "version:    " && ./mvnw -q help:evaluate -Dexpression=project.version -DforceStdout && echo
+          echo -n "finalName:  " && ./mvnw -q help:evaluate -Dexpression=project.build.finalName -DforceStdout && echo
+          echo -n "registry:   " && ./mvnw -q help:evaluate -Dexpression=project.distributionManagement.repository.url -DforceStdout && echo
+
+      # --- Publicar en GitHub Packages (solo desde main) ---
+      - name: "Deploy to GitHub Packages"
+        if: github.ref == 'refs/heads/main'
+        run: ./mvnw --batch-mode --no-transfer-progress -DskipTests deploy

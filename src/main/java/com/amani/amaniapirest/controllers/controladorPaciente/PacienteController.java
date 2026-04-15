@@ -5,6 +5,9 @@ import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteResponseDTO;
 import com.amani.amaniapirest.dto.profile.PacienteDTO;
 import com.amani.amaniapirest.services.paciente.PacienteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -12,11 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/pacientes")
@@ -29,11 +27,16 @@ public class PacienteController {
         this.pacienteService = pacienteService;
     }
 
-    @Operation(summary = "Listar pacientes", description = "Lista todos los pacientes")
+    /**
+     * Lista todos los pacientes del sistema.
+     *
+     * @return lista de pacientes
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Listar pacientes", description = "Recupera todos los pacientes del sistema")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Pacientes retornados correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping
@@ -41,12 +44,18 @@ public class PacienteController {
         return ResponseEntity.ok(pacienteService.findAll());
     }
 
-    /** GET /api/pacientes/{id} — Obtiene un paciente por ID. */
-    @Operation(summary = "Obtener paciente", description = "Obtiene un paciente por su ID")
+    /**
+     * Obtiene un paciente por su identificador único.
+     *
+     * @param id identificador único del paciente
+     * @return datos del paciente
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Obtener paciente", description = "Recupera un paciente específico por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Paciente retornado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún paciente con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
@@ -58,11 +67,17 @@ public class PacienteController {
         }
     }
 
-    /** POST /api/pacientes — Crea un nuevo perfil de paciente. */
+    /**
+     * Crea un nuevo perfil de paciente.
+     *
+     * @param request datos para crear el perfil del paciente
+     * @return perfil de paciente creado
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
     @Operation(summary = "Crear paciente", description = "Crea un nuevo perfil de paciente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "201", description = "Perfil de paciente creado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
@@ -76,13 +91,20 @@ public class PacienteController {
         }
     }
 
-    /** PUT /api/pacientes/{id} — Actualiza un perfil de paciente. */
-    @Operation(summary = "Actualizar paciente", description = "Actualiza un perfil de paciente")
+    /**
+     * Actualiza un perfil de paciente existente.
+     *
+     * @param id      identificador único del paciente a actualizar
+     * @param request nuevos datos del perfil del paciente
+     * @return perfil de paciente actualizado
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Actualizar paciente", description = "Actualiza un perfil de paciente existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "200", description = "Perfil de paciente actualizado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún paciente con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/{id}")
@@ -96,12 +118,17 @@ public class PacienteController {
         }
     }
 
-    /** DELETE /api/pacientes/{id} — Elimina un paciente. */
+    /**
+     * Elimina un paciente por su identificador único.
+     *
+     * @param id identificador único del paciente a eliminar
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
     @Operation(summary = "Eliminar paciente", description = "Elimina un paciente por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
+            @ApiResponse(responseCode = "204", description = "Paciente eliminado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún paciente con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{id}")
@@ -113,5 +140,4 @@ public class PacienteController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

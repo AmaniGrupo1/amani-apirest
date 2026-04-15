@@ -1,10 +1,9 @@
 package com.amani.amaniapirest.dto.dtoPsicologo.response;
 
-import com.amani.amaniapirest.enums.RolUsuario;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * DTO de respuesta para que el psicólogo consulte sus propios datos de {@code Usuario}.

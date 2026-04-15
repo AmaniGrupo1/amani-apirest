@@ -4,6 +4,9 @@ import com.amani.amaniapirest.dto.dtoPaciente.request.SesionRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.SesionResponseDTO;
 import com.amani.amaniapirest.services.paciente.SesionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -11,11 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/paciente/sesiones")
@@ -29,13 +27,17 @@ public class SesionPacienteController {
     }
 
     /**
-     * Obtener todas las sesiones de un paciente
+     * Lista todas las sesiones de un paciente específico.
+     *
+     * @param idPaciente identificador único del paciente
+     * @return lista de sesiones del paciente
+     * @throws RuntimeException si ocurre un error en la capa de servicio
      */
-    @Operation(summary = "Sesiones por paciente", description = "Obtiene todas las sesiones de un paciente")
+    @Operation(summary = "Sesiones por paciente", description = "Recupera todas las sesiones de un paciente por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Sesiones del paciente retornadas correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró al paciente con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/paciente/{idPaciente}")
@@ -44,13 +46,17 @@ public class SesionPacienteController {
     }
 
     /**
-     * Obtener una sesión por ID
+     * Obtiene una sesión por su identificador único.
+     *
+     * @param id identificador único de la sesión
+     * @return datos de la sesión
+     * @throws RuntimeException si ocurre un error en la capa de servicio
      */
-    @Operation(summary = "Obtener sesion", description = "Obtiene una sesion por su ID")
+    @Operation(summary = "Obtener sesión", description = "Recupera una sesión específica por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Sesión retornada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ninguna sesión con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
@@ -63,12 +69,16 @@ public class SesionPacienteController {
     }
 
     /**
-     * Crear sesión (solo si tu lógica lo permite)
+     * Crea una nueva sesión para el paciente autenticado.
+     *
+     * @param request datos para crear la sesión
+     * @return sesión creada
+     * @throws RuntimeException si ocurre un error en la capa de servicio
      */
-    @Operation(summary = "Crear sesion", description = "Crea una nueva sesion")
+    @Operation(summary = "Crear sesión", description = "Crea una nueva sesión para el paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "201", description = "Sesión creada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
@@ -84,14 +94,19 @@ public class SesionPacienteController {
     }
 
     /**
-     * Actualizar sesión
+     * Actualiza una sesión existente.
+     *
+     * @param id      identificador único de la sesión a actualizar
+     * @param request nuevos datos de la sesión
+     * @return sesión actualizada
+     * @throws RuntimeException si ocurre un error en la capa de servicio
      */
-    @Operation(summary = "Actualizar sesion", description = "Actualiza una sesion existente")
+    @Operation(summary = "Actualizar sesión", description = "Actualiza una sesión existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "200", description = "Sesión actualizada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ninguna sesión con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/{id}")
@@ -107,13 +122,16 @@ public class SesionPacienteController {
     }
 
     /**
-     * Eliminar sesión
+     * Elimina una sesión por su identificador único.
+     *
+     * @param id identificador único de la sesión a eliminar
+     * @throws RuntimeException si ocurre un error en la capa de servicio
      */
-    @Operation(summary = "Eliminar sesion", description = "Elimina una sesion por su ID")
+    @Operation(summary = "Eliminar sesión", description = "Elimina una sesión por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
+            @ApiResponse(responseCode = "204", description = "Sesión eliminada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ninguna sesión con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{id}")

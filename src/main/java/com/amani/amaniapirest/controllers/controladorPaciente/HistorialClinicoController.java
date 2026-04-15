@@ -4,6 +4,9 @@ import com.amani.amaniapirest.dto.dtoPaciente.request.HistorialClinicoRequestDTO
 import com.amani.amaniapirest.dto.dtoPaciente.response.HistorialClinicoResponseDTO;
 import com.amani.amaniapirest.services.paciente.HistorialClinicoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -11,11 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/historial-clinico")
@@ -28,12 +26,16 @@ public class HistorialClinicoController {
         this.historialClinicoService = historialClinicoService;
     }
 
-    /** GET /api/historial-clinico — Lista todos los registros clínicos. */
-    @Operation(summary = "Listar historiales", description = "Lista todos los registros clinicos")
+    /**
+     * Lista todos los registros clínicos del paciente autenticado.
+     *
+     * @return lista de registros clínicos
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Listar historiales", description = "Recupera todos los registros clínicos del paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Registros clínicos retornados correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping
@@ -41,12 +43,18 @@ public class HistorialClinicoController {
         return ResponseEntity.ok(historialClinicoService.findAll());
     }
 
-    /** GET /api/historial-clinico/{id} — Obtiene un registro clínico por ID. */
-    @Operation(summary = "Obtener historial", description = "Obtiene un registro clinico por su ID")
+    /**
+     * Obtiene un registro clínico por su identificador único.
+     *
+     * @param id identificador único del registro clínico
+     * @return datos del registro clínico
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Obtener historial", description = "Recupera un registro clínico específico por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Registro clínico retornado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún registro con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
@@ -58,12 +66,18 @@ public class HistorialClinicoController {
         }
     }
 
-    /** GET /api/historial-clinico/paciente/{idPaciente} — Lista el historial de un paciente. */
-    @Operation(summary = "Historial por paciente", description = "Lista el historial clinico de un paciente")
+    /**
+     * Lista todos los registros clínicos de un paciente específico.
+     *
+     * @param idPaciente identificador único del paciente
+     * @return lista de registros clínicos del paciente
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Historial por paciente", description = "Recupera todos los registros clínicos de un paciente por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Registros clínicos del paciente retornados correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró al paciente con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/paciente/{idPaciente}")
@@ -71,11 +85,17 @@ public class HistorialClinicoController {
         return ResponseEntity.ok(historialClinicoService.findByPaciente(idPaciente));
     }
 
-    /** POST /api/historial-clinico — Crea un nuevo registro clínico. */
-    @Operation(summary = "Crear historial", description = "Crea un nuevo registro clinico")
+    /**
+     * Crea un nuevo registro clínico para el paciente autenticado.
+     *
+     * @param request datos para crear el registro clínico
+     * @return registro clínico creado
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Crear historial", description = "Crea un nuevo registro clínico para el paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "201", description = "Registro clínico creado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
@@ -89,13 +109,20 @@ public class HistorialClinicoController {
         }
     }
 
-    /** PUT /api/historial-clinico/{id} — Actualiza un registro clínico. */
-    @Operation(summary = "Actualizar historial", description = "Actualiza un registro clinico existente")
+    /**
+     * Actualiza un registro clínico existente.
+     *
+     * @param id      identificador único del registro clínico a actualizar
+     * @param request nuevos datos del registro clínico
+     * @return registro clínico actualizado
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Actualizar historial", description = "Actualiza un registro clínico existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "200", description = "Registro clínico actualizado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún registro con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/{id}")
@@ -109,12 +136,17 @@ public class HistorialClinicoController {
         }
     }
 
-    /** DELETE /api/historial-clinico/{id} — Elimina un registro clínico. */
-    @Operation(summary = "Eliminar historial", description = "Elimina un registro clinico por su ID")
+    /**
+     * Elimina un registro clínico por su identificador único.
+     *
+     * @param id identificador único del registro clínico a eliminar
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Eliminar historial", description = "Elimina un registro clínico por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
+            @ApiResponse(responseCode = "204", description = "Registro clínico eliminado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún registro con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{id}")

@@ -1,11 +1,21 @@
 package com.amani.amaniapirest.models;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Entidad que representa una situacion o circunstancia que puede afectar
+ * la salud emocional del paciente.
+ *
+ * <p>Permite categorizar y filtrar a los pacientes por situaciones
+ * especificas como trabajo, familia, salud, entre otras.</p>
+ */
 @Entity
 @Table(name = "situaciones")
 @Data

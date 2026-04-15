@@ -11,6 +11,13 @@ import java.util.List;
 
 /**
  * Entidad que representa una pregunta del cuestionario inicial de onboarding del paciente.
+ *
+ * <p>Cada pregunta puede tener multiples opciones de respuesta predefinidas
+ * y es utilizada para recopilar informacion basica sobre el paciente al
+ * momento de su registro en el sistema.</p>
+ *
+ * @see Opcion
+ * @see Respuesta
  */
 @Data
 @NoArgsConstructor

@@ -8,6 +8,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * Repositorio JPA para operaciones de persistencia sobre la entidad {@link HorarioPsicologo}.
+ */
 public interface HorarioPsicologoRepository extends JpaRepository<HorarioPsicologo, Long> {
     List<HorarioPsicologo> findByPsicologoIdPsicologoAndActivoTrue(Long idPsicologo);
 
