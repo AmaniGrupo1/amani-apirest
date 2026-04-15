@@ -1,24 +1,33 @@
-# Caddy Proxy para desarrollo con Android Emulator
+# Caddy Proxy para desarrollo local
 
-Este contenedor proporciona un proxy inverso usando Caddy que permite al emulador de Android Studio acceder a la API Spring Boot en desarrollo.
+Este contenedor proporciona un proxy inverso usando Caddy que permite acceder a la API Spring Boot en desarrollo desde múltiples clientes.
+
+## Accesos soportados
+
+| Cliente | URL | Descripción |
+|---------|-----|-------------|
+| Emulador Android | `http://10.0.2.2/` | Gateway del emulador a la máquina host |
+| Terminal físico (localhost) | `http://localhost/` | Acceso local desde el navegador |
+| Terminal físico (domain) | `http://amani.local/` | Acceso usando domain local |
+| Red local | `http://[IP-MAQUINA]/` | Acceso desde otros dispositivos en la red |
 
 ## Arquitectura
 
 ```
-┌─────────────────┐
-│  Android        │
-│  Emulator       │
-│  (10.0.2.2)     │
-└──────┬──────────┘
-       │ HTTP
-       │
-┌──────▼──────────┐
-│  Caddy (80)     │
-│  Proxy          │
-└──────┬──────────┘
-       │
-       │ reverse_proxy
-       │
+┌─────────────────┐     ┌─────────────────┐
+│  Android        │     │  Terminal       │
+│  Emulator       │     │  (navegador)    │
+│  (10.0.2.2)     │     │  localhost      │
+└──────┬──────────┘     └────────┬────────┘
+       │ HTTP                    │ HTTP
+       │                         │
+┌──────▼──────────┐    ┌────────▼──────────┐
+│  Caddy (80)     │    │  Caddy (80)       │
+│  Proxy          │    │  Proxy            │
+└──────┬──────────┘    └────────┬──────────┘
+       │                         │
+       │ reverse_proxy           │
+       │                         │
 ┌──────▼──────────┐
 │  Spring Boot    │
 │  (localhost:8080)│
@@ -45,7 +54,9 @@ docker run -d \
 
 > **Nota:** Usar `--network host` para que Caddy pueda acceder a `localhost:8080` del host.
 
-### 3. Acceder desde Android Emulator
+### 3. Configuración del cliente
+
+#### Android Emulator
 
 En tu aplicación Android, configura la base URL:
 
@@ -53,12 +64,16 @@ En tu aplicación Android, configura la base URL:
 const val BASE_URL = "http://10.0.2.2/"
 ```
 
-O si usas Retrofit:
+#### Terminal físico (navegador)
 
-```kotlin
-val retrofit = Retrofit.Builder()
-    .baseUrl("http://10.0.2.2/")
-    .build()
+- `http://localhost/docs` - Swagger UI
+- `http://localhost/api/...` - Endpoints de la API
+
+#### Terminal físico (curl, Postman, etc.)
+
+```bash
+curl http://localhost/docs
+curl http://localhost/api/endpoint
 ```
 
 ## Verificación
@@ -69,6 +84,9 @@ curl http://localhost/docs
 
 # Ver logs del contenedor
 docker logs amani-caddy
+
+# Verificar conectividad desde emulador
+adb shell curl http://10.0.2.2/docs
 ```
 
 ## Caddyfile
@@ -86,3 +104,4 @@ La configuración se encuentra en `doc/Caddyfile`:
 - El emulador de Android accede a la máquina host vía `10.0.2.2` (no `localhost`)
 - Si la API no está corriendo, Caddy mostrará un error 502
 - Para producción, considera usar una configuración más robusta con HTTPS
+- El proxy funciona tanto en Docker como en instalación directa en el sistema
