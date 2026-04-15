@@ -28,6 +28,7 @@ public class ProgresoEmocionalPsicologoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{idProgreso}")
@@ -54,6 +55,7 @@ public class ProgresoEmocionalPsicologoController {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/{idProgreso}")
@@ -67,6 +69,7 @@ public class ProgresoEmocionalPsicologoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{idProgreso}")

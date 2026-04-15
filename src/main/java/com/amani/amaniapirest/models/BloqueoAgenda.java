@@ -7,8 +7,12 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-
-
+/**
+ * Entidad que representa un bloqueo de agenda del psicologo.
+ *
+ * <p>Permite al psicologo marcar periods de tiempo como no disponibles
+ * para la reserva de citas, ya sea por completo o por fracciones horarias.</p>
+ */
 @Entity
 @Table(name = "bloqueos_agenda")
 @Getter

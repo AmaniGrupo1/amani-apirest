@@ -11,10 +11,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
- * DTO de respuesta para que el psicólogo consulte los datos básicos de un {@code Paciente}.
+ * DTO de respuesta para representar un paciente desde la perspectiva del psicólogo.
  *
- * <p>Muestra únicamente la información demográfica y de contacto del paciente,
- * sin exponer datos de identidad completos ni historial clínico.</p>
+ * <p>Contiene los datos demográficos, de contacto y de agenda del paciente,
+ * ajustados para la vista del psicólogo. No expone información confidencial
+ * ni el historial clínico completo.</p>
  */
 @Data
 @AllArgsConstructor
@@ -22,6 +23,21 @@ import java.time.LocalTime;
 @Schema(name = "PacientePsicologoResponse", description = "Datos básicos de un paciente — vista psicólogo")
 public class PacientePsicologoResponseDTO {
 
+    /**
+     * Creates a new instance of {@code PacientePsicologoResponseDTO} with the specified parameters.
+     *
+     * @param idPaciente          identificador único del paciente
+     * @param nombre              nombre de pila del paciente
+     * @param apellido            apellido del paciente
+     * @param dni                 número de documento de identidad
+     * @param fechaNacimiento     fecha de nacimiento del paciente
+     * @param email               dirección de correo electrónico
+     * @param genero              género del paciente
+     * @param telefono            número de teléfono de contacto
+     * @param direccion           dirección postal del paciente
+     * @param horaInicio          hora de inicio de la sesión
+     * @param horaFin             hora de finalización de la sesión
+     */
     public PacientePsicologoResponseDTO(Long idPaciente, String nombre, String apellido, String dni,
                                         LocalDate fechaNacimiento, String email, String genero,
                                         String telefono, DireccionResponseDTO direccion,

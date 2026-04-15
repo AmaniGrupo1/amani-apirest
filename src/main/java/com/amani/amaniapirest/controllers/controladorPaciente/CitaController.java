@@ -125,6 +125,13 @@ public class CitaController {
      * GET /api/citas/paciente/{idPaciente}/agenda?month=YYYY-MM
      * Devuelve la agenda del paciente para el mes indicado.
      */
+    @Operation(summary = "Agenda del paciente por mes", description = "Obtiene la agenda de citas del paciente para un mes específico")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Agenda recuperada exitosamente"),
+        @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Paciente no encontrado", content = @Content),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+    })
     @GetMapping("/paciente/{idPaciente}/agenda")
     public ResponseEntity<List<AgendaItemDTO>> getAgendaPacienteMes(
             @PathVariable Long idPaciente,

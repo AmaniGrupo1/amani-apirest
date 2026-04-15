@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 /**
  * Servicio de solo lectura que expone los datos de perfil del usuario autenticado como paciente.
+ *
+ * @see Usuario
+ * @see com.amani.amaniapirest.dto.dtoPaciente.response.UsuarioResponseDTO
  */
 @Service
 public class UsuarioPacienteService {

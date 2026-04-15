@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controlador REST de administracion para la gestion CRUD de historiales clinicos.
+ * Controlador REST de administración para la gestión CRUD de historiales clínicos.
  *
  * <p>Base path: {@code /api/admin/historial}. Accesible solo por usuarios con rol admin.</p>
  */
@@ -32,13 +32,13 @@ public class HistorialClinicoAdminController {
     /**
      * Lista todos los historiales clinicos del sistema.
      *
-     * @return lista completa de historiales clinicos.
+     * @return lista completa de historiales clinicos
      */
-    @Operation(summary = "Listar historiales", description = "Lista todos los historiales clinicos del sistema")
+    @Operation(summary = "Listar historiales clinicos", description = "Obtiene la lista de todos los historiales clinicos del sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "204", description = "No hay historiales clinicos registrados", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping
@@ -49,10 +49,10 @@ public class HistorialClinicoAdminController {
     /**
      * Obtiene un historial clinico por su identificador.
      *
-     * @param idHistory identificador del historial.
-     * @return el historial encontrado o 404 si no existe.
+     * @param idHistory identificador del historial
+     * @return el historial encontrado o 404 si no existe
      */
-    @Operation(summary = "Obtener historial", description = "Obtiene un historial clinico por su ID")
+    @Operation(summary = "Obtener historial clinico", description = "Obtiene los detalles de un historial clinico por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
@@ -71,15 +71,14 @@ public class HistorialClinicoAdminController {
     /**
      * Crea un nuevo historial clinico.
      *
-     * @param request datos del historial a crear.
-     * @return el historial recien creado.
+     * @param request datos del historial a crear
+     * @return el historial recien creado
      */
-    @Operation(summary = "Crear historial", description = "Crea un nuevo historial clinico")
+    @Operation(summary = "Crear historial clinico", description = "Crea un nuevo historial clinico registrado en el sistema")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PostMapping
@@ -90,11 +89,11 @@ public class HistorialClinicoAdminController {
     /**
      * Actualiza un historial clinico existente.
      *
-     * @param idHistory identificador del historial a actualizar.
-     * @param request   datos actualizados.
-     * @return el historial actualizado o 404 si no existe.
+     * @param idHistory identificador del historial a actualizar
+     * @param request   datos actualizados
+     * @return el historial actualizado o 404 si no existe
      */
-    @Operation(summary = "Actualizar historial", description = "Actualiza un historial clinico existente")
+    @Operation(summary = "Actualizar historial clinico", description = "Actualiza los datos de un historial clinico existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
@@ -115,10 +114,10 @@ public class HistorialClinicoAdminController {
     /**
      * Elimina un historial clinico por su identificador.
      *
-     * @param idHistory identificador del historial a eliminar.
-     * @return 204 No Content o 404 si no existe.
+     * @param idHistory identificador del historial a eliminar
+     * @return 204 No Content si se elimino correctamente, 404 si no existe
      */
-    @Operation(summary = "Eliminar historial", description = "Elimina un historial clinico por su ID")
+    @Operation(summary = "Eliminar historial clinico", description = "Elimina un historial clinico por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),

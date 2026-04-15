@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entidad que representa el consentimiento informado de un paciente.
+ *
+ * <p>Almacena la fecha de aceptacion, la version del documento y las
+ * preferencias del paciente respecto a videoconferencias y comunicacion.</p>
+ */
 @Entity
 @Table(name = "consentimientos")
 @AllArgsConstructor

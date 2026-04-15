@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 /**
  * Servicio de administración para consultar los diarios emocionales de todos los pacientes.
+ *
+ * @see com.amani.amaniapirest.dto.dtoAdmin.response.DiarioEmocionAdminResponseDTO
  */
 @Service
 public class DiarioEmocionAdminService {

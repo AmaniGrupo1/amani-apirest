@@ -26,12 +26,16 @@ public class MensajeController {
         this.mensajeService = mensajeService;
     }
 
-    /** GET /api/mensajes — Lista todos los mensajes. */
-    @Operation(summary = "Listar mensajes", description = "Lista todos los mensajes")
+    /**
+     * Lista todos los mensajes del paciente autenticado.
+     *
+     * @return lista de mensajes
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Listar mensajes", description = "Recupera todos los mensajes del paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Mensajes retornados correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping
@@ -39,12 +43,18 @@ public class MensajeController {
         return ResponseEntity.ok(mensajeService.findAll());
     }
 
-    /** GET /api/mensajes/{id} — Obtiene un mensaje por ID. */
-    @Operation(summary = "Obtener mensaje", description = "Obtiene un mensaje por su ID")
+    /**
+     * Obtiene un mensaje por su identificador único.
+     *
+     * @param id identificador único del mensaje
+     * @return datos del mensaje
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Obtener mensaje", description = "Recupera un mensaje específico por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Mensaje retornado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún mensaje con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
@@ -56,12 +66,18 @@ public class MensajeController {
         }
     }
 
-    /** GET /api/mensajes/enviados/{idUsuario} — Lista los mensajes enviados por un usuario. */
-    @Operation(summary = "Mensajes enviados", description = "Lista los mensajes enviados por un usuario")
+    /**
+     * Lista todos los mensajes enviados por un usuario específico.
+     *
+     * @param idUsuario identificador único del usuario
+     * @return lista de mensajes enviados por el usuario
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Mensajes enviados", description = "Recupera todos los mensajes enviados por un usuario por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Mensajes enviados retornados correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún usuario con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/enviados/{idUsuario}")
@@ -69,12 +85,18 @@ public class MensajeController {
         return ResponseEntity.ok(mensajeService.findEnviados(idUsuario));
     }
 
-    /** GET /api/mensajes/recibidos/{idUsuario} — Lista los mensajes recibidos por un usuario. */
-    @Operation(summary = "Mensajes recibidos", description = "Lista los mensajes recibidos por un usuario")
+    /**
+     * Lista todos los mensajes recibidos por un usuario específico.
+     *
+     * @param idUsuario identificador único del usuario
+     * @return lista de mensajes recibidos por el usuario
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Mensajes recibidos", description = "Recupera todos los mensajes recibidos por un usuario por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Mensajes recibidos retornados correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún usuario con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/recibidos/{idUsuario}")
@@ -82,11 +104,17 @@ public class MensajeController {
         return ResponseEntity.ok(mensajeService.findRecibidos(idUsuario));
     }
 
-    /** POST /api/mensajes — Envía un nuevo mensaje. */
-    @Operation(summary = "Enviar mensaje", description = "Envia un nuevo mensaje")
+    /**
+     * Envía un nuevo mensaje desde el paciente autenticado.
+     *
+     * @param request datos para crear el mensaje
+     * @return mensaje creado
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Enviar mensaje", description = "Envía un nuevo mensaje desde el paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "201", description = "Mensaje creado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
@@ -100,12 +128,18 @@ public class MensajeController {
         }
     }
 
-    /** PATCH /api/mensajes/{id}/leido — Marca un mensaje como leído. */
-    @Operation(summary = "Marcar como leido", description = "Marca un mensaje como leido")
+    /**
+     * Marca un mensaje como leído.
+     *
+     * @param id identificador único del mensaje a marcar como leído
+     * @return mensaje marcado como leído
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Marcar como leído", description = "Marca un mensaje como leído")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Mensaje marcado como leído correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún mensaje con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PatchMapping("/{id}/leido")
@@ -117,12 +151,17 @@ public class MensajeController {
         }
     }
 
-    /** DELETE /api/mensajes/{id} — Elimina un mensaje. */
+    /**
+     * Elimina un mensaje por su identificador único.
+     *
+     * @param id identificador único del mensaje a eliminar
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
     @Operation(summary = "Eliminar mensaje", description = "Elimina un mensaje por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
+            @ApiResponse(responseCode = "204", description = "Mensaje eliminado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún mensaje con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{id}")

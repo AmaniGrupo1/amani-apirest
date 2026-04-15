@@ -26,12 +26,16 @@ public class ProgresoEmocionalController {
         this.progresoEmocionalService = progresoEmocionalService;
     }
 
-    /** GET /api/progreso-emocional — Lista todos los registros de progreso. */
-    @Operation(summary = "Listar progresos", description = "Lista todos los registros de progreso emocional")
+    /**
+     * Lista todos los registros de progreso emocional del paciente autenticado.
+     *
+     * @return lista de registros de progreso emocional
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Listar progresos", description = "Recupera todos los registros de progreso emocional del paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Registros de progreso emocional retornados correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping
@@ -39,12 +43,18 @@ public class ProgresoEmocionalController {
         return ResponseEntity.ok(progresoEmocionalService.findAll());
     }
 
-    /** GET /api/progreso-emocional/{id} — Obtiene un registro de progreso por ID. */
-    @Operation(summary = "Obtener progreso", description = "Obtiene un registro de progreso por su ID")
+    /**
+     * Obtiene un registro de progreso emocional por su identificador único.
+     *
+     * @param id identificador único del registro de progreso emocional
+     * @return datos del registro de progreso emocional
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Obtener progreso", description = "Recupera un registro de progreso emocional específico por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Registro de progreso emocional retornado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún registro con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
@@ -56,12 +66,18 @@ public class ProgresoEmocionalController {
         }
     }
 
-    /** GET /api/progreso-emocional/paciente/{idPaciente} — Lista el progreso de un paciente. */
-    @Operation(summary = "Progreso por paciente", description = "Lista el progreso emocional de un paciente")
+    /**
+     * Lista todos los registros de progreso emocional de un paciente específico.
+     *
+     * @param idPaciente identificador único del paciente
+     * @return lista de registros de progreso emocional del paciente
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Progreso por paciente", description = "Recupera todos los registros de progreso emocional de un paciente por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Registros de progreso emocional del paciente retornados correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró al paciente con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/paciente/{idPaciente}")
@@ -69,11 +85,17 @@ public class ProgresoEmocionalController {
         return ResponseEntity.ok(progresoEmocionalService.findByPaciente(idPaciente));
     }
 
-    /** POST /api/progreso-emocional — Crea un nuevo registro de progreso. */
-    @Operation(summary = "Crear progreso", description = "Crea un nuevo registro de progreso emocional")
+    /**
+     * Crea un nuevo registro de progreso emocional para el paciente autenticado.
+     *
+     * @param request datos para crear el registro de progreso emocional
+     * @return registro de progreso emocional creado
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Crear progreso", description = "Crea un nuevo registro de progreso emocional para el paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "201", description = "Registro de progreso emocional creado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
@@ -87,13 +109,20 @@ public class ProgresoEmocionalController {
         }
     }
 
-    /** PUT /api/progreso-emocional/{id} — Actualiza un registro de progreso. */
-    @Operation(summary = "Actualizar progreso", description = "Actualiza un registro de progreso emocional")
+    /**
+     * Actualiza un registro de progreso emocional existente.
+     *
+     * @param id      identificador único del registro de progreso emocional a actualizar
+     * @param request nuevos datos del registro de progreso emocional
+     * @return registro de progreso emocional actualizado
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Actualizar progreso", description = "Actualiza un registro de progreso emocional existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "200", description = "Registro de progreso emocional actualizado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún registro con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/{id}")
@@ -107,12 +136,17 @@ public class ProgresoEmocionalController {
         }
     }
 
-    /** DELETE /api/progreso-emocional/{id} — Elimina un registro de progreso. */
-    @Operation(summary = "Eliminar progreso", description = "Elimina un registro de progreso emocional")
+    /**
+     * Elimina un registro de progreso emocional por su identificador único.
+     *
+     * @param id identificador único del registro de progreso emocional a eliminar
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Eliminar progreso", description = "Elimina un registro de progreso emocional por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
+            @ApiResponse(responseCode = "204", description = "Registro de progreso emocional eliminado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún registro con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{id}")

@@ -26,12 +26,16 @@ public class DireccionController {
         this.direccionService = direccionService;
     }
 
-    /** GET /api/direcciones — Lista todas las direcciones. */
-    @Operation(summary = "Listar direcciones", description = "Lista todas las direcciones")
+    /**
+     * Lista todas las direcciones del paciente autenticado.
+     *
+     * @return lista de direcciones
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Listar direcciones", description = "Recupera todas las direcciones del paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Direcciones retornadas correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping
@@ -39,12 +43,18 @@ public class DireccionController {
         return ResponseEntity.ok(direccionService.findAll());
     }
 
-    /** GET /api/direcciones/{id} — Obtiene una dirección por ID. */
-    @Operation(summary = "Obtener direccion", description = "Obtiene una direccion por su ID")
+    /**
+     * Obtiene una dirección por su identificador único.
+     *
+     * @param id identificador único de la dirección
+     * @return datos de la dirección
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Obtener dirección", description = "Recupera una dirección específica por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Dirección retornada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ninguna dirección con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
@@ -56,12 +66,18 @@ public class DireccionController {
         }
     }
 
-    /** GET /api/direcciones/paciente/{idPaciente} — Lista las direcciones de un paciente. */
-    @Operation(summary = "Direcciones por paciente", description = "Lista las direcciones de un paciente")
+    /**
+     * Lista todas las direcciones de un paciente específico.
+     *
+     * @param idPaciente identificador único del paciente
+     * @return lista de direcciones del paciente
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Direcciones por paciente", description = "Recupera todas las direcciones de un paciente por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Direcciones del paciente retornadas correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró al paciente con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/paciente/{idPaciente}")
@@ -69,11 +85,17 @@ public class DireccionController {
         return ResponseEntity.ok(direccionService.findByPaciente(idPaciente));
     }
 
-    /** POST /api/direcciones — Crea una nueva dirección. */
-    @Operation(summary = "Crear direccion", description = "Crea una nueva direccion")
+    /**
+     * Crea una nueva dirección para el paciente autenticado.
+     *
+     * @param request datos para crear la dirección
+     * @return dirección creada
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Crear dirección", description = "Crea una nueva dirección para el paciente autenticado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "201", description = "Dirección creada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
@@ -87,13 +109,20 @@ public class DireccionController {
         }
     }
 
-    /** PUT /api/direcciones/{id} — Actualiza una dirección. */
-    @Operation(summary = "Actualizar direccion", description = "Actualiza una direccion existente")
+    /**
+     * Actualiza una dirección existente.
+     *
+     * @param id      identificador único de la dirección a actualizar
+     * @param request nuevos datos de la dirección
+     * @return dirección actualizada
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Actualizar dirección", description = "Actualiza una dirección existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+            @ApiResponse(responseCode = "200", description = "Dirección actualizada correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o incompletos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ninguna dirección con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/{id}")
@@ -107,12 +136,17 @@ public class DireccionController {
         }
     }
 
-    /** DELETE /api/direcciones/{id} — Elimina una dirección. */
-    @Operation(summary = "Eliminar direccion", description = "Elimina una direccion por su ID")
+    /**
+     * Elimina una dirección por su identificador único.
+     *
+     * @param id identificador único de la dirección a eliminar
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Eliminar dirección", description = "Elimina una dirección por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
+            @ApiResponse(responseCode = "204", description = "Dirección eliminada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ninguna dirección con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{id}")

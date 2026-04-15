@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Servicio de solo lectura que expone el directorio de psicólogos al rol paciente.
+ *
+ * @see com.amani.amaniapirest.dto.dtoPaciente.response.PsicologoResponseDTO
  */
 @Service
 public class PsicologoService {

@@ -32,7 +32,7 @@ public class MensajePsicologoController {
     }
 
     /** Lista todos los mensajes accesibles por el psicologo. @return lista de mensajes. */
-    @Operation(summary = "Listar mensajes", description = "Lista todos los mensajes accesibles por el psicologo")
+    @Operation(summary = "Listar mensajes", description = "Lista todos los mensajes accesibles por el psicólogo")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
@@ -44,10 +44,11 @@ public class MensajePsicologoController {
     }
 
     /** Obtiene un mensaje por su identificador. @param id identificador del mensaje. @return el mensaje. */
-    @Operation(summary = "Obtener mensaje", description = "Obtiene un mensaje por su ID")
+    @Operation(summary = "Obtener mensaje", description = "Obtiene un mensaje por su identificador")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
@@ -60,6 +61,7 @@ public class MensajePsicologoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/enviados/{idUsuario}")
@@ -72,6 +74,7 @@ public class MensajePsicologoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/recibidos/{idUsuario}")
@@ -80,9 +83,10 @@ public class MensajePsicologoController {
     }
 
     /** Envia un nuevo mensaje. @param request datos del mensaje. @return el mensaje creado. */
-    @Operation(summary = "Enviar mensaje", description = "Envia un nuevo mensaje")
+    @Operation(summary = "Enviar mensaje", description = "Envía un nuevo mensaje")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
@@ -92,11 +96,12 @@ public class MensajePsicologoController {
         return ResponseEntity.ok(mensajeService.create(request));
     }
 
-    /** Marca un mensaje como leido. @param id identificador del mensaje. @return el mensaje actualizado. */
-    @Operation(summary = "Marcar como leido", description = "Marca un mensaje como leido")
+    /** Marca un mensaje como leído. @param id identificador del mensaje. @return el mensaje actualizado. */
+    @Operation(summary = "Marcar como leído", description = "Marca un mensaje como leído")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/marcarLeido/{id}")
@@ -109,6 +114,7 @@ public class MensajePsicologoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{id}")

@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
  * <p>Cada sesion está vinculada a una {@link Cita} completada y almacena
  * la fecha de realización, duración, notas clinicas y recomendaciones
  * elaboradas por el psicólogo durante la atención.</p>
+ *
+ * @see Cita
  */
 @Entity
 @Getter

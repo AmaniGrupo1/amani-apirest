@@ -31,16 +31,17 @@ public class UsuarioController {
     }
 
     /**
-     * Obtiene los datos de un usuario por su identificador.
+     * Obtiene los datos de un usuario por su identificador único.
      *
-     * @param id identificador del usuario.
-     * @return los datos del usuario o 404 si no existe.
+     * @param id identificador único del usuario
+     * @return datos del usuario
+     * @throws RuntimeException si ocurre un error en la capa de servicio
      */
-    @Operation(summary = "Obtener usuario", description = "Obtiene los datos de un usuario por su ID")
+    @Operation(summary = "Obtener usuario", description = "Recupera los datos de un usuario por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Usuario retornado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún usuario con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
@@ -51,5 +52,4 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

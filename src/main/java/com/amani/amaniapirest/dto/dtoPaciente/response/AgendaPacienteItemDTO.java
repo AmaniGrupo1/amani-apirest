@@ -3,6 +3,12 @@ package com.amani.amaniapirest.dto.dtoPaciente.response;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * DTO de respuesta para representar un item de agenda de un paciente.
+ *
+ * <p>Contiene la información detallada de una cita o evento en la agenda
+ * del paciente, incluyendo fecha, horario, estado y motivo.</p>
+ */
 public class AgendaPacienteItemDTO {
     private LocalDate fecha;
     private LocalTime horaInicio;
@@ -13,6 +19,16 @@ public class AgendaPacienteItemDTO {
 
     public AgendaPacienteItemDTO() {}
 
+    /**
+     * Creates a new instance of {@code AgendaPacienteItemDTO} with the specified parameters.
+     *
+     * @param fecha       fecha de la cita
+     * @param horaInicio  hora de inicio de la cita
+     * @param horaFin     hora de finalización de la cita
+     * @param estado      estado actual de la cita (ej. "pendiente", "confirmada", "cancelada")
+     * @param motivo      motivo o descripción de la cita
+     * @param idCita      identificador único de la cita en el sistema
+     */
     public AgendaPacienteItemDTO(LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, String estado, String motivo, Long idCita) {
         this.fecha = fecha;
         this.horaInicio = horaInicio;

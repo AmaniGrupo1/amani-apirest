@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Controlador REST que permite a un paciente consultar los psicologos disponibles.
+ * Controlador REST que permite a un paciente consultar los psicólogos disponibles.
  *
  * <p>Base path: {@code /api/paciente/psicologos}.</p>
  */
@@ -31,13 +31,14 @@ public class PsicologoPacienteController {
     }
 
     /**
-     * Lista todos los psicologos disponibles en el sistema.
+     * Lista todos los psicólogos disponibles en el sistema.
      *
-     * @return lista de psicologos.
+     * @return lista de psicólogos
+     * @throws RuntimeException si ocurre un error en la capa de servicio
      */
-    @Operation(summary = "Listar psicologos", description = "Lista todos los psicologos disponibles")
+    @Operation(summary = "Listar psicólogos", description = "Recupera todos los psicólogos disponibles")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Psicólogos retornados correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
@@ -47,15 +48,17 @@ public class PsicologoPacienteController {
     }
 
     /**
-     * Obtiene un psicologo por su identificador.
+     * Obtiene un psicólogo por su identificador único.
      *
-     * @param id identificador del psicologo.
-     * @return datos del psicologo.
+     * @param id identificador único del psicólogo
+     * @return datos del psicólogo
+     * @throws RuntimeException si ocurre un error en la capa de servicio
      */
-    @Operation(summary = "Obtener psicologo", description = "Obtiene un psicologo por su ID")
+    @Operation(summary = "Obtener psicólogo", description = "Recupera un psicólogo específico por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "200", description = "Psicólogo retornado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún psicólogo con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")

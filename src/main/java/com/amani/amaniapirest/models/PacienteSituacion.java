@@ -8,6 +8,16 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entidad de union entre {@link Paciente} y {@link Situacion}.
+ *
+ * <p>Representa la relacion many-to-many entre pacientes y las situaciones
+ * que estan experimentando, permitiendo el seguimiento de contextos
+ * emocionales especficos.</p>
+ *
+ * @see Paciente
+ * @see Situacion
+ */
 @Entity
 @Table(name = "paciente_situacion")
 @Data

@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,75 +25,80 @@ public class SesionPsicologoController {
         this.sesionPsicologoService = sesionPsicologoService;
     }
 
-    @Operation(summary = "Sesiones por psicologo", description = "Lista todas las sesiones de un psicologo")
+    @Operation(summary = "Sesiones por psicologo", description = "Lista todas las sesiones asignadas a un psicólogo")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/psicologo/{idPsicologo}")
-    public List<SesionPsicologoResponseDTO> getAllByPsicologo(@PathVariable Long idPsicologo) {
-        return sesionPsicologoService.findAllByPsicologo(idPsicologo);
+    public ResponseEntity<List<SesionPsicologoResponseDTO>> getAllByPsicologo(@PathVariable Long idPsicologo) {
+        return ResponseEntity.ok(sesionPsicologoService.findAllByPsicologo(idPsicologo));
     }
 
-    @Operation(summary = "Obtener sesion", description = "Obtiene una sesion por su ID")
+    @Operation(summary = "Obtener sesion", description = "Obtiene una sesión por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{idSesion}")
-    public SesionPsicologoResponseDTO getById(@PathVariable Long idSesion) {
-        return sesionPsicologoService.findById(idSesion);
+    public ResponseEntity<SesionPsicologoResponseDTO> getById(@PathVariable Long idSesion) {
+        return ResponseEntity.ok(sesionPsicologoService.findById(idSesion));
     }
 
     /**
      * Crear sesión
      */
-    @Operation(summary = "Crear sesion", description = "Crea una nueva sesion para un psicologo")
+    @Operation(summary = "Crear sesion", description = "Crea una nueva sesión para un psicólogo")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "201", description = "Recurso creado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PostMapping("/psicologo/{idPsicologo}")
-    public SesionPsicologoResponseDTO create(
+    public ResponseEntity<SesionPsicologoResponseDTO> create(
             @PathVariable Long idPsicologo,
             @RequestBody SesionRequestDTO request
     ) {
-        return sesionPsicologoService.create(request, idPsicologo);
+        return new ResponseEntity<>(sesionPsicologoService.create(request, idPsicologo), HttpStatus.CREATED);
     }
 
     /**
      * Actualizar sesión
      */
-    @Operation(summary = "Actualizar sesion", description = "Actualiza una sesion existente")
+    @Operation(summary = "Actualizar sesion", description = "Actualiza una sesión existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/{idSesion}")
-    public SesionPsicologoResponseDTO update(
+    public ResponseEntity<SesionPsicologoResponseDTO> update(
             @PathVariable Long idSesion,
             @RequestBody SesionRequestDTO request
     ) {
-        return sesionPsicologoService.update(idSesion, request);
+        return ResponseEntity.ok(sesionPsicologoService.update(idSesion, request));
     }
 
     /**
      * Eliminar sesión
      */
-    @Operation(summary = "Eliminar sesion", description = "Elimina una sesion por su ID")
+    @Operation(summary = "Eliminar sesion", description = "Elimina una sesión por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @DeleteMapping("/{idSesion}")
-    public void delete(@PathVariable Long idSesion) {
+    public ResponseEntity<Void> delete(@PathVariable Long idSesion) {
         sesionPsicologoService.delete(idSesion);
+        return ResponseEntity.noContent().build();
     }
 }
