@@ -17,4 +17,9 @@ public interface HorarioPsicologoRepository extends JpaRepository<HorarioPsicolo
     @Modifying
     @Query("DELETE FROM HorarioPsicologo h WHERE h.psicologo.idPsicologo = :idPsicologo")
     void deleteByPsicologoIdPsicologo(@Param("idPsicologo") Long idPsicologo);
+
+
+    void deleteByPsicologoIdPsicologoAndDiaSemana(Long idPsicologo, short diaSemana);
+
+    List<HorarioPsicologo> findByPsicologoIdPsicologo(Long idPsicologo);
 }

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class TutorResonseDTO {
+    private Long idTutor;
     private String nombre;
     private String telefono;
     private String email;

@@ -89,18 +89,6 @@ public class Paciente {
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<Respuesta> respuestas;
 
-
-    @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)  // ← esto es la clave
-    @Column(name = "metodo_pago", nullable = false)
-    private MetodoPago metodoPago;
-
-    @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)  // ← esto es la clave
-    @Column(name = "estado_pago", nullable = false)
-    private EstadoPago estadoPago = EstadoPago.PENDIENTE;
-
-
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private Set<PacienteSituacion> pacienteSituaciones;
 

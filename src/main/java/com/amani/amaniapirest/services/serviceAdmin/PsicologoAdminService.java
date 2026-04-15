@@ -1,10 +1,11 @@
 package com.amani.amaniapirest.services.serviceAdmin;
 
-import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
+import com.amani.amaniapirest.dto.dtoAdmin.TutorResonseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
 import com.amani.amaniapirest.dto.loginDTO.PacientesAsignadoDTO;
 import com.amani.amaniapirest.dto.loginDTO.PsicologoConPacientesDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.repository.PsicologoPacienteRepository;
@@ -79,6 +80,7 @@ public class PsicologoAdminService {
             ));
         }
 
+
         return result;
     }
 
@@ -131,7 +133,7 @@ public class PsicologoAdminService {
         Psicologo psicologo = getPsicologoLogueado();
 
         return psicologoPacienteRepository
-                .findByPsicologoIdPsicologoAndFechaFinIsNull(psicologo.getIdPsicologo())
+                .findPacientesConTutores(psicologo.getIdPsicologo()) // 👈 IMPORTANTE (JOIN FETCH)
                 .stream()
                 .map(pp -> mapPaciente(pp.getPaciente()))
                 .toList();
@@ -140,25 +142,36 @@ public class PsicologoAdminService {
     private PacientePsicologoResponseDTO mapPaciente(Paciente paciente) {
         var usuario = paciente.getUsuario();
 
-        // Mapear dirección
+        // ---------------- DIRECCIÓN ----------------
         DireccionResponseDTO direccion = null;
         if (paciente.getDirecciones() != null && !paciente.getDirecciones().isEmpty()) {
             var d = paciente.getDirecciones().get(0);
-            direccion = new DireccionResponseDTO(d.getCalle(), d.getCiudad(), d.getProvincia(), d.getCodigoPostal(), d.getPais());
+            direccion = new DireccionResponseDTO(
+                    d.getCalle(),
+                    d.getCiudad(),
+                    d.getProvincia(),
+                    d.getCodigoPostal(),
+                    d.getPais()
+            );
         }
 
-        // Próxima cita
-        var cita = paciente.getCitas() != null && !paciente.getCitas().isEmpty()
+        // ---------------- PRÓXIMA CITA ----------------
+        var cita = (paciente.getCitas() != null && !paciente.getCitas().isEmpty())
                 ? paciente.getCitas().stream()
-                .filter(c -> c.getEstado().equals("pendiente") || c.getEstado().equals("confirmada"))
+                .filter(c -> "pendiente".equals(c.getEstado()) || "confirmada".equals(c.getEstado()))
                 .sorted((c1, c2) -> c1.getStartDatetime().compareTo(c2.getStartDatetime()))
-                .findFirst().orElse(null)
+                .findFirst()
+                .orElse(null)
                 : null;
 
-        LocalTime horaInicio = cita != null ? cita.getStartDatetime().toLocalTime() : null;
-        LocalTime horaFin = cita != null ? cita.getStartDatetime().plusMinutes(cita.getDurationMinutes()).toLocalTime() : null;
+        LocalTime horaInicio = (cita != null) ? cita.getStartDatetime().toLocalTime() : null;
+        LocalTime horaFin = (cita != null)
+                ? cita.getStartDatetime().plusMinutes(cita.getDurationMinutes()).toLocalTime()
+                : null;
 
+        // ---------------- DTO ----------------
         PacientePsicologoResponseDTO dto = new PacientePsicologoResponseDTO();
+
         dto.setIdPaciente(paciente.getIdPaciente());
         dto.setNombre(usuario.getNombre());
         dto.setApellido(usuario.getApellido());
@@ -167,12 +180,27 @@ public class PsicologoAdminService {
         dto.setEmail(usuario.getEmail());
         dto.setGenero(paciente.getGenero());
         dto.setTelefono(paciente.getTelefono());
-        dto.setEstadoPago(paciente.getEstadoPago());
         dto.setDireccion(direccion);
         dto.setHoraInicio(horaInicio);
         dto.setHoraFin(horaFin);
 
+        // ---------------- TUTORES (CORREGIDO) ----------------
+        dto.setTutor(
+                paciente.getTutores() == null
+                        ? new ArrayList<>()
+                        : paciente.getTutores()
+                        .stream()
+                        .map(t -> new TutorResonseDTO(
+                                t.getIdTutor(),// 👈 si existe en entidad
+                                t.getNombre(),
+                                t.getDni(),
+                                t.getTelefono(),
+                                t.getEmail(),
+                                t.getTipo()
+                        ))
+                        .toList()
+        );
+
         return dto;
     }
-
 }

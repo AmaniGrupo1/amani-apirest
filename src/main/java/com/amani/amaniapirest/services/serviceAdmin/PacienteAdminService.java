@@ -109,8 +109,6 @@ public class PacienteAdminService {
         paciente.setFechaNacimiento(request.getFechaNacimiento());
         paciente.setGenero(request.getGenero());
         paciente.setTelefono(request.getTelefono());
-        paciente.setEstadoPago(request.getEstadoPago() != null ? request.getEstadoPago() : EstadoPago.PENDIENTE);
-        paciente.setMetodoPago(request.getMetodoPago() != null ? request.getMetodoPago() : MetodoPago.PRESENCIAL);
         paciente.setCreatedAt(LocalDateTime.now());
 
         paciente = pacientesRepository.save(paciente);
@@ -144,9 +142,6 @@ public class PacienteAdminService {
         paciente.setFechaNacimiento(request.getFechaNacimiento());
         paciente.setGenero(request.getGenero());
         paciente.setTelefono(request.getTelefono());
-        if (request.getEstadoPago() != null) paciente.setEstadoPago(request.getEstadoPago());
-        if (request.getMetodoPago() != null) paciente.setMetodoPago(request.getMetodoPago());
-
         // --- Actualizar situaciones ---
         if (request.getIdSituaciones() != null && !request.getIdSituaciones().isEmpty()) {
             // Borrar relaciones anteriores
@@ -184,6 +179,23 @@ public class PacienteAdminService {
     /** Convertir paciente a DTO de respuesta incluyendo situaciones */
     private PacienteAdminResponseDTO toResponse(Paciente paciente) {
 
+        String estadoPago = null;
+        String metodoPago = null;
+
+        if (paciente.getCitas() != null && !paciente.getCitas().isEmpty()) {
+
+            // obtener último pago de la última cita
+            Cita ultimaCita = paciente.getCitas()
+                    .stream()
+                    .max((a, b) -> a.getStartDatetime().compareTo(b.getStartDatetime()))
+                    .orElse(null);
+
+            if (ultimaCita != null && ultimaCita.getPago() != null) {
+                estadoPago = ultimaCita.getPago().getEstadoPago().name();
+                metodoPago = ultimaCita.getPago().getMetodoPago().name();
+            }
+        }
+
         // --- Mapear situaciones ---
         List<SituacionDTO> situaciones = paciente.getPacienteSituaciones().stream()
                 .map(ps -> new SituacionDTO(
@@ -202,6 +214,7 @@ public class PacienteAdminService {
         List<TutorResonseDTO> tutores = esMenor && paciente.getTutores() != null
                 ? paciente.getTutores().stream()
                 .map(t -> new TutorResonseDTO(
+                        t.getIdTutor(),
                         t.getNombre(),
                         t.getTelefono(),
                         t.getEmail(),
@@ -234,8 +247,8 @@ public class PacienteAdminService {
                 paciente.getCreatedAt(),
                 paciente.getUpdatedAt(),
                 paciente.getUsuario().getActivo(),
-                paciente.getEstadoPago() != null ? paciente.getEstadoPago().name() : "PENDIENTE",
-                paciente.getMetodoPago() != null ? paciente.getMetodoPago().name() : "PRESENCIAL",
+                estadoPago,
+                metodoPago,
                 situaciones,
                 tutores,
                 direcciones

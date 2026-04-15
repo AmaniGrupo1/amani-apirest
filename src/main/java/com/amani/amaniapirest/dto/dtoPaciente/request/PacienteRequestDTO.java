@@ -38,8 +38,6 @@ public class PacienteRequestDTO {
     private LocalDate fechaNacimiento;
     private String genero;
     private String telefono;
-    private EstadoPago estadoPago; // "PENDIENTE" / "PAGADO"
-    private MetodoPago metodoPago; // "PRESENCIAL" / "ONLINE"
     private UsuarioRequestDTO usuario;
     private List<Long> idSituaciones;
     @NotNull(message = "Debe aceptar los términos y condiciones")

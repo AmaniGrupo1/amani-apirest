@@ -97,7 +97,6 @@ public class PacientePsicologoService {
         dto.setEmail(usuario != null ? usuario.getEmail() : null);
         dto.setGenero(paciente.getGenero());
         dto.setTelefono(paciente.getTelefono());
-        dto.setEstadoPago(paciente.getEstadoPago());
         dto.setDni(usuario != null ? usuario.getDni() : null);
 
         // Dirección: mapear la primera dirección disponible a DireccionResponseDTO

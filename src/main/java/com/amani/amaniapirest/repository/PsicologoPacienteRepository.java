@@ -16,4 +16,13 @@ public interface PsicologoPacienteRepository extends JpaRepository<PsicologoPaci
     PsicologoPaciente findByPacienteIdPacienteAndFechaFinIsNull(Long idPaciente);
 
     Optional<PsicologoPaciente> findByPaciente_Usuario_IdUsuario(Long idUsuario);
+
+    @Query("""
+            SELECT pp FROM PsicologoPaciente pp
+            JOIN FETCH pp.paciente p
+            LEFT JOIN FETCH p.tutores
+            WHERE pp.psicologo.idPsicologo = :idPsicologo
+            AND pp.fechaFin IS NULL
+            """)
+    List<PsicologoPaciente> findPacientesConTutores(Long idPsicologo);
 }

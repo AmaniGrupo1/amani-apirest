@@ -1,21 +1,24 @@
 package com.amani.amaniapirest.dto.dtoPsicologo.response;
 
+import com.amani.amaniapirest.dto.dtoAdmin.TutorResonseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.request.DireccionRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.enums.EstadoPago;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * DTO de respuesta para representar un paciente desde la perspectiva del psicólogo.
+ * DTO de respuesta para que el psicólogo consulte los datos básicos de un {@code Paciente}.
  *
- * <p>Contiene los datos demográficos, de contacto y de agenda del paciente,
- * ajustados para la vista del psicólogo. No expone información confidencial
- * ni el historial clínico completo.</p>
+ * <p>Muestra únicamente la información demográfica y de contacto del paciente,
+ * sin exponer datos de identidad completos ni historial clínico.</p>
  */
 @Data
 @AllArgsConstructor
@@ -23,25 +26,10 @@ import java.time.LocalTime;
 @Schema(name = "PacientePsicologoResponse", description = "Datos básicos de un paciente — vista psicólogo")
 public class PacientePsicologoResponseDTO {
 
-    /**
-     * Creates a new instance of {@code PacientePsicologoResponseDTO} with the specified parameters.
-     *
-     * @param idPaciente          identificador único del paciente
-     * @param nombre              nombre de pila del paciente
-     * @param apellido            apellido del paciente
-     * @param dni                 número de documento de identidad
-     * @param fechaNacimiento     fecha de nacimiento del paciente
-     * @param email               dirección de correo electrónico
-     * @param genero              género del paciente
-     * @param telefono            número de teléfono de contacto
-     * @param direccion           dirección postal del paciente
-     * @param horaInicio          hora de inicio de la sesión
-     * @param horaFin             hora de finalización de la sesión
-     */
     public PacientePsicologoResponseDTO(Long idPaciente, String nombre, String apellido, String dni,
                                         LocalDate fechaNacimiento, String email, String genero,
                                         String telefono, DireccionResponseDTO direccion,
-                                        LocalTime horaInicio, LocalTime horaFin) {
+                                        LocalTime horaInicio, LocalTime horaFin, List<TutorResonseDTO> tutor) {
         this.idPaciente = idPaciente;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -53,6 +41,7 @@ public class PacientePsicologoResponseDTO {
         this.direccion = direccion;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
+        this.tutor = tutor;
     }
 
     private Long idPaciente;
@@ -91,5 +80,7 @@ public class PacientePsicologoResponseDTO {
     /** Hora de fin de la sesión. */
     @Schema(description = "Hora de fin", example = "10:00")
     private LocalTime horaFin;
+
+    private List<TutorResonseDTO> tutor;
 
 }
