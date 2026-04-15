@@ -1,173 +1,244 @@
-# Amani API REST
+# 🩺 Amani — API REST Backend
 
-![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.3-6DB33F?logo=springboot&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
-![Maven](https://img.shields.io/badge/Maven-C71A36?logo=apachemaven&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-HS256-000000?logo=jsonwebtokens&logoColor=white)
-![WebSocket](https://img.shields.io/badge/WebSocket-STOMP-010101?logo=websocket&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-Admin_SDK-DD2C00?logo=firebase&logoColor=white)
-![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?logo=swagger&logoColor=black)
-![License](https://img.shields.io/badge/License-Private-red)
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring_Boot-4.0.3-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" />
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white" />
+  <img src="https://img.shields.io/badge/JWT-HS256-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" />
+  <img src="https://img.shields.io/badge/WebSocket-STOMP-010101?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Firebase-Admin_SDK-DD2C00?style=for-the-badge&logo=firebase&logoColor=white" />
+  <img src="https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" />
+  <img src="https://img.shields.io/badge/Licencia-Privada-red?style=for-the-badge" />
+</p>
 
-API REST para la plataforma de psicología clínica **Amani**. Gestiona el flujo completo entre administradores, psicólogos y pacientes: registro de usuarios, citas, sesiones, historiales clínicos, diario emocional, progreso emocional, mensajería en tiempo real, test inicial y notificaciones.
+<p align="center">
+  API REST para la plataforma de psicología clínica <strong>Amani</strong>.<br/>
+  Gestiona el flujo completo entre <strong>administradores</strong>, <strong>psicólogos</strong> y <strong>pacientes</strong>:<br/>
+  registro de usuarios, citas, sesiones, historiales clínicos, diario emocional,<br/>
+  mensajería en tiempo real, test inicial y notificaciones push.
+</p>
 
-## Tecnologías
+---
+
+## 📋 Tabla de Contenidos
+
+- [🛠 Stack Tecnológico](#-stack-tecnológico)
+- [📁 Requisitos Previos](#-requisitos-previos)
+- [🚀 Instalación y Configuración](#-instalación-y-configuración)
+- [🔑 Primer Acceso](#-primer-acceso)
+- [📂 Estructura del Proyecto](#-estructura-del-proyecto)
+- [✨ Funcionalidades](#-funcionalidades)
+- [🏗 Arquitectura](#-arquitectura)
+- [⚙️ Variables de Configuración](#️-variables-de-configuración)
+- [📬 Colección Postman](#-colección-postman)
+- [🔍 Calidad de Código](#-calidad-de-código)
+- [👤 Contribuidores](#-contribuidores)
+- [📄 Licencia](#-licencia)
+
+---
+
+## 🛠 Stack Tecnológico
 
 | Capa | Tecnología |
 |---|---|
-| Lenguaje | Java 21 |
-| Framework | Spring Boot 4.0.3 |
-| Build | Apache Maven |
-| ORM | Spring Data JPA / Hibernate |
-| Base de datos | PostgreSQL |
-| Seguridad | Spring Security + JWT (HS256) |
-| Tiempo real | WebSocket (STOMP sobre SockJS) |
-| Notificaciones push | Firebase Admin SDK |
-| Email | Spring Boot Mail (JavaMailSender) |
-| Documentación | SpringDoc OpenAPI / Swagger UI |
+| **Lenguaje** | Java 21 |
+| **Framework** | Spring Boot 4.0.3 |
+| **Build** | Apache Maven |
+| **ORM** | Spring Data JPA / Hibernate |
+| **Base de datos** | PostgreSQL |
+| **Seguridad** | Spring Security + JWT (HS256) |
+| **Tiempo real** | WebSocket (STOMP sobre SockJS) |
+| **Notificaciones push** | Firebase Admin SDK |
+| **Email** | Spring Boot Mail (JavaMailSender) |
+| **Documentación** | SpringDoc OpenAPI / Swagger UI |
 
-## Requisitos previos
+---
 
-- **Java 21** (JDK)
-- **PostgreSQL** (puerto 5433 por defecto)
-- **Maven** (o usar el wrapper incluido `./mvnw`)
+## 📁 Requisitos Previos
 
-## Instalación
+Antes de comenzar, asegúrate de tener instalado:
 
-1. **Clonar el repositorio:**
+- ✅ **Java 21** (JDK)
+- ✅ **PostgreSQL** corriendo en el puerto `5433`
+- ✅ **Maven** (o usa el wrapper incluido `./mvnw`)
+- ✅ *(Opcional)* Archivo `serviceAccountKey.json` de Firebase para notificaciones push
 
-   ```bash
-   git clone https://github.com/AmaniGrupo1/amani-apirest.git
-   cd amani-apirest
-   ```
+---
 
-2. **Crear la base de datos:**
+## 🚀 Instalación y Configuración
 
-   El esquema SQL se encuentra en `src/main/resources/amani.sql`. Crea la base de datos y ejecuta el script:
+### 1. Clonar el repositorio
 
-   ```bash
-   psql -U postgres -f src/main/resources/amani.sql
-   ```
+```bash
+git clone https://github.com/AmaniGrupo1/amani-apirest.git
+cd amani-apirest
+```
 
-   Esto crea el esquema `psicologia_app` con todas las tablas, índices, vistas y datos iniciales.
+### 2. Crear la base de datos
 
-3. **Configurar las credenciales:**
+El esquema SQL se encuentra en `src/main/resources/amani.sql`. Créalo y ejecútalo:
 
-   Edita `src/main/resources/application.properties` con tus datos:
+```bash
+psql -U postgres -f src/main/resources/amani.sql
+```
 
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5433/psicologia_app
-   spring.datasource.username=postgres
-   spring.datasource.password=Sandia4you
-   ```
+Esto genera el esquema `psicologia_app` con todas las tablas, índices, vistas y datos iniciales.
 
-4. **(Opcional) Configurar Firebase:**
+### 3. Configurar las credenciales
 
-   Coloca el archivo `serviceAccountKey.json` en `src/main/resources/` para habilitar las notificaciones push.
+Edita `src/main/resources/application.properties`:
 
-5. **Compilar y ejecutar:**
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5433/psicologia_app
+spring.datasource.username=postgres
+spring.datasource.password=TU_CONTRASEÑA
+```
 
-   ```bash
-   ./mvnw spring-boot:run
-   ```
+> ⚠️ **Nunca subas credenciales reales al repositorio.** Usa variables de entorno o un archivo `.env` ignorado por `.gitignore`.
 
-   O compilar el JAR:
+### 4. (Opcional) Configurar Firebase
 
-   ```bash
-   ./mvnw clean package -DskipTests
-   java -jar target/amaniApirest-0.0.1-SNAPSHOT.jar
-   ```
+Coloca el archivo `serviceAccountKey.json` en `src/main/resources/` para habilitar las notificaciones push.
 
-6. **Acceder a la documentación:**
+### 5. Compilar y ejecutar
 
-   Swagger UI disponible en: `http://localhost:8080/docs`
+```bash
+# Modo desarrollo
+./mvnw spring-boot:run
 
-## Primer acceso
+# Generar JAR y ejecutar
+./mvnw clean package -DskipTests
+java -jar target/amaniApirest-0.0.1-SNAPSHOT.jar
+```
+
+### 6. Acceder a la documentación
+
+Una vez en marcha, Swagger UI está disponible en:
+
+```
+http://localhost:8080/docs
+```
+
+---
+
+## 🔑 Primer Acceso
 
 Al iniciar la aplicación se crea automáticamente un usuario administrador por defecto:
 
 | Campo | Valor |
 |---|---|
-| Email | `admin@amani.com` |
-| Contraseña | `admin1234` |
+| **Email** | `admin@amani.com` |
+| **Contraseña** | `admin1234` |
 
-> **Importante:** Cambia esta contraseña en producción.
+> ⚠️ **Importante:** Cambia esta contraseña antes de desplegar en producción.
 
-## Estructura del proyecto
+---
+
+## 📂 Estructura del Proyecto
 
 ```
 src/main/java/com/amani/amaniapirest/
-├── configuration/          # Security, JWT, WebSocket, Firebase, etc.
+│
+├── configuration/              # Security, JWT, WebSocket, Firebase, CORS…
+│
 ├── controllers/
-│   ├── chat/                # WebSocket chat
-│   ├── controladorAdministador/  # Endpoints de administrador
-│   ├── controladorPaciente/     # Endpoints de paciente
-│   ├── controladorPsicologo/    # Endpoints de psicólogo
-│   ├── login/               # Autenticación y registro
-│   ├── preguntasController/ # Test inicial
-│   ├── profileController/   # Fotos de perfil
-│   └── situacionController/ # Catálogo de situaciones
-├── dto/                     # Data Transfer Objects (por rol)
-├── enums/                   # RolUsuario, EstadoCita, MetodoPago, EstadoPago
-├── events/                  # Eventos de aplicación (CitaCreada, MensajeNuevo, etc.)
-├── listeners/               # Listeners (email, push, WebSocket)
-├── mappers/                 # Mapeo de entidades a DTOs
-├── models/                  # Entidades JPA
-├── repositories/            # Repositorios JPA
-├── services/                # Lógica de negocio (por rol)
+│   ├── chat/                   # WebSocket — mensajería en tiempo real
+│   ├── controladorAdministador/# Endpoints de administrador
+│   ├── controladorPaciente/    # Endpoints de paciente
+│   ├── controladorPsicologo/   # Endpoints de psicólogo
+│   ├── login/                  # Autenticación y registro
+│   ├── preguntasController/    # Test inicial
+│   ├── profileController/      # Fotos de perfil
+│   └── situacionController/    # Catálogo de situaciones
+│
+├── dto/                        # Data Transfer Objects (por rol)
+├── enums/                      # RolUsuario, EstadoCita, MetodoPago, EstadoPago
+├── events/                     # Eventos de aplicación (CitaCreada, MensajeNuevo…)
+├── listeners/                  # Listeners (email, push, WebSocket)
+├── mappers/                    # Mapeo de entidades a DTOs
+├── models/                     # Entidades JPA
+├── repositories/               # Repositorios JPA
+├── services/                   # Lógica de negocio (por rol)
+│
 └── AmaniApirestApplication.java
 ```
 
-## Funcionalidades principales
+---
 
-### Autenticación y usuarios
+## ✨ Funcionalidades
 
-- Login con JWT (caducidad de 24h)
+### 🔐 Autenticación y Usuarios
+
+- Login con JWT (caducidad de 24 h)
 - Registro público de pacientes (con gestión de menores y tutores)
-- Gestión de roles: `ADMIN`, `PSICOLOGO`, `PACIENTE`
+- Roles: `ADMIN`, `PSICOLOGO`, `PACIENTE`
 
-### Citas y agenda
+### 📅 Citas y Agenda
 
-- CRUD de citas con estados (`PENDIENTE`, `CONFIRMADA`, `CANCELADA`, `COMPLETADA`)
-- Agenda mensual por psicólogo
-- Disponibilidad diaria con detección de conflictos
-- Horario semanal recurrente y bloqueos de agenda
-- Recordatorios automáticos 24h antes (email + push)
+| Funcionalidad | Detalle |
+|---|---|
+| CRUD de citas | Estados: `PENDIENTE`, `CONFIRMADA`, `CANCELADA`, `COMPLETADA` |
+| Agenda mensual | Vista por psicólogo |
+| Disponibilidad diaria | Con detección de conflictos |
+| Horario semanal | Recurrente + bloqueos de agenda |
+| Recordatorios | Automáticos 24 h antes (email + push) |
 
-### Clínica
+### 🏥 Clínica
 
 - Sesiones de terapia
 - Historial clínico por paciente
-- Diario emocional (emoción, intensidad 1-10, nota)
-- Progreso emocional (niveles de estrés, ansiedad, estado de ánimo)
-- Test inicial de preguntas con opciones y respuestas
+- Diario emocional (emoción, intensidad 1–10, nota)
+- Progreso emocional (estrés, ansiedad, estado de ánimo)
+- Test inicial con preguntas, opciones y respuestas
 
-### Comunicación
+### 💬 Comunicación en Tiempo Real
 
 - Mensajería entre usuarios con marca de lectura
-- Entrega inteligente: WebSocket si el usuario está online, Firebase push si está offline
-- Notificaciones por email (citas creadas, canceladas, registro)
+- **Entrega inteligente:**
+  - WebSocket (STOMP) si el usuario está **online**
+  - Firebase push si el usuario está **offline**
+- Notificaciones por email (citas creadas/canceladas, registro)
 
-### Perfil y configuración
+### 👤 Perfil y Configuración
 
 - Fotos de perfil con avatar por defecto
 - Direcciones de paciente
 - Ajustes de usuario (idioma, notificaciones, modo oscuro, zona horaria)
 
-## Arquitectura
+---
+
+## 🏗 Arquitectura
 
 La API sigue una arquitectura por capas con separación por roles:
 
 ```
-Controller (por rol) → Service (por rol) → Repository → Models
+Controller (por rol)
+      │
+      ▼
+Service (por rol)
+      │
+      ▼
+Repository
+      │
+      ▼
+Models (JPA)
 ```
 
-Las notificaciones usan un patrón **event-driven** con `ApplicationEvent` y `@TransactionalEventListener`, lo que desacopla la lógica de negocio del envío de emails y push.
+Las notificaciones siguen un patrón **event-driven** con `ApplicationEvent` y `@TransactionalEventListener`, desacoplando la lógica de negocio del envío de emails y notificaciones push:
 
-## Variables de configuración
+```
+Service ──► ApplicationEvent ──► @TransactionalEventListener
+                                        ├── EmailListener
+                                        ├── PushListener (Firebase)
+                                        └── WebSocketListener (STOMP)
+```
 
-Las principales propiedades en `application.properties`:
+---
+
+## ⚙️ Variables de Configuración
+
+Principales propiedades en `application.properties`:
 
 | Propiedad | Valor por defecto | Descripción |
 |---|---|---|
@@ -175,37 +246,76 @@ Las principales propiedades en `application.properties`:
 | `spring.datasource.url` | `jdbc:postgresql://localhost:5433/postgres` | URL de la base de datos |
 | `spring.jpa.properties.hibernate.default_schema` | `psicologia_app` | Esquema PostgreSQL |
 | `jwt.secret` | *(configurar en producción)* | Clave de firmado JWT |
-| `jwt.expiration` | `86400000` | Caducidad del token (ms) |
+| `jwt.expiration` | `86400000` | Caducidad del token (ms) — 24 h |
 | `spring.mail.host` | `localhost` | Servidor SMTP |
 | `spring.mail.port` | `1025` | Puerto SMTP |
-| `file.upload-dir` | `uploads` | Directorio de subidas |
+| `file.upload-dir` | `uploads` | Directorio de subida de archivos |
 | `springdoc.swagger-ui.path` | `/docs` | Ruta de Swagger UI |
 
-## Colección Postman
+---
 
-Se incluye una colección de Postman para probar los endpoints:
+## 📬 Colección Postman
+
+Se incluye una colección de Postman lista para importar y probar todos los endpoints:
 
 ```
 doc/postman/amani-api.postman_collection.json
 ```
 
-## Calidad de código
+---
+
+## 🔍 Calidad de Código
 
 El proyecto incluye plugins de Maven para análisis estático:
 
-- **JaCoCo** — cobertura de tests
-- **SpotBugs** — detección de bugs
-- **PMD** — code smells
-- **Checkstyle** — estilo Google
-- **SonarQube** — integración continua
+| Herramienta | Propósito |
+|---|---|
+| **JaCoCo** | Cobertura de tests |
+| **SpotBugs** | Detección de bugs en bytecode |
+| **PMD** | Detección de code smells |
+| **Checkstyle** | Estilo de código (guía Google) |
+| **SonarQube** | Integración continua de calidad |
 
-Generar informe de calidad:
+Generar informe completo:
 
 ```bash
 ./mvnw site
 bash generate-pdf-report.sh
 ```
 
-## Licencia
+---
 
-Este proyecto es privado. Todos los derechos reservados.
+## 👤 Contribuidores
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/irilopa">
+        <img src="https://github.com/irilopa.png" width="80px" style="border-radius:50%" /><br/>
+        <sub><b>Ivan Lopez Rilopa</b></sub>
+      </a><br/>
+      <sub>Backend / Arquitectura</sub><br/>
+      </td>
+    <td align="center">
+      <a href="https://github.com/FelixPatricio29">
+        <img src="https://github.com/FelixPatricio29.png" width="80px" style="border-radius:50%" /><br/>
+        <sub><b>Felix Patricio Peñafel Burgos</b></sub>
+      </a><br/>
+      <sub>Backend / Lógica</sub><br/>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 📄 Licencia
+
+Este proyecto es **privado**. Todos los derechos reservados.
+
+Desarrollado como parte del currículo del **IES Enrique Tierno Galvan**.
+
+---
+
+<p align="center">
+  Hecho con ❤️ y Java por el equipo <strong>Amani</strong>
+</p>
