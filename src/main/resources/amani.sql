@@ -468,5 +468,4 @@ VALUES ('Admin', 'Principal', 'felixb@example.com',
 
 SELECT p.id_psicologo, u.id_usuario, u.email
 FROM psicologos p
-         JOIN usuarios u ON u.id_usuario = p.id_usuario
-WHERE u.email = 'Lorena.garcia@amani.com';
+         JOIN usuarios u ON u.id_usuario = p.id_usuario;
