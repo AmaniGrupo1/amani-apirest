@@ -23,6 +23,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <lombok.version>1.18.42</lombok.version>
+        <dokka.version>2.0.0</dokka.version>
+        <openapi.output.dir>${project.basedir}/../documentacion-amani/api/openapi</openapi.output.dir>
     </properties>
 
     <dependencies>
@@ -236,6 +238,48 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.21.0</version>
+            </plugin>
+
+            <!-- Dokka - Generación de Javadoc moderno -->
+            <plugin>
+                <groupId>org.dokka</groupId>
+                <artifactId>dokka-maven-plugin</artifactId>
+                <version>${dokka.version}</version>
+                <executions>
+                    <execution>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>dokkaSite</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDir>${project.basedir}/../documentacion-amani/javadoc</outputDir>
+                    <dokkaMultiModule>
+                        <outputDir>${project.basedir}/../documentacion-amani/javadoc</outputDir>
+                    </dokkaMultiModule>
+                </configuration>
+            </plugin>
+
+            <!-- Plugin para exportar OpenAPI a JSON -->
+            <plugin>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>generate-openapi</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDir>${openapi.output.dir}</outputDir>
+                    <outputFileName>openapi.json</outputFileName>
+                    <apiDocsUrl>http://localhost:8080/v3/api-docs.yaml</apiDocsUrl>
+                </configuration>
             </plugin>
 
         </plugins>
