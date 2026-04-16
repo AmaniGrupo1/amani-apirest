@@ -285,6 +285,9 @@
             }
 
             // 4. CREAR CITA
+            TiposTerapia tipoTerapia = terapiaRepository.findById(req.getIdTipoTerapia())
+                    .orElseThrow(() -> new IllegalArgumentException("Tipo de terapia no encontrado: " + req.getIdTipoTerapia()));
+
             Cita cita = new Cita();
             cita.setPaciente(paciente);
             cita.setPsicologo(psicologo);
@@ -292,6 +295,7 @@
             cita.setDurationMinutes(duracion);
             cita.setMotivo(req.getMotivo());
             cita.setEstado(req.getEstado() != null ? req.getEstado() : EstadoCita.pendiente);
+            cita.setTipoTerapia(tipoTerapia);
             cita.setCreatedAt(LocalDateTime.now());
 
             // IMPORTANTE: guardar primero cita
