@@ -1,14 +1,9 @@
 package com.amani.amaniapirest.models;
 
-import com.amani.amaniapirest.enums.EstadoPago;
-import com.amani.amaniapirest.enums.MetodoPago;
 import com.amani.amaniapirest.models.modelPreguntasInicial.Respuesta;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,6 +41,7 @@ public class Paciente {
     private String telefono;
 
     /** Fecha y hora de creación del perfil. */
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     /** Fecha y hora de la ultima actualización del perfil. */
@@ -53,12 +49,13 @@ public class Paciente {
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
-        this.updatedAt = now;  // ← esto es lo que faltaba
+        this.updatedAt = now;
     }
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     /** Usuario del sistema asociado a este paciente. */

@@ -28,11 +28,14 @@ public class Consentimiento {
     @JoinColumn(name = "id_paciente", nullable = false)
     private Paciente paciente;
 
-    @Column(name = "fecha_aceptacion", nullable = false)
+    @Column(name = "fecha_aceptacion")
     private LocalDateTime fechaAceptacion = LocalDateTime.now();
 
-    @Column(name = "version_documento", nullable = false)
+    @Column(name = "version_documento", nullable = false, length = 20)
     private String versionDocumento;
+
+    @Column(name = "acepta_terminos", nullable = false)
+    private Boolean aceptaTerminos = false;
 
     @Column(name = "acepta_videoconferencia")
     private Boolean aceptaVideoconferencia = false;

@@ -18,7 +18,8 @@ public interface PsicologoPacienteRepository extends JpaRepository<PsicologoPaci
 
     Optional<PsicologoPaciente> findByPaciente_Usuario_IdUsuario(Long idUsuario);
 
-    @Query("""
+    @
+            Query("""
             SELECT pp FROM PsicologoPaciente pp
             JOIN FETCH pp.paciente p
             LEFT JOIN FETCH p.tutores

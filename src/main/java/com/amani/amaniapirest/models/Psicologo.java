@@ -41,11 +41,15 @@ public class Psicologo {
     /** Numero de licencia o colegiación profesional. */
     private String licencia;
 
+    @Column(nullable = false)
     private Integer duracionDefault = 50; // Duración por defecto de las citas en minutos
+
     /** Fecha y hora de creación del perfil. */
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     /** Fecha y hora de la ultima actualización del perfil. */
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     /** Usuario del sistema asociado a este psicologo. */
@@ -57,4 +61,14 @@ public class Psicologo {
     @JsonIgnoreProperties({"psicologo", "paciente"})
     @OneToMany(mappedBy = "psicologo")
     private List<Cita> citas;
+
+    @PrePersist
+    void onCreate() {
+        createdAt = updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

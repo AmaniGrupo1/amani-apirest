@@ -240,24 +240,28 @@
                 <version>3.21.0</version>
             </plugin>
 
-            <!-- Dokka - Generación de Javadoc moderno -->
+            <!-- Javadoc - Generación de documentación API -->
             <plugin>
-                <groupId>org.dokka</groupId>
-                <artifactId>dokka-maven-plugin</artifactId>
-                <version>${dokka.version}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
-                        <phase>site</phase>
+                        <id>generate-javadoc</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>dokkaSite</goal>
+                            <goal>javadoc</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <outputDir>${project.basedir}/../documentacion-amani/javadoc</outputDir>
-                    <dokkaMultiModule>
-                        <outputDir>${project.basedir}/../documentacion-amani/javadoc</outputDir>
-                    </dokkaMultiModule>
+                    <outputDirectory>${project.basedir}/../documentacion-amani/javadoc</outputDirectory>
+                    <doclint>none</doclint>
+                    <failOnError>false</failOnError>
+                    <show>public</show>
+                    <additionalOptions>
+                        <additionalOption>-Xdoclint:none</additionalOption>
+                    </additionalOptions>
                 </configuration>
             </plugin>
 
@@ -269,7 +273,7 @@
                 <executions>
                     <execution>
                         <id>generate-openapi</id>
-                        <phase>prepare-package</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -279,6 +283,7 @@
                     <outputDir>${openapi.output.dir}</outputDir>
                     <outputFileName>openapi.json</outputFileName>
                     <apiDocsUrl>http://localhost:8080/v3/api-docs.yaml</apiDocsUrl>
+                    <skip>false</skip>
                 </configuration>
             </plugin>
 

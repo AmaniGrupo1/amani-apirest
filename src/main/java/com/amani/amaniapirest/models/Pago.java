@@ -6,6 +6,8 @@ import com.amani.amaniapirest.enums.MetodoPago;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,14 +27,19 @@ public class Pago {
     private BigDecimal monto;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(nullable = false, columnDefinition = "metodo_pago")
     private MetodoPago metodoPago;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(nullable = false, columnDefinition = "estado_pago")
     private EstadoPago estadoPago = EstadoPago.PENDIENTE;
 
     private LocalDateTime fechaPago;
+
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
 
     // 🔥 RELACIÓN PRINCIPAL
     @OneToOne(fetch = FetchType.LAZY)
@@ -42,6 +49,7 @@ public class Pago {
 
     @PrePersist
     protected void onCreate() {
+        this.fechaCreacion = LocalDateTime.now();
         if (fechaPago == null && estadoPago == EstadoPago.PAGADO) {
             this.fechaPago = LocalDateTime.now();
         }

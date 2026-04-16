@@ -45,9 +45,21 @@ public class Cita {
     private String motivo;
 
     /** Fecha y hora de creación del registro. */
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
     @JsonIgnoreProperties({"usuario", "psicologo", "paciente"})
     @ManyToOne
@@ -66,7 +78,7 @@ public class Cita {
     private Sesion sesion;
 
     @ManyToOne
-    @JoinColumn(name = "id_tipo_terapia")
+    @JoinColumn(name = "id_tipo_terapia", nullable = false)
     private TiposTerapia tipoTerapia;
 
     @OneToOne(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
