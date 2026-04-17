@@ -45,13 +45,36 @@ public class PacienteController {
     }
 
     /**
-     * Obtiene un paciente por su identificador único.
+     * Obtiene un paciente por su identificador único (idUsuario Firebase).
      *
-     * @param id identificador único del paciente
+     * @param id identificador único del usuario paciente (Firebase idUsuario)
      * @return datos del paciente
      * @throws RuntimeException si ocurre un error en la capa de servicio
      */
-    @Operation(summary = "Obtener paciente", description = "Recupera un paciente específico por su ID")
+    @Operation(summary = "Obtener paciente por usuario", description = "Recupera un paciente específico por su idUsuario Firebase")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Paciente retornado correctamente"),
+            @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontró ningún paciente con el ID especificado", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+    })
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<PacienteDTO> findByUsuarioId(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(pacienteService.findByUsuarioId(id));
+        } catch (RuntimeException ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Obtiene un paciente por su identificador único (idPaciente de tabla).
+     *
+     * @param id identificador único del paciente (idPaciente de tabla)
+     * @return datos del paciente
+     * @throws RuntimeException si ocurre un error en la capa de servicio
+     */
+    @Operation(summary = "Obtener paciente", description = "Recupera un paciente específico por su ID de tabla")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Paciente retornado correctamente"),
             @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),

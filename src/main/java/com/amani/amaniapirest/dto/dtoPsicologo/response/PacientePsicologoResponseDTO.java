@@ -83,4 +83,8 @@ public class PacientePsicologoResponseDTO {
 
     private List<TutorResonseDTO> tutor;
 
+    /** ID de usuario Firebase (idUsuario) del paciente. */
+    @Schema(description = "ID Firebase del usuario paciente", example = "1234567890")
+    private Long idUsuario;
+
 }
