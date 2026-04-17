@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.services.psicologo;
 
+import com.amani.amaniapirest.dto.dtoAgenda.response.AgendaItemDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.AgendaPsicologoItemDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO;
@@ -7,6 +8,7 @@ import com.amani.amaniapirest.dto.dtoPsicologo.response.DisponibilidadPsicologoD
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.models.Cita;
 import com.amani.amaniapirest.repository.CitaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -179,18 +181,15 @@ public class CitaServicePsicologo {
         citaRepository.save(cita);
     }
 
-    // Stub: Actualiza el horario del psicólogo
-    public void actualizarHorarioPsicologo(Long idPsicologo, Object horarioRequest) {
-        // TODO: Implementar lógica real cuando exista entidad/tabla de horario
+    @Transactional
+    public void cambiarEstado(Long idCita, EstadoCita nuevoEstado) {
+
+        Cita cita = citaRepository.findById(idCita)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+
+        cita.setEstado(nuevoEstado);
+
+        citaRepository.save(cita);
     }
 
-    // Stub: Agrega un día no disponible
-    public void agregarDiaNoDisponible(Long idPsicologo, Object diaNoDisponibleRequest) {
-        // TODO: Implementar lógica real cuando exista entidad/tabla de bloqueos
-    }
-
-    // Stub: Elimina un día no disponible
-    public void eliminarDiaNoDisponible(Long idPsicologo, String fecha) {
-        // TODO: Implementar lógica real cuando exista entidad/tabla de bloqueos
-    }
 }

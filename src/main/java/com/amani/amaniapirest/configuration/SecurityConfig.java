@@ -76,17 +76,15 @@ public class SecurityConfig {
                         .requestMatchers("/api/citas/psicologo/*/disponibilidad")
                         .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
-                        .requestMatchers("/api/citas/psicologo/terapias")
-                        .hasAnyRole("PSICOLOGO", "ADMIN").requestMatchers("/api/citas/psicologo/*/disponibilidad")
-                        .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                        .requestMatchers("/api/citas/psicologo/terapias").hasAnyRole("PSICOLOGO", "ADMIN")
+                        .requestMatchers("/api/citas/psicologo/*/disponibilidad").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                        .requestMatchers("/api/citas/psicologo/*/editar").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
                         .requestMatchers("/api/citas/psicologo/terapias")
                         .hasAnyRole("PSICOLOGO", "ADMIN")
                         .requestMatchers("/api/citas/psicologo/*/duracion").hasAnyRole( "PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo actualice la duración de una cita
                         .requestMatchers("/api/citas/psicologo/*/agenda").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
                         .requestMatchers("/api/citas/psicologo/*/horario-actual").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
-
-
 
                         //  Otros
                         .requestMatchers("/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()

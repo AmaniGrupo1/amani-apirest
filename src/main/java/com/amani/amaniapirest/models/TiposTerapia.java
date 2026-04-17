@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.models;
 
+import com.google.type.Decimal;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +23,6 @@ public class TiposTerapia {
     private Long idTipo;
     private String nombre;
     private int duracionMinutos;
+    private BigDecimal precio;
     private boolean activo = true;
 }
