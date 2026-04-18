@@ -35,7 +35,9 @@ public class BloqueoAgenda {
      */
     private LocalTime horaInicio;
     private LocalTime horaFin;
+    @Column(columnDefinition = "text")
     private String motivo;
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist

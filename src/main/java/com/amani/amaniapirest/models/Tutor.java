@@ -27,7 +27,7 @@ public class Tutor {
     @JoinColumn(name = "id_paciente", nullable = false)
     private Paciente paciente;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String nombre;
 
     private String telefono;
@@ -36,6 +36,6 @@ public class Tutor {
 
     private String dni;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String tipo; // MADRE / PADRE / TUTOR
 }

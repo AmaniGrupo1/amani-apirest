@@ -27,16 +27,19 @@ public class Pago {
     private BigDecimal monto;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)  // ← AÑADE ESTA LÍNEA
-    @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(nullable = false, columnDefinition = "metodo_pago")
     private MetodoPago metodoPago;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)  // ← AÑADE ESTA LÍNEA
-    @Column(columnDefinition = "psicologia_app.estado_pago")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(nullable = false, columnDefinition = "estado_pago")
     private EstadoPago estadoPago = EstadoPago.PENDIENTE;
 
     private LocalDateTime fechaPago;
+
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
 
     // 🔥 RELACIÓN PRINCIPAL
     @OneToOne(fetch = FetchType.LAZY)
@@ -46,6 +49,7 @@ public class Pago {
 
     @PrePersist
     protected void onCreate() {
+        this.fechaCreacion = LocalDateTime.now();
         if (fechaPago == null && estadoPago == EstadoPago.PAGADO) {
             this.fechaPago = LocalDateTime.now();
         }

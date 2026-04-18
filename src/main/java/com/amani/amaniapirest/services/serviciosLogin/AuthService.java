@@ -69,26 +69,31 @@ public class AuthService {
 
         Long idPsicologo = null;
 
-        // 🔥 CLAVE: decidir qué devolver
+        // 🔥 CLAVE: devolver el idUsuario Firebase, no el idPsicologo de tabla
         if (usuario.getRol() == RolUsuario.psicologo) {
-            idPsicologo = psicologoRepository
-                    .findByUsuarioIdUsuario(usuario.getIdUsuario())
-                    .map(Psicologo::getIdPsicologo)
-                    .orElse(null);
+            idPsicologo = usuario.getIdUsuario();
         } else if (usuario.getRol() == RolUsuario.paciente) {
-            // buscar el psicólogo asignado
+            // buscar el psicólogo asignado y devolver su idUsuario
             idPsicologo = psicologoPacienteRepository
                     .findByPaciente_Usuario_IdUsuario(usuario.getIdUsuario())
-                    .map(rel -> rel.getPsicologo().getIdPsicologo())
+                    .map(rel -> rel.getPsicologo().getUsuario().getIdUsuario())
                     .orElse(null);
         }
 
         Long idPaciente = null;
 
         if (usuario.getRol() == RolUsuario.paciente) {
+            // buscar el idUsuario del paciente (no el idPaciente de tabla)
             idPaciente = pacienteRepository
                     .findByUsuario_IdUsuario(usuario.getIdUsuario())
-                    .map(Paciente::getIdPaciente)
+                    .map(Paciente::getUsuario)
+                    .map(Usuario::getIdUsuario)
+                    .orElse(null);
+        } else if (usuario.getRol() == RolUsuario.psicologo) {
+            // buscar el idUsuario del paciente asignado al psicólogo
+            idPaciente = psicologoPacienteRepository
+                    .findByPsicologo_Usuario_IdUsuario(usuario.getIdUsuario())
+                    .map(rel -> rel.getPaciente().getUsuario().getIdUsuario())
                     .orElse(null);
         }
 
@@ -232,15 +237,19 @@ public class AuthService {
 
         Long idPsicologo = psicologoPacienteRepository
                 .findByPaciente_Usuario_IdUsuario(usuario.getIdUsuario())
-                .map(rel -> rel.getPsicologo().getIdPsicologo())
+                .map(rel -> rel.getPsicologo().getUsuario().getIdUsuario())
                 .orElse(null);
 
         Long idPaciente = null;
 
         if (usuario.getRol() == RolUsuario.paciente) {
-            idPaciente = pacienteRepository
-                    .findByUsuario_IdUsuario(usuario.getIdUsuario())
-                    .map(Paciente::getIdPaciente)
+            // Devolver idUsuario Firebase, no idPaciente de tabla
+            idPaciente = usuario.getIdUsuario();
+        } else if (usuario.getRol() == RolUsuario.psicologo) {
+            // Devolver idUsuario del paciente asignado al psicólogo
+            idPaciente = psicologoPacienteRepository
+                    .findByPsicologo_Usuario_IdUsuario(usuario.getIdUsuario())
+                    .map(rel -> rel.getPaciente().getUsuario().getIdUsuario())
                     .orElse(null);
         }
         return new LoginResponseDTO(
@@ -273,22 +282,26 @@ public class AuthService {
         Long idPsicologo = null;
 
         if (usuario.getRol() == RolUsuario.psicologo) {
-            // si el usuario es psicólogo, devolvemos su propio ID
+            // si el usuario es psicólogo, devolvemos su propio idUsuario Firebase
             idPsicologo = usuario.getIdUsuario();
         } else if (usuario.getRol() == RolUsuario.paciente) {
-            // si es paciente, buscamos el psicólogo asignado
+            // si es paciente, buscamos el idUsuario del psicólogo asignado
             idPsicologo = psicologoPacienteRepository
                     .findByPaciente_Usuario_IdUsuario(usuario.getIdUsuario())
-                    .map(rel -> rel.getPsicologo().getIdPsicologo())
+                    .map(rel -> rel.getPsicologo().getUsuario().getIdUsuario())
                     .orElse(null); // null si no hay psicólogo asignado
         }
 
         Long idPaciente = null;
 
         if (usuario.getRol() == RolUsuario.paciente) {
-            idPaciente = pacienteRepository
-                    .findByUsuario_IdUsuario(usuario.getIdUsuario())
-                    .map(Paciente::getIdPaciente)
+            // si es paciente, devolvemos su propio idUsuario Firebase
+            idPaciente = usuario.getIdUsuario();
+        } else if (usuario.getRol() == RolUsuario.psicologo) {
+            // si es psicólogo, devolver el idUsuario del paciente asignado
+            idPaciente = psicologoPacienteRepository
+                    .findByPsicologo_Usuario_IdUsuario(usuario.getIdUsuario())
+                    .map(rel -> rel.getPaciente().getUsuario().getIdUsuario())
                     .orElse(null);
         }
 

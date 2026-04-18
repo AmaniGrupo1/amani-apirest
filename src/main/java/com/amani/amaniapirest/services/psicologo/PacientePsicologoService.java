@@ -91,6 +91,7 @@ public class PacientePsicologoService {
         Usuario usuario = paciente.getUsuario();
 
         dto.setIdPaciente(paciente.getIdPaciente());
+        dto.setIdUsuario(usuario != null ? usuario.getIdUsuario() : null);
         dto.setNombre(usuario != null ? usuario.getNombre() : null);
         dto.setApellido(usuario != null ? usuario.getApellido() : null);
         dto.setFechaNacimiento(paciente.getFechaNacimiento());

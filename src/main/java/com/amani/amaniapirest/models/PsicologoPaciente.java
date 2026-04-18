@@ -31,6 +31,7 @@ public class PsicologoPaciente {
     private Psicologo psicologo;
 
     // Fecha de inicio de la asignación
+    @Column(name = "fecha_inicio", nullable = false)
     private LocalDateTime fechaInicio = LocalDateTime.now();
 
     // Fecha de fin de la asignación (null si aún está activo)

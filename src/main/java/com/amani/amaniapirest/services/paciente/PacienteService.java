@@ -51,7 +51,7 @@ public class PacienteService {
     }
 
     /**
-     * Busca un paciente por su identificador único.
+     * Busca un paciente por su identificador único (idPaciente de tabla).
      *
      * @param idPaciente identificador del paciente a buscar
      * @return {@link PacienteDTO} con los datos del paciente encontrado
@@ -59,6 +59,17 @@ public class PacienteService {
      */
     public PacienteDTO findById(Long idPaciente) {
         return profileMapper.toPacienteDTO(getPacienteOrThrow(idPaciente));
+    }
+
+    /**
+     * Busca un paciente por su idUsuario Firebase.
+     *
+     * @param idUsuario identificador del usuario (Firebase idUsuario)
+     * @return {@link PacienteDTO} con los datos del paciente encontrado
+     * @throws RuntimeException si no existe un paciente con el id proporcionado
+     */
+    public PacienteDTO findByUsuarioId(Long idUsuario) {
+        return profileMapper.toPacienteDTO(getPacienteByUsuarioIdOrThrow(idUsuario));
     }
 
     /**
@@ -113,6 +124,11 @@ public class PacienteService {
     private Paciente getPacienteOrThrow(Long idPaciente) {
         return pacientesRepository.findById(idPaciente)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + idPaciente));
+    }
+
+    private Paciente getPacienteByUsuarioIdOrThrow(Long idUsuario) {
+        return pacientesRepository.findByUsuario_IdUsuario(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado con idUsuario: " + idUsuario));
     }
 
 

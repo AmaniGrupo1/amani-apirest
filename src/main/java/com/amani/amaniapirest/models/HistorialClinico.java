@@ -39,7 +39,13 @@ public class HistorialClinico {
     private String observaciones;
 
     /** Fecha y hora de creación del registro clinico. */
+    @Column(name = "creado_en", nullable = false, updatable = false)
     private LocalDateTime creadoEn;
+
+    @PrePersist
+    protected void onCreate() {
+        if (creadoEn == null) creadoEn = LocalDateTime.now();
+    }
 
     /** Paciente al que pertenece este registro clinico. */
     @JsonIgnoreProperties({"usuario", "psicologo", "direcciones", "citas", "historiales", "respuestas"})

@@ -53,10 +53,22 @@ public class Sesion {
     private String recomendaciones;
 
     /** Fecha y hora de creacion del registro. */
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     /** Fecha y hora de la ultima actualizacion del registro. */
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
     /** Cita terapeutica de la que deriva esta sesion. */
     @JsonIgnoreProperties({"paciente", "psicologo", "sesion"})

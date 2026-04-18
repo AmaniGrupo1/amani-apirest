@@ -97,7 +97,7 @@ public class Usuario {
      * <p><strong>Migración BD requerida:</strong>
      * {@code ALTER TABLE usuarios ADD COLUMN fcm_token VARCHAR(512);}</p>
      */
-    @Column(name = "fcm_token", length = 512)
+    @Column(name = "fcm_token", length = 255)
     private String fcmToken;
 
     /**
