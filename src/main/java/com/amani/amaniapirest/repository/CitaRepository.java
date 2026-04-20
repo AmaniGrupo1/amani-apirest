@@ -12,7 +12,7 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 
     List<Cita> findByPsicologo_IdPsicologo(Long idPsicologo);
 
-    List<Cita> findByPaciente_IdPaciente(Long idPaciente);
+    List<Cita> findByPaciente_IdPacienteOrderByStartDatetimeAsc(Long idPaciente);
 
     List<Cita> findByPaciente_IdPacienteAndStartDatetimeBetween(
             Long idPaciente,
@@ -33,7 +33,11 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
             EstadoCita estado
     );
 
-
+    List<Cita> findByPaciente_IdPacienteAndStartDatetimeBetweenOrderByStartDatetimeAsc(
+            Long idPaciente,
+            LocalDateTime desde,
+            LocalDateTime hasta
+    );
 
     List<Cita> findByStartDatetimeBetweenAndEstado(LocalDateTime desde, LocalDateTime hasta, EstadoCita name);
 }

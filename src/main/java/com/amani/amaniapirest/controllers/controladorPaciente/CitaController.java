@@ -2,9 +2,10 @@ package com.amani.amaniapirest.controllers.controladorPaciente;
 
 import com.amani.amaniapirest.dto.dtoAgenda.response.AgendaItemDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
-import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.CitaPacienteViewResponseDTO;
 import com.amani.amaniapirest.services.CitaAgendaService;
 import com.amani.amaniapirest.services.paciente.CitaService;
+import org.springframework.security.core.Authentication;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,7 +35,9 @@ public class CitaController {
     // VISTA PACIENTE
     // =========================================================
 
-    /** GET /api/citas — Lista todas las citas. */
+    /**
+     * GET /api/citas — Lista todas las citas.
+     */
     @Operation(summary = "Listar citas", description = "Lista todas las citas del paciente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
@@ -41,12 +45,26 @@ public class CitaController {
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @GetMapping
-    public ResponseEntity<List<CitaResponseDTO>> findAll() {
-        return ResponseEntity.ok(citaService.findAll());
+    @GetMapping("/mis-citas")
+    public List<CitaPacienteViewResponseDTO> getMisCitas(Authentication auth) {
+        Long idPaciente = citaService.obtenerIdPacienteDesdeAuth(auth);
+        return citaService.findByPaciente(idPaciente);
     }
 
-    /** GET /api/citas/{id} — Obtiene una cita por ID. */
+    //endpoint de próximas citas
+
+    @GetMapping("/{idPaciente}/proximas")
+    public List<CitaPacienteViewResponseDTO> getProximas(
+            @PathVariable Long idPaciente
+    ) {
+        return citaService.findByPaciente(idPaciente).stream()
+                .filter(c -> c.getMinutosRestantes() != null && c.getMinutosRestantes() > 0)
+                .toList();
+    }
+
+    /**
+     * GET /api/citas/{id} — Obtiene una cita por ID.
+     */
     @Operation(summary = "Obtener cita", description = "Obtiene una cita por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
@@ -55,7 +73,7 @@ public class CitaController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<CitaResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<CitaPacienteViewResponseDTO> findById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(citaService.findById(id));
         } catch (RuntimeException ex) {
@@ -64,8 +82,9 @@ public class CitaController {
     }
 
 
-
-    /** PUT /api/citas/{id} — Actualiza una cita. */
+    /**
+     * PUT /api/citas/{id} — Actualiza una cita.
+     */
     @Operation(summary = "Actualizar cita", description = "Actualiza una cita existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
@@ -75,7 +94,7 @@ public class CitaController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<CitaResponseDTO> update(
+    public ResponseEntity<CitaPacienteViewResponseDTO> update(
             @PathVariable Long id,
             @Valid @RequestBody CitaRequestDTO request) {
         try {
@@ -85,7 +104,9 @@ public class CitaController {
         }
     }
 
-    /** DELETE /api/citas/{id} — Elimina una cita. */
+    /**
+     * DELETE /api/citas/{id} — Elimina una cita.
+     */
     @Operation(summary = "Eliminar cita", description = "Elimina una cita por su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Recurso eliminado correctamente"),
