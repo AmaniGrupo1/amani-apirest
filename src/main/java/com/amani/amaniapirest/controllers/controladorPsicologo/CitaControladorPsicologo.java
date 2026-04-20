@@ -220,7 +220,7 @@ public class CitaControladorPsicologo {
     }
 
     //CAMBIO EL ESTADO DE LA CITA CONFORME EL PAGO
-    @PatchMapping("cambio/{id}/estado")
+    @PatchMapping("/cambio/{id}/estado")
     public ResponseEntity<?> cambiarEstado(
             @PathVariable Long id,
             @RequestBody Map<String, String> request

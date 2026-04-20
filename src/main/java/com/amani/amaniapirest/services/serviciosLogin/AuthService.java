@@ -68,32 +68,32 @@ public class AuthService {
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
         Long idPsicologo = null;
+        Long idPaciente = null;
 
-        // 🔥 CLAVE: devolver el idUsuario Firebase, no el idPsicologo de tabla
+        // ========================
+        // 🔥 PSICÓLOGO LOGIC FIX
+        // ========================
         if (usuario.getRol() == RolUsuario.psicologo) {
-            idPsicologo = usuario.getIdUsuario();
-        } else if (usuario.getRol() == RolUsuario.paciente) {
-            // buscar el psicólogo asignado y devolver su idUsuario
-            idPsicologo = psicologoPacienteRepository
-                    .findByPaciente_Usuario_IdUsuario(usuario.getIdUsuario())
-                    .map(rel -> rel.getPsicologo().getUsuario().getIdUsuario())
+
+            idPsicologo = psicologoRepository
+                    .findByUsuario_IdUsuario(usuario.getIdUsuario())
+                    .map(Psicologo::getIdPsicologo)
                     .orElse(null);
         }
 
-        Long idPaciente = null;
-
+        // ========================
+        // 🔥 PACIENTE LOGIC FIX
+        // ========================
         if (usuario.getRol() == RolUsuario.paciente) {
-            // buscar el idUsuario del paciente (no el idPaciente de tabla)
+
             idPaciente = pacienteRepository
                     .findByUsuario_IdUsuario(usuario.getIdUsuario())
-                    .map(Paciente::getUsuario)
-                    .map(Usuario::getIdUsuario)
+                    .map(Paciente::getIdPaciente)
                     .orElse(null);
-        } else if (usuario.getRol() == RolUsuario.psicologo) {
-            // buscar el idUsuario del paciente asignado al psicólogo
-            idPaciente = psicologoPacienteRepository
-                    .findByPsicologo_Usuario_IdUsuario(usuario.getIdUsuario())
-                    .map(rel -> rel.getPaciente().getUsuario().getIdUsuario())
+
+            idPsicologo = psicologoPacienteRepository
+                    .findByPaciente_Usuario_IdUsuario(usuario.getIdUsuario())
+                    .map(rel -> rel.getPsicologo().getIdPsicologo())
                     .orElse(null);
         }
 
@@ -102,11 +102,10 @@ public class AuthService {
                 usuario.getNombre(),
                 usuario.getRol().name(),
                 token,
-                idPsicologo,  // 👈 AQUÍ
-                idPaciente   // 👈 AQUÍ
+                idPsicologo,
+                idPaciente
         );
     }
-
     // ================= REGISTER PACIENTE =================
     @Transactional
     public LoginResponseDTO registerPaciente(PacienteRequestDTO request) {

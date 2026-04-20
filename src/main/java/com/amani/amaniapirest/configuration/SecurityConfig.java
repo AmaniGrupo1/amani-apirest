@@ -52,45 +52,47 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                        //  Públicos
-                        .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
-                        .requestMatchers("/api/situaciones").permitAll()
-                        .requestMatchers("/api/psicologo/pacientes/*/psicologo").hasRole("PACIENTE") // Endpoint para que el paciente vea su psicólogo asignado
+                                //  Públicos
+                                .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
+                                .requestMatchers("/api/situaciones").permitAll()
+                                .requestMatchers("/api/psicologo/pacientes/*/psicologo").hasRole("PACIENTE") // Endpoint para que el paciente vea su psicólogo asignado
 
-                        //  ADMIN
-                        .requestMatchers("/auth/registry/pacienteAdmin").hasRole("ADMIN")
-                        .requestMatchers("/auth/register-admin", "/auth/register-psicologo").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/auth/pacientes/**").hasRole("ADMIN")
-                        .requestMatchers("/auth/admins").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/psicologos").hasRole("ADMIN") //Listamos psicologo
-                        .requestMatchers("/api/admin/psicologos/create").hasRole("ADMIN") //creamos psicologo con admin
-                        .requestMatchers("/api/admin/psicologos/asignar-psicologo").hasRole("ADMIN") //Asignamos el paciente al psicologo
-                        .requestMatchers("/api/admin/psicologos/pacientes").hasRole("ADMIN") //creamos psicologo con admin
-                        .requestMatchers("/api/pacientes/admin").hasRole("ADMIN") //Listamos pacientes
-                        //  PSICOLOGO + ADMIN
-                        .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
-                        .requestMatchers("/api/citas/psicologo/*/horario").hasAnyRole("ADMIN", "PSICOLOGO")
-                        .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
-                        .requestMatchers("/api/citas/psicologo/cita").hasRole("PSICOLOGO") // Endpoint para que el psicólogo cree una cita para un paciente asignado
-                        .requestMatchers("/api/citas/psicologo/*/disponibilidad")
-                        .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                                //  ADMIN
+                                .requestMatchers("/auth/registry/pacienteAdmin").hasRole("ADMIN")
+                                .requestMatchers("/auth/register-admin", "/auth/register-psicologo").hasRole("ADMIN")
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/auth/pacientes/**").hasRole("ADMIN")
+                                .requestMatchers("/auth/admins").hasRole("ADMIN")
+                                .requestMatchers("/api/admin/psicologos").hasRole("ADMIN") //Listamos psicologo
+                                .requestMatchers("/api/admin/psicologos/create").hasRole("ADMIN") //creamos psicologo con admin
+                                .requestMatchers("/api/admin/psicologos/asignar-psicologo").hasRole("ADMIN") //Asignamos el paciente al psicologo
+                                .requestMatchers("/api/admin/psicologos/pacientes").hasRole("ADMIN") //creamos psicologo con admin
+                                .requestMatchers("/api/pacientes/admin").hasRole("ADMIN") //Listamos pacientes
+                                //  PSICOLOGO + ADMIN
+                                .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
+                                .requestMatchers("/api/citas/psicologo/*/horario").hasAnyRole("ADMIN", "PSICOLOGO")
+                                .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
+                                .requestMatchers("/api/citas/psicologo/cita").hasRole("PSICOLOGO") // Endpoint para que el psicólogo cree una cita para un paciente asignado
+                                .requestMatchers("/api/citas/psicologo/*/disponibilidad")
+                                .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
-                        .requestMatchers("/api/citas/psicologo/terapias").hasAnyRole("PSICOLOGO", "ADMIN")
-                        .requestMatchers("/api/citas/psicologo/*/disponibilidad").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
-                        .requestMatchers("/api/citas/psicologo/*/editar").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                                .requestMatchers("/api/citas/psicologo/terapias").hasAnyRole("PSICOLOGO", "ADMIN")
+                                .requestMatchers("/api/citas/psicologo/*/disponibilidad").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                                .requestMatchers("/api/citas/psicologo/*/editar").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
-                        .requestMatchers("/api/citas/psicologo/terapias")
-                        .hasAnyRole("PSICOLOGO", "ADMIN")
-                        .requestMatchers("/api/citas/psicologo/*/duracion").hasAnyRole( "PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo actualice la duración de una cita
-                        .requestMatchers("/api/citas/psicologo/*/agenda").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
-                        .requestMatchers("/api/citas/psicologo/*/horario-actual").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
+                                .requestMatchers("/api/citas/psicologo/terapias")
+                                .hasAnyRole("PSICOLOGO", "ADMIN")
+                                .requestMatchers("/api/citas/psicologo/*/duracion").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo actualice la duración de una cita
+                                .requestMatchers("/api/citas/psicologo/*/agenda").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
+                                .requestMatchers("/api/citas/psicologo/*/horario-actual").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
+// PACIENTE
+                                .requestMatchers("/api/citas/mis-citas").hasRole("PACIENTE")// CANCELAR CITA
+                                .requestMatchers("/api/citas/*/cancelar").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")// CAMBIO ESTADO
+                                .requestMatchers("/api/citas/cambio/*/estado").hasAnyRole("PSICOLOGO", "ADMIN")//  Otros
+                                .requestMatchers("/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
 
-                        //  Otros
-                        .requestMatchers("/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-
-                        //  Todo lo demás
-                        .anyRequest().authenticated()
+                                //  Todo lo demás
+                                .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

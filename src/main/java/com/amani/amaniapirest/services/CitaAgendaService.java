@@ -90,19 +90,24 @@ public class CitaAgendaService {
     // GET /api/citas/psicologo/{id}/agenda?month=YYYY-MM
     // ─────────────────────────────────────────────────────────
     public List<AgendaItemDTO> getAgendaPsicologo(Long idPsicologo, String month) {
-
+        System.out.println("===== GET AGENDA PSICOLOGO =====");
+        System.out.println("ID URL: " + idPsicologo);
+        System.out.println("MONTH: " + month);
+        System.out.println("AUTH EMAIL: " + SecurityContextHolder.getContext().getAuthentication().getName());
+        System.out.println("AUTH ROLES: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         String email = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
 
-        Psicologo logueado = psicologoRepository.findByUsuarioEmail(email)
+
+        Psicologo logueado = psicologoRepository.findByUsuario_Email(email)
                 .orElseThrow(() -> new NoSuchElementException("Psicólogo no encontrado"));
 
-        // 🔐 VALIDACIÓN IMPORTANTE
-        if (!logueado.getIdPsicologo().equals(idPsicologo)) {
-            throw new SecurityException("No tienes acceso a esta agenda");
-        }
+        Long idPsicologoToken = logueado.getIdPsicologo();
 
+        if (idPsicologo == null || !idPsicologo.equals(idPsicologoToken)) {
+            idPsicologo = idPsicologoToken;
+        }
         var rango = rangoMes(month);
 
         List<AgendaItemDTO> items = new ArrayList<>();

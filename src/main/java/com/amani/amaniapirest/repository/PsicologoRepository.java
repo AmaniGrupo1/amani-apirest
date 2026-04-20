@@ -10,8 +10,8 @@
         /** Comprueba si ya existe un psicólogo asociado a este usuario */
         boolean existsByUsuario(Usuario usuario);
 
-        Optional<Psicologo> findByUsuarioIdUsuario(Long idUsuario);
+        Optional<Psicologo> findByUsuario_IdUsuario(Long idUsuario);
 
 
-        Optional<Psicologo> findByUsuarioEmail(String email);
+        Optional<Psicologo> findByUsuario_Email(String email);
     }

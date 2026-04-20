@@ -125,7 +125,7 @@ public class PsicologoAdminService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName(); // email del JWT
 
-        return psicologoRepository.findByUsuarioEmail(email)
+        return psicologoRepository.findByUsuario_Email(email)
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado con email: " + email));
     }
 

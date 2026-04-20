@@ -7,6 +7,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
 /**
  * Entidad que representa un bloqueo de agenda del psicologo.
  *
@@ -15,8 +16,7 @@ import java.time.LocalTime;
  */
 @Entity
 @Table(name = "bloqueos_agenda")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -35,7 +35,6 @@ public class BloqueoAgenda {
      */
     private LocalTime horaInicio;
     private LocalTime horaFin;
-    @Column(columnDefinition = "text")
     private String motivo;
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
