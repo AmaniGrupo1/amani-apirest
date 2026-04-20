@@ -173,6 +173,7 @@ public class PsicologoAdminService {
         PacientePsicologoResponseDTO dto = new PacientePsicologoResponseDTO();
 
         dto.setIdPaciente(paciente.getIdPaciente());
+        dto.setIdUsuario(paciente.getUsuario().getIdUsuario());
         dto.setNombre(usuario.getNombre());
         dto.setApellido(usuario.getApellido());
         dto.setDni(usuario.getDni());
