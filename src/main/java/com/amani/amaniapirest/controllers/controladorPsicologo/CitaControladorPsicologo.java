@@ -7,6 +7,7 @@ import com.amani.amaniapirest.dto.dtoAgenda.response.DisponibilidadDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO;
 import com.amani.amaniapirest.dto.terapiasDTO.TerapiaResponseDTO;
+import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.repository.PsicologoRepository;
 import com.amani.amaniapirest.services.CitaAgendaService;
 import com.amani.amaniapirest.services.paciente.PsicologoService;
@@ -19,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,14 +38,18 @@ public class CitaControladorPsicologo {
     // VISTA PSICÓLOGO
     // =========================================================
 
-    /** GET /api/citas/psicologo/{idPsicologo} — Lista las citas asignadas a un psicólogo. */
+    /**
+     * GET /api/citas/psicologo/{idPsicologo} — Lista las citas asignadas a un psicólogo.
+     */
     @Operation(summary = "Citas por psicologo", description = "Lista las citas asignadas a un psicologo")
     @GetMapping("/psicologo/{idPsicologo}")
     public ResponseEntity<List<CitaPsicologoResponseDTO>> findAllByPsicologo(@PathVariable Long idPsicologo) {
         return ResponseEntity.ok(citaService.findAllByPsicologo(idPsicologo));
     }
 
-    /** GET /api/citas/psicologo/detalle/{id} — Obtiene una cita desde la vista del psicólogo. */
+    /**
+     * GET /api/citas/psicologo/detalle/{id} — Obtiene una cita desde la vista del psicólogo.
+     */
     @Operation(summary = "Detalle de cita", description = "Obtiene una cita desde la vista del psicologo")
     @GetMapping("/psicologo/detalle/{id}")
     public ResponseEntity<CitaPsicologoResponseDTO> findByIdPsicologo(@PathVariable Long id) {
@@ -53,7 +60,9 @@ public class CitaControladorPsicologo {
         }
     }
 
-    /** PATCH /api/citas/psicologo/{id}/estado — Actualiza el estado de una cita (psicólogo). */
+    /**
+     * PATCH /api/citas/psicologo/{id}/estado — Actualiza el estado de una cita (psicólogo).
+     */
     @Operation(summary = "Actualizar estado", description = "Actualiza el estado de una cita")
     @PatchMapping("/psicologo/{id}/estado")
     public ResponseEntity<CitaPsicologoResponseDTO> updateEstado(
@@ -65,6 +74,25 @@ public class CitaControladorPsicologo {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+    /**
+     * PUT /api/citas/psicologo/{idCita} - Edita una cita existente
+     */
+    @Operation(summary = "Editar cita", description = "Edita una cita existente desde la vista del psicólogo")
+    @PutMapping("/psicologo/{idCita}/editar")
+    public ResponseEntity<AgendaItemDTO> editarCita(
+            @PathVariable Long idCita,
+            @RequestBody CitaRequestDTO request) {
+        try {
+            return ResponseEntity.ok(citaAgendaService.editarCita(idCita, request));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 
     /**
      * GET /api/citas/psicologo/{idPsicologo}/agenda?month=YYYY-MM
@@ -88,7 +116,8 @@ public class CitaControladorPsicologo {
     }
 
 
-    /**b
+    /**
+     * b
      * GET /api/citas/psicologo/{idPsicologo}/disponibilidad?fecha=YYYY-MM-DD
      * Devuelve la disponibilidad del psicólogo para un día concreto.
      */
@@ -115,6 +144,7 @@ public class CitaControladorPsicologo {
                 )
         );
     }
+
     /**
      * PATCH /api/citas/{id}/cancelar — Cancela una cita.
      */
@@ -187,6 +217,20 @@ public class CitaControladorPsicologo {
         return ResponseEntity.ok(
                 citaAgendaService.getHorarioActual(idPsicologo)
         );
+    }
+
+    //CAMBIO EL ESTADO DE LA CITA CONFORME EL PAGO
+    @PatchMapping("cambio/{id}/estado")
+    public ResponseEntity<?> cambiarEstado(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> request
+    ) {
+        String estadoStr = request.get("estado");
+        EstadoCita estado = EstadoCita.valueOf(estadoStr);
+
+        citaService.cambiarEstado(id, estado);
+
+        return ResponseEntity.ok().build();
     }
 
 }

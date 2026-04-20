@@ -19,7 +19,8 @@ public class TerapiaService {
                 .map(t -> new TerapiaResponseDTO(
                         t.getIdTipo(),
                         t.getNombre(),
-                        t.getDuracionMinutos()
+                        t.getDuracionMinutos(),
+                        t.getPrecio()
                 ))
                 .toList();
     }

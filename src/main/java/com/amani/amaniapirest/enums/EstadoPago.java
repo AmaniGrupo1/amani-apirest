@@ -7,5 +7,7 @@ public enum EstadoPago {
     /** El pago no ha sido procesado. */
     PENDIENTE,
     /** El pago ha sido procesado exitosamente. */
-    PAGADO
+    PAGADO,
+    FALLIDO,
+    REEMBOLSADO
 }

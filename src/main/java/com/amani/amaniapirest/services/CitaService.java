@@ -2,7 +2,7 @@ package com.amani.amaniapirest.services;
 
 import com.amani.amaniapirest.dto.dtoAdmin.response.CitaAdminResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
-import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.CitaPacienteViewResponseDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.events.CitaCanceladaEvent;
@@ -17,6 +17,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -58,9 +59,9 @@ public class CitaService {
     /**
      * Obtiene todas las citas registradas en el sistema.
      *
-     * @return lista de {@link CitaResponseDTO} con todas las citas
+     * @return lista de {@link CitaPacienteViewResponseDTO} con todas las citas
      */
-    public List<CitaResponseDTO> findAll() {
+    public List<CitaPacienteViewResponseDTO> findAll() {
         return citaRepository.findAll().stream().map(this::toResponse).toList();
     }
 
@@ -71,7 +72,7 @@ public class CitaService {
      * @return DTO con la informacion de la cita
      * @throws RuntimeException si la cita no existe
      */
-    public CitaResponseDTO findById(Long idCita) {
+    public CitaPacienteViewResponseDTO findById(Long idCita) {
         return toResponse(getCitaOrThrow(idCita));
     }
 
@@ -83,7 +84,7 @@ public class CitaService {
      * @throws RuntimeException si el paciente o el psicologo no existen
      */
     @Transactional
-    public CitaResponseDTO create(CitaRequestDTO request) {
+    public CitaPacienteViewResponseDTO create(CitaRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
         Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
 
@@ -112,7 +113,7 @@ public class CitaService {
      * @throws RuntimeException si la cita, el paciente o el psicologo no existen
      */
     @Transactional
-    public CitaResponseDTO update(Long idCita, CitaRequestDTO request) {
+    public CitaPacienteViewResponseDTO update(Long idCita, CitaRequestDTO request) {
         Cita cita = getCitaOrThrow(idCita);
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
         Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
@@ -199,21 +200,37 @@ public class CitaService {
     }
 
     /**
-     * Convierte una entidad {@link Cita} en {@link CitaResponseDTO} (vista paciente).
+     * Convierte una entidad {@link Cita} en {@link CitaPacienteViewResponseDTO} (vista paciente).
      *
      * @param cita entidad a mapear
      * @return DTO de respuesta para el perfil paciente
      */
-    private CitaResponseDTO toResponse(Cita cita) {
-        return new CitaResponseDTO(
-                cita.getIdCita(),
-                cita.getPaciente() != null ? cita.getPaciente().getIdPaciente() : null,
-                cita.getPsicologo() != null ? cita.getPsicologo().getIdPsicologo() : null,
-                cita.getStartDatetime(),
-                cita.getDurationMinutes(),
-                cita.getEstado() != null ? cita.getEstado() : EstadoCita.pendiente,
-                cita.getMotivo()
-        );
+    private CitaPacienteViewResponseDTO toResponse(Cita cita) {
+
+        LocalDateTime start = cita.getStartDatetime();
+        LocalDateTime end = start.plusMinutes(cita.getDurationMinutes());
+
+        long minutosRestantes = Duration
+                .between(LocalDateTime.now(), start)
+                .toMinutes();
+
+        return CitaPacienteViewResponseDTO.builder()
+                .idCita(cita.getIdCita())
+                .fecha(start.toLocalDate())
+                .horaInicio(start.toLocalTime())
+                .horaFin(end.toLocalTime())
+                .durationMinutes(cita.getDurationMinutes())
+                .estado(cita.getEstado())
+                .modalidad(cita.getModalidad())
+                .motivo(cita.getMotivo())
+                .tipoTerapia(
+                        cita.getTipoTerapia() != null
+                                ? cita.getTipoTerapia().getNombre()
+                                : null
+                )
+                .minutosRestantes(minutosRestantes)
+                .esProxima(minutosRestantes >= 0 && minutosRestantes <= 60)
+                .build();
     }
 
     // =========================================================

@@ -39,4 +39,7 @@ public interface PacientesRepository extends JpaRepository<Paciente, Long> {
             "JOIN FETCH p.usuario u " +
             "WHERE pa.idPaciente = :idPaciente")
     Optional<Paciente> findPacienteWithPsicologo(@Param("idPaciente") Long idPaciente);
+
+
+    Optional<Paciente> findByUsuario_Email(String email);
 }

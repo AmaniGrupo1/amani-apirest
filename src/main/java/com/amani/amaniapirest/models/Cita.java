@@ -1,10 +1,13 @@
 package com.amani.amaniapirest.models;
 
 import com.amani.amaniapirest.enums.EstadoCita;
+import com.amani.amaniapirest.enums.ModalidadCita;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
@@ -41,25 +44,22 @@ public class Cita {
     @Column(name = "estado", columnDefinition = "estado_cita", nullable = false)
     private EstadoCita estado;
 
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "modalidad", columnDefinition = "modalidad_cita", nullable = false)
+    private ModalidadCita modalidad;
+
     /** Motivo o descripción de la consulta. */
     private String motivo;
 
     /** Fecha y hora de creación del registro. */
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @UpdateTimestamp
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
 
     @JsonIgnoreProperties({"usuario", "psicologo", "paciente"})
     @ManyToOne
@@ -78,7 +78,7 @@ public class Cita {
     private Sesion sesion;
 
     @ManyToOne
-    @JoinColumn(name = "id_tipo_terapia", nullable = false)
+    @JoinColumn(name = "id_tipo_terapia")
     private TiposTerapia tipoTerapia;
 
     @OneToOne(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -13,11 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 
 /**
@@ -51,35 +46,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
-                "http://10.0.2.2",       // Emulador Android
-                "http://localhost",     // localhost
-                "http://127.0.0.1",     // 127.0.0.1
-                "http://192.168.1.*"    // Redes locales (ajusta si es necesario)
-        ));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
                         //  Públicos
                         .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
                         .requestMatchers("/api/situaciones").permitAll()
-                        .requestMatchers("/api/psicologo/pacientes/*/psicologo").hasRole( "PACIENTE") // Endpoint para que el paciente vea su psicólogo asignado
+                        .requestMatchers("/api/psicologo/pacientes/*/psicologo").hasRole("PACIENTE") // Endpoint para que el paciente vea su psicólogo asignado
 
                         //  ADMIN
                         .requestMatchers("/auth/registry/pacienteAdmin").hasRole("ADMIN")
@@ -94,9 +70,21 @@ public class SecurityConfig {
                         .requestMatchers("/api/pacientes/admin").hasRole("ADMIN") //Listamos pacientes
                         //  PSICOLOGO + ADMIN
                         .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
-                        .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole( "PSICOLOGO")
-                        // Permitir a psicólogos y admin acceder a cualquier endpoint de心理学家
+                        .requestMatchers("/api/citas/psicologo/*/horario").hasAnyRole("ADMIN", "PSICOLOGO")
+                        .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
+                        .requestMatchers("/api/citas/psicologo/cita").hasRole("PSICOLOGO") // Endpoint para que el psicólogo cree una cita para un paciente asignado
+                        .requestMatchers("/api/citas/psicologo/*/disponibilidad")
+                        .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
+                        .requestMatchers("/api/citas/psicologo/terapias").hasAnyRole("PSICOLOGO", "ADMIN")
+                        .requestMatchers("/api/citas/psicologo/*/disponibilidad").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                        .requestMatchers("/api/citas/psicologo/*/editar").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+
+                        .requestMatchers("/api/citas/psicologo/terapias")
+                        .hasAnyRole("PSICOLOGO", "ADMIN")
+                        .requestMatchers("/api/citas/psicologo/*/duracion").hasAnyRole( "PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo actualice la duración de una cita
+                        .requestMatchers("/api/citas/psicologo/*/agenda").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
+                        .requestMatchers("/api/citas/psicologo/*/horario-actual").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
 
                         //  Otros
                         .requestMatchers("/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()

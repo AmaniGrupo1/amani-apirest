@@ -2,16 +2,21 @@ package com.amani.amaniapirest.services.paciente;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.AgendaPacienteItemDTO;
-import com.amani.amaniapirest.dto.dtoPaciente.response.CitaResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.CitaPacienteViewResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.models.Cita;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Psicologo;
+import com.amani.amaniapirest.models.TiposTerapia;
 import com.amani.amaniapirest.repository.CitaRepository;
 import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.repository.PsicologoRepository;
+import com.amani.amaniapirest.repository.terapiaService.TerapiaRepository;
+import org.springframework.security.core.Authentication;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
@@ -27,44 +32,43 @@ import java.util.stream.Collectors;
  * correspondiente.</p>
  */
 @Service
+@RequiredArgsConstructor
 public class CitaService {
 
     private final CitaRepository citaRepository;
     private final PacientesRepository pacientesRepository;
     private final PsicologoRepository psicologoRepository;
+    private final TerapiaRepository terapiaRepository;
 
-    /**
-     * Construye el servicio inyectando los repositorios necesarios.
-     *
-     * @param citaRepository      repositorio JPA de {@link Cita}
-     * @param pacientesRepository repositorio JPA de {@link Paciente}
-     * @param psicologoRepository repositorio JPA de {@link Psicologo}
-     */
-    public CitaService(CitaRepository citaRepository,
-                       PacientesRepository pacientesRepository,
-                       PsicologoRepository psicologoRepository) {
-        this.citaRepository = citaRepository;
-        this.pacientesRepository = pacientesRepository;
-        this.psicologoRepository = psicologoRepository;
-    }
 
     /**
      * Obtiene la lista completa de citas registradas.
      *
-     * @return lista de {@link CitaResponseDTO} con todas las citas
+     * @return lista de {@link CitaPacienteViewResponseDTO} con todas las citas
      */
-    public List<CitaResponseDTO> findAll() {
-        return citaRepository.findAll().stream().map(this::toResponse).toList();
+    public List<CitaPacienteViewResponseDTO> findByPaciente(Long idPaciente) {
+        return citaRepository
+                .findByPaciente_IdPacienteOrderByStartDatetimeAsc(idPaciente)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
+    public Long obtenerIdPacienteDesdeAuth(Authentication auth) {
+        String email = auth.getName();
+
+        return pacientesRepository.findByUsuario_Email(email)
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"))
+                .getIdPaciente();
+    }
     /**
      * Busca una cita por su identificador único.
      *
      * @param idCita identificador de la cita a buscar
-     * @return {@link CitaResponseDTO} con los datos de la cita encontrada
+     * @return {@link CitaPacienteViewResponseDTO} con los datos de la cita encontrada
      * @throws RuntimeException si no existe una cita con el id proporcionado
      */
-    public CitaResponseDTO findById(Long idCita) {
+    public CitaPacienteViewResponseDTO findById(Long idCita) {
         return toResponse(getCitaOrThrow(idCita));
     }
 
@@ -72,11 +76,11 @@ public class CitaService {
      * Crea una nueva cita a partir de los datos del request.
      *
      * @param request {@link CitaRequestDTO} con los datos de la cita a crear
-     * @return {@link CitaResponseDTO} con los datos de la cita creada
+     * @return {@link CitaPacienteViewResponseDTO} con los datos de la cita creada
      * @throws RuntimeException si el paciente o el psicólogo referenciados no existen,
      *                          o si el estado proporcionado no es válido
      */
-    public CitaResponseDTO create(CitaRequestDTO request) {
+    public CitaPacienteViewResponseDTO create(CitaRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
         Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
 
@@ -89,7 +93,10 @@ public class CitaService {
         cita.setMotivo(request.getMotivo());
         cita.setCreatedAt(LocalDateTime.now());
         cita.setUpdatedAt(LocalDateTime.now());
+        TiposTerapia tipo = terapiaRepository.findById(request.getIdTipoTerapia())
+                .orElseThrow(() -> new RuntimeException("Tipo de terapia no encontrado"));
 
+        cita.setTipoTerapia(tipo);
         return toResponse(citaRepository.save(cita));
     }
 
@@ -98,11 +105,11 @@ public class CitaService {
      *
      * @param idCita  identificador de la cita a actualizar
      * @param request {@link CitaRequestDTO} con los nuevos datos de la cita
-     * @return {@link CitaResponseDTO} con los datos actualizados
+     * @return {@link CitaPacienteViewResponseDTO} con los datos actualizados
      * @throws RuntimeException si la cita, el paciente o el psicólogo no existen,
      *                          o si el estado proporcionado no es válido
      */
-    public CitaResponseDTO update(Long idCita, CitaRequestDTO request) {
+    public CitaPacienteViewResponseDTO update(Long idCita, CitaRequestDTO request) {
         Cita cita = getCitaOrThrow(idCita);
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
         Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
@@ -178,36 +185,57 @@ public class CitaService {
     }
 
 
-    private CitaResponseDTO toResponse(Cita cita) {
-        return new CitaResponseDTO(
-                cita.getIdCita(),
-                cita.getPaciente() != null ? cita.getPaciente().getUsuario().getPaciente().getUsuario().getIdUsuario() : null,
-                cita.getPsicologo() != null ? cita.getPsicologo().getIdPsicologo() : null,
-                cita.getStartDatetime(),
-                cita.getDurationMinutes(),
-                cita.getEstado(),
-                cita.getMotivo()
-        );
+    private CitaPacienteViewResponseDTO toResponse(Cita cita) {
+
+        LocalDateTime start = cita.getStartDatetime();
+        LocalDateTime end = start.plusMinutes(cita.getDurationMinutes());
+
+        long minutosRestantes = Duration
+                .between(LocalDateTime.now(), start)
+                .toMinutes();
+
+        return CitaPacienteViewResponseDTO.builder()
+                .idCita(cita.getIdCita())
+                .fecha(start.toLocalDate())
+                .horaInicio(start.toLocalTime())
+                .horaFin(end.toLocalTime())
+                .durationMinutes(cita.getDurationMinutes())
+                .estado(cita.getEstado())
+                .modalidad(cita.getModalidad())
+                .motivo(cita.getMotivo())
+                .tipoTerapia(
+                        cita.getTipoTerapia() != null
+                                ? cita.getTipoTerapia().getNombre()
+                                : null
+                )
+                .minutosRestantes(minutosRestantes)
+                .esProxima(minutosRestantes >= 0 && minutosRestantes <= 60)
+                .build();
     }
 
     // Agenda mensual del paciente
     public List<AgendaPacienteItemDTO> getAgendaPacienteMes(Long idPaciente, String month) {
-        // Parsear el mes recibido (YYYY-MM)
+
         YearMonth yearMonth = YearMonth.parse(month);
+
         LocalDateTime start = yearMonth.atDay(1).atStartOfDay();
         LocalDateTime end = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
-        // Buscar citas del paciente en ese rango
-        List<Cita> citas = citaRepository.findByPaciente_IdPaciente(idPaciente).stream()
-                .filter(c -> !c.getStartDatetime().isBefore(start) && !c.getStartDatetime().isAfter(end))
-                .collect(Collectors.toList());
-        // Mapear a DTO
-        return citas.stream().map(cita -> new AgendaPacienteItemDTO(
-                cita.getStartDatetime().toLocalDate(),
-                cita.getStartDatetime().toLocalTime(),
-                cita.getStartDatetime().toLocalTime().plusMinutes(cita.getDurationMinutes()),
-                cita.getEstado() != null ? cita.getEstado().name() : null,
-                cita.getMotivo(),
-                cita.getIdCita()
-        )).collect(Collectors.toList());
+
+        List<Cita> citas = citaRepository
+                .findByPaciente_IdPacienteAndStartDatetimeBetweenOrderByStartDatetimeAsc(
+                        idPaciente, start, end
+                );
+
+        return citas.stream()
+                .map(cita -> new AgendaPacienteItemDTO(
+                        cita.getStartDatetime().toLocalDate(),
+                        cita.getStartDatetime().toLocalTime(),
+                        cita.getStartDatetime().toLocalTime()
+                                .plusMinutes(cita.getDurationMinutes()),
+                        cita.getEstado() != null ? cita.getEstado().name() : null,
+                        cita.getMotivo(),
+                        cita.getIdCita()
+                ))
+                .toList();
     }
 }
