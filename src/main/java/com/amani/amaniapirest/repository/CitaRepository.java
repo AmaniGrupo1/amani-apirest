@@ -3,6 +3,7 @@ package com.amani.amaniapirest.repository;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.models.Cita;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,4 +41,23 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     );
 
     List<Cita> findByStartDatetimeBetweenAndEstado(LocalDateTime desde, LocalDateTime hasta, EstadoCita name);
+
+    @Query("""
+            SELECT u.idUsuario
+            FROM Cita c
+            JOIN c.psicologo p
+            JOIN p.usuario u
+            WHERE c.idCita = :idCita
+            """)
+    Long obtenerUsuarioPsicologo(Long idCita);
+
+
+    @Query("""
+            SELECT u.idUsuario
+            FROM Cita c
+            JOIN c.paciente pa
+            JOIN pa.usuario u
+            WHERE c.idCita = :idCita
+            """)
+    Long obtenerUsuarioPaciente(Long idCita);
 }

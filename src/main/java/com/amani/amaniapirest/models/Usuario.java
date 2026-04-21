@@ -123,4 +123,7 @@ public class Usuario {
      */
     @OneToMany(mappedBy = "receiver")
     private List<Mensaje> recibidos;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notificacion> notificaciones;
 }

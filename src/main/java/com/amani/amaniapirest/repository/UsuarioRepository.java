@@ -3,6 +3,7 @@ package com.amani.amaniapirest.repository;
 import com.amani.amaniapirest.enums.RolUsuario;
 import com.amani.amaniapirest.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +22,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByRol(RolUsuario attr0);
 
     List<Usuario> findByRol(RolUsuario rol); // 👈 ESTE
+
+    @Query("""
+        SELECT u.fcmToken
+        FROM Usuario u
+        WHERE u.idUsuario = :idUsuario
+    """)
+    String obtenerToken(Long idUsuario);
 
 }

@@ -19,6 +19,8 @@ import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.repository.terapiaService.TerapiaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -90,15 +92,16 @@ public class CitaAgendaService {
     // GET /api/citas/psicologo/{id}/agenda?month=YYYY-MM
     // ─────────────────────────────────────────────────────────
     public List<AgendaItemDTO> getAgendaPsicologo(Long idPsicologo, String month) {
+        System.out.println("📡 getAgendaPsicologo llamado con idPsicologo: " + idPsicologo + ", month: " + month);
         System.out.println("===== GET AGENDA PSICOLOGO =====");
         System.out.println("ID URL: " + idPsicologo);
         System.out.println("MONTH: " + month);
-        System.out.println("AUTH EMAIL: " + SecurityContextHolder.getContext().getAuthentication().getName());
-        System.out.println("AUTH ROLES: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+
         String email = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
-
+        System.out.println("AUTH EMAIL: " + email);
+        System.out.println("AUTH ROLES: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 
         Psicologo logueado = psicologoRepository.findByUsuario_Email(email)
                 .orElseThrow(() -> new NoSuchElementException("Psicólogo no encontrado"));
@@ -108,24 +111,30 @@ public class CitaAgendaService {
         if (idPsicologo == null || !idPsicologo.equals(idPsicologoToken)) {
             idPsicologo = idPsicologoToken;
         }
+
         var rango = rangoMes(month);
 
         List<AgendaItemDTO> items = new ArrayList<>();
 
+        // Agregar citas
         citaRepository.findByPsicologo_IdPsicologoAndStartDatetimeBetween(
                 idPsicologo, rango[0], rango[1]
         ).stream().map(this::citaToAgendaItem).forEach(items::add);
 
+        // Agregar bloqueos
         LocalDate inicio = rango[0].toLocalDate();
         LocalDate fin = rango[1].toLocalDate();
 
         bloqueoRepository.findByPsicologoIdPsicologoAndFechaBetween(idPsicologo, inicio, fin)
                 .stream().map(this::bloqueoToAgendaItem).forEach(items::add);
 
+        // Ordenar
         items.sort(Comparator.comparing(AgendaItemDTO::getFecha)
                 .thenComparing(AgendaItemDTO::getHoraInicio));
 
-        return items;
+        System.out.println("📡 Resultado: " + items.size() + " citas encontradas");
+
+        return items;  // ← SOLO UN RETURN AL FINAL
     }
 
     // ─────────────────────────────────────────────────────────
@@ -224,10 +233,17 @@ public class CitaAgendaService {
     }
 
     // En CitaAgendaService.java - Agrega este método
-
+    @PreAuthorize("hasRole('PACIENTE') or hasRole('ADMIN') or hasRole('PSICOLOGO')")
     @Transactional
     public AgendaItemDTO editarCita(Long idCita, CitaRequestDTO req) {
 
+        System.out.println("===== EDITAR CITA DEBUG =====");
+        System.out.println("idCita: " + idCita);
+        System.out.println("startDatetime: " + req.getStartDatetime());
+        System.out.println("idPsicologo: " + req.getIdPsicologo());
+        System.out.println("idPaciente: " + req.getIdPaciente());
+        System.out.println("estado: " + req.getEstado());
+        System.out.println("tipoTerapia: " + req.getIdTipoTerapia());
         // 1. Buscar cita existente
         Cita citaExistente = citaRepository.findById(idCita)
                 .orElseThrow(() -> new NoSuchElementException("Cita no encontrada"));
