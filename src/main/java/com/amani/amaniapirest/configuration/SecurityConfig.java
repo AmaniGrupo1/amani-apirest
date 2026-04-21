@@ -72,18 +72,15 @@ public class SecurityConfig {
                                 .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
                                 .requestMatchers("/api/citas/psicologo/*/horario").hasAnyRole("ADMIN", "PSICOLOGO")
                                 .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
-                                .requestMatchers("/api/citas/psicologo/cita").hasRole("PSICOLOGO") // Endpoint para que el psicólogo cree una cita para un paciente asignado
-                                .requestMatchers("/api/citas/psicologo/*/disponibilidad")
-                                .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                                .requestMatchers("/api/citas/psicologo/cita").hasAnyRole("PACIENTE","PSICOLOGO","ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
 
-                                .requestMatchers("/api/citas/psicologo/terapias").hasAnyRole("PSICOLOGO", "ADMIN")
                                 .requestMatchers("/api/citas/psicologo/*/disponibilidad").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
                                 .requestMatchers("/api/citas/psicologo/*/editar").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
                                 .requestMatchers("/api/citas/psicologo/terapias")
-                                .hasAnyRole("PSICOLOGO", "ADMIN")
+                                .hasAnyRole("PACIENTE","PSICOLOGO", "ADMIN")
                                 .requestMatchers("/api/citas/psicologo/*/duracion").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo actualice la duración de una cita
-                                .requestMatchers("/api/citas/psicologo/*/agenda").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
+                                .requestMatchers("/api/citas/psicologo/*/agenda").hasAnyRole("PACIENTE","PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
                                 .requestMatchers("/api/citas/psicologo/*/horario-actual").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
 // PACIENTE
                                 .requestMatchers("/api/citas/mis-citas").hasRole("PACIENTE")// CANCELAR CITA
