@@ -17,6 +17,7 @@ import com.amani.amaniapirest.dto.dtoAgenda.response.DisponibilidadDTO;
 import com.amani.amaniapirest.dto.dtoAgenda.response.SlotDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.repository.terapiaService.TerapiaRepository;
+import com.amani.amaniapirest.services.notificacion.NotificationServices;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,6 +51,7 @@ public class CitaAgendaService {
     private final PacientesRepository pacienteRepository;
     private final CitaService citaService;
     private final TerapiaRepository terapiaRepository;
+    private final NotificationServices notificacionService;
 
     // ─────────────────────────────────────────────────────────
     // GET /api/citas/paciente/{id}/agenda?month=YYYY-MM
@@ -237,14 +239,7 @@ public class CitaAgendaService {
     @Transactional
     public AgendaItemDTO editarCita(Long idCita, CitaRequestDTO req) {
 
-        System.out.println("===== EDITAR CITA DEBUG =====");
-        System.out.println("idCita: " + idCita);
-        System.out.println("startDatetime: " + req.getStartDatetime());
-        System.out.println("idPsicologo: " + req.getIdPsicologo());
-        System.out.println("idPaciente: " + req.getIdPaciente());
-        System.out.println("estado: " + req.getEstado());
-        System.out.println("tipoTerapia: " + req.getIdTipoTerapia());
-        // 1. Buscar cita existente
+
         Cita citaExistente = citaRepository.findById(idCita)
                 .orElseThrow(() -> new NoSuchElementException("Cita no encontrada"));
 
@@ -386,6 +381,27 @@ public class CitaAgendaService {
         // 12. Guardar
         citaRepository.save(citaExistente);
 
+        if (req.getEstado() != null) {
+
+            Usuario usuarioPaciente =
+                    citaExistente.getPaciente().getUsuario();
+
+            String titulo = "Estado de cita actualizado";
+
+            String mensaje = switch (req.getEstado()) {
+                case confirmada -> "Tu cita ha sido confirmada";
+                case cancelada -> "Tu cita ha sido cancelada";
+                case completada -> "Tu cita ha sido completada";
+                default -> "El estado de tu cita ha cambiado";
+            };
+
+            notificacionService.enviarNotificacion(
+                    usuarioPaciente,
+                    titulo,
+                    mensaje
+            );
+        }
+
         return citaToAgendaItem(citaExistente);
     }
 
@@ -503,6 +519,24 @@ public class CitaAgendaService {
         // Cascade ALL en Cita -> Pago, así que esto guarda ambos
         citaRepository.save(cita);
 
+        Usuario usuarioPaciente = paciente.getUsuario();
+        Usuario usuarioPsicologo = psicologo.getUsuario();
+
+        notificacionService.enviarNotificacion(
+                usuarioPaciente,
+                "Nueva cita creada",
+                "Tu cita ha sido registrada para el día "
+                        + start.toLocalDate()
+                        + " a las "
+                        + start.toLocalTime()
+        );
+
+        notificacionService.enviarNotificacion(
+                usuarioPsicologo,
+                "Nueva cita asignada",
+                "Se ha creado una nueva cita en tu agenda"
+        );
+
         return citaToAgendaItem(cita);
     }
 
@@ -579,6 +613,24 @@ public class CitaAgendaService {
 
         // 4. (OPCIONAL PERO RECOMENDADO) auditoría
         cita.setUpdatedAt(LocalDateTime.now());
+
+        Usuario usuarioPaciente =
+                cita.getPaciente().getUsuario();
+
+        Usuario usuarioPsicologo =
+                cita.getPsicologo().getUsuario();
+
+        notificacionService.enviarNotificacion(
+                usuarioPaciente,
+                "Cita cancelada",
+                "Tu cita ha sido cancelada"
+        );
+
+        notificacionService.enviarNotificacion(
+                usuarioPsicologo,
+                "Cita cancelada",
+                "Una cita en tu agenda ha sido cancelada"
+        );
 
         return citaToAgendaItem(citaRepository.save(cita));
     }
