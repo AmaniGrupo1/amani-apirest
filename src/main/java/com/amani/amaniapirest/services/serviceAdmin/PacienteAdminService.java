@@ -58,7 +58,8 @@ public class PacienteAdminService {
 
         // Comprobar si ya existe asignación activa
         PsicologoPaciente asignacionActual = psicologoPacienteRepository
-                .findByPacienteIdPacienteAndFechaFinIsNull(pacienteId);
+                .findByPacienteIdPacienteAndFechaFinIsNull(pacienteId)
+                .orElse(null);
 
         if (asignacionActual != null) {
             // Cerrar la asignación anterior
@@ -93,6 +94,7 @@ public class PacienteAdminService {
             usuario.setNombre(u.getNombre());
             usuario.setApellido(u.getApellido());
             usuario.setEmail(u.getEmail());
+            usuario.setDni(u.getDni());
             usuario.setPassword(new BCryptPasswordEncoder().encode(u.getPassword()));
             usuario.setRol(u.getRol());
             usuario.setActivo(u.getActivo() != null ? u.getActivo() : true);
@@ -184,7 +186,6 @@ public class PacienteAdminService {
 
         if (paciente.getCitas() != null && !paciente.getCitas().isEmpty()) {
 
-            // obtener último pago de la última cita
             Cita ultimaCita = paciente.getCitas()
                     .stream()
                     .max((a, b) -> a.getStartDatetime().compareTo(b.getStartDatetime()))
@@ -196,7 +197,21 @@ public class PacienteAdminService {
             }
         }
 
-        // --- Mapear situaciones ---
+        // ─────────────────────────────
+        // Edad calculada SIEMPRE
+        // ─────────────────────────────
+        Integer edad = null;
+
+        if (paciente.getFechaNacimiento() != null) {
+            edad = Period.between(
+                    paciente.getFechaNacimiento(),
+                    LocalDate.now()
+            ).getYears();
+        }
+
+        // ─────────────────────────────
+        // Situaciones
+        // ─────────────────────────────
         List<SituacionDTO> situaciones = paciente.getPacienteSituaciones().stream()
                 .map(ps -> new SituacionDTO(
                         ps.getSituacion().getIdSituacion(),
@@ -206,34 +221,35 @@ public class PacienteAdminService {
                 ))
                 .toList();
 
-        // --- Calcular si es menor ---
-        boolean esMenor = paciente.getFechaNacimiento() != null &&
-                Period.between(paciente.getFechaNacimiento(), LocalDate.now()).getYears() < 18;
-
-        // --- Mapear tutores solo si es menor ---
-        List<TutorResonseDTO> tutores = esMenor && paciente.getTutores() != null
+        // ─────────────────────────────
+        // Tutores (NO depender de edad aquí)
+        // ─────────────────────────────
+        List<TutorResonseDTO> tutores = paciente.getTutores() != null
                 ? paciente.getTutores().stream()
-                .map(t -> new TutorResonseDTO(
-                        t.getIdTutor(),
-                        t.getNombre(),
-                        t.getTelefono(),
-                        t.getEmail(),
-                        t.getDni(),
-                        t.getTipo()
-                ))
-                .toList()
-                : List.of(); // vacío si no es menor o no tiene tutores
+                  .map(t -> new TutorResonseDTO(
+                          t.getIdTutor(),
+                          t.getNombre(),
+                          t.getTelefono(),
+                          t.getEmail(),
+                          t.getDni(),
+                          t.getTipo()
+                  ))
+                  .toList()
+                : List.of();
 
+        // ─────────────────────────────
+        // Direcciones
+        // ─────────────────────────────
         List<DireccionResponseDTO> direcciones = paciente.getDirecciones() != null
                 ? paciente.getDirecciones().stream()
-                .map(d -> new DireccionResponseDTO(
-                        d.getCalle(),
-                        d.getCiudad(),
-                        d.getProvincia(),
-                        d.getCodigoPostal(),
-                        d.getPais()
-                ))
-                .toList()
+                  .map(d -> new DireccionResponseDTO(
+                          d.getCalle(),
+                          d.getCiudad(),
+                          d.getProvincia(),
+                          d.getCodigoPostal(),
+                          d.getPais()
+                  ))
+                  .toList()
                 : List.of();
 
         return new PacienteAdminResponseDTO(
@@ -251,7 +267,8 @@ public class PacienteAdminService {
                 metodoPago,
                 situaciones,
                 tutores,
-                direcciones
+                direcciones,
+                edad // 🔥 NUEVO CAMPO
         );
     }
 }

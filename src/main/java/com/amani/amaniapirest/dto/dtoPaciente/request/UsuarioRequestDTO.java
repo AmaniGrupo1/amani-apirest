@@ -49,8 +49,6 @@ public class UsuarioRequestDTO {
     @Schema(description = "Contraseña en texto plano (mín. 6 caracteres)", example = "miPassword123")
     private String password;
 
-    /** Rol funcional del usuario (admin, psicólogo, paciente). */
-    @NotBlank
     @Schema(description = "Rol funcional del usuario (admin, psicologo, paciente)", example = "paciente")
     private RolUsuario rol;
 

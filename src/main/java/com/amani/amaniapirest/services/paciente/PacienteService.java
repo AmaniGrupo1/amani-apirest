@@ -1,7 +1,11 @@
 package com.amani.amaniapirest.services.paciente;
 
+import com.amani.amaniapirest.dto.dtoAdmin.TutorResonseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteBasicoResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteResponseDTO;
+import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
 import com.amani.amaniapirest.dto.profile.PacienteDTO;
 import com.amani.amaniapirest.mappers.ProfileMapper;
 import com.amani.amaniapirest.models.Paciente;
@@ -138,6 +142,58 @@ public class PacienteService {
     }
 
 
+    //----------------------------------------------------------------------------------------------------
+    // LISTAR PACIENTES SIN PSICOLOGOS ASIGNADOS
+    //----------------------------------------------------------------------------------------------------
+    public List<PacienteBasicoResponseDTO> getPacientesSinPsicologo() {
+
+        List<Paciente> pacientes = pacientesRepository.findPacientesSinPsicologo();
+
+        return pacientes.stream().map(p -> {
+
+            Usuario u = p.getUsuario();
+
+            return new PacienteBasicoResponseDTO(
+                    p.getIdPaciente(),
+                    u.getIdUsuario(),
+                    u.getNombre(),
+                    u.getApellido(),
+                    u.getEmail(),
+                    u.getDni(),
+                    p.getFechaNacimiento(),
+                    p.getGenero(),
+                    p.getTelefono(),
+
+                    // DIRECCIONES (LISTA)
+                    p.getDirecciones() != null
+                            ? p.getDirecciones().stream().map(d ->
+                                                              new DireccionResponseDTO(
+                                                                      d.getCalle(),
+                                                                      d.getCiudad(),
+                                                                      d.getProvincia(),
+                                                                      d.getCodigoPostal(),
+                                                                      d.getPais()
+                                                              )
+                    ).toList()
+                            : List.of(),
+
+                    // TUTORES
+                    p.getTutores() != null
+                            ? p.getTutores().stream().map(t ->
+                                                          new TutorResonseDTO(
+                                                                  t.getIdTutor(),
+                                                                  t.getNombre(),
+                                                                  t.getTelefono(),
+                                                                  t.getEmail(),
+                                                                  t.getTipo(),
+                                                                  t.getDni()
+                                                          )
+                    ).toList()
+                            : List.of()
+            );
+        }).toList();
+    }
+
     private PacienteResponseDTO toResponse(Paciente paciente) {
         return new PacienteResponseDTO(
                 paciente.getFechaNacimiento(),
@@ -147,4 +203,5 @@ public class PacienteService {
                 paciente.getUpdatedAt()
         );
     }
+
 }

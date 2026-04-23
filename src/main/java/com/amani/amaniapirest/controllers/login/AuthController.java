@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -122,5 +123,17 @@ public class AuthController {
     public ResponseEntity<String> darBajaPaciente(@PathVariable Long id) {
         authService.darBajaPaciente(id);
         return ResponseEntity.ok("Paciente dado de baja correctamente");
+    }
+
+
+    @PostMapping("/registrar/pacienteDesde/psicologo")
+    public ResponseEntity<LoginResponseDTO> crearPacienteDesdePsicologo(
+            @RequestBody PacienteRequestDTO request,
+            Authentication authentication
+    ) {
+        String emailPsicologo = authentication.getName();
+
+        LoginResponseDTO response = authService.crearPacienteDesdePsicologo(request,emailPsicologo);
+        return ResponseEntity.ok(response);
     }
 }

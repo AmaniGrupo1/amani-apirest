@@ -5,8 +5,10 @@ import com.amani.amaniapirest.dto.profile.UsuarioDTO;
 import com.amani.amaniapirest.mappers.ProfileMapper;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Psicologo;
+import com.amani.amaniapirest.models.PsicologoPaciente;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.PacientesRepository;
+import com.amani.amaniapirest.repository.PsicologoPacienteRepository;
 import com.amani.amaniapirest.repository.PsicologoRepository;
 import com.amani.amaniapirest.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class ProfileService {
     private final UsuarioRepository usuarioRepository;
     private final PsicologoRepository psicologoRepository;
     private final PacientesRepository pacientesRepository;
+    private final PsicologoPacienteRepository psicologoPacienteRepository;
     private final FileStorageService fileStorageService; // servicio para manejar almacenamiento de archivos
 
 
@@ -51,15 +54,15 @@ public class ProfileService {
 
 
     public PsicologoDTO obtenerPsicologoAsignado(Long idPaciente) {
-        Paciente paciente = pacientesRepository.findPacienteWithPsicologo(idPaciente)
-                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
-        var psicologo = paciente.getPsicologo();
-        if (psicologo == null) {
-            return null; // o lanzar excepción si no tiene psicólogo asignado
-        }
+        PsicologoPaciente pp = psicologoPacienteRepository
+                .findByPacienteIdPacienteAndFechaFinIsNull(idPaciente)
+                .orElse(null);
 
-        var usuario = psicologo.getUsuario();
+        if (pp == null) return null;
+
+        Psicologo psicologo = pp.getPsicologo();
+        Usuario usuario = psicologo.getUsuario();
 
         UsuarioDTO usuarioDTO = new UsuarioDTO(
                 usuario.getIdUsuario(),

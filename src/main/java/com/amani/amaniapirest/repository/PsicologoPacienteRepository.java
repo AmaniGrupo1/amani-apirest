@@ -1,6 +1,7 @@
 package com.amani.amaniapirest.repository;
 
 
+import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.models.PsicologoPaciente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +15,7 @@ public interface PsicologoPacienteRepository extends JpaRepository<PsicologoPaci
     List<PsicologoPaciente> findByPsicologoIdPsicologoAndFechaFinIsNull(Long idPsicologo);
 
     // Asignación activa de un paciente
-    PsicologoPaciente findByPacienteIdPacienteAndFechaFinIsNull(Long idPaciente);
+    Optional<PsicologoPaciente> findByPacienteIdPacienteAndFechaFinIsNull(Long idPaciente);
 
     Optional<PsicologoPaciente> findByPaciente_Usuario_IdUsuario(Long idUsuario);
 

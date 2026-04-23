@@ -2,6 +2,9 @@ package com.amani.amaniapirest.controllers.controladorAdministador;
 
 import com.amani.amaniapirest.dto.dtoAdmin.response.PacienteAdminResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
+import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteBasicoResponseDTO;
+import com.amani.amaniapirest.models.Paciente;
+import com.amani.amaniapirest.services.paciente.PacienteService;
 import com.amani.amaniapirest.services.serviceAdmin.PacienteAdminService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,7 +32,7 @@ public class PacienteAdminControlador {
 
     private final PacienteAdminService pacienteService;
 
-
+    private final PacienteService pacienteServicePaciente;
 
     /**
      * Lista todos los pacientes con datos completos (vista admin).
@@ -38,9 +41,9 @@ public class PacienteAdminControlador {
      */
     @Operation(summary = "Listar pacientes (admin)", description = "Lista todos los pacientes con datos completos")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista recuperada exitosamente"),
-        @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Lista recuperada exitosamente"),
+            @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/admin")
     public ResponseEntity<List<PacienteAdminResponseDTO>> findAllAdmin() {
@@ -55,10 +58,10 @@ public class PacienteAdminControlador {
      */
     @Operation(summary = "Obtener paciente (admin)", description = "Obtiene un paciente por su ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Paciente recuperado exitosamente"),
-        @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Paciente no encontrado", content = @Content),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Paciente recuperado exitosamente"),
+            @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Paciente no encontrado", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/admin/{id}")
     public ResponseEntity<PacienteAdminResponseDTO> findByIdAdmin(@PathVariable Long id) {
@@ -77,18 +80,16 @@ public class PacienteAdminControlador {
      */
     @Operation(summary = "Crear paciente (admin)", description = "Crea un nuevo paciente")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Paciente creado exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content),
-        @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+            @ApiResponse(responseCode = "201", description = "Paciente creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content),
+            @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @PostMapping("/admin")
+    @PostMapping("/adminAndPsicologo")
     public ResponseEntity<PacienteAdminResponseDTO> createAdmin(@RequestBody PacienteRequestDTO request) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(pacienteService.create(request));
-        } catch (RuntimeException ex) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(pacienteService.create(request));
     }
 
     /**
@@ -100,11 +101,11 @@ public class PacienteAdminControlador {
      */
     @Operation(summary = "Actualizar paciente (admin)", description = "Actualiza un paciente existente")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Paciente actualizado exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content),
-        @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Paciente no encontrado", content = @Content),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Paciente actualizado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content),
+            @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Paciente no encontrado", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/admin/{id}")
     public ResponseEntity<PacienteAdminResponseDTO> updateAdmin(
@@ -117,5 +118,14 @@ public class PacienteAdminControlador {
         }
     }
 
+    //-----------------------------------------------------------------------------------------------------
+    // PACIENTES SIN PSICOLOGO ASIGNADO (VISTA ADMIN)
+    //-----------------------------------------------------------------------------------------------------
+    @GetMapping("/sin-psicologo")
+    public ResponseEntity<List<PacienteBasicoResponseDTO>> getPacientesSinPsicologo() {
+        return ResponseEntity.ok(
+                pacienteServicePaciente.getPacientesSinPsicologo()
+        );
+    }
 
 }

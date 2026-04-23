@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -87,12 +88,12 @@ public class Paciente {
     private List<Respuesta> respuestas;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
-    private Set<PacienteSituacion> pacienteSituaciones;
+    private Set<PacienteSituacion> pacienteSituaciones = new HashSet<>();
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<Consentimiento> consentimientos;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
-    private Set<Tutor> tutores;
+    private Set<Tutor> tutores = new HashSet<>();
 
 }

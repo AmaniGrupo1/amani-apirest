@@ -384,4 +384,123 @@ public class AuthService {
         usuarioRepository.save(paciente.getUsuario());
     }
 
+    @Transactional
+    public LoginResponseDTO crearPacienteDesdePsicologo(PacienteRequestDTO request,String emailPsicologo) {
+
+        // 1. Obtener psicólogo logueado
+        Psicologo psicologo = psicologoRepository.findByUsuario_Email(emailPsicologo)
+                .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
+
+        // 2. Validar email único
+        if (usuarioRepository.findByEmail(request.getUsuario().getEmail()).isPresent()) {
+            throw new RuntimeException("El correo ya está registrado");
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        // 3. Crear usuario
+        Usuario usuario = new Usuario();
+        usuario.setNombre(request.getUsuario().getNombre());
+        usuario.setApellido(request.getUsuario().getApellido());
+        usuario.setEmail(request.getUsuario().getEmail());
+        usuario.setDni(request.getUsuario().getDni());
+        usuario.setPassword(securityConfig.passwordEncoder().encode(request.getUsuario().getPassword()));
+        usuario.setRol(RolUsuario.paciente);
+        usuario.setActivo(true);
+        usuario.setFechaRegistro(now);
+
+        usuarioRepository.save(usuario);
+
+        // 4. Crear paciente
+        Paciente paciente = new Paciente();
+        paciente.setUsuario(usuario);
+        paciente.setFechaNacimiento(request.getFechaNacimiento());
+        paciente.setGenero(request.getGenero());
+        paciente.setTelefono(request.getTelefono());
+        paciente.setCreatedAt(now);
+
+        paciente = pacienteRepository.save(paciente);
+
+        // 5. 🔥 ASIGNACIÓN CORRECTA (TABLA INTERMEDIA)
+        PsicologoPaciente relacion = new PsicologoPaciente();
+        relacion.setPaciente(paciente);
+        relacion.setPsicologo(psicologo);
+        relacion.setFechaInicio(now);
+
+        psicologoPacienteRepository.save(relacion);
+
+        // 6. Situaciones
+        if (request.getIdSituaciones() != null) {
+            for (Long idSituacion : request.getIdSituaciones()) {
+
+                Situacion situacion = situacionRepository.findById(idSituacion)
+                        .orElseThrow(() -> new RuntimeException("Situación no encontrada"));
+
+                PacienteSituacion ps = new PacienteSituacion();
+                ps.setPaciente(paciente);
+                ps.setSituacion(situacion);
+                ps.setFechaRegistro(now);
+
+                pacienteSituacionRepository.save(ps);
+            }
+        }
+
+        // 7. Tutores
+        if (request.getTutores() != null) {
+            for (TutorRequestDTO tutorDTO : request.getTutores()) {
+
+                Tutor tutor = new Tutor();
+                tutor.setPaciente(paciente);
+                tutor.setNombre(tutorDTO.getNombre());
+                tutor.setTelefono(tutorDTO.getTelefono());
+                tutor.setEmail(tutorDTO.getEmail());
+                tutor.setDni(tutorDTO.getDni());
+                tutor.setTipo(tutorDTO.getTipo());
+
+                tutorRepository.save(tutor);
+            }
+        }
+
+        // 8. Direcciones
+        if (request.getDireccion() != null) {
+            for (DireccionRequestDTO dirDTO : request.getDireccion()) {
+
+                Direccion direccion = new Direccion();
+                direccion.setPaciente(paciente);
+                direccion.setCalle(dirDTO.getCalle());
+                direccion.setCiudad(dirDTO.getCiudad());
+                direccion.setProvincia(dirDTO.getProvincia());
+                direccion.setCodigoPostal(dirDTO.getCodigoPostal());
+                direccion.setPais(dirDTO.getPais());
+
+                direccionRepository.save(direccion);
+            }
+        }
+
+        // 9. JWT
+        UserDetails userDetails = new User(
+                usuario.getEmail(),
+                usuario.getPassword(),
+                List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name().toUpperCase()))
+        );
+
+        String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
+
+        // 10. ID psicólogo correcto
+        Long idPsicologo = psicologo.getIdPsicologo();
+
+        // 11. ID paciente (lo que espera tu frontend)
+        Long idPaciente = paciente.getIdPaciente();
+
+        // 12. RESPONSE FINAL
+        return new LoginResponseDTO(
+                usuario.getIdUsuario(),
+                usuario.getNombre(),
+                usuario.getRol().name(),
+                token,
+                idPsicologo,
+                idPaciente
+        );
+    }
+
 }

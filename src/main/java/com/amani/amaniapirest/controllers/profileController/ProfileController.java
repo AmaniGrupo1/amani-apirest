@@ -87,9 +87,17 @@ public class ProfileController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @GetMapping("/pacientes/{idPaciente}/psicologo")
-    public ResponseEntity<PsicologoDTO> getPsicologoAsignado(@PathVariable Long idPaciente) {
-        PsicologoDTO dto = psicologoSelfService.obtenerPsicologoAsignado(idPaciente);
+    public ResponseEntity<?> getPsicologoAsignado(@PathVariable Long idPaciente) {
+
+        PsicologoDTO dto =
+                psicologoSelfService.obtenerPsicologoAsignado(idPaciente);
+
+        if (dto == null) {
+            return ResponseEntity
+                    .status(404)
+                    .body("Debes esperar a que un administrador te asigne un psicólogo");
+        }
+
         return ResponseEntity.ok(dto);
     }
-
 }

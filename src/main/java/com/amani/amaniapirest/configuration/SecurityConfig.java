@@ -68,10 +68,12 @@ public class SecurityConfig {
                                 .requestMatchers("/api/admin/psicologos/asignar-psicologo").hasRole("ADMIN") //Asignamos el paciente al psicologo
                                 .requestMatchers("/api/admin/psicologos/pacientes").hasRole("ADMIN") //creamos psicologo con admin
                                 .requestMatchers("/api/pacientes/admin").hasRole("ADMIN") //Listamos pacientes
-                                //  PSICOLOGO + ADMIN
+                                .requestMatchers("/api/pacientes/sin-psicologo").hasRole("ADMIN") //Listamos pacientes sin psicologos
+                                 //  PSICOLOGO + ADMIN
                                 .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
                                 .requestMatchers("/api/citas/psicologo/*/horario").hasAnyRole("ADMIN", "PSICOLOGO")
                                 .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
+                                .requestMatchers("/auth/registrar/pacienteDesde/psicologo").hasRole("PSICOLOGO")
                                 .requestMatchers("/api/citas/psicologo/cita").hasAnyRole("PACIENTE","PSICOLOGO","ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
 
                                 .requestMatchers("/api/citas/psicologo/*/disponibilidad").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")

@@ -18,28 +18,45 @@ public interface PacientesRepository extends JpaRepository<Paciente, Long> {
     Optional<Paciente> findByUsuario_IdUsuario(Long idUsuario);
 
     @Query("""
-    SELECT DISTINCT p FROM Paciente p
-    LEFT JOIN FETCH p.pacienteSituaciones ps
-    LEFT JOIN FETCH ps.situacion
-    LEFT JOIN FETCH p.tutores t
-    LEFT JOIN FETCH p.direcciones d
-""")
+                SELECT DISTINCT p FROM Paciente p
+                LEFT JOIN FETCH p.pacienteSituaciones ps
+                LEFT JOIN FETCH ps.situacion
+                LEFT JOIN FETCH p.tutores t
+                LEFT JOIN FETCH p.direcciones d
+            """)
     List<Paciente> findAllWithSituacionesTutoresYDirecciones();
 
     @Query("""
-    SELECT p.idPaciente FROM Paciente p
-    WHERE p.psicologo.idPsicologo = :idPsicologo
-""")
+                SELECT p.idPaciente FROM Paciente p
+                WHERE p.psicologo.idPsicologo = :idPsicologo
+            """)
     List<Long> findIdsByPsicologoId(Long idPsicologo);
 
 
     // Consulta personalizada para obtener un paciente con su psicólogo y usuario asociados
-    @Query("SELECT pa FROM Paciente pa " +
-            "JOIN FETCH pa.psicologo p " +
-            "JOIN FETCH p.usuario u " +
-            "WHERE pa.idPaciente = :idPaciente")
+    @Query("""
+            SELECT pa FROM Paciente pa
+            LEFT JOIN FETCH pa.psicologo p
+            LEFT JOIN FETCH p.usuario u
+            WHERE pa.idPaciente = :idPaciente
+            """)
     Optional<Paciente> findPacienteWithPsicologo(@Param("idPaciente") Long idPaciente);
 
 
     Optional<Paciente> findByUsuario_Email(String email);
+
+    @Query("""
+                SELECT DISTINCT p
+                FROM Paciente p
+                LEFT JOIN FETCH p.direcciones
+                LEFT JOIN FETCH p.tutores
+                LEFT JOIN FETCH p.usuario
+                WHERE NOT EXISTS (
+                    SELECT pp
+                    FROM PsicologoPaciente pp
+                    WHERE pp.paciente = p
+                    AND pp.fechaFin IS NULL
+                )
+            """)
+    List<Paciente> findPacientesSinPsicologo();
 }

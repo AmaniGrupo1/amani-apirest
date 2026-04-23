@@ -36,5 +36,6 @@ public class PacienteAdminResponseDTO {
     private List<SituacionDTO> situaciones;
     private List<TutorResonseDTO> tutores;
     private List<DireccionResponseDTO> direcciones;
+    private Integer edad;
 }
 
