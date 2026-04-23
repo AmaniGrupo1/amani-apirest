@@ -43,6 +43,11 @@ public class DiarioEmocionRequestDTO {
     @Schema(description = "Intensidad de la emoción (escala 1-10)", example = "7")
     private Integer intensidad;
 
+    /** Título de la entrada del diario emocional. */
+    @NotBlank
+    @Schema(description = "Título de la entrada del diario emocional", example = "Mañana productiva")
+    private String titulo;
+
     /** Nota o comentario libre del paciente sobre la emoción. */
     @Schema(description = "Nota o comentario libre del paciente", example = "Hoy me sentí muy bien después de hacer ejercicio")
     private String nota;
