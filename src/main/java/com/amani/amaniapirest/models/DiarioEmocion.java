@@ -26,6 +26,10 @@ public class DiarioEmocion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDiario;
 
+    /** Titulo de la entrada del diario. */
+    @Column(nullable = false)
+    private String titulo;
+
     /** Fecha y hora en que se registro la emocion. */
     private LocalDateTime fecha;
 

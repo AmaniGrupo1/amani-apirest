@@ -18,9 +18,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Schema(name = "DiarioEmocionResponse", description = "Entrada del diario emocional — vista paciente")
 public class DiarioEmocionResponseDTO {
+    /** Identificador único de la entrada del diario. */
+    @Schema(description = "Identificador de la entrada del diario", example = "1")
+    private Long idDiario;
+
+    /** Título de la entrada del diario. */
+    @Schema(description = "Título de la entrada", example = "Reflexión matutina")
+    private String titulo;
+
     /** Fecha y hora en que se registró la emoción. */
     @Schema(description = "Fecha y hora del registro", example = "2026-03-20T09:00:00")
-
     private LocalDateTime fecha;
     /** Nombre de la emoción registrada. */
     @Schema(description = "Emoción registrada", example = "alegría")
