@@ -2,6 +2,7 @@ package com.amani.amaniapirest.services;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.UsuarioRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.UsuarioResponseDTO;
+import com.amani.amaniapirest.dto.notificacion.NotificacionConfigDTO;
 import com.amani.amaniapirest.events.UsuarioRegistradoEvent;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.UsuarioRepository;
@@ -142,6 +143,41 @@ public class UsuarioService {
                 usuario.getActivo(),
                 usuario.getFechaRegistro()
         );
+    }
+
+
+    // ─────────────────────────────────────
+    // Activar / desactivar notificaciones
+    // ─────────────────────────────────────
+    public NotificacionConfigDTO actualizarNotificaciones(
+            Long idUsuario,
+            boolean activar
+    ) {
+
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuario.setNotificacionesActivas(activar);
+
+        usuarioRepository.save(usuario);
+
+        return new NotificacionConfigDTO(
+                usuario.getIdUsuario(),
+                usuario.isNotificacionesActivas()
+        );
+    }
+    // ─────────────────────────────────────
+    // Obtener estado actual
+    // ─────────────────────────────────────
+    public boolean obtenerEstadoNotificaciones(
+            Long idUsuario
+    ) {
+
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() ->
+                        new RuntimeException("Usuario no encontrado"));
+
+        return usuario.isNotificacionesActivas();
     }
 }
 

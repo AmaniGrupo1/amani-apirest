@@ -126,4 +126,7 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notificacion> notificaciones;
+
+    @Column(name = "notificaciones_activas")
+    private boolean notificacionesActivas = true;
 }
