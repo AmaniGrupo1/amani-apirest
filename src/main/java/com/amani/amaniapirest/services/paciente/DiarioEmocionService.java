@@ -72,6 +72,7 @@ public class DiarioEmocionService {
         entrada.setEmocion(request.getEmocion());
         entrada.setIntensidad(request.getIntensidad() != null ? request.getIntensidad() : 0);
         entrada.setNota(request.getNota());
+        entrada.setTitulo(request.getTitulo());
 
         return toResponse(diarioEmocionRepository.save(entrada));
     }
@@ -93,6 +94,7 @@ public class DiarioEmocionService {
         entrada.setEmocion(request.getEmocion());
         entrada.setIntensidad(request.getIntensidad() != null ? request.getIntensidad() : entrada.getIntensidad());
         entrada.setNota(request.getNota());
+        entrada.setTitulo(request.getTitulo());
 
         return toResponse(diarioEmocionRepository.save(entrada));
     }
@@ -139,6 +141,8 @@ public class DiarioEmocionService {
      */
     private DiarioEmocionResponseDTO toResponse(DiarioEmocion entrada) {
         return new DiarioEmocionResponseDTO(
+                entrada.getIdDiario(),
+                entrada.getTitulo(),
                 entrada.getFecha(),
                 entrada.getEmocion(),
                 entrada.getIntensidad(),
