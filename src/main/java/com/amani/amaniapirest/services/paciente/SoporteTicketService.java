@@ -10,6 +10,7 @@ import com.amani.amaniapirest.repository.UsuarioRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class SoporteTicketService {
      * @param estado estado por el que filtrar; {@code null} para todos
      * @return lista de {@link TicketSoporteResponseDTO} ordenados del mas reciente al mas antiguo
      */
+    @Transactional(readOnly = true)
     public List<TicketSoporteResponseDTO> findMisTickets(EstadoTicketSoporte estado) {
         Usuario usuario = getUsuarioAutenticado();
         List<TicketSoporte> tickets;
@@ -57,6 +59,7 @@ public class SoporteTicketService {
      * @return {@link TicketSoporteResponseDTO} con los datos del ticket
      * @throws RuntimeException si no existe el ticket o no pertenece al usuario
      */
+    @Transactional(readOnly = true)
     public TicketSoporteResponseDTO findById(Long idTicket) {
         Usuario usuario = getUsuarioAutenticado();
         TicketSoporte ticket = getTicketOrThrow(idTicket);
@@ -72,6 +75,7 @@ public class SoporteTicketService {
      * @param request {@link TicketSoporteRequestDTO} con los datos del ticket
      * @return {@link TicketSoporteResponseDTO} con los datos creados
      */
+    @Transactional
     public TicketSoporteResponseDTO create(TicketSoporteRequestDTO request) {
         Usuario usuario = getUsuarioAutenticado();
 
@@ -83,7 +87,8 @@ public class SoporteTicketService {
         ticket.setEstado(EstadoTicketSoporte.abierto);
         ticket.setUsuario(usuario);
 
-        return toResponse(ticketSoporteRepository.save(ticket));
+        TicketSoporte guardado = ticketSoporteRepository.save(ticket);
+        return toResponse(guardado);
     }
 
     /**

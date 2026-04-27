@@ -6,6 +6,7 @@ import com.amani.amaniapirest.enums.EstadoTicketSoporte;
 import com.amani.amaniapirest.models.TicketSoporte;
 import com.amani.amaniapirest.repository.TicketSoporteRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class SoporteTicketAdminService {
      *
      * @return lista de {@link TicketSoporteResponseDTO} con todos los tickets
      */
+    @Transactional(readOnly = true)
     public List<TicketSoporteResponseDTO> findAll() {
         return ticketSoporteRepository.findAll()
                 .stream()
@@ -40,6 +42,7 @@ public class SoporteTicketAdminService {
      * @param estado estado por el que filtrar
      * @return lista de {@link TicketSoporteResponseDTO} filtrados
      */
+    @Transactional(readOnly = true)
     public List<TicketSoporteResponseDTO> findByEstado(EstadoTicketSoporte estado) {
         return ticketSoporteRepository.findAll()
                 .stream()
@@ -55,6 +58,7 @@ public class SoporteTicketAdminService {
      * @param idTicket identificador del ticket
      * @return {@link TicketSoporteResponseDTO} con los datos del ticket
      */
+    @Transactional(readOnly = true)
     public TicketSoporteResponseDTO findById(Long idTicket) {
         return toResponse(getTicketOrThrow(idTicket));
     }
@@ -66,6 +70,7 @@ public class SoporteTicketAdminService {
      * @param request  DTO con el nuevo estado
      * @return {@link TicketSoporteResponseDTO} con los datos actualizados
      */
+    @Transactional
     public TicketSoporteResponseDTO updateEstado(Long idTicket, TicketSoporteEstadoRequestDTO request) {
         TicketSoporte ticket = getTicketOrThrow(idTicket);
         ticket.setEstado(request.getEstado());
@@ -77,6 +82,7 @@ public class SoporteTicketAdminService {
      *
      * @param idTicket identificador del ticket a eliminar
      */
+    @Transactional
     public void delete(Long idTicket) {
         ticketSoporteRepository.delete(getTicketOrThrow(idTicket));
     }
