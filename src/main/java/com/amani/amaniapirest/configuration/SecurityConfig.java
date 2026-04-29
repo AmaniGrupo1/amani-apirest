@@ -88,6 +88,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/citas/mis-citas").hasRole("PACIENTE")// CANCELAR CITA
                                 .requestMatchers("/api/citas/*/cancelar").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")// CAMBIO ESTADO
                                 .requestMatchers("/api/citas/cambio/*/estado").hasAnyRole("PSICOLOGO", "ADMIN")//  Otros
+                                .requestMatchers("/api/tickets-soporte/**").authenticated()
                                 .requestMatchers("/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
 
                                 //  Todo lo demás
