@@ -5,8 +5,8 @@ import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteBasicoResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteResponseDTO;
-import com.amani.amaniapirest.dto.dtoPsicologo.response.PacientePsicologoResponseDTO;
 import com.amani.amaniapirest.dto.profile.PacienteDTO;
+import com.amani.amaniapirest.dto.situacion.SituacionDTO;
 import com.amani.amaniapirest.mappers.ProfileMapper;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Usuario;
@@ -164,6 +164,16 @@ public class PacienteService {
                     p.getGenero(),
                     p.getTelefono(),
 
+                    p.getPacienteSituaciones() != null
+                            ? p.getPacienteSituaciones().stream().map(ps ->
+                                                                      new SituacionDTO(
+                                                                              ps.getSituacion().getIdSituacion(),
+                                                                              ps.getSituacion().getNombre(),
+                                                                              ps.getSituacion().getCategoria(),
+                                                                              ps.getSituacion().getDescripcion()
+                                                                      )
+                            ).toList()
+                            : List.of(),
                     // DIRECCIONES (LISTA)
                     p.getDirecciones() != null
                             ? p.getDirecciones().stream().map(d ->

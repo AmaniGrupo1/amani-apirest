@@ -40,7 +40,11 @@ public class ProfileService {
 
         String urlFoto = fileStorageService.storeFile(file);
         usuario.setFotoPerfilUrl(urlFoto);
+
         usuarioRepository.save(usuario);
+
+        psicologo = psicologoRepository.findById(idPsicologo)
+                .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
 
         return profileMapper.toPsicologoDTO(psicologo);
     }
