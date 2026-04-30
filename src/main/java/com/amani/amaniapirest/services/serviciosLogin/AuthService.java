@@ -52,11 +52,11 @@ public class AuthService {
 
         Usuario usuario = usuarioRepository
                 .findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new org.springframework.security.authentication.BadCredentialsException("Usuario no encontrado"));
 
         var encoder = securityConfig.passwordEncoder();
         if (!encoder.matches(request.getPassword(), usuario.getPassword())) {
-            throw new RuntimeException("Contraseña incorrecta");
+            throw new org.springframework.security.authentication.BadCredentialsException("Contraseña incorrecta");
         }
 
         UserDetails userDetails = new User(
@@ -162,8 +162,8 @@ public class AuthService {
         consentimientoService.guardarConsentimiento(
                 paciente,
                 request.getAceptaTerminos(),
-                request.getAceptaVideoconferencia(),
-                request.getAceptaComunicacion()
+                Boolean.TRUE.equals(request.getAceptaVideoconferencia()),
+                Boolean.TRUE.equals(request.getAceptaComunicacion())
         );
 
         // --- Situaciones ---

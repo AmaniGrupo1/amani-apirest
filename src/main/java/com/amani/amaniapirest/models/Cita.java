@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -40,13 +38,11 @@ public class Cita {
     private int durationMinutes;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(name = "estado", columnDefinition = "estado_cita", nullable = false)
+    @Column(name = "estado", nullable = false, length = 50)
     private EstadoCita estado;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(name = "modalidad", columnDefinition = "modalidad_cita", nullable = false)
+    @Column(name = "modalidad", nullable = false, length = 50)
     private ModalidadCita modalidad;
 
     /** Motivo o descripción de la consulta. */

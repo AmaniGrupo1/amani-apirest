@@ -6,9 +6,6 @@ import com.amani.amaniapirest.enums.MetodoPago;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -27,13 +24,11 @@ public class Pago {
     private BigDecimal monto;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(nullable = false, columnDefinition = "metodo_pago")
+    @Column(nullable = false, length = 50)
     private MetodoPago metodoPago;
 
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(nullable = false, columnDefinition = "estado_pago")
+    @Column(nullable = false, length = 50)
     private EstadoPago estadoPago = EstadoPago.PENDIENTE;
 
     private LocalDateTime fechaPago;

@@ -449,8 +449,8 @@ public class CitaAgendaService {
                 .findByPsicologoIdPsicologoAndFecha(idPsicologo, start.toLocalDate())
                 .stream()
                 .anyMatch(b -> b.getHoraInicio() == null || b.getHoraFin() == null ||
-                        !(end.toLocalTime().isBefore(b.getHoraInicio()) ||
-                                start.toLocalTime().isAfter(b.getHoraFin()))
+                        start.toLocalTime().isBefore(b.getHoraFin()) &&
+                                end.toLocalTime().isAfter(b.getHoraInicio())
                 );
 
         if (bloqueado) {
@@ -466,10 +466,11 @@ public class CitaAgendaService {
                         idPsicologo, inicioDia, finDia, EstadoCita.cancelada
                 )
                 .stream()
-                .anyMatch(c ->
-                        !(c.getStartDatetime().isAfter(end) ||
-                                c.getStartDatetime().plusMinutes(c.getDurationMinutes()).isBefore(start))
-                );
+                .anyMatch(c -> {
+                    LocalDateTime existingStart = c.getStartDatetime();
+                    LocalDateTime existingEnd = existingStart.plusMinutes(c.getDurationMinutes());
+                    return existingStart.isBefore(end) && existingEnd.isAfter(start);
+                });
 
         if (conflicto) {
             throw new IllegalStateException("Ya existe una cita en ese horario");

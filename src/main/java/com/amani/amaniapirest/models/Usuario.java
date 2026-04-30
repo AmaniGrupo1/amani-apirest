@@ -4,9 +4,6 @@ import com.amani.amaniapirest.enums.RolUsuario;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -56,8 +53,7 @@ public class Usuario {
      * Rol funcional del usuario segun {@link RolUsuario}.
      */
     @Enumerated(EnumType.STRING)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(columnDefinition = "rol_usuario", nullable = false)
+    @Column(nullable = false, length = 50)
     private RolUsuario rol;
 
     /**
