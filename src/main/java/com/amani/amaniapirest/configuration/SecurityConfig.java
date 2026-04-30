@@ -71,6 +71,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/pacientes/sin-psicologo").hasRole("ADMIN") //Listamos pacientes sin psicologos
                                  //  PSICOLOGO + ADMIN
                                 .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
+                                .requestMatchers("/api/psicologo/update/*").hasRole( "PSICOLOGO")
                                 .requestMatchers("/api/citas/psicologo/*/horario").hasAnyRole("ADMIN", "PSICOLOGO")
                                 .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
                                 .requestMatchers("/auth/registrar/pacienteDesde/psicologo").hasRole("PSICOLOGO")
