@@ -3,6 +3,7 @@ package com.amani.amaniapirest.dto.dtoPaciente.response;
 
 import com.amani.amaniapirest.dto.dtoAdmin.TutorResonseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
+import com.amani.amaniapirest.dto.situacion.SituacionDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +31,7 @@ public class PacienteBasicoResponseDTO {
     private String genero;
     private String telefono;
 
+    private List<SituacionDTO> situaciones;
     /** Lista de direcciones del paciente */
     private List<DireccionResponseDTO> direcciones;
 
