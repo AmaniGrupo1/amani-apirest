@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 /**
  * DTO para la solicitud de creación o registro de un psicólogo.
  *
@@ -30,6 +32,7 @@ public class PsicologoRequestDTO {
     private String nombrePsicologo;
     @NotBlank
     private String apellidoPsicologo;
+    
     @Email
     @NotBlank
     private String email;

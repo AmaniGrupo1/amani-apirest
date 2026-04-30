@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioDTO {
-    private Long idUsuario;
-    private String nombre;
-    private String apellido;
-    private String email;
-    private String fotoPerfilUrl;
+public class UpdatePsicologoResponseDTO {
+    private PsicologoDTO psicologo;
+    private String token;
 }

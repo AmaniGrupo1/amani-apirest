@@ -1,6 +1,8 @@
 package com.amani.amaniapirest.controllers.profileController;
 
 import com.amani.amaniapirest.dto.profile.PsicologoDTO;
+import com.amani.amaniapirest.dto.profile.UpdatePsicologoRequestDTO;
+import com.amani.amaniapirest.dto.profile.UpdatePsicologoResponseDTO;
 import com.amani.amaniapirest.services.profile.ProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -99,5 +101,14 @@ public class ProfileController {
         }
 
         return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<UpdatePsicologoResponseDTO> updatePsicologo(
+            @PathVariable Long id,
+            @RequestBody UpdatePsicologoRequestDTO dto
+    ) {
+        UpdatePsicologoResponseDTO updated = psicologoSelfService.updatePsicologoProfile(id, dto);
+        return ResponseEntity.ok(updated);
     }
 }
