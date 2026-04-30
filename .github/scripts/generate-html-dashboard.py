@@ -302,12 +302,16 @@ def parse_junit_xml(xml_path):
 
         if tc.find(failure_xpath, ns) is not None or tc.find('failure') is not None:
             status = 'fail'
-            fail_elem = tc.find(failure_xpath, ns) or tc.find('failure')
+            fail_elem = tc.find(failure_xpath, ns)
+            if fail_elem is None:
+                fail_elem = tc.find('failure')
             if fail_elem is not None:
                 error_msg = fail_elem.get('message', '') or fail_elem.text or ''
         elif tc.find(error_xpath, ns) is not None or tc.find('error') is not None:
             status = 'fail'
-            err_elem = tc.find(error_xpath, ns) or tc.find('error')
+            err_elem = tc.find(error_xpath, ns)
+            if err_elem is None:
+                err_elem = tc.find('error')
             if err_elem is not None:
                 error_msg = err_elem.get('message', '') or err_elem.text or ''
         elif tc.find(skip_xpath, ns) is not None or tc.find('skipped') is not None:

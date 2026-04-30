@@ -309,7 +309,7 @@
                     <outputDir>${openapi.output.dir}</outputDir>
                     <outputFileName>openapi.json</outputFileName>
                     <apiDocsUrl>http://localhost:8080/v3/api-docs.yaml</apiDocsUrl>
-                    <skip>false</skip>
+                    <skip>${skip.openapi}</skip>
                 </configuration>
             </plugin>
 
@@ -410,4 +410,6 @@
             <url>https://maven.pkg.github.com/amanigrupo1/amani-apirest</url>
         </repository>
     </distributionManagement>
+</project>
+stributionManagement>
 </project>

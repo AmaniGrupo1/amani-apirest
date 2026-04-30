@@ -161,13 +161,13 @@
     <div class="container">
         <header>
             <h1>📊 Test Dashboard</h1>
-            <p class="meta">Amani API REST &middot; Generado el 2026-04-30 14:58:50</p>
+            <p class="meta">Amani API REST &middot; Generado el 2026-04-30 18:18:23</p>
         </header>
 
         <div class="grid">
             <div class="card info">
                 <div class="icon">🧪</div>
-                <div class="value">74</div>
+                <div class="value">75</div>
                 <div class="label">Tests Totales</div>
             </div>
             <div class="card success">
@@ -177,7 +177,7 @@
             </div>
             <div class="card danger">
                 <div class="icon">❌</div>
-                <div class="value">0</div>
+                <div class="value">1</div>
                 <div class="label">Fallidos</div>
             </div>
             <div class="card danger">
@@ -192,7 +192,7 @@
             </div>
             <div class="card info">
                 <div class="icon">⏱️</div>
-                <div class="value">16.66s</div>
+                <div class="value">16.76s</div>
                 <div class="label">Tiempo Total</div>
             </div>
         </div>
@@ -200,22 +200,22 @@
         <div class="section">
             <div class="section-header">
                 <h2>📈 Resumen de Ejecución</h2>
-                <span class="badge success">BUILD EXITOSO</span>
+                <span class="badge danger">BUILD FALLIDO</span>
             </div>
             <div class="section-body">
                 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
                     <span style="font-size: 0.875rem; color: var(--text-secondary); min-width: 80px;">Exito</span>
                     <div class="progress-bar" style="flex: 1;">
-                        <div class="fill success" style="width: 100.0%;"></div>
+                        <div class="fill success" style="width: 98.66666666666667%;"></div>
                     </div>
-                    <span style="font-size: 0.875rem; font-weight: 600; min-width: 50px; text-align: right;">100.0%</span>
+                    <span style="font-size: 0.875rem; font-weight: 600; min-width: 50px; text-align: right;">98.7%</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
                     <span style="font-size: 0.875rem; color: var(--text-secondary); min-width: 80px;">Fallo</span>
                     <div class="progress-bar" style="flex: 1;">
-                        <div class="fill danger" style="width: 0.0%;"></div>
+                        <div class="fill danger" style="width: 1.3333333333333333%;"></div>
                     </div>
-                    <span style="font-size: 0.875rem; font-weight: 600; min-width: 50px; text-align: right;">0.0%</span>
+                    <span style="font-size: 0.875rem; font-weight: 600; min-width: 50px; text-align: right;">1.3%</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <span style="font-size: 0.875rem; color: var(--text-secondary); min-width: 80px;">Skip</span>
@@ -228,14 +228,48 @@
         </div>
 
         
+        <div class="section">
+            <div class="section-header">
+                <h2>🔴 Tests Fallidos (1)</h2>
+                <span class="badge danger">CRITICO</span>
+            </div>
+            <div class="section-body">
+                
+                <div class="test-case fail">
+                    <div class="name">testDummy</div>
+                    <div class="time">0.100s &middot; DummyTest &middot; DummyTest</div>
+                    <div class="error">Dummy failure</div>
+                </div>
+            
+            </div>
+        </div>
+        
 
         <div class="section">
             <div class="section-header">
                 <h2>📋 Suites de Tests</h2>
-                <span class="badge info">15 suites</span>
+                <span class="badge info">16 suites</span>
             </div>
             <div class="section-body" style="padding: 0;">
                 
+            <div class="suite-header">
+                <span class="badge danger">FAIL (1)</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">DummyTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">1 tests &middot; 0.10s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case fail">
+                    <div class="name">testDummy</div>
+                    <div class="time">0.100s &middot; DummyTest</div>
+                    <div class="error">Dummy failure</div>
+                </div>
+            
+                </div>
+            </div>
+        
             <div class="suite-header">
                 <span class="badge success">PASS</span>
                 <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.AmaniApirestApplicationTests</span>

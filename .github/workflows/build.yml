@@ -112,11 +112,13 @@ jobs:
 
       # --- Compilar y ejecutar tests (propiedades de BD sobreescribas por env vars) ---
       - name: "Compile & test (verify)"
-        run: ./mvnw --batch-mode --no-transfer-progress verify
+        run: ./mvnw --batch-mode --no-transfer-progress verify -Dskip.openapi=true
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/psicologia_app
           SPRING_DATASOURCE_USERNAME: amani
           SPRING_DATASOURCE_PASSWORD: amani
+          SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+          SPRING_SQL_INIT_MODE: never
 
       # --- Generar dashboard HTML desde JUnit XML ---
       - name: "Generate HTML Test Dashboard"
