@@ -1,11 +1,11 @@
 # =============================================================================
-# CI – Build & Artifact
+# CI – Build, Test & Visual Dashboard
 # =============================================================================
 # distributionManagement ya configurado en pom.xml para GitHub Packages
 # (amanigrupo1/amani-apirest).
 # =============================================================================
 
-name: "CI – Build & Artifact"
+name: "CI – Build & Test Dashboard"
 
 # ---------------------------------------------------------------------------
 # Permisos globales del workflow
@@ -15,6 +15,7 @@ permissions:
   checks: write         # escritura de checks (test-reporter)
   packages: write       # publicación en GitHub Packages (deploy)
   pull-requests: write  # comentarios de test-reporter en PRs
+  actions: read         # lectura de artefactos
 
 # ---------------------------------------------------------------------------
 # Evitar ejecuciones paralelas en la misma rama
@@ -42,6 +43,7 @@ on:
     branches:
       - main
       - develop
+  workflow_dispatch:
 
 # =============================================================================
 # JOBS
@@ -49,10 +51,10 @@ on:
 jobs:
 
   # ===========================================================================
-  # Job 1: Verificar compilación y ejecutar tests
+  # Job 1: Verificar compilación, ejecutar tests y generar dashboard HTML
   # ===========================================================================
   verify:
-    name: "Verify – Compile & Test"
+    name: "Verify – Compile, Test & Dashboard"
     runs-on: ubuntu-latest
 
     # --- Servicio PostgreSQL para los tests de integración ---
@@ -75,11 +77,12 @@ jobs:
       # --- Checkout del código fuente ---
       - name: "Checkout repository"
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # --- Inicializar el esquema de la base de datos ---
       - name: "Initialize database schema"
         run: |
-          # Esperar a que PostgreSQL esté listo
           for i in $(seq 1 30); do
             if pg_isready -h localhost -p 5432 -U amani -d psicologia_app; then
               echo "PostgreSQL is ready"
@@ -88,7 +91,6 @@ jobs:
             echo "Waiting for PostgreSQL... ($i/30)"
             sleep 1
           done
-          # Ejecutar el script DDL con parámetros de conexión explícitos
           PGPASSWORD=amani psql \
             -h localhost \
             -p 5432 \
@@ -116,15 +118,85 @@ jobs:
           SPRING_DATASOURCE_USERNAME: amani
           SPRING_DATASOURCE_PASSWORD: amani
 
+      # --- Generar dashboard HTML desde JUnit XML ---
+      - name: "Generate HTML Test Dashboard"
+        if: always()
+        run: |
+          python3 .github/scripts/generate-html-dashboard.py \
+            --surefire target/surefire-reports \
+            --failsafe target/failsafe-reports \
+            --output reports/html
+
+      # --- Generar resumen visual en GitHub Step Summary ---
+      - name: "Generate Visual Summary"
+        if: always()
+        run: |
+          bash .github/scripts/generate-summary.sh \
+            target/surefire-reports \
+            target/failsafe-reports \
+            target/site/jacoco/jacoco.csv
+          if [ -f target/site/jacoco/jacoco.csv ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "---" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## 📋 Cobertura P0 y P1" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            bash scripts/generate-p0-coverage-visual.sh target/site/jacoco/jacoco.csv doc
+            cat doc/coverage-p0-visual.md >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "---" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            cat doc/coverage-p1-visual.md >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 🔗 Artefactos" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- [📥 Descargar HTML Dashboard](reports/html/index.html)" >> $GITHUB_STEP_SUMMARY
+          echo "- [📥 Descargar JaCoCo Coverage](target/site/jacoco)" >> $GITHUB_STEP_SUMMARY
+
       # --- Publicar resultados de tests como check de GitHub ---
       - name: "Publish test results"
         if: always()
         uses: dorny/test-reporter@v1.9.1
         with:
-          name: Test Results
-          path: '**/target/surefire-reports/*.xml'
+          name: Maven Test Results
+          path: '**/target/**/TEST-*.xml'
           reporter: java-junit
           fail-on-error: true
+
+      # --- SonarQube Scan (opcional, solo si hay token configurado) ---
+      - name: "SonarQube Scan"
+        if: env.SONAR_TOKEN != ''
+        run: ./mvnw --batch-mode --no-transfer-progress sonar:sonar
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      # --- Subir reportes JUnit XML como artefactos ---
+      - name: "Upload JUnit XML Reports"
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: junit-xml-reports
+          path: |
+            target/surefire-reports
+            target/failsafe-reports
+
+      # --- Subir dashboard HTML como artefacto ---
+      - name: "Upload HTML Dashboard"
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: html-test-dashboard
+          path: reports/html
+
+      # --- Subir cobertura JaCoCo como artefacto ---
+      - name: "Upload JaCoCo Coverage"
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco-coverage-report
+          path: target/site/jacoco
 
   # ===========================================================================
   # Job 2: Construir artefacto y publicar en GitHub Packages

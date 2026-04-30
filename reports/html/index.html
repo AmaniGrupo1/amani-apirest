@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Dashboard - Amani API REST</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-secondary: #8b949e;
+            --success: #238636;
+            --success-bg: rgba(35, 134, 54, 0.15);
+            --danger: #da3633;
+            --danger-bg: rgba(218, 54, 51, 0.15);
+            --warning: #9e6a03;
+            --warning-bg: rgba(158, 106, 3, 0.15);
+            --info: #1f6feb;
+            --info-bg: rgba(31, 111, 235, 0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+        .meta { color: var(--text-secondary); font-size: 0.875rem; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            text-align: center;
+        }
+        .card .icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .card .value { font-size: 2rem; font-weight: 700; }
+        .card .label { color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem; }
+        .card.success { border-top: 3px solid var(--success); }
+        .card.danger { border-top: 3px solid var(--danger); }
+        .card.warning { border-top: 3px solid var(--warning); }
+        .card.info { border-top: 3px solid var(--info); }
+        .section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-header h2 { font-size: 1.125rem; font-weight: 600; }
+        .section-body { padding: 1.25rem; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { color: var(--text-secondary); font-weight: 500; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+        tr:hover { background: rgba(255,255,255,0.03); }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge.success { background: var(--success-bg); color: #3fb950; }
+        .badge.danger { background: var(--danger-bg); color: #f85149; }
+        .badge.warning { background: var(--warning-bg); color: #d29922; }
+        .badge.info { background: var(--info-bg); color: #58a6ff; }
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: var(--border);
+            border-radius: 0.25rem;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            border-radius: 0.25rem;
+            transition: width 0.5s ease;
+        }
+        .fill.success { background: var(--success); }
+        .fill.danger { background: var(--danger); }
+        .fill.warning { background: var(--warning); }
+        .test-case {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid transparent;
+        }
+        .test-case.pass { background: var(--success-bg); border-left-color: var(--success); }
+        .test-case.fail { background: var(--danger-bg); border-left-color: var(--danger); }
+        .test-case.skip { background: var(--warning-bg); border-left-color: var(--warning); }
+        .test-case .name { font-weight: 600; font-size: 0.875rem; }
+        .test-case .time { color: var(--text-secondary); font-size: 0.75rem; margin-top: 0.25rem; }
+        .test-case .error {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #f85149;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .suite-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+        }
+        .suite-header:hover { background: rgba(255,255,255,0.04); }
+        .suite-header .toggle { color: var(--text-secondary); font-size: 0.75rem; }
+        .suite-content { display: none; }
+        .suite-content.open { display: block; }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Test Dashboard</h1>
+            <p class="meta">Amani API REST &middot; Generado el 2026-04-30 14:58:50</p>
+        </header>
+
+        <div class="grid">
+            <div class="card info">
+                <div class="icon">🧪</div>
+                <div class="value">74</div>
+                <div class="label">Tests Totales</div>
+            </div>
+            <div class="card success">
+                <div class="icon">✅</div>
+                <div class="value">74</div>
+                <div class="label">Pasados</div>
+            </div>
+            <div class="card danger">
+                <div class="icon">❌</div>
+                <div class="value">0</div>
+                <div class="label">Fallidos</div>
+            </div>
+            <div class="card danger">
+                <div class="icon">💥</div>
+                <div class="value">0</div>
+                <div class="label">Errores</div>
+            </div>
+            <div class="card warning">
+                <div class="icon">⏭️</div>
+                <div class="value">0</div>
+                <div class="label">Skipped</div>
+            </div>
+            <div class="card info">
+                <div class="icon">⏱️</div>
+                <div class="value">16.66s</div>
+                <div class="label">Tiempo Total</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>📈 Resumen de Ejecución</h2>
+                <span class="badge success">BUILD EXITOSO</span>
+            </div>
+            <div class="section-body">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.875rem; color: var(--text-secondary); min-width: 80px;">Exito</span>
+                    <div class="progress-bar" style="flex: 1;">
+                        <div class="fill success" style="width: 100.0%;"></div>
+                    </div>
+                    <span style="font-size: 0.875rem; font-weight: 600; min-width: 50px; text-align: right;">100.0%</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.875rem; color: var(--text-secondary); min-width: 80px;">Fallo</span>
+                    <div class="progress-bar" style="flex: 1;">
+                        <div class="fill danger" style="width: 0.0%;"></div>
+                    </div>
+                    <span style="font-size: 0.875rem; font-weight: 600; min-width: 50px; text-align: right;">0.0%</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 0.875rem; color: var(--text-secondary); min-width: 80px;">Skip</span>
+                    <div class="progress-bar" style="flex: 1;">
+                        <div class="fill warning" style="width: 0.0%;"></div>
+                    </div>
+                    <span style="font-size: 0.875rem; font-weight: 600; min-width: 50px; text-align: right;">0.0%</span>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="section">
+            <div class="section-header">
+                <h2>📋 Suites de Tests</h2>
+                <span class="badge info">15 suites</span>
+            </div>
+            <div class="section-body" style="padding: 0;">
+                
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.AmaniApirestApplicationTests</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">1 tests &middot; 0.01s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">applicationClassLoads</div>
+                    <div class="time">0.011s &middot; com.amani.amaniapirest.AmaniApirestApplicationTests</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.configuration.JwtUtilTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">3 tests &middot; 0.65s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">generateTokenIncludesSubjectRoleAndValidatesMatchingUser</div>
+                    <div class="time">0.641s &middot; com.amani.amaniapirest.configuration.JwtUtilTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">tokenIsInvalidForDifferentUser</div>
+                    <div class="time">0.003s &middot; com.amani.amaniapirest.configuration.JwtUtilTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">expiredTokenIsRejected</div>
+                    <div class="time">0.005s &middot; com.amani.amaniapirest.configuration.JwtUtilTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.controladorAdministador.SoporteTicketAdminControllerTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">6 tests &middot; 0.07s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">findAllByEstadoReturnsNoContentWhenEmpty</div>
+                    <div class="time">0.018s &middot; com.amani.amaniapirest.controllers.controladorAdministador.SoporteTicketAdminControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">updateEstadoReturnsOkWhenValid</div>
+                    <div class="time">0.014s &middot; com.amani.amaniapirest.controllers.controladorAdministador.SoporteTicketAdminControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">findAllReturnsNoContentWhenEmpty</div>
+                    <div class="time">0.007s &middot; com.amani.amaniapirest.controllers.controladorAdministador.SoporteTicketAdminControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">updateEstadoReturnsBadRequestWhenEnumInvalid</div>
+                    <div class="time">0.010s &middot; com.amani.amaniapirest.controllers.controladorAdministador.SoporteTicketAdminControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">deleteReturnsNoContent</div>
+                    <div class="time">0.006s &middot; com.amani.amaniapirest.controllers.controladorAdministador.SoporteTicketAdminControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">findAllByEstadoReturnsOk</div>
+                    <div class="time">0.009s &middot; com.amani.amaniapirest.controllers.controladorAdministador.SoporteTicketAdminControllerTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.controladorPaciente.HistorialClinicoControllerTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">8 tests &middot; 0.13s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">createReturnsCreatedWhenValid</div>
+                    <div class="time">0.036s &middot; com.amani.amaniapirest.controllers.controladorPaciente.HistorialClinicoControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">findByIdReturnsNotFoundWhenMissing</div>
+                    <div class="time">0.009s &middot; com.amani.amaniapirest.controllers.controladorPaciente.HistorialClinicoControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">createReturnsBadRequestWhenMissingRequiredField</div>
+                    <div class="time">0.014s &middot; com.amani.amaniapirest.controllers.controladorPaciente.HistorialClinicoControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">findAllReturnsEmptyListWhenNoData</div>
+                    <div class="time">0.011s &middot; com.amani.amaniapirest.controllers.controladorPaciente.HistorialClinicoControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">deleteReturnsNoContentWhenSuccess</div>
+                    <div class="time">0.010s &middot; com.amani.amaniapirest.controllers.controladorPaciente.HistorialClinicoControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">createReturnsBadRequestOnBusinessError</div>
+                    <div class="time">0.015s &middot; com.amani.amaniapirest.controllers.controladorPaciente.HistorialClinicoControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">updateReturnsNotFoundWhenIdDoesNotExist</div>
+                    <div class="time">0.016s &middot; com.amani.amaniapirest.controllers.controladorPaciente.HistorialClinicoControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">deleteReturnsNotFoundWhenMissing</div>
+                    <div class="time">0.009s &middot; com.amani.amaniapirest.controllers.controladorPaciente.HistorialClinicoControllerTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.controladorPaciente.MensajeControllerTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">8 tests &middot; 0.15s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">createReturnsCreatedWhenValid</div>
+                    <div class="time">0.055s &middot; com.amani.amaniapirest.controllers.controladorPaciente.MensajeControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">findAllReturnsEmptyListBoundary</div>
+                    <div class="time">0.015s &middot; com.amani.amaniapirest.controllers.controladorPaciente.MensajeControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">findByIdReturnsNotFoundWhenMissing</div>
+                    <div class="time">0.011s &middot; com.amani.amaniapirest.controllers.controladorPaciente.MensajeControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">createReturnsBadRequestWhenBlankMessage</div>
+                    <div class="time">0.021s &middot; com.amani.amaniapirest.controllers.controladorPaciente.MensajeControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">marcarLeidoReturnsNotFoundWhenMissing</div>
+                    <div class="time">0.012s &middot; com.amani.amaniapirest.controllers.controladorPaciente.MensajeControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">deleteReturnsNoContentWhenSuccess</div>
+                    <div class="time">0.012s &middot; com.amani.amaniapirest.controllers.controladorPaciente.MensajeControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">createReturnsBadRequestOnBusinessError</div>
+                    <div class="time">0.015s &middot; com.amani.amaniapirest.controllers.controladorPaciente.MensajeControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">deleteReturnsNotFoundWhenMissing</div>
+                    <div class="time">0.010s &middot; com.amani.amaniapirest.controllers.controladorPaciente.MensajeControllerTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.controladorPaciente.SoporteTicketControllerTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">5 tests &middot; 1.92s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">findByIdReturnsForbiddenWhenPermissionError</div>
+                    <div class="time">1.549s &middot; com.amani.amaniapirest.controllers.controladorPaciente.SoporteTicketControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">createReturnsCreated</div>
+                    <div class="time">0.276s &middot; com.amani.amaniapirest.controllers.controladorPaciente.SoporteTicketControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">createReturnsBadRequestWhenValidationFails</div>
+                    <div class="time">0.054s &middot; com.amani.amaniapirest.controllers.controladorPaciente.SoporteTicketControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">findByIdReturnsNotFoundWhenMissing</div>
+                    <div class="time">0.014s &middot; com.amani.amaniapirest.controllers.controladorPaciente.SoporteTicketControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">findMisTicketsReturnsFilteredList</div>
+                    <div class="time">0.023s &middot; com.amani.amaniapirest.controllers.controladorPaciente.SoporteTicketControllerTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">11 tests &middot; 0.31s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">cancelarCitaReturnsOk</div>
+                    <div class="time">0.069s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">getHorarioActualReturnsOk</div>
+                    <div class="time">0.015s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">findAllByPsicologoReturnsOk</div>
+                    <div class="time">0.022s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">crearCitaReturnsOkWhenServiceSucceeds</div>
+                    <div class="time">0.029s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">crearCitaReturnsBadRequestWhenSlotConflict</div>
+                    <div class="time">0.030s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">actualizarDuracionReturnsNoContent</div>
+                    <div class="time">0.018s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">actualizarHorarioReturnsNoContent</div>
+                    <div class="time">0.027s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">eliminarDiaNoDisponibleReturnsNoContent</div>
+                    <div class="time">0.024s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">disponibilidadUsesDefaultDurationWhenNotProvided</div>
+                    <div class="time">0.027s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">getTerapiasReturnsOk</div>
+                    <div class="time">0.021s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">agregarDiaNoDisponibleReturnsNoContent</div>
+                    <div class="time">0.018s &middot; com.amani.amaniapirest.controllers.controladorPsicologo.CitaControladorPsicologoTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.login.AuthControllerTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">5 tests &middot; 0.07s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">registerPacienteReturnsLoginResponse</div>
+                    <div class="time">0.027s &middot; com.amani.amaniapirest.controllers.login.AuthControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">darBajaPacienteReturnsConfirmationMessage</div>
+                    <div class="time">0.007s &middot; com.amani.amaniapirest.controllers.login.AuthControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">loginReturnsTokenAndUserData</div>
+                    <div class="time">0.011s &middot; com.amani.amaniapirest.controllers.login.AuthControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">listarAdminsReturnsOkWithList</div>
+                    <div class="time">0.010s &middot; com.amani.amaniapirest.controllers.login.AuthControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">registerAdminReturnsLoginResponse</div>
+                    <div class="time">0.012s &middot; com.amani.amaniapirest.controllers.login.AuthControllerTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.login.AuthIntegrationTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">3 tests &middot; 0.81s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">tcAuth02_LoginWrongPassword</div>
+                    <div class="time">0.254s &middot; com.amani.amaniapirest.controllers.login.AuthIntegrationTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">tcAuth01_LoginSuccess</div>
+                    <div class="time">0.365s &middot; com.amani.amaniapirest.controllers.login.AuthIntegrationTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">tcAuth03_RegisterPaciente</div>
+                    <div class="time">0.158s &middot; com.amani.amaniapirest.controllers.login.AuthIntegrationTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.notificacion.NotificacionControllerTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">5 tests &middot; 0.10s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">contarNoLeidasReturnsZeroBoundary</div>
+                    <div class="time">0.041s &middot; com.amani.amaniapirest.controllers.notificacion.NotificacionControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">getNotificacionesReturnsData</div>
+                    <div class="time">0.015s &middot; com.amani.amaniapirest.controllers.notificacion.NotificacionControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">actualizarConfiguracionReturnsState</div>
+                    <div class="time">0.016s &middot; com.amani.amaniapirest.controllers.notificacion.NotificacionControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">getNotificacionesReturnsEmptyList</div>
+                    <div class="time">0.020s &middot; com.amani.amaniapirest.controllers.notificacion.NotificacionControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">marcarTodasLeidasReturnsOk</div>
+                    <div class="time">0.008s &middot; com.amani.amaniapirest.controllers.notificacion.NotificacionControllerTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.profileController.ProfileControllerTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">4 tests &middot; 0.07s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">uploadFotoWithValidImageReturnsUpdatedProfile</div>
+                    <div class="time">0.036s &middot; com.amani.amaniapirest.controllers.profileController.ProfileControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">uploadFotoWithInvalidFileReturnsServerError</div>
+                    <div class="time">0.008s &middot; com.amani.amaniapirest.controllers.profileController.ProfileControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">getPerfilReturnsOkWhenServiceReturnsData</div>
+                    <div class="time">0.011s &middot; com.amani.amaniapirest.controllers.profileController.ProfileControllerTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">getPsicologoAsignadoReturnsNotFoundWhenNotAssigned</div>
+                    <div class="time">0.008s &middot; com.amani.amaniapirest.controllers.profileController.ProfileControllerTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.security.SecurityAccessTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">3 tests &middot; 0.03s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">validBearerTokenAuthenticatesUserInContext</div>
+                    <div class="time">0.026s &middot; com.amani.amaniapirest.controllers.security.SecurityAccessTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">requestWithoutBearerKeepsUnauthenticatedContext</div>
+                    <div class="time">0.004s &middot; com.amani.amaniapirest.controllers.security.SecurityAccessTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">publicRouteSkipsTokenValidation</div>
+                    <div class="time">0.002s &middot; com.amani.amaniapirest.controllers.security.SecurityAccessTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.controllers.security.SecurityIntegrationTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">2 tests &middot; 9.07s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">tcSec02_AccessAdminWithPacienteToken</div>
+                    <div class="time">0.309s &middot; com.amani.amaniapirest.controllers.security.SecurityIntegrationTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">tcSec01_AccessWithoutToken</div>
+                    <div class="time">0.012s &middot; com.amani.amaniapirest.controllers.security.SecurityIntegrationTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.services.CitaAgendaServiceTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">6 tests &middot; 1.86s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">cancelarCitaRejectsUnknownAppointment</div>
+                    <div class="time">1.648s &middot; com.amani.amaniapirest.services.CitaAgendaServiceTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">cancelarCitaRefundsPaidAppointmentAndNotifiesBothUsers</div>
+                    <div class="time">0.087s &middot; com.amani.amaniapirest.services.CitaAgendaServiceTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">crearCitaRejectsMissingTherapyBeforeSaving</div>
+                    <div class="time">0.028s &middot; com.amani.amaniapirest.services.CitaAgendaServiceTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">crearCitaAllowsBackToBackAppointmentsAtExistingEndBoundary</div>
+                    <div class="time">0.018s &middot; com.amani.amaniapirest.services.CitaAgendaServiceTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">crearCitaRejectsOverlappingAppointmentAndDoesNotSave</div>
+                    <div class="time">0.010s &middot; com.amani.amaniapirest.services.CitaAgendaServiceTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">cancelarCitaRejectsAlreadyCancelledAppointment</div>
+                    <div class="time">0.010s &middot; com.amani.amaniapirest.services.CitaAgendaServiceTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="suite-header">
+                <span class="badge success">PASS</span>
+                <span style="flex: 1; font-weight: 500; font-size: 0.875rem;">com.amani.amaniapirest.services.serviciosLogin.AuthServiceTest</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">4 tests &middot; 1.41s</span>
+                <span class="toggle">▶</span>
+            </div>
+            <div class="suite-content">
+                <div style="padding: 1rem;">
+                    
+                <div class="test-case pass">
+                    <div class="name">registerPacienteRejectsMinorWithoutTutor</div>
+                    <div class="time">0.820s &middot; com.amani.amaniapirest.services.serviciosLogin.AuthServiceTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">loginRejectsWrongPasswordWithoutGeneratingToken</div>
+                    <div class="time">0.214s &middot; com.amani.amaniapirest.services.serviciosLogin.AuthServiceTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">loginPacienteReturnsPacienteIdAndAssignedPsicologoId</div>
+                    <div class="time">0.182s &middot; com.amani.amaniapirest.services.serviciosLogin.AuthServiceTest</div>
+                    
+                </div>
+            
+                <div class="test-case pass">
+                    <div class="name">registerPacientePersistsEncodedPasswordConsentSituationsTutorsAndAddress</div>
+                    <div class="time">0.186s &middot; com.amani.amaniapirest.services.serviciosLogin.AuthServiceTest</div>
+                    
+                </div>
+            
+                </div>
+            </div>
+        
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.suite-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const toggle = header.querySelector('.toggle');
+                content.classList.toggle('open');
+                toggle.textContent = content.classList.contains('open') ? '▼' : '▶';
+            });
+        });
+    </script>
+</body>
+</html>
