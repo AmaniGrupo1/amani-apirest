@@ -1,11 +1,13 @@
 package com.amani.amaniapirest.services.paciente;
 
+import com.amani.amaniapirest.dto.ajustes.IdiomaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.AjusteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.AjusteResponseDTO;
 import com.amani.amaniapirest.models.Ajuste;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.AjusteRepository;
 import com.amani.amaniapirest.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -161,5 +163,24 @@ public class AjusteService {
                 ajuste.getUpdatedAt()
         );
     }
+
+
+    @Transactional
+    public void actualizarIdioma(Long idUsuario, IdiomaRequestDTO request) {
+
+        Ajuste ajuste = ajusteRepository.findByUsuario_IdUsuario(idUsuario)
+                .orElseGet(() -> {
+                    Ajuste nuevo = new Ajuste();
+                    nuevo.setUsuario(usuarioRepository.findById(idUsuario)
+                            .orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
+                    return nuevo;
+                });
+
+        ajuste.setIdioma(request.getIdioma());
+
+        ajusteRepository.save(ajuste);
+    }
+
+
 }
 

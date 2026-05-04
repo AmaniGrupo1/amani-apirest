@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.controllers.controladorPaciente;
 
+import com.amani.amaniapirest.dto.ajustes.IdiomaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.AjusteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.AjusteResponseDTO;
 import com.amani.amaniapirest.services.paciente.AjusteService;
@@ -161,5 +162,13 @@ public class AjusteController {
         } catch (RuntimeException ex) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PutMapping("/{idUsuario}/idioma")
+    public void actualizarIdioma(
+            @PathVariable Long idUsuario,
+            @RequestBody IdiomaRequestDTO request
+    ) {
+        ajusteService.actualizarIdioma(idUsuario, request);
     }
 }
