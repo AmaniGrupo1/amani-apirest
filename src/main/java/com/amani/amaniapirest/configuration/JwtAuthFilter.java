@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +22,7 @@ import java.io.IOException;
  * lo valida y, si es correcto, establece la autenticación en el
  * {@link SecurityContextHolder} para el resto de la cadena de filtros.</p>
  */
-@Log4j
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -49,37 +49,48 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.warn("No se envió token JWT o formato incorrecto. Authorization: " + authHeader);
+            log.warn("[JWT] Token ausente o formato incorrecto. Path: {}, Auth header: {}",
+                    path, authHeader == null ? "null" : authHeader.substring(0, Math.min(30, authHeader.length())));
             filterChain.doFilter(request, response);
             return;
         }
 
         final String token = authHeader.substring(7);
         final String email;
-        log.info("PATH: " + request.getServletPath());
+        log.info("[JWT] Petición a: {}", path);
 
-        final String authHeaderr = request.getHeader("Authorization");
-        log.info("Authorization Header: " + authHeaderr);
         try {
             email = jwtUtil.extractEmail(token);
+            log.info("[JWT] Email extraído del token: {}", email);
         } catch (Exception e) {
-            // Token malformado o expirado → continuar sin autenticar
+            log.error("[JWT] Error al extraer email del token: {}", e.getMessage());
             filterChain.doFilter(request, response);
             return;
         }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-            log.info("EMAIL del token: " + email);
-            if (jwtUtil.isTokenValid(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities()
-                        );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                log.info("TOKEN VÁLIDO, autenticando usuario...");
+            try {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                log.info("[JWT] UserDetails cargado: email={}, authorities={}",
+                        userDetails.getUsername(), userDetails.getAuthorities());
+
+                if (jwtUtil.isTokenValid(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails, null, userDetails.getAuthorities()
+                            );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    log.info("[JWT] Autenticación OK — email={}, roles={}",
+                            email, userDetails.getAuthorities());
+                } else {
+                    log.warn("[JWT] Token inválido o expirado para email={}", email);
+                }
+            } catch (Exception e) {
+                log.error("[JWT] Error al cargar usuario '{}': {}", email, e.getMessage());
             }
+        } else if (email == null) {
+            log.warn("[JWT] Email extraído es null");
         }
 
         filterChain.doFilter(request, response);

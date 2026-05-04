@@ -1,0 +1,34 @@
+{
+  "rules": {
+    "chats": {
+      "$chatId": {
+        "messages": {
+          ".read": "auth != null",
+          ".write": "auth != null",
+          "$messageId": {
+            ".validate": "newData.hasChildren(['idSender', 'idReceiver', 'mensaje'])"
+          }
+        }
+      }
+    },
+    "typing": {
+      "$roomId": {
+        "$userId": {
+          ".read": "auth != null",
+          ".write": "auth != null && $userId === auth.uid"
+        }
+      }
+    },
+    "users": {
+      "$userId": {
+        ".read": "auth != null",
+        "isOnline": {
+          ".write": "auth != null && $userId === auth.uid"
+        },
+        "lastSeen": {
+          ".write": "auth != null && $userId === auth.uid"
+        }
+      }
+    }
+  }
+}

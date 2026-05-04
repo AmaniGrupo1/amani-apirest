@@ -1,18 +1,33 @@
 package com.amani.amaniapirest.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -46,16 +61,37 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOriginPatterns(List.of("http://localhost:*", "https://amani.org", "https://*.amani.org"));
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint())
+                        .accessDeniedHandler(accessDeniedHandler())
+                )
                 .authorizeHttpRequests(auth -> auth
 
                                 //  Públicos
                                 .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
                                 .requestMatchers("/api/situaciones").permitAll()
                                 .requestMatchers("/api/psicologo/pacientes/*/psicologo").hasRole("PACIENTE") // Endpoint para que el paciente vea su psicólogo asignado
+                                .requestMatchers("/api/psicologo/usuario/**").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN") // Lookup básico de usuario, necesario para chat
+
+                                //  Chat — accesible para pacientes, psicólogos y admins
+                                .requestMatchers("/api/chats/**").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
                                 //  ADMIN
                                 .requestMatchers("/auth/registry/pacienteAdmin").hasRole("ADMIN")
@@ -99,5 +135,33 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, authException) -> {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            Map<String, Object> body = Map.of(
+                    "codigo", "UNAUTHORIZED",
+                    "mensaje", "Token no válido o no proporcionado",
+                    "timestamp", LocalDateTime.now().toString()
+            );
+            new ObjectMapper().writeValue(response.getOutputStream(), body);
+        };
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            Map<String, Object> body = Map.of(
+                    "codigo", "FORBIDDEN",
+                    "mensaje", "No tiene permisos suficientes para acceder a este recurso",
+                    "timestamp", LocalDateTime.now().toString()
+            );
+            new ObjectMapper().writeValue(response.getOutputStream(), body);
+        };
     }
 }
