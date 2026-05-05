@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -39,6 +41,7 @@ public class Cita {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 50)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private EstadoCita estado;
 
     @Enumerated(EnumType.STRING)

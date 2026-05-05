@@ -6,6 +6,7 @@ import com.amani.amaniapirest.dto.dtoAgenda.response.AgendaItemDTO;
 import com.amani.amaniapirest.dto.dtoAgenda.response.DisponibilidadDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.CitaPsicologoResponseDTO;
+import com.amani.amaniapirest.dto.terapiasDTO.TerapiaRequestDTO;
 import com.amani.amaniapirest.dto.terapiasDTO.TerapiaResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.repository.PsicologoRepository;
@@ -233,4 +234,29 @@ public class CitaControladorPsicologo {
         return ResponseEntity.ok().build();
     }
 
+
+    @Operation(
+            summary = "Crear tipo de terapia",
+            description = "Crea una nueva terapia con duración y precio"
+    )
+    @PostMapping("/psicologo/terapias")
+    public ResponseEntity<TerapiaResponseDTO> crearTerapia(
+            @RequestBody TerapiaRequestDTO request
+    ) {
+        return ResponseEntity.ok(terapiaService.crearTerapia(request));
+    }
+
+
+    @PutMapping("/update/{id}")
+    public TerapiaResponseDTO actualizarTerapia(
+            @PathVariable Long id,
+            @RequestBody TerapiaRequestDTO request
+    ) {
+        return terapiaService.actualizarTerapia(id, request);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void eliminarTerapia(@PathVariable Long id) {
+        terapiaService.eliminarTerapia(id);
+    }
 }
