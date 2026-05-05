@@ -44,6 +44,7 @@ mkdir -p "$TMP_DIR"
 # ---- 4. Lista de páginas a incluir (en orden) ----
 PAGES=(
     "index:Introducción"
+    "jacoco/index:Cobertura de Tests"
     "pmd:Informe PMD"
     "cpd:Informe CPD"
     "checkstyle:Informe Checkstyle"
@@ -65,7 +66,9 @@ for entry in "${PAGES[@]}"; do
 
     if [ -f "$HTML" ]; then
         COUNT=$((COUNT + 1))
-        PART="$TMP_DIR/$(printf '%02d' $COUNT)-${FILE}.pdf"
+        # Reemplazar '/' por '-' para el nombre del archivo PDF temporal
+        SAFE_NAME=$(echo "${FILE}" | tr '/' '-')
+        PART="$TMP_DIR/$(printf '%02d' $COUNT)-${SAFE_NAME}.pdf"
 
         echo "  📄 $LABEL ($FILE.html)"
         wkhtmltopdf \

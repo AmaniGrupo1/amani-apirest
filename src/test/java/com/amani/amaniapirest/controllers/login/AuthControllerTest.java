@@ -46,7 +46,7 @@ class AuthControllerTest {
 
     @Test
     void loginReturnsTokenAndUserData() throws Exception {
-        when(authService.login(any())).thenReturn(new LoginResponseDTO(1L, "Ana", "PACIENTE", "jwt-token", null, 10L));
+        when(authService.login(any())).thenReturn(new LoginResponseDTO(1L, "Ana", "PACIENTE", "jwt-token", null, 10L, "es"));
 
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -60,7 +60,7 @@ class AuthControllerTest {
 
     @Test
     void registerPacienteReturnsLoginResponse() throws Exception {
-        when(authService.registerPaciente(any())).thenReturn(new LoginResponseDTO(2L, "Pedro", "PACIENTE", "token-2", null, 20L));
+        when(authService.registerPaciente(any())).thenReturn(new LoginResponseDTO(2L, "Pedro", "PACIENTE", "token-2", null, 20L, "es"));
 
         mockMvc.perform(post("/auth/register-paciente")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -84,7 +84,7 @@ class AuthControllerTest {
     @Test
     void registerAdminReturnsLoginResponse() throws Exception {
         when(authService.registerAdmin(any(RegistryRequestDTO.class)))
-                .thenReturn(new LoginResponseDTO(3L, "Root", "ADMIN", "token-admin", null, null));
+                .thenReturn(new LoginResponseDTO(3L, "Root", "ADMIN", "token-admin", null, null, "es"));
 
         String body = objectMapper.writeValueAsString(new RegistryRequestDTO("Root", "User", "root@amani.com", "strong-pass"));
 

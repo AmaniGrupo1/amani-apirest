@@ -71,7 +71,7 @@ public class SecurityIntegrationTest {
     @Test
     void tcSec01_AccessWithoutToken() throws Exception {
         mockMvc.perform(get("/api/citas/mis-citas"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

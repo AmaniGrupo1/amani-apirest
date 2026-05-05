@@ -14,6 +14,7 @@ import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.models.PsicologoPaciente;
 import com.amani.amaniapirest.models.Situacion;
 import com.amani.amaniapirest.models.Usuario;
+import com.amani.amaniapirest.repository.AjusteRepository;
 import com.amani.amaniapirest.repository.DireccionRepository;
 import com.amani.amaniapirest.repository.PacienteSituacionRepository;
 import com.amani.amaniapirest.repository.PacientesRepository;
@@ -79,6 +80,9 @@ class AuthServiceTest {
     @Mock
     private JwtUtil jwtUtil;
 
+    @Mock
+    private AjusteRepository ajusteRepository;
+
     private AuthService authService;
     private PasswordEncoder passwordEncoder;
 
@@ -96,7 +100,8 @@ class AuthServiceTest {
                 tutorRepository,
                 psicologoRepository,
                 securityConfig,
-                jwtUtil
+                jwtUtil,
+                ajusteRepository
         );
     }
 
@@ -116,6 +121,7 @@ class AuthServiceTest {
         when(pacienteRepository.findByUsuario_IdUsuario(11L)).thenReturn(Optional.of(paciente));
         when(psicologoPacienteRepository.findByPaciente_Usuario_IdUsuario(11L)).thenReturn(Optional.of(relacion));
         when(jwtUtil.generateToken(any(), org.mockito.ArgumentMatchers.eq("paciente"))).thenReturn("jwt-token");
+        when(ajusteRepository.findByUsuario_IdUsuario(11L)).thenReturn(Optional.empty());
 
         LoginResponseDTO response = authService.login(request);
 
@@ -124,6 +130,7 @@ class AuthServiceTest {
         assertThat(response.getToken()).isEqualTo("jwt-token");
         assertThat(response.getIdPaciente()).isEqualTo(21L);
         assertThat(response.getIdPsicologo()).isEqualTo(31L);
+        assertThat(response.getIdioma()).isEqualTo("es");
     }
 
     @Test
@@ -135,7 +142,7 @@ class AuthServiceTest {
         when(usuarioRepository.findByEmail("ana@amani.com")).thenReturn(Optional.of(usuario));
 
         assertThatThrownBy(() -> authService.login(loginRequest("ana@amani.com", "wrong")))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(org.springframework.security.authentication.BadCredentialsException.class)
                 .hasMessage("Contraseña incorrecta");
         verify(jwtUtil, never()).generateToken(any(), any());
     }
@@ -178,6 +185,7 @@ class AuthServiceTest {
         when(situacionRepository.findById(5L)).thenReturn(Optional.of(situacion));
         when(psicologoPacienteRepository.findByPaciente_Usuario_IdUsuario(101L)).thenReturn(Optional.empty());
         when(jwtUtil.generateToken(any(), org.mockito.ArgumentMatchers.eq("paciente"))).thenReturn("new-token");
+        when(ajusteRepository.findByUsuario_IdUsuario(101L)).thenReturn(Optional.empty());
 
         LoginResponseDTO response = authService.registerPaciente(request);
 
@@ -201,6 +209,7 @@ class AuthServiceTest {
         assertThat(response.getIdUsuario()).isEqualTo(101L);
         assertThat(response.getIdPaciente()).isEqualTo(101L);
         assertThat(response.getToken()).isEqualTo("new-token");
+        assertThat(response.getIdioma()).isEqualTo("es");
     }
 
     private LoginRequestDTO loginRequest(String email, String password) {
