@@ -41,6 +41,9 @@ public class FirebaseConfig {
     @Value("${firebase.secret-name:firebase-service-account}")
     private String firebaseSecretName;
 
+    @Value("${spring.cloud.gcp.project-id:}")
+    private String gcpProjectId;
+
     /**
      * Crea el bean {@link FirebaseApp} cargando credenciales desde Secret Manager,
      * una ruta externa o desde el classpath como fallback.
@@ -102,19 +105,35 @@ public class FirebaseConfig {
      * @throws IOException si no se pueden leer las credenciales desde ninguna fuente
      */
     private InputStream resolveCredentialsStream() throws IOException {
-        // 1. Intentar desde Secret Manager programáticamente
+        // 1. Intentar desde Secret Manager programáticamente (varias formas de nombre)
         if (secretManagerTemplate != null) {
-            try {
-                String secretPayload = secretManagerTemplate.getSecretString("sm@" + firebaseSecretName);
-                if (secretPayload != null && !secretPayload.isBlank()) {
-                    String trimmedSecret = secretPayload.trim();
-                    log.info("[Firebase] Cargando credenciales desde Secret Manager ({}). Longitud: {}", 
-                            firebaseSecretName, trimmedSecret.length());
-                    return new java.io.ByteArrayInputStream(trimmedSecret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-                }
-            } catch (Exception e) {
-                log.warn("[Firebase] Error al recuperar el secreto '{}' de Secret Manager: {}", firebaseSecretName, e.getMessage());
+            java.util.List<String> candidates = new java.util.ArrayList<>();
+            // nombre simple configurado
+            candidates.add(firebaseSecretName);
+            // formas usadas por spring-cloud-gcp (prefijos comunes)
+            candidates.add("sm://" + firebaseSecretName);
+            candidates.add("sm@" + firebaseSecretName);
+            // nombre completo con proyecto
+            if (gcpProjectId != null && !gcpProjectId.isBlank()) {
+                candidates.add("projects/" + gcpProjectId + "/secrets/" + firebaseSecretName + "/versions/latest");
             }
+
+            for (String candidate : candidates) {
+                try {
+                    log.info("[Firebase] Intentando recuperar secreto desde Secret Manager (candidate='{}')", candidate);
+                    String secretPayload = secretManagerTemplate.getSecretString(candidate);
+                    if (secretPayload != null && !secretPayload.isBlank()) {
+                        String trimmedSecret = secretPayload.trim();
+                        log.info("[Firebase] Cargando credenciales desde Secret Manager ({}). Longitud: {}",
+                                candidate, trimmedSecret.length());
+                        return new java.io.ByteArrayInputStream(trimmedSecret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                    }
+                } catch (Exception e) {
+                    log.warn("[Firebase] No fue posible leer el secreto '{}' desde Secret Manager: {}", candidate, e.toString());
+                    log.debug("[Firebase] Traza al leer secreto '{}':", candidate, e);
+                }
+            }
+            log.warn("[Firebase] No se pudo recuperar el secreto '{}' desde Secret Manager con ninguna de las formas probadas.", firebaseSecretName);
         }
 
         // 2. Intentar ruta externa (variable de entorno o propiedad)

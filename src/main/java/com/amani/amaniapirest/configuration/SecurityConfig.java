@@ -86,7 +86,11 @@ public class SecurityConfig {
 
                                 //  Públicos
                                 .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
-                                .requestMatchers("/api/situaciones").permitAll()
+                                .requestMatchers("/api/situaciones").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                                .requestMatchers("/api/situaciones/create").hasRole("ADMIN") // Solo admin puede crear situaciones
+                                .requestMatchers("/api/situaciones/update/*").hasRole("ADMIN") // Solo admin puede crear situaciones
+                                .requestMatchers("/api/situaciones/delete/*").hasRole("ADMIN") // Solo admin puede crear situaciones
+
                                 .requestMatchers("/api/psicologo/pacientes/*/psicologo").hasRole("PACIENTE") // Endpoint para que el paciente vea su psicólogo asignado
                                 .requestMatchers("/api/psicologo/usuario/**").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN") // Lookup básico de usuario, necesario para chat
 

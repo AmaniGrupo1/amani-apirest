@@ -5,7 +5,6 @@ import com.amani.amaniapirest.models.Mensaje;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.services.FirebaseChatService;
 import com.amani.amaniapirest.services.FirebaseNotificationService;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
@@ -21,14 +20,13 @@ import org.springframework.transaction.event.TransactionalEventListener;
  * si Firebase está configurado). En entornos sin Firebase este bean se omite.</p>
  */
 @Component
-@ConditionalOnBean(FirebaseChatService.class)
 public class MensajeEventListener {
 
-    private final FirebaseChatService firebaseChatService;
-    private final FirebaseNotificationService firebaseService;
+    private final java.util.Optional<FirebaseChatService> firebaseChatService;
+    private final java.util.Optional<FirebaseNotificationService> firebaseService;
 
-    public MensajeEventListener(FirebaseChatService firebaseChatService,
-                                FirebaseNotificationService firebaseService) {
+    public MensajeEventListener(java.util.Optional<FirebaseChatService> firebaseChatService,
+                                java.util.Optional<FirebaseNotificationService> firebaseService) {
         this.firebaseChatService = firebaseChatService;
         this.firebaseService = firebaseService;
     }
@@ -42,13 +40,15 @@ public class MensajeEventListener {
 
         if (receiver == null) return;
 
-        // Escribir en Realtime Database para entrega en tiempo real
-        firebaseChatService.enviarMensaje(mensaje);
+        // Escribir en Realtime Database para entrega en tiempo real (si está disponible)
+        if (firebaseChatService.isPresent()) {
+            firebaseChatService.get().enviarMensaje(mensaje);
+        }
 
-        // Además, enviar notificación push si tiene token
-        if (receiver.getFcmToken() != null && !receiver.getFcmToken().isBlank()) {
+        // Además, enviar notificación push si tiene token y el servicio está presente
+        if (firebaseService.isPresent() && receiver.getFcmToken() != null && !receiver.getFcmToken().isBlank()) {
             String nombreRemitente = (sender != null) ? sender.getNombre() + " " + sender.getApellido() : "Alguien";
-            firebaseService.enviarPush(receiver.getFcmToken(), "Nuevo mensaje de " + nombreRemitente, mensaje.getMensaje());
+            firebaseService.get().enviarPush(receiver.getFcmToken(), "Nuevo mensaje de " + nombreRemitente, mensaje.getMensaje());
         }
     }
 }

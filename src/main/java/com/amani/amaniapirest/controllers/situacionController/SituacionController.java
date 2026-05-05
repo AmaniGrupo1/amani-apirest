@@ -1,8 +1,10 @@
 package com.amani.amaniapirest.controllers.situacionController;
 
 import com.amani.amaniapirest.dto.situacion.SituacionDTO;
+import com.amani.amaniapirest.dto.situacion.SituacionRequest;
 import com.amani.amaniapirest.models.Situacion;
 import com.amani.amaniapirest.repository.SituacionRepository;
+import com.amani.amaniapirest.services.situacionService.SituacionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,7 +31,7 @@ import java.util.stream.Collectors;
 public class SituacionController {
 
     private final SituacionRepository situacionRepository;
-
+    private final SituacionService service;
     /**
      * Lista todas las situaciones activas disponibles.
      *
@@ -81,5 +83,26 @@ public class SituacionController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    // CREATE
+    @PostMapping("/create")
+    public ResponseEntity<SituacionDTO> create(@RequestBody SituacionRequest request) {
+        return ResponseEntity.ok(service.create(request));
+    }
+
+    // UPDATE
+    @PutMapping("/update/{id}")
+    public ResponseEntity<SituacionDTO> update(
+            @PathVariable Long id,
+            @RequestBody SituacionRequest request) {
+        return ResponseEntity.ok(service.update(id, request));
+    }
+
+    // DELETE (soft delete)
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
