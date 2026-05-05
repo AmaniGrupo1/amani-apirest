@@ -46,6 +46,7 @@ public class AuthService {
     private final PsicologoRepository psicologoRepository;
     private final SecurityConfig securityConfig;
     private final JwtUtil jwtUtil;
+    private final AjusteRepository ajustesRepository;
 
     // ================= LOGIN =================
     public LoginResponseDTO login(LoginRequestDTO request) {
@@ -80,7 +81,11 @@ public class AuthService {
                     .map(Psicologo::getIdPsicologo)
                     .orElse(null);
         }
-
+        
+        String idioma = ajustesRepository
+                .findByUsuario_IdUsuario(usuario.getIdUsuario())
+                .map(Ajuste::getIdioma)
+                .orElse("es");
         // ========================
         // 🔥 PACIENTE LOGIC FIX
         // ========================
@@ -103,7 +108,8 @@ public class AuthService {
                 usuario.getRol().name(),
                 token,
                 idPsicologo,
-                idPaciente
+                idPaciente,
+                idioma
         );
     }
     // ================= REGISTER PACIENTE =================
@@ -251,13 +257,20 @@ public class AuthService {
                     .map(rel -> rel.getPaciente().getUsuario().getIdUsuario())
                     .orElse(null);
         }
+
+        String idioma = ajustesRepository
+                .findByUsuario_IdUsuario(usuario.getIdUsuario())
+                .map(Ajuste::getIdioma)
+                .orElse("es");
+
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
                 usuario.getRol().name(),
                 token,
                 idPsicologo,
-                idPaciente
+                idPaciente,
+                idioma
         );
     }
 
@@ -303,6 +316,10 @@ public class AuthService {
                     .map(rel -> rel.getPaciente().getUsuario().getIdUsuario())
                     .orElse(null);
         }
+        String idioma = ajustesRepository
+                .findByUsuario_IdUsuario(usuario.getIdUsuario())
+                .map(Ajuste::getIdioma)
+                .orElse("es");
 
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
@@ -312,7 +329,8 @@ public class AuthService {
                 usuario.getRol().name(),
                 token,
                 idPsicologo,   // 👈 AQUÍ
-                idPaciente   // 👈 AQUÍ
+                idPaciente,   // 👈 AQUÍ
+                idioma
         );
     }
 
@@ -491,6 +509,10 @@ public class AuthService {
 
         // 11. ID paciente (lo que espera tu frontend)
         Long idPaciente = paciente.getIdPaciente();
+        String idioma = ajustesRepository
+                .findByUsuario_IdUsuario(usuario.getIdUsuario())
+                .map(Ajuste::getIdioma)
+                .orElse("es");
 
         // 12. RESPONSE FINAL
         return new LoginResponseDTO(
@@ -499,7 +521,8 @@ public class AuthService {
                 usuario.getRol().name(),
                 token,
                 idPsicologo,
-                idPaciente
+                idPaciente,
+                idioma
         );
     }
 

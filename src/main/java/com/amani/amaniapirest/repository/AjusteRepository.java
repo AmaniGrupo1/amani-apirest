@@ -20,4 +20,5 @@ public interface AjusteRepository extends JpaRepository<Ajuste, Long> {
      * @return {@link Optional} con el ajuste del usuario, o vacio si no existe
      */
     Optional<Ajuste> findByUsuario_IdUsuario(Long idUsuario);
+
 }
