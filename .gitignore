@@ -37,4 +37,6 @@ build/
 .claude/
 database/
 *.log
-skills-lock.json
+skills-lock.json!/src/main/resources/serviceAccountKey.json
+
+src/main/resources/serviceAccountKey.json

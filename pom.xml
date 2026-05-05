@@ -25,9 +25,27 @@
         <lombok.version>1.18.42</lombok.version>
         <dokka.version>2.0.0</dokka.version>
         <openapi.output.dir>${project.basedir}/../documentacion-amani/api/openapi</openapi.output.dir>
+        <spring-cloud-gcp.version>8.0.2</spring-cloud-gcp.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.cloud</groupId>
+                <artifactId>spring-cloud-gcp-dependencies</artifactId>
+                <version>${spring-cloud-gcp.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
+
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>spring-cloud-gcp-starter-secretmanager</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

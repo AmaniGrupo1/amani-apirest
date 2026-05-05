@@ -1,12 +1,14 @@
 package com.amani.amaniapirest.configuration;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.spring.secretmanager.SecretManagerTemplate;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -20,13 +22,6 @@ import java.nio.file.Paths;
 
 /**
  * Configuración del cliente Firebase Admin SDK.
- *
- * <p>Lee credenciales desde una ruta externa ({@code firebase.credentials-path})
- * o, en su defecto, desde el classpath ({@code classpath:serviceAccountKey.json}).
- * La integración se activa con {@code firebase.enabled=true} (por defecto true).</p>
- *
- * <p>Si {@code firebase.enabled=false} o las credenciales no están disponibles,
- * los beans no se crean y la aplicación arranca normalmente sin Firebase.</p>
  */
 @Configuration
 @ConditionalOnProperty(name = "firebase.enabled", havingValue = "true", matchIfMissing = true)
@@ -40,9 +35,15 @@ public class FirebaseConfig {
     @Value("${firebase.credentials-path:}")
     private String firebaseCredentialsPath;
 
+    @Autowired(required = false)
+    private SecretManagerTemplate secretManagerTemplate;
+
+    @Value("${firebase.secret-name:firebase-service-account}")
+    private String firebaseSecretName;
+
     /**
-     * Crea el bean {@link FirebaseApp} cargando credenciales desde una ruta externa
-     * o desde el classpath como fallback.
+     * Crea el bean {@link FirebaseApp} cargando credenciales desde Secret Manager,
+     * una ruta externa o desde el classpath como fallback.
      *
      * @return instancia inicializada de FirebaseApp
      * @throws IOException si las credenciales no se pueden leer
@@ -93,15 +94,30 @@ public class FirebaseConfig {
     }
 
     /**
-     * Resuelve el stream de credenciales: primero intenta la ruta externa configurada
-     * en {@code firebase.credentials-path}; si no está definida o no existe, recurre
-     * al classpath ({@code serviceAccountKey.json}).
+     * Resuelve el stream de credenciales: primero intenta desde Secret Manager;
+     * luego intenta la ruta externa configurada en {@code firebase.credentials-path};
+     * si no está definida o no existe, recurre al classpath ({@code serviceAccountKey.json}).
      *
      * @return InputStream con las credenciales de servicio
      * @throws IOException si no se pueden leer las credenciales desde ninguna fuente
      */
     private InputStream resolveCredentialsStream() throws IOException {
-        // 1. Intentar ruta externa (variable de entorno o propiedad)
+        // 1. Intentar desde Secret Manager programáticamente
+        if (secretManagerTemplate != null) {
+            try {
+                String secretPayload = secretManagerTemplate.getSecretString("sm@" + firebaseSecretName);
+                if (secretPayload != null && !secretPayload.isBlank()) {
+                    String trimmedSecret = secretPayload.trim();
+                    log.info("[Firebase] Cargando credenciales desde Secret Manager ({}). Longitud: {}", 
+                            firebaseSecretName, trimmedSecret.length());
+                    return new java.io.ByteArrayInputStream(trimmedSecret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                }
+            } catch (Exception e) {
+                log.warn("[Firebase] Error al recuperar el secreto '{}' de Secret Manager: {}", firebaseSecretName, e.getMessage());
+            }
+        }
+
+        // 2. Intentar ruta externa (variable de entorno o propiedad)
         if (firebaseCredentialsPath != null && !firebaseCredentialsPath.isBlank()) {
             Path path = Paths.get(firebaseCredentialsPath);
             if (Files.exists(path)) {
@@ -111,13 +127,13 @@ public class FirebaseConfig {
             log.warn("[Firebase] Ruta de credenciales configurada pero archivo no encontrado: {}", firebaseCredentialsPath);
         }
 
-        // 2. Fallback a classpath
+        // 3. Fallback a classpath
         log.info("[Firebase] Cargando credenciales desde classpath: serviceAccountKey.json");
         InputStream stream = getClass().getClassLoader().getResourceAsStream("serviceAccountKey.json");
         if (stream == null) {
             throw new IOException("No se encontraron credenciales de Firebase: "
-                    + "ni en ruta externa ni en classpath (serviceAccountKey.json). "
-                    + "Configure firebase.credentials-path o coloque el archivo en el classpath.");
+                    + "ni en Secret Manager, ni en ruta externa ni en classpath (serviceAccountKey.json). "
+                    + "Configure Secret Manager, firebase.credentials-path o coloque el archivo en el classpath.");
         }
         return stream;
     }
