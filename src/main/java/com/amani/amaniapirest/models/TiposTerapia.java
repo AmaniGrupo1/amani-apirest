@@ -1,6 +1,5 @@
 package com.amani.amaniapirest.models;
 
-import com.google.type.Decimal;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

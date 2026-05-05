@@ -112,6 +112,9 @@ public class SecurityConfig {
                                 .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
                                 .requestMatchers("/auth/registrar/pacienteDesde/psicologo").hasRole("PSICOLOGO")
                                 .requestMatchers("/api/citas/psicologo/cita").hasAnyRole("PACIENTE","PSICOLOGO","ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
+                                .requestMatchers("/api/citas/psicologo/terapias").hasAnyRole("PACIENTE","PSICOLOGO","ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
+                                .requestMatchers("/api/citas/update/*").hasRole("ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
+                                .requestMatchers("/api/citas/delete/*").hasRole("ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
 
                                 .requestMatchers("/api/citas/psicologo/*/disponibilidad").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
                                 .requestMatchers("/api/citas/psicologo/*/editar").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
