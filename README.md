@@ -308,6 +308,37 @@ bash generate-pdf-report.sh
 
 ---
 
+## 🏗️ Arquitectura Firebase (Nueva)
+
+La integración Firebase sigue el patrón **Gateway/Adapter** para desacoplar
+el dominio de la infraestructura:
+
+```
+Domain Layer (sin dependencias Firebase)
+  ├── FirebaseAuthController  → FirebaseTokenGateway (interface)
+  ├── MensajeEventListener   → ChatGateway + PushNotificationGateway (interfaces)
+  ├── CitaEventListener     → PushNotificationGateway (interface)
+  └── NotificationServices   → PushNotificationGateway (interface)
+        │
+        ▼
+Infrastructure Layer (implementaciones concretas)
+  ├── firebase.enabled=true  → FirebaseChatGateway + FirebasePushNotificationGateway + FirebaseTokenGatewayImpl
+  └── firebase.enabled=false → NoOpChatGateway + NoOpPushNotificationGateway + NoOpFirebaseTokenGateway
+```
+
+**Perfiles Spring:**
+
+| Perfil | Comando | Firebase | Base de datos |
+|---|---|---|---|
+| `local` | `-Dspring.profiles.active=local` | No-op (desactivado) | PostgreSQL local |
+| `local` + emuladores | `firebase.emulator.enabled=true` | Emuladores | PostgreSQL local |
+| `gcp` | `-Dspring.profiles.active=gcp` | Real (ADC) | Cloud SQL |
+| `test` | `@ActiveProfiles("test")` | No-op (mocks) | H2 en memoria |
+
+📖 Ver [README_LOCAL.md](README_LOCAL.md) para desarrollo local.
+📖 Ver [README_GCP.md](README_GCP.md) para despliegue en GCP.
+
+
 ## 📄 Licencia
 
 Este proyecto es **privado**. Todos los derechos reservados.

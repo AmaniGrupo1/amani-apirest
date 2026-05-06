@@ -1,0 +1,29 @@
+{
+  "firebaserc": {
+    "projects": {
+      "default": "amani-160bf"
+    }
+  },
+  "emulators": {
+    "auth": {
+      "host": "0.0.0.0",
+      "port": 9099
+    },
+    "database": {
+      "host": "0.0.0.0",
+      "port": 9000
+    },
+    "storage": {
+      "host": "0.0.0.0",
+      "port": 9199
+    },
+    "ui": {
+      "enabled": true,
+      "host": "0.0.0.0",
+      "port": 4000
+    }
+  },
+  "database": {
+    "rules": "src/main/resources/firebase-rules.json"
+  }
+}

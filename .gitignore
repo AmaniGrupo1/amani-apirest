@@ -40,3 +40,26 @@ database/
 skills-lock.json!/src/main/resources/serviceAccountKey.json
 
 src/main/resources/serviceAccountKey.json
+### Firebase / GCP Service Account Keys ###
+*serviceAccount*.json
+firebase-*.json
+
+### Firebase / GCP Service Account Keys ###
+*serviceAccount*.json
+firebase-*.json
+!.gitignore
+*.key.json
+gcp-*.json
+
+### Docker / Local env ###
+.env
+.env.local
+.env.gcp
+
+### IDE / OS ###
+.DS_Store
+Thumbs.db
+
+### Logs ###
+*.log
+out.log

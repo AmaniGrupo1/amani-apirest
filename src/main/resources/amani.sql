@@ -35,15 +35,15 @@ CREATE TABLE usuarios
 CREATE TABLE pacientes
 (
     id_paciente      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_usuario       BIGINT NOT NULL,
+    id_usuario       BIGINT      NOT NULL,
     id_psicologo     BIGINT, -- asignación principal
     fecha_nacimiento DATE,
     genero           VARCHAR(30),
     telefono         VARCHAR(30),
     metodo_pago      metodo_pago NOT NULL DEFAULT 'PRESENCIAL',
     estado_pago      estado_pago NOT NULL DEFAULT 'PENDIENTE',
-    created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at       TIMESTAMP            DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP            DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (id_usuario)
         REFERENCES usuarios (id_usuario)
@@ -294,8 +294,8 @@ CREATE TABLE situaciones
     nombre       VARCHAR(150) NOT NULL,
     categoria    VARCHAR(100),
     descripcion  TEXT,
-    activo       BOOLEAN      DEFAULT TRUE,
-    created_at   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+    activo       BOOLEAN   DEFAULT TRUE,
+    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tutores legales de pacientes menores de edad
@@ -307,7 +307,7 @@ CREATE TABLE tutores
     telefono    VARCHAR(30),
     email       VARCHAR(150),
     dni         VARCHAR(20),
-    tipo        VARCHAR(50)  NOT NULL,  -- MADRE / PADRE / TUTOR
+    tipo        VARCHAR(50)  NOT NULL, -- MADRE / PADRE / TUTOR
 
     FOREIGN KEY (id_paciente)
         REFERENCES pacientes (id_paciente)
@@ -317,12 +317,12 @@ CREATE TABLE tutores
 -- Consentimientos informados aceptados por el paciente
 CREATE TABLE consentimientos
 (
-    id_consentimiento      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_paciente            BIGINT    NOT NULL,
-    fecha_aceptacion       TIMESTAMP NOT NULL,
-    version_documento      VARCHAR(255) NOT NULL,
-    acepta_videoconferencia BOOLEAN   DEFAULT FALSE,
-    acepta_comunicacion    BOOLEAN   DEFAULT FALSE,
+    id_consentimiento       BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente             BIGINT       NOT NULL,
+    fecha_aceptacion        TIMESTAMP    NOT NULL,
+    version_documento       VARCHAR(255) NOT NULL,
+    acepta_videoconferencia BOOLEAN DEFAULT FALSE,
+    acepta_comunicacion     BOOLEAN DEFAULT FALSE,
 
     FOREIGN KEY (id_paciente)
         REFERENCES pacientes (id_paciente)
@@ -332,10 +332,10 @@ CREATE TABLE consentimientos
 -- Relación N:M entre pacientes y situaciones
 CREATE TABLE paciente_situacion
 (
-    id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_paciente     BIGINT    NOT NULL,
-    id_situacion    BIGINT    NOT NULL,
-    fecha_registro  TIMESTAMP,
+    id             BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente    BIGINT NOT NULL,
+    id_situacion   BIGINT NOT NULL,
+    fecha_registro TIMESTAMP,
 
     FOREIGN KEY (id_paciente)
         REFERENCES pacientes (id_paciente)

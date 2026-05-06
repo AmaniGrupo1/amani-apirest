@@ -1,30 +1,47 @@
 package com.amani.amaniapirest.configuration;
 
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.spring.secretmanager.SecretManagerTemplate;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
  * Configuración del cliente Firebase Admin SDK.
+ *
+ * <p>Solo se activa cuando {@code firebase.enabled=true} en la configuración.
+ * Cuando la propiedad está ausente o es {@code false}, ninguno de los beans
+ * Firebase se registra y la aplicación arranca normalmente sin Firebase.</p>
+ *
+ * <h3>Credenciales (orden de resolución)</h3>
+ * <ol>
+ *   <li>Contenido del secreto inyectado por Spring Cloud GCP
+ *       (property {@code firebase-service-account}).</li>
+ *   <li>Ruta externa configurada en {@code firebase.credentials-path}.</li>
+ *   <li>Classpath: {@code serviceAccountKey.json}.</li>
+ *   <li>Application Default Credentials (ADC) automático en GCP.</li>
+ * </ol>
+ *
+ * <h3>Emuladores</h3>
+ * <p>Cuando {@code firebase.emulator.enabled=true}, se configuran las variables
+ * de entorno para conectar a los emuladores locales de Firebase Auth y RTDB.</p>
  */
 @Configuration
-@ConditionalOnProperty(name = "firebase.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "firebase.enabled", havingValue = "true", matchIfMissing = false)
 public class FirebaseConfig {
 
     private static final Logger log = LoggerFactory.getLogger(FirebaseConfig.class);
@@ -35,28 +52,48 @@ public class FirebaseConfig {
     @Value("${firebase.credentials-path:}")
     private String firebaseCredentialsPath;
 
-    @Autowired(required = false)
-    private SecretManagerTemplate secretManagerTemplate;
+    @Value("${firebase-service-account:}")
+    private String firebaseSecretPayload;
 
-    @Value("${firebase.secret-name:firebase-service-account}")
-    private String firebaseSecretName;
+    @Value("${firebase.emulator.enabled:false}")
+    private boolean emulatorEnabled;
+
+    @Value("${firebase.auth.emulator-host:}")
+    private String authEmulatorHost;
+
+    @Value("${firebase.auth.emulator-port:9099}")
+    private int authEmulatorPort;
 
     @Value("${spring.cloud.gcp.project-id:}")
     private String gcpProjectId;
 
-    /**
-     * Crea el bean {@link FirebaseApp} cargando credenciales desde Secret Manager,
-     * una ruta externa o desde el classpath como fallback.
-     *
-     * @return instancia inicializada de FirebaseApp
-     * @throws IOException si las credenciales no se pueden leer
-     */
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
+        log.info("[Firebase] Iniciando configuración de Firebase (emulator={})", emulatorEnabled);
+
+        if (emulatorEnabled) {
+            configureEmulators();
+        }
+
+        FirebaseApp existingApp = getExistingApp();
+        if (existingApp != null) {
+            log.info("[Firebase] FirebaseApp ya inicializada, reutilizando instancia existente.");
+            return existingApp;
+        }
+
         InputStream credentialsStream = resolveCredentialsStream();
+        GoogleCredentials credentials;
+
+        if (credentialsStream != null) {
+            credentials = GoogleCredentials.fromStream(credentialsStream);
+            log.info("[Firebase] Credenciales cargadas desde fuente explícita.");
+        } else {
+            log.info("[Firebase] Usando Application Default Credentials (ADC).");
+            credentials = GoogleCredentials.getApplicationDefault();
+        }
 
         FirebaseOptions.Builder builder = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(credentialsStream));
+                .setCredentials(credentials);
 
         if (firebaseDatabaseUrl != null && !firebaseDatabaseUrl.isBlank()) {
             builder.setDatabaseUrl(firebaseDatabaseUrl);
@@ -64,18 +101,16 @@ public class FirebaseConfig {
             log.warn("[Firebase] No se configuró firebase.database.url; las operaciones de RTDB no estarán disponibles.");
         }
 
+        if (gcpProjectId != null && !gcpProjectId.isBlank()) {
+            builder.setProjectId(gcpProjectId);
+        }
+
         FirebaseOptions options = builder.build();
         FirebaseApp app = FirebaseApp.initializeApp(options);
-        log.info("[Firebase] FirebaseApp inicializada correctamente.");
+        log.info("[Firebase] FirebaseApp inicializada correctamente (name={}).", app.getName());
         return app;
     }
 
-    /**
-     * Expone el bean {@link FirebaseDatabase} para operaciones de Realtime Database.
-     *
-     * @param firebaseApp bean de FirebaseApp inyectado
-     * @return instancia de FirebaseDatabase asociada al FirebaseApp
-     */
     @Bean
     public FirebaseDatabase firebaseDatabase(FirebaseApp firebaseApp) {
         FirebaseDatabase db = FirebaseDatabase.getInstance(firebaseApp);
@@ -83,12 +118,6 @@ public class FirebaseConfig {
         return db;
     }
 
-    /**
-     * Expone el bean {@link FirebaseAuth} para la gestión de usuarios y generación de tokens.
-     *
-     * @param firebaseApp bean de FirebaseApp inyectado
-     * @return instancia de FirebaseAuth asociada al FirebaseApp
-     */
     @Bean
     public FirebaseAuth firebaseAuth(FirebaseApp firebaseApp) {
         FirebaseAuth auth = FirebaseAuth.getInstance(firebaseApp);
@@ -97,46 +126,57 @@ public class FirebaseConfig {
     }
 
     /**
-     * Resuelve el stream de credenciales: primero intenta desde Secret Manager;
-     * luego intenta la ruta externa configurada en {@code firebase.credentials-path};
-     * si no está definida o no existe, recurre al classpath ({@code serviceAccountKey.json}).
-     *
-     * @return InputStream con las credenciales de servicio
-     * @throws IOException si no se pueden leer las credenciales desde ninguna fuente
+     * Comprueba si ya existe una instancia de FirebaseApp inicializada.
+     * Previene el error "FirebaseApp name [DEFAULT] already exists".
      */
-    private InputStream resolveCredentialsStream() throws IOException {
-        // 1. Intentar desde Secret Manager programáticamente (varias formas de nombre)
-        if (secretManagerTemplate != null) {
-            java.util.List<String> candidates = new java.util.ArrayList<>();
-            // nombre simple configurado
-            candidates.add(firebaseSecretName);
-            // formas usadas por spring-cloud-gcp (prefijos comunes)
-            candidates.add("sm://" + firebaseSecretName);
-            candidates.add("sm@" + firebaseSecretName);
-            // nombre completo con proyecto
-            if (gcpProjectId != null && !gcpProjectId.isBlank()) {
-                candidates.add("projects/" + gcpProjectId + "/secrets/" + firebaseSecretName + "/versions/latest");
-            }
+    private FirebaseApp getExistingApp() {
+        try {
+            return FirebaseApp.getInstance();
+        } catch (IllegalStateException e) {
+            return null;
+        }
+    }
 
-            for (String candidate : candidates) {
-                try {
-                    log.info("[Firebase] Intentando recuperar secreto desde Secret Manager (candidate='{}')", candidate);
-                    String secretPayload = secretManagerTemplate.getSecretString(candidate);
-                    if (secretPayload != null && !secretPayload.isBlank()) {
-                        String trimmedSecret = secretPayload.trim();
-                        log.info("[Firebase] Cargando credenciales desde Secret Manager ({}). Longitud: {}",
-                                candidate, trimmedSecret.length());
-                        return new java.io.ByteArrayInputStream(trimmedSecret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-                    }
-                } catch (Exception e) {
-                    log.warn("[Firebase] No fue posible leer el secreto '{}' desde Secret Manager: {}", candidate, e.toString());
-                    log.debug("[Firebase] Traza al leer secreto '{}':", candidate, e);
-                }
-            }
-            log.warn("[Firebase] No se pudo recuperar el secreto '{}' desde Secret Manager con ninguna de las formas probadas.", firebaseSecretName);
+    /**
+     * Configura las variables de entorno para los emuladores de Firebase.
+     */
+    private void configureEmulators() {
+        String authHost = authEmulatorHost.isEmpty() ? "localhost" : authEmulatorHost;
+        String authEmulatorUrl = String.format("%s:%d", authHost, authEmulatorPort);
+        System.setProperty("FIREBASE_AUTH_EMULATOR_HOST", authEmulatorUrl);
+        log.info("[Firebase] Emulador Auth configurado: {}", authEmulatorUrl);
+
+        if (firebaseDatabaseUrl != null && !firebaseDatabaseUrl.isBlank()) {
+            log.info("[Firebase] Emulador RTDB configurado vía firebase.database.url: {}", firebaseDatabaseUrl);
         }
 
-        // 2. Intentar ruta externa (variable de entorno o propiedad)
+        log.info("[Firebase] ══════════════════════════════════════════════");
+        log.info("[Firebase] ⚠️  MODO EMULADOR ACTIVADO — No usar en producción");
+        log.info("[Firebase] ══════════════════════════════════════════════");
+    }
+
+    /**
+     * Resuelve el stream de credenciales en orden de prioridad:
+     * <ol>
+     *   <li>Contenido del secreto inyectado por Spring Cloud GCP.</li>
+     *   <li>Ruta externa configurada en {@code firebase.credentials-path}.</li>
+     *   <li>Classpath: {@code serviceAccountKey.json}.</li>
+     * </ol>
+     * <p>Si ninguna fuente está disponible, retorna {@code null} para que
+     * el llamador use Application Default Credentials (ADC).</p>
+     *
+     * @return InputStream con las credenciales, o null si se debe usar ADC
+     * @throws IOException si ocurre un error de I/O leyendo credenciales
+     */
+    private InputStream resolveCredentialsStream() throws IOException {
+        // 1. Secreto inyectado por Spring Cloud GCP (spring.config.import=optional:sm://)
+        if (firebaseSecretPayload != null && !firebaseSecretPayload.isBlank()) {
+            log.info("[Firebase] Cargando credenciales desde Secret Manager (vía spring.config.import). Longitud: {}",
+                    firebaseSecretPayload.length());
+            return new ByteArrayInputStream(firebaseSecretPayload.trim().getBytes(StandardCharsets.UTF_8));
+        }
+
+        // 2. Ruta externa (variable de entorno o propiedad)
         if (firebaseCredentialsPath != null && !firebaseCredentialsPath.isBlank()) {
             Path path = Paths.get(firebaseCredentialsPath);
             if (Files.exists(path)) {
@@ -147,13 +187,14 @@ public class FirebaseConfig {
         }
 
         // 3. Fallback a classpath
-        log.info("[Firebase] Cargando credenciales desde classpath: serviceAccountKey.json");
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("serviceAccountKey.json");
-        if (stream == null) {
-            throw new IOException("No se encontraron credenciales de Firebase: "
-                    + "ni en Secret Manager, ni en ruta externa ni en classpath (serviceAccountKey.json). "
-                    + "Configure Secret Manager, firebase.credentials-path o coloque el archivo en el classpath.");
+        InputStream classpathStream = getClass().getClassLoader().getResourceAsStream("serviceAccountKey.json");
+        if (classpathStream != null) {
+            log.info("[Firebase] Cargando credenciales desde classpath: serviceAccountKey.json");
+            return classpathStream;
         }
-        return stream;
+
+        // 4. ADC (se retorna null para que el llamador use GoogleCredentials.getApplicationDefault())
+        log.info("[Firebase] No se encontraron credenciales explícitas. Se usará Application Default Credentials (ADC).");
+        return null;
     }
 }

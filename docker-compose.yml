@@ -1,0 +1,48 @@
+# ============================================================
+# Amani API REST — Docker Compose for Local Development
+# ============================================================
+# Usage:
+#   docker compose up -d          # Start PostgreSQL + Mailpit
+#   ./mvnw spring-boot:run -Dspring.profiles.active=local
+#
+# With Firebase Emulators:
+#   docker compose up -d
+#   firebase emulators:start
+#   Set firebase.emulator.enabled=true in application-local.yml
+#   ./mvnw spring-boot:run -Dspring.profiles.active=local
+# ============================================================
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: amani-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Sandia4you
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/main/resources/amani.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: amani-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+volumes:
+  postgres_data:
+    driver: local
