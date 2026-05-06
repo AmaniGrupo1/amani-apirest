@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.mappers;
 
-import com.amani.amaniapirest.dto.profile.PacienteDTO;
-import com.amani.amaniapirest.dto.profile.PsicologoDTO;
+import com.amani.amaniapirest.dto.profile.paciente.PacienteDTO;
+import com.amani.amaniapirest.dto.profile.psicologo.PsicologoDTO;
 import com.amani.amaniapirest.dto.profile.UsuarioDTO;
 import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.models.Psicologo;

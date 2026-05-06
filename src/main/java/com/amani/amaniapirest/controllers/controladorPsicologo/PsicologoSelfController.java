@@ -2,7 +2,7 @@ package com.amani.amaniapirest.controllers.controladorPsicologo;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.PsicologoSelfResponseDTO;
-import com.amani.amaniapirest.dto.profile.PsicologoDTO;
+import com.amani.amaniapirest.dto.profile.psicologo.PsicologoDTO;
 import com.amani.amaniapirest.services.psicologo.PsicologoSelfService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

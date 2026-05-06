@@ -1,8 +1,14 @@
 package com.amani.amaniapirest.controllers.profileController;
 
-import com.amani.amaniapirest.dto.profile.PsicologoDTO;
-import com.amani.amaniapirest.dto.profile.UpdatePsicologoRequestDTO;
-import com.amani.amaniapirest.dto.profile.UpdatePsicologoResponseDTO;
+import com.amani.amaniapirest.dto.profile.admin.AdminDTO;
+import com.amani.amaniapirest.dto.profile.admin.AdminResponseDTO;
+import com.amani.amaniapirest.dto.profile.admin.UpdateAdminRequestDTO;
+import com.amani.amaniapirest.dto.profile.paciente.PacienteDTO;
+import com.amani.amaniapirest.dto.profile.paciente.PacienteResponseDTO;
+import com.amani.amaniapirest.dto.profile.paciente.UpdatePacienteRequestDTO;
+import com.amani.amaniapirest.dto.profile.psicologo.PsicologoDTO;
+import com.amani.amaniapirest.dto.profile.psicologo.UpdatePsicologoRequestDTO;
+import com.amani.amaniapirest.dto.profile.psicologo.UpdatePsicologoResponseDTO;
 import com.amani.amaniapirest.services.profile.ProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -91,8 +97,7 @@ public class ProfileController {
     @GetMapping("/pacientes/{idPaciente}/psicologo")
     public ResponseEntity<?> getPsicologoAsignado(@PathVariable Long idPaciente) {
 
-        PsicologoDTO dto =
-                psicologoSelfService.obtenerPsicologoAsignado(idPaciente);
+        PsicologoDTO dto = psicologoSelfService.obtenerPsicologoAsignado(idPaciente);
 
         if (dto == null) {
             return ResponseEntity
@@ -110,5 +115,67 @@ public class ProfileController {
     ) {
         UpdatePsicologoResponseDTO updated = psicologoSelfService.updatePsicologoProfile(id, dto);
         return ResponseEntity.ok(updated);
+    }
+
+
+    // ============================================================
+    // 🟡 ADMIN
+    // ============================================================
+
+    @Operation(summary = "Obtener perfil admin", description = "Recupera la información del administrador")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Perfil recuperado"),
+            @ApiResponse(responseCode = "404", description = "Admin no encontrado", content = @Content)
+    })
+    @GetMapping("/admin/{id}/perfil")
+    public ResponseEntity<AdminDTO> getAdmin(@PathVariable Long id) {
+        return ResponseEntity.ok(psicologoSelfService.getAdminProfile(id));
+    }
+
+    @Operation(summary = "Actualizar perfil admin")
+    @PutMapping("/admin/{id}/update")
+    public ResponseEntity<AdminResponseDTO> updateAdmin(
+            @PathVariable Long id,
+            @RequestBody UpdateAdminRequestDTO dto
+    ) {
+        return ResponseEntity.ok(psicologoSelfService.updateAdminProfile(id, dto));
+    }
+
+    @Operation(summary = "Actualizar foto admin")
+    @PostMapping("/admin/{id}/foto")
+    public ResponseEntity<AdminDTO> updateAdminPhoto(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file
+    ) {
+        return ResponseEntity.ok(psicologoSelfService.updateAdminPhoto(id, file));
+    }
+
+    // ============================================================
+    // 🟢 PACIENTE
+    // ============================================================
+
+    @Operation(summary = "Obtener perfil paciente")
+    @GetMapping("/paciente/{id}")
+    public ResponseEntity<PacienteDTO> getPaciente(@PathVariable Long id) {
+        return ResponseEntity.ok(psicologoSelfService.getPacienteProfile(id));
+    }
+
+    @Operation(summary = "Actualizar perfil paciente")
+    @PutMapping("/paciente/update/{id}")
+    public ResponseEntity<PacienteResponseDTO> updatePaciente(
+            @PathVariable Long id,
+            @RequestBody UpdatePacienteRequestDTO dto
+    ) {
+        return ResponseEntity.ok(psicologoSelfService.updatePacienteProfile(id, dto));
+    }
+
+
+    @Operation(summary = "Actualizar foto paciente")
+    @PostMapping("/paciente/{id}/foto")
+    public ResponseEntity<PacienteDTO> updatePacientePhoto(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file
+    ) {
+        return ResponseEntity.ok(psicologoSelfService.updatePacientePhoto(id, file));
     }
 }

@@ -46,6 +46,7 @@ public class Cita {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "modalidad", nullable = false, length = 50)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private ModalidadCita modalidad;
 
     /** Motivo o descripción de la consulta. */

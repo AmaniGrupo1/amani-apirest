@@ -1,5 +1,6 @@
-package com.amani.amaniapirest.dto.profile;
+package com.amani.amaniapirest.dto.profile.psicologo;
 
+import com.amani.amaniapirest.dto.profile.paciente.UsuarioUpdateDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

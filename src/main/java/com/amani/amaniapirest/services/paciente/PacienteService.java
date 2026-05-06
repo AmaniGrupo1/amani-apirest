@@ -5,7 +5,7 @@ import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteBasicoResponseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteResponseDTO;
-import com.amani.amaniapirest.dto.profile.PacienteDTO;
+import com.amani.amaniapirest.dto.profile.paciente.PacienteDTO;
 import com.amani.amaniapirest.dto.situacion.SituacionDTO;
 import com.amani.amaniapirest.mappers.ProfileMapper;
 import com.amani.amaniapirest.models.Paciente;

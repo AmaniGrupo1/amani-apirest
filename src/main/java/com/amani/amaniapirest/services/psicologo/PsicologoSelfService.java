@@ -2,7 +2,7 @@ package com.amani.amaniapirest.services.psicologo;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.PsicologoRequestDTO;
 import com.amani.amaniapirest.dto.dtoPsicologo.response.PsicologoSelfResponseDTO;
-import com.amani.amaniapirest.dto.profile.PsicologoDTO;
+import com.amani.amaniapirest.dto.profile.psicologo.PsicologoDTO;
 import com.amani.amaniapirest.enums.RolUsuario;
 import com.amani.amaniapirest.mappers.ProfileMapper;
 import com.amani.amaniapirest.models.Psicologo;

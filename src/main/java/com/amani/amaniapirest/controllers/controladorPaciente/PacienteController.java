@@ -2,7 +2,7 @@ package com.amani.amaniapirest.controllers.controladorPaciente;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.PacienteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.PacienteResponseDTO;
-import com.amani.amaniapirest.dto.profile.PacienteDTO;
+import com.amani.amaniapirest.dto.profile.paciente.PacienteDTO;
 import com.amani.amaniapirest.services.paciente.PacienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

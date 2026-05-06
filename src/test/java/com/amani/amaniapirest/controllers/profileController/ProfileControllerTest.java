@@ -1,6 +1,6 @@
 package com.amani.amaniapirest.controllers.profileController;
 
-import com.amani.amaniapirest.dto.profile.PsicologoDTO;
+import com.amani.amaniapirest.dto.profile.psicologo.PsicologoDTO;
 import com.amani.amaniapirest.dto.profile.UsuarioDTO;
 import com.amani.amaniapirest.services.profile.ProfileService;
 import org.junit.jupiter.api.BeforeEach;
