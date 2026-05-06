@@ -1,10 +1,11 @@
 package com.amani.amaniapirest.services.paciente;
 
+
 import com.amani.amaniapirest.dto.dtoPaciente.request.HistorialClinicoRequestDTO;
-import com.amani.amaniapirest.dto.dtoPaciente.response.HistorialClinicoResponseDTO;
+import com.amani.amaniapirest.dto.historialClinico.HistorialClinicoResponseDTO;
 import com.amani.amaniapirest.models.HistorialClinico;
 import com.amani.amaniapirest.models.Paciente;
-import com.amani.amaniapirest.repository.HistorialClinicoRepository;
+import com.amani.amaniapirest.repository.hostorialClinico.HistorialClinicoRepository;
 import com.amani.amaniapirest.repository.PacientesRepository;
 import org.springframework.stereotype.Service;
 
@@ -82,7 +83,6 @@ public class HistorialClinicoService {
         historial.setDiagnostico(request.getDiagnostico());
         historial.setTratamiento(request.getTratamiento());
         historial.setObservaciones(request.getObservaciones());
-        historial.setCreadoEn(LocalDateTime.now());
 
         return toResponse(historialClinicoRepository.save(historial));
     }
@@ -97,9 +97,6 @@ public class HistorialClinicoService {
      */
     public HistorialClinicoResponseDTO update(Long idHistory, HistorialClinicoRequestDTO request) {
         HistorialClinico historial = getHistorialOrThrow(idHistory);
-        Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
-
-        historial.setPaciente(paciente);
         historial.setTitulo(request.getTitulo());
         historial.setDiagnostico(request.getDiagnostico());
         historial.setTratamiento(request.getTratamiento());
@@ -150,6 +147,7 @@ public class HistorialClinicoService {
      */
     private HistorialClinicoResponseDTO toResponse(HistorialClinico historial) {
         return new HistorialClinicoResponseDTO(
+                historial.getIdHistory(), // ✅ ahora sí coincide con el DTO
                 historial.getTitulo(),
                 historial.getDiagnostico(),
                 historial.getTratamiento(),

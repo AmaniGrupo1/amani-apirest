@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.controllers.controladorPaciente;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.HistorialClinicoRequestDTO;
-import com.amani.amaniapirest.dto.dtoPaciente.response.HistorialClinicoResponseDTO;
+import com.amani.amaniapirest.dto.historialClinico.HistorialClinicoResponseDTO;
 import com.amani.amaniapirest.services.paciente.HistorialClinicoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -80,6 +80,8 @@ public class HistorialClinicoController {
             @ApiResponse(responseCode = "404", description = "No se encontró al paciente con el ID especificado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
+
+    //-----------------------------------------
     @GetMapping("/paciente/{idPaciente}")
     public ResponseEntity<List<HistorialClinicoResponseDTO>> findByPaciente(@PathVariable Long idPaciente) {
         return ResponseEntity.ok(historialClinicoService.findByPaciente(idPaciente));
