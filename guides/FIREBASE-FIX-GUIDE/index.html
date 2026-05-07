@@ -1,0 +1,2121 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentación técnica de la plataforma AMANI para psicología clínica">
+      
+      
+        <meta name="author" content="Amani Team">
+      
+      
+        <link rel="canonical" href="https://amanigrupo1.github.io/amani-apirest/guides/FIREBASE-FIX-GUIDE/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>🔥 Guía Completa: Fix de Integración Firebase + Secret Manager - AMANI API REST — Documentación</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#guia-completa-fix-de-integracion-firebase-secret-manager" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="AMANI API REST — Documentación" class="md-header__button md-logo" aria-label="AMANI API REST — Documentación" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AMANI API REST — Documentación
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🔥 Guía Completa: Fix de Integración Firebase + Secret Manager
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartir" aria-label="Compartir" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api/rest-api/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  API REST
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../testing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Testing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reports/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Informes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Guías
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../postman/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Postman
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="AMANI API REST — Documentación" class="md-nav__button md-logo" aria-label="AMANI API REST — Documentación" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AMANI API REST — Documentación
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API REST
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API REST
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/rest-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API REST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referencia de endpoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modelos de datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/openapi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAPI (Swagger)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../testing/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Testing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/test-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plan de pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/coverage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cobertura de tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Problemas conocidos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../reports/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Informes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Informes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reports/coverage-dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dashboard de cobertura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guías
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guías
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../local-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuración local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp-deploy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Despliegue GCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../firebase-fix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firebase y Secret Manager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../postman/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Postman
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Postman
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postman/collection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Colección
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="guia-completa-fix-de-integracion-firebase-secret-manager">🔥 Guía Completa: Fix de Integración Firebase + Secret Manager<a class="headerlink" href="#guia-completa-fix-de-integracion-firebase-secret-manager" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Proyecto:</strong> <code>amani-apirest</code> · <strong>GCP Project:</strong> <code>amani-160bf</code><br />
+<strong>Fecha:</strong> 2026-05-06 · <strong>Autor:</strong> Generado por orquestador de agentes IA</p>
+</blockquote>
+<hr />
+<h2 id="tabla-de-contenidos">📋 Tabla de Contenidos<a class="headerlink" href="#tabla-de-contenidos" title="Permanent link">&para;</a></h2>
+<hr />
+<h2 id="1-resumen-del-problema">1. Resumen del Problema<a class="headerlink" href="#1-resumen-del-problema" title="Permanent link">&para;</a></h2>
+<p>Al iniciar la aplicación Spring Boot, el proyecto falla porque no se encuentran las credenciales de Firebase. El intento de lectura desde Google Secret Manager devuelve <code>PERMISSION_DENIED</code> para el usuario <code>felixpa2001@gmail.com</code>, y la política IAM del secreto <code>firebase-service-account</code> está vacía (no hay bindings).</p>
+<p><strong>Error principal:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>org.springframework.beans.factory.UnsatisfiedDependencyException:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  Error creating bean with name &#39;firebaseAuthController&#39; ...
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Caused by: java.io.IOException: No se encontraron credenciales de Firebase:
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  ni en Secret Manager, ni en ruta externa ni en classpath (serviceAccountKey.json).
+</span></code></pre></div>
+<p><strong>Errores derivados:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>No qualifying bean of type &#39;com.google.firebase.auth.FirebaseAuth&#39; available
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>No qualifying bean of type &#39;com.amani.amaniapirest.services.FirebaseChatService&#39; available
+</span></code></pre></div>
+<hr />
+<h2 id="2-causa-raiz">2. Causa Raíz<a class="headerlink" href="#2-causa-raiz" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Causa</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Política IAM vacía</strong></td>
+<td>El secreto <code>firebase-service-account</code> existe pero no tiene bindings. Nadie tiene <code>roles/secretmanager.versions.access</code>.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Parches temporales incorrectos</strong></td>
+<td>Se añadió <code>Optional&lt;FirebaseAuth&gt;</code> en controladores y listeners (anti-patrón Spring).</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Lógica sucia en FirebaseConfig</strong></td>
+<td>El método <code>resolveCredentialsStream()</code> probaba múltiples formatos de nombre de secreto en lugar de usar <code>spring.config.import</code>.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong><code>matchIfMissing=true</code></strong></td>
+<td><code>@ConditionalOnProperty</code> usaba <code>matchIfMissing=true</code>, activando Firebase por defecto aunque no hubiera credenciales.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-plan-de-accion-rapido">3. Plan de Acción Rápido<a class="headerlink" href="#3-plan-de-accion-rapido" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>1. ▶ Administrador ejecuta script IAM → concede acceso al secreto
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>2. ▶ Desarrollador configura ADC en local
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>3. ▶ Cambiar firebase.enabled=true en application.properties
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>4. ▶ Arrancar la app → beans Firebase se crean limpiamente
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>5. ▶ Si firebase.enabled=false → app arranca sin Firebase (sin errores)
+</span></code></pre></div>
+<hr />
+<h2 id="4-paso-1-infraestructura-y-permisos-gcp-iam">4. Paso 1 — Infraestructura y Permisos (GCP / IAM)<a class="headerlink" href="#4-paso-1-infraestructura-y-permisos-gcp-iam" title="Permanent link">&para;</a></h2>
+<h3 id="41-script-bash-linux-macos-cloud-shell">4.1 Script Bash (Linux / macOS / Cloud Shell)<a class="headerlink" href="#41-script-bash-linux-macos-cloud-shell" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="ch">#!/usr/bin/env bash</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># ============================================================================</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># setup-firebase-iam.sh</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Concede acceso al secreto firebase-service-account en Google Secret Manager</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># Requiere: gcloud CLI, permisos de administrador del proyecto GCP</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># ============================================================================</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="nv">PROJECT_ID</span><span class="o">=</span><span class="s2">&quot;amani-160bf&quot;</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="nv">SECRET_ID</span><span class="o">=</span><span class="s2">&quot;firebase-service-account&quot;</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="nv">SA_ID</span><span class="o">=</span><span class="s2">&quot;firebase-secret-reader&quot;</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="nv">SA_EMAIL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SA_ID</span><span class="si">}</span><span class="s2">@</span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">.iam.gserviceaccount.com&quot;</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;🔧 Proyecto: </span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;🔧 Secreto:  </span><span class="si">${</span><span class="nv">SECRET_ID</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="c1"># -------------------------------------------------------</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="c1"># 1. Crear la Service Account dedicada</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="c1"># -------------------------------------------------------</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;1️⃣  Creando Service Account &#39;</span><span class="si">${</span><span class="nv">SA_ID</span><span class="si">}</span><span class="s2">&#39;...&quot;</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>gcloud<span class="w"> </span>iam<span class="w"> </span>service-accounts<span class="w"> </span>create<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SA_ID</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">  </span>--project<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">  </span>--display-name<span class="o">=</span><span class="s2">&quot;Lector de secreto Firebase para desarrollo local&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">  </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;⚠️  La Service Account ya existe, continuando...&quot;</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="c1"># -------------------------------------------------------</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="c1"># 2. Conceder rol MÍNIMO sobre el secreto específico</span>
+</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="c1"># -------------------------------------------------------</span>
+</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;2️⃣  Concediendo roles/secretmanager.secretAccessor a la SA...&quot;</span>
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>gcloud<span class="w"> </span>secrets<span class="w"> </span>add-iam-policy-binding<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SECRET_ID</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">  </span>--project<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="w">  </span>--member<span class="o">=</span><span class="s2">&quot;serviceAccount:</span><span class="si">${</span><span class="nv">SA_EMAIL</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="w">  </span>--role<span class="o">=</span><span class="s2">&quot;roles/secretmanager.secretAccessor&quot;</span>
+</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>
+</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="c1"># -------------------------------------------------------</span>
+</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="c1"># 3. Conceder acceso al usuario humano (desarrollo local)</span>
+</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="c1"># -------------------------------------------------------</span>
+</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;3️⃣  Concediendo acceso a felixpa2001@gmail.com...&quot;</span>
+</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>gcloud<span class="w"> </span>secrets<span class="w"> </span>add-iam-policy-binding<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SECRET_ID</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a><span class="w">  </span>--project<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="w">  </span>--member<span class="o">=</span><span class="s2">&quot;user:felixpa2001@gmail.com&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-44"><a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a><span class="w">  </span>--role<span class="o">=</span><span class="s2">&quot;roles/secretmanager.secretAccessor&quot;</span>
+</span><span id="__span-3-45"><a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>
+</span><span id="__span-3-46"><a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a><span class="c1"># -------------------------------------------------------</span>
+</span><span id="__span-3-47"><a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a><span class="c1"># 4. Descargar clave JSON (solo para desarrollo local)</span>
+</span><span id="__span-3-48"><a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a><span class="c1"># -------------------------------------------------------</span>
+</span><span id="__span-3-49"><a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a><span class="nv">KEY_FILE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/.config/gcloud/</span><span class="si">${</span><span class="nv">SA_ID</span><span class="si">}</span><span class="s2">-key.json&quot;</span>
+</span><span id="__span-3-50"><a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;4️⃣  Descargando clave JSON a: </span><span class="si">${</span><span class="nv">KEY_FILE</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-3-51"><a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>
+</span><span id="__span-3-52"><a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>dirname<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">KEY_FILE</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot;</span>
+</span><span id="__span-3-53"><a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>
+</span><span id="__span-3-54"><a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>gcloud<span class="w"> </span>iam<span class="w"> </span>service-accounts<span class="w"> </span>keys<span class="w"> </span>create<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">KEY_FILE</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-55"><a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a><span class="w">  </span>--project<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-56"><a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a><span class="w">  </span>--iam-account<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SA_EMAIL</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-57"><a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a><span class="w">  </span>--key-file-type<span class="o">=</span>json
+</span><span id="__span-3-58"><a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>
+</span><span id="__span-3-59"><a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a><span class="c1"># -------------------------------------------------------</span>
+</span><span id="__span-3-60"><a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a><span class="c1"># 5. Verificar acceso al secreto</span>
+</span><span id="__span-3-61"><a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a><span class="c1"># -------------------------------------------------------</span>
+</span><span id="__span-3-62"><a id="__codelineno-3-62" name="__codelineno-3-62" href="#__codelineno-3-62"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-3-63"><a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;5️⃣  Verificando acceso al secreto...&quot;</span>
+</span><span id="__span-3-64"><a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a>gcloud<span class="w"> </span>secrets<span class="w"> </span>versions<span class="w"> </span>access<span class="w"> </span>latest<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-65"><a id="__codelineno-3-65" name="__codelineno-3-65" href="#__codelineno-3-65"></a><span class="w">  </span>--secret<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SECRET_ID</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-66"><a id="__codelineno-3-66" name="__codelineno-3-66" href="#__codelineno-3-66"></a><span class="w">  </span>--project<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PROJECT_ID</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-c<span class="w"> </span><span class="m">80</span>
+</span><span id="__span-3-67"><a id="__codelineno-3-67" name="__codelineno-3-67" href="#__codelineno-3-67"></a>
+</span><span id="__span-3-68"><a id="__codelineno-3-68" name="__codelineno-3-68" href="#__codelineno-3-68"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-3-69"><a id="__codelineno-3-69" name="__codelineno-3-69" href="#__codelineno-3-69"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-3-70"><a id="__codelineno-3-70" name="__codelineno-3-70" href="#__codelineno-3-70"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ ─────────────────────────────────────────────&quot;</span>
+</span><span id="__span-3-71"><a id="__codelineno-3-71" name="__codelineno-3-71" href="#__codelineno-3-71"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ Configuración IAM completada con éxito.&quot;</span>
+</span><span id="__span-3-72"><a id="__codelineno-3-72" name="__codelineno-3-72" href="#__codelineno-3-72"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ Clave descargada en: </span><span class="si">${</span><span class="nv">KEY_FILE</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-3-73"><a id="__codelineno-3-73" name="__codelineno-3-73" href="#__codelineno-3-73"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;⚠️  NUNCA subas este archivo al repositorio.&quot;</span>
+</span><span id="__span-3-74"><a id="__codelineno-3-74" name="__codelineno-3-74" href="#__codelineno-3-74"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ ─────────────────────────────────────────────&quot;</span>
+</span></code></pre></div>
+<h3 id="42-script-powershell-windows">4.2 Script PowerShell (Windows)<a class="headerlink" href="#42-script-powershell-windows" title="Permanent link">&para;</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c"># ============================================================================</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c"># setup-firebase-iam.ps1</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c"># Concede acceso al secreto firebase-service-account en Google Secret Manager</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c"># Requiere: gcloud CLI, permisos de administrador del proyecto GCP</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c"># ============================================================================</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nv">$PROJECT_ID</span> <span class="p">=</span> <span class="s2">&quot;amani-160bf&quot;</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="nv">$SECRET_ID</span>  <span class="p">=</span> <span class="s2">&quot;firebase-service-account&quot;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nv">$SA_ID</span>      <span class="p">=</span> <span class="s2">&quot;firebase-secret-reader&quot;</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nv">$SA_EMAIL</span>   <span class="p">=</span> <span class="s2">&quot;${SA_ID}@${PROJECT_ID}.iam.gserviceaccount.com&quot;</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="nb">Write-Host</span> <span class="s2">&quot;🔧 Proyecto: $PROJECT_ID&quot;</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="nb">Write-Host</span> <span class="s2">&quot;🔧 Secreto:  $SECRET_ID&quot;</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="nb">Write-Host</span> <span class="s2">&quot;&quot;</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="c"># 1. Crear Service Account</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="nb">Write-Host</span> <span class="s2">&quot;1️⃣  Creando Service Account &#39;$SA_ID&#39;...&quot;</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="n">gcloud</span> <span class="n">iam</span> <span class="n">service-accounts</span> <span class="n">create</span> <span class="nv">$SA_ID</span> <span class="p">`</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>  <span class="p">-</span><span class="n">-project</span><span class="p">=</span><span class="nv">$PROJECT_ID</span> <span class="p">`</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>  <span class="p">-</span><span class="n">-display-name</span><span class="p">=</span><span class="s2">&quot;Lector de secreto Firebase para desarrollo local&quot;</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="c"># 2. Conceder rol mínimo sobre el secreto</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="nb">Write-Host</span> <span class="s2">&quot;2️⃣  Concediendo roles/secretmanager.secretAccessor a la SA...&quot;</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="n">gcloud</span> <span class="n">secrets</span> <span class="nb">add-iam</span><span class="n">-policy-binding</span> <span class="nv">$SECRET_ID</span> <span class="p">`</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>  <span class="p">-</span><span class="n">-project</span><span class="p">=</span><span class="nv">$PROJECT_ID</span> <span class="p">`</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>  <span class="p">-</span><span class="n">-member</span><span class="p">=</span><span class="s2">&quot;serviceAccount:$SA_EMAIL&quot;</span> <span class="p">`</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>  <span class="p">-</span><span class="n">-role</span><span class="p">=</span><span class="s2">&quot;roles/secretmanager.secretAccessor&quot;</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="c"># 3. Conceder acceso al usuario humano</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="nb">Write-Host</span> <span class="s2">&quot;3️⃣  Concediendo acceso a felixpa2001@gmail.com...&quot;</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="n">gcloud</span> <span class="n">secrets</span> <span class="nb">add-iam</span><span class="n">-policy-binding</span> <span class="nv">$SECRET_ID</span> <span class="p">`</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>  <span class="p">-</span><span class="n">-project</span><span class="p">=</span><span class="nv">$PROJECT_ID</span> <span class="p">`</span>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>  <span class="p">-</span><span class="n">-member</span><span class="p">=</span><span class="s2">&quot;user:felixpa2001@gmail.com&quot;</span> <span class="p">`</span>
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>  <span class="p">-</span><span class="n">-role</span><span class="p">=</span><span class="s2">&quot;roles/secretmanager.secretAccessor&quot;</span>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a><span class="c"># 4. Descargar clave JSON</span>
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a><span class="nv">$KEY_FILE</span> <span class="p">=</span> <span class="s2">&quot;$env:USERPROFILE\.config\gcloud\$SA_ID-key.json&quot;</span>
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a><span class="nb">Write-Host</span> <span class="s2">&quot;4️⃣  Descargando clave JSON a: $KEY_FILE&quot;</span>
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span> <span class="n">-Path</span> <span class="p">(</span><span class="nb">Split-Path</span> <span class="nv">$KEY_FILE</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>
+</span><span id="__span-4-42"><a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a><span class="n">gcloud</span> <span class="n">iam</span> <span class="n">service-accounts</span> <span class="n">keys</span> <span class="n">create</span> <span class="nv">$KEY_FILE</span> <span class="p">`</span>
+</span><span id="__span-4-43"><a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>  <span class="p">-</span><span class="n">-project</span><span class="p">=</span><span class="nv">$PROJECT_ID</span> <span class="p">`</span>
+</span><span id="__span-4-44"><a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>  <span class="p">-</span><span class="n">-iam-account</span><span class="p">=</span><span class="nv">$SA_EMAIL</span> <span class="p">`</span>
+</span><span id="__span-4-45"><a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a>  <span class="p">-</span><span class="n">-key</span><span class="o">-file</span><span class="n">-type</span><span class="p">=</span><span class="n">json</span>
+</span><span id="__span-4-46"><a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>
+</span><span id="__span-4-47"><a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a><span class="c"># 5. Verificar</span>
+</span><span id="__span-4-48"><a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a><span class="nb">Write-Host</span> <span class="s2">&quot;&quot;</span>
+</span><span id="__span-4-49"><a id="__codelineno-4-49" name="__codelineno-4-49" href="#__codelineno-4-49"></a><span class="nb">Write-Host</span> <span class="s2">&quot;5️⃣  Verificando acceso al secreto...&quot;</span>
+</span><span id="__span-4-50"><a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a><span class="n">gcloud</span> <span class="n">secrets</span> <span class="n">versions</span> <span class="n">access</span> <span class="n">latest</span> <span class="p">-</span><span class="n">-secret</span><span class="p">=</span><span class="nv">$SECRET_ID</span> <span class="p">-</span><span class="n">-project</span><span class="p">=</span><span class="nv">$PROJECT_ID</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-First</span> <span class="n">1</span>
+</span><span id="__span-4-51"><a id="__codelineno-4-51" name="__codelineno-4-51" href="#__codelineno-4-51"></a>
+</span><span id="__span-4-52"><a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a><span class="nb">Write-Host</span> <span class="s2">&quot;&quot;</span>
+</span><span id="__span-4-53"><a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a><span class="nb">Write-Host</span> <span class="s2">&quot;✅ Configuración IAM completada con éxito.&quot;</span>
+</span><span id="__span-4-54"><a id="__codelineno-4-54" name="__codelineno-4-54" href="#__codelineno-4-54"></a><span class="nb">Write-Host</span> <span class="s2">&quot;✅ Clave descargada en: $KEY_FILE&quot;</span>
+</span><span id="__span-4-55"><a id="__codelineno-4-55" name="__codelineno-4-55" href="#__codelineno-4-55"></a><span class="nb">Write-Host</span> <span class="s2">&quot;⚠️  NUNCA subas este archivo al repositorio.&quot;</span>
+</span></code></pre></div>
+<h3 id="43-configurar-application-default-credentials-adc">4.3 Configurar Application Default Credentials (ADC)<a class="headerlink" href="#43-configurar-application-default-credentials-adc" title="Permanent link">&para;</a></h3>
+<p>Después de ejecutar el script IAM, configura las credenciales en tu máquina local:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># ──────────────────────────────────────────────────────</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># OPCIÓN A: Login de usuario (recomendado para desarrollo)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># ──────────────────────────────────────────────────────</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>gcloud<span class="w"> </span>auth<span class="w"> </span>application-default<span class="w"> </span>login
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Se abre el navegador → iniciar sesión con felixpa2001@gmail.com</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># ──────────────────────────────────────────────────────</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1"># OPCIÓN B: Usar la clave de la Service Account</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># ──────────────────────────────────────────────────────</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="nb">export</span><span class="w"> </span><span class="nv">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.config/gcloud/firebase-secret-reader-key.json&quot;</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="c1"># ──────────────────────────────────────────────────────</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="c1"># Verificar que ADC funciona</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="c1"># ──────────────────────────────────────────────────────</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>gcloud<span class="w"> </span>auth<span class="w"> </span>application-default<span class="w"> </span>print-access-token
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1"># ──────────────────────────────────────────────────────</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="c1"># Verificar acceso al secreto</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="c1"># ──────────────────────────────────────────────────────</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>gcloud<span class="w"> </span>secrets<span class="w"> </span>versions<span class="w"> </span>access<span class="w"> </span>latest<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">  </span>--secret<span class="o">=</span><span class="s2">&quot;firebase-service-account&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">  </span>--project<span class="o">=</span>amani-160bf<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-c<span class="w"> </span><span class="m">80</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="c1"># Debe mostrar: { &quot;type&quot;: &quot;service_account&quot;, &quot;project_id&quot;: &quot;amani-160bf&quot; ...</span>
+</span></code></pre></div>
+<h3 id="44-nota-arquitectonica-produccion">4.4 Nota Arquitectónica: Producción<a class="headerlink" href="#44-nota-arquitectonica-produccion" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Entorno</th>
+<th>Método</th>
+<th>Razón</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cloud Run</strong></td>
+<td>Asignar SA <code>firebase-secret-reader</code> al servicio (sin clave)</td>
+<td>La plataforma inyecta credenciales vía metadata server</td>
+</tr>
+<tr>
+<td><strong>GKE</strong></td>
+<td>Workload Identity (vincular KSA → GSA)</td>
+<td>Credenciales de corta duración, sin claves JSON</td>
+</tr>
+<tr>
+<td><strong>CI/CD</strong></td>
+<td>Workload Identity Federation</td>
+<td>Acceso sin claves exportadas</td>
+</tr>
+<tr>
+<td><strong>Local</strong></td>
+<td>ADC (<code>gcloud auth application-default login</code>) o <code>GOOGLE_APPLICATION_CREDENTIALS</code></td>
+<td>Solo para desarrollo</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>Nunca uses claves JSON de Service Account en producción.</strong> Son estáticas, no rotan automáticamente y suponen un riesgo de seguridad si se filtran.</p>
+</blockquote>
+<hr />
+<h2 id="5-paso-2-configuracion-spring-boot">5. Paso 2 — Configuración Spring Boot<a class="headerlink" href="#5-paso-2-configuracion-spring-boot" title="Permanent link">&para;</a></h2>
+<h3 id="51-applicationproperties-antes-vs-despues">5.1 application.properties (antes vs después)<a class="headerlink" href="#51-applicationproperties-antes-vs-despues" title="Permanent link">&para;</a></h3>
+<p><strong>❌ ANTES (parche temporal):</strong></p>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="na">spring.cloud.gcp.project-id</span><span class="o">=</span><span class="s">amani-160bf</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="na">spring.config.import</span><span class="o">=</span><span class="s">sm://</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="na">firebase.secret-name</span><span class="o">=</span><span class="s">firebase-service-account</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="na">firebase.enabled</span><span class="o">=</span><span class="s">false</span>
+</span></code></pre></div>
+<p><strong>✅ DESPUÉS (solución definitiva):</strong></p>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="na">spring.cloud.gcp.project-id</span><span class="o">=</span><span class="s">amani-160bf</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="na">spring.config.import</span><span class="o">=</span><span class="s">optional:sm://firebase-service-account</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Desactivar Firebase en desarrollo si no se dispone del archivo de credenciales</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># Poner a &#39;true&#39; para habilitar Firebase cuando las credenciales estén disponibles</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="na">firebase.enabled</span><span class="o">=</span><span class="s">false</span>
+</span></code></pre></div>
+<p><strong>Cambios explicados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Cambio</th>
+<th>Razón</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sm://</code> → <code>optional:sm://firebase-service-account</code></td>
+<td><code>optional:</code> permite que la app arranque aunque el secreto no sea accesible. Nombre explícito evita importar TODOS los secretos.</td>
+</tr>
+<tr>
+<td>Eliminado <code>firebase.secret-name</code></td>
+<td>El nombre del secreto ya va en <code>spring.config.import</code>, no se necesita propiedad separada.</td>
+</tr>
+<tr>
+<td><code>firebase.enabled=false</code></td>
+<td>Sigue por defecto en <code>false</code> para desarrollo local. Cambiar a <code>true</code> cuando las credenciales estén disponibles.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-firebaseconfigjava-refactorizado">5.2 FirebaseConfig.java (refactorizado)<a class="headerlink" href="#52-firebaseconfigjava-refactorizado" title="Permanent link">&para;</a></h3>
+<p>Archivo: <code>src/main/java/com/amani/amaniapirest/configuration/FirebaseConfig.java</code></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">package</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.configuration</span><span class="p">;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.auth.oauth2.GoogleCredentials</span><span class="p">;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.FirebaseApp</span><span class="p">;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.FirebaseOptions</span><span class="p">;</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.auth.FirebaseAuth</span><span class="p">;</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.database.FirebaseDatabase</span><span class="p">;</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.slf4j.Logger</span><span class="p">;</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.slf4j.LoggerFactory</span><span class="p">;</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.beans.factory.annotation.Value</span><span class="p">;</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.boot.autoconfigure.condition.ConditionalOnProperty</span><span class="p">;</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.context.annotation.Bean</span><span class="p">;</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.context.annotation.Configuration</span><span class="p">;</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.ByteArrayInputStream</span><span class="p">;</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.InputStream</span><span class="p">;</span>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.charset.StandardCharsets</span><span class="p">;</span>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.file.Files</span><span class="p">;</span>
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.file.Path</span><span class="p">;</span>
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.file.Paths</span><span class="p">;</span>
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="cm">/**</span>
+</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="cm"> * Configuración del cliente Firebase Admin SDK.</span>
+</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="cm"> *</span>
+</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="cm"> * &lt;p&gt;Solo se activa cuando {@code firebase.enabled=true} en application.properties.</span>
+</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="cm"> * Cuando la propiedad está ausente o es {@code false}, ninguno de los beans</span>
+</span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="cm"> * Firebase se registra y la aplicación arranca normalmente sin Firebase.&lt;/p&gt;</span>
+</span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="cm"> */</span>
+</span><span id="__span-8-30"><a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="nd">@Configuration</span>
+</span><span id="__span-8-31"><a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="nd">@ConditionalOnProperty</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;firebase.enabled&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">havingValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">matchIfMissing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</span><span id="__span-8-32"><a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">FirebaseConfig</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-33"><a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>
+</span><span id="__span-8-34"><a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">FirebaseConfig</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+</span><span id="__span-8-35"><a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a>
+</span><span id="__span-8-36"><a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a><span class="w">    </span><span class="nd">@Value</span><span class="p">(</span><span class="s">&quot;${firebase.database.url:}&quot;</span><span class="p">)</span>
+</span><span id="__span-8-37"><a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">firebaseDatabaseUrl</span><span class="p">;</span>
+</span><span id="__span-8-38"><a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a>
+</span><span id="__span-8-39"><a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a><span class="w">    </span><span class="nd">@Value</span><span class="p">(</span><span class="s">&quot;${firebase.credentials-path:}&quot;</span><span class="p">)</span>
+</span><span id="__span-8-40"><a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">firebaseCredentialsPath</span><span class="p">;</span>
+</span><span id="__span-8-41"><a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a>
+</span><span id="__span-8-42"><a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a><span class="w">    </span><span class="cm">/**</span>
+</span><span id="__span-8-43"><a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a><span class="cm">     * Contenido del secreto inyectado por Spring Cloud GCP mediante</span>
+</span><span id="__span-8-44"><a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a><span class="cm">     * {@code spring.config.import=optional:sm://firebase-service-account}.</span>
+</span><span id="__span-8-45"><a id="__codelineno-8-45" name="__codelineno-8-45" href="#__codelineno-8-45"></a><span class="cm">     * Vacío si el secreto no está disponible (entorno local sin acceso a SM).</span>
+</span><span id="__span-8-46"><a id="__codelineno-8-46" name="__codelineno-8-46" href="#__codelineno-8-46"></a><span class="cm">     */</span>
+</span><span id="__span-8-47"><a id="__codelineno-8-47" name="__codelineno-8-47" href="#__codelineno-8-47"></a><span class="w">    </span><span class="nd">@Value</span><span class="p">(</span><span class="s">&quot;${firebase-service-account:}&quot;</span><span class="p">)</span>
+</span><span id="__span-8-48"><a id="__codelineno-8-48" name="__codelineno-8-48" href="#__codelineno-8-48"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">firebaseSecretPayload</span><span class="p">;</span>
+</span><span id="__span-8-49"><a id="__codelineno-8-49" name="__codelineno-8-49" href="#__codelineno-8-49"></a>
+</span><span id="__span-8-50"><a id="__codelineno-8-50" name="__codelineno-8-50" href="#__codelineno-8-50"></a><span class="w">    </span><span class="nd">@Bean</span>
+</span><span id="__span-8-51"><a id="__codelineno-8-51" name="__codelineno-8-51" href="#__codelineno-8-51"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">FirebaseApp</span><span class="w"> </span><span class="nf">firebaseApp</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-52"><a id="__codelineno-8-52" name="__codelineno-8-52" href="#__codelineno-8-52"></a><span class="w">        </span><span class="n">InputStream</span><span class="w"> </span><span class="n">credentialsStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">resolveCredentialsStream</span><span class="p">();</span>
+</span><span id="__span-8-53"><a id="__codelineno-8-53" name="__codelineno-8-53" href="#__codelineno-8-53"></a>
+</span><span id="__span-8-54"><a id="__codelineno-8-54" name="__codelineno-8-54" href="#__codelineno-8-54"></a><span class="w">        </span><span class="n">FirebaseOptions</span><span class="p">.</span><span class="na">Builder</span><span class="w"> </span><span class="n">builder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FirebaseOptions</span><span class="p">.</span><span class="na">builder</span><span class="p">()</span>
+</span><span id="__span-8-55"><a id="__codelineno-8-55" name="__codelineno-8-55" href="#__codelineno-8-55"></a><span class="w">                </span><span class="p">.</span><span class="na">setCredentials</span><span class="p">(</span><span class="n">GoogleCredentials</span><span class="p">.</span><span class="na">fromStream</span><span class="p">(</span><span class="n">credentialsStream</span><span class="p">));</span>
+</span><span id="__span-8-56"><a id="__codelineno-8-56" name="__codelineno-8-56" href="#__codelineno-8-56"></a>
+</span><span id="__span-8-57"><a id="__codelineno-8-57" name="__codelineno-8-57" href="#__codelineno-8-57"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">firebaseDatabaseUrl</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">firebaseDatabaseUrl</span><span class="p">.</span><span class="na">isBlank</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-58"><a id="__codelineno-8-58" name="__codelineno-8-58" href="#__codelineno-8-58"></a><span class="w">            </span><span class="n">builder</span><span class="p">.</span><span class="na">setDatabaseUrl</span><span class="p">(</span><span class="n">firebaseDatabaseUrl</span><span class="p">);</span>
+</span><span id="__span-8-59"><a id="__codelineno-8-59" name="__codelineno-8-59" href="#__codelineno-8-59"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-60"><a id="__codelineno-8-60" name="__codelineno-8-60" href="#__codelineno-8-60"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">warn</span><span class="p">(</span><span class="s">&quot;[Firebase] No se configuró firebase.database.url; &quot;</span>
+</span><span id="__span-8-61"><a id="__codelineno-8-61" name="__codelineno-8-61" href="#__codelineno-8-61"></a><span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;las operaciones de RTDB no estarán disponibles.&quot;</span><span class="p">);</span>
+</span><span id="__span-8-62"><a id="__codelineno-8-62" name="__codelineno-8-62" href="#__codelineno-8-62"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-8-63"><a id="__codelineno-8-63" name="__codelineno-8-63" href="#__codelineno-8-63"></a>
+</span><span id="__span-8-64"><a id="__codelineno-8-64" name="__codelineno-8-64" href="#__codelineno-8-64"></a><span class="w">        </span><span class="n">FirebaseOptions</span><span class="w"> </span><span class="n">options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+</span><span id="__span-8-65"><a id="__codelineno-8-65" name="__codelineno-8-65" href="#__codelineno-8-65"></a><span class="w">        </span><span class="n">FirebaseApp</span><span class="w"> </span><span class="n">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FirebaseApp</span><span class="p">.</span><span class="na">initializeApp</span><span class="p">(</span><span class="n">options</span><span class="p">);</span>
+</span><span id="__span-8-66"><a id="__codelineno-8-66" name="__codelineno-8-66" href="#__codelineno-8-66"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;[Firebase] FirebaseApp inicializada correctamente.&quot;</span><span class="p">);</span>
+</span><span id="__span-8-67"><a id="__codelineno-8-67" name="__codelineno-8-67" href="#__codelineno-8-67"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">app</span><span class="p">;</span>
+</span><span id="__span-8-68"><a id="__codelineno-8-68" name="__codelineno-8-68" href="#__codelineno-8-68"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-69"><a id="__codelineno-8-69" name="__codelineno-8-69" href="#__codelineno-8-69"></a>
+</span><span id="__span-8-70"><a id="__codelineno-8-70" name="__codelineno-8-70" href="#__codelineno-8-70"></a><span class="w">    </span><span class="nd">@Bean</span>
+</span><span id="__span-8-71"><a id="__codelineno-8-71" name="__codelineno-8-71" href="#__codelineno-8-71"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">FirebaseDatabase</span><span class="w"> </span><span class="nf">firebaseDatabase</span><span class="p">(</span><span class="n">FirebaseApp</span><span class="w"> </span><span class="n">firebaseApp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-72"><a id="__codelineno-8-72" name="__codelineno-8-72" href="#__codelineno-8-72"></a><span class="w">        </span><span class="n">FirebaseDatabase</span><span class="w"> </span><span class="n">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FirebaseDatabase</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="n">firebaseApp</span><span class="p">);</span>
+</span><span id="__span-8-73"><a id="__codelineno-8-73" name="__codelineno-8-73" href="#__codelineno-8-73"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;[Firebase] FirebaseDatabase configurada para la URL: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">firebaseDatabaseUrl</span><span class="p">);</span>
+</span><span id="__span-8-74"><a id="__codelineno-8-74" name="__codelineno-8-74" href="#__codelineno-8-74"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">db</span><span class="p">;</span>
+</span><span id="__span-8-75"><a id="__codelineno-8-75" name="__codelineno-8-75" href="#__codelineno-8-75"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-76"><a id="__codelineno-8-76" name="__codelineno-8-76" href="#__codelineno-8-76"></a>
+</span><span id="__span-8-77"><a id="__codelineno-8-77" name="__codelineno-8-77" href="#__codelineno-8-77"></a><span class="w">    </span><span class="nd">@Bean</span>
+</span><span id="__span-8-78"><a id="__codelineno-8-78" name="__codelineno-8-78" href="#__codelineno-8-78"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">FirebaseAuth</span><span class="w"> </span><span class="nf">firebaseAuth</span><span class="p">(</span><span class="n">FirebaseApp</span><span class="w"> </span><span class="n">firebaseApp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-79"><a id="__codelineno-8-79" name="__codelineno-8-79" href="#__codelineno-8-79"></a><span class="w">        </span><span class="n">FirebaseAuth</span><span class="w"> </span><span class="n">auth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FirebaseAuth</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="n">firebaseApp</span><span class="p">);</span>
+</span><span id="__span-8-80"><a id="__codelineno-8-80" name="__codelineno-8-80" href="#__codelineno-8-80"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;[Firebase] FirebaseAuth configurada correctamente.&quot;</span><span class="p">);</span>
+</span><span id="__span-8-81"><a id="__codelineno-8-81" name="__codelineno-8-81" href="#__codelineno-8-81"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">auth</span><span class="p">;</span>
+</span><span id="__span-8-82"><a id="__codelineno-8-82" name="__codelineno-8-82" href="#__codelineno-8-82"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-83"><a id="__codelineno-8-83" name="__codelineno-8-83" href="#__codelineno-8-83"></a>
+</span><span id="__span-8-84"><a id="__codelineno-8-84" name="__codelineno-8-84" href="#__codelineno-8-84"></a><span class="w">    </span><span class="cm">/**</span>
+</span><span id="__span-8-85"><a id="__codelineno-8-85" name="__codelineno-8-85" href="#__codelineno-8-85"></a><span class="cm">     * Resuelve el stream de credenciales en orden de prioridad:</span>
+</span><span id="__span-8-86"><a id="__codelineno-8-86" name="__codelineno-8-86" href="#__codelineno-8-86"></a><span class="cm">     * &lt;ol&gt;</span>
+</span><span id="__span-8-87"><a id="__codelineno-8-87" name="__codelineno-8-87" href="#__codelineno-8-87"></a><span class="cm">     *   &lt;li&gt;Contenido del secreto inyectado por Spring Cloud GCP</span>
+</span><span id="__span-8-88"><a id="__codelineno-8-88" name="__codelineno-8-88" href="#__codelineno-8-88"></a><span class="cm">     *       (property {@code firebase-service-account}).&lt;/li&gt;</span>
+</span><span id="__span-8-89"><a id="__codelineno-8-89" name="__codelineno-8-89" href="#__codelineno-8-89"></a><span class="cm">     *   &lt;li&gt;Ruta externa configurada en {@code firebase.credentials-path}.&lt;/li&gt;</span>
+</span><span id="__span-8-90"><a id="__codelineno-8-90" name="__codelineno-8-90" href="#__codelineno-8-90"></a><span class="cm">     *   &lt;li&gt;Classpath: {@code serviceAccountKey.json}.&lt;/li&gt;</span>
+</span><span id="__span-8-91"><a id="__codelineno-8-91" name="__codelineno-8-91" href="#__codelineno-8-91"></a><span class="cm">     * &lt;/ol&gt;</span>
+</span><span id="__span-8-92"><a id="__codelineno-8-92" name="__codelineno-8-92" href="#__codelineno-8-92"></a><span class="cm">     */</span>
+</span><span id="__span-8-93"><a id="__codelineno-8-93" name="__codelineno-8-93" href="#__codelineno-8-93"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">InputStream</span><span class="w"> </span><span class="nf">resolveCredentialsStream</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-94"><a id="__codelineno-8-94" name="__codelineno-8-94" href="#__codelineno-8-94"></a><span class="w">        </span><span class="c1">// 1. Secreto inyectado por Spring Cloud GCP (spring.config.import=optional:sm://)</span>
+</span><span id="__span-8-95"><a id="__codelineno-8-95" name="__codelineno-8-95" href="#__codelineno-8-95"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">firebaseSecretPayload</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">firebaseSecretPayload</span><span class="p">.</span><span class="na">isBlank</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-96"><a id="__codelineno-8-96" name="__codelineno-8-96" href="#__codelineno-8-96"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;[Firebase] Cargando credenciales desde Secret Manager &quot;</span>
+</span><span id="__span-8-97"><a id="__codelineno-8-97" name="__codelineno-8-97" href="#__codelineno-8-97"></a><span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;(vía spring.config.import). Longitud: {}&quot;</span><span class="p">,</span>
+</span><span id="__span-8-98"><a id="__codelineno-8-98" name="__codelineno-8-98" href="#__codelineno-8-98"></a><span class="w">                    </span><span class="n">firebaseSecretPayload</span><span class="p">.</span><span class="na">length</span><span class="p">());</span>
+</span><span id="__span-8-99"><a id="__codelineno-8-99" name="__codelineno-8-99" href="#__codelineno-8-99"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ByteArrayInputStream</span><span class="p">(</span>
+</span><span id="__span-8-100"><a id="__codelineno-8-100" name="__codelineno-8-100" href="#__codelineno-8-100"></a><span class="w">                    </span><span class="n">firebaseSecretPayload</span><span class="p">.</span><span class="na">trim</span><span class="p">().</span><span class="na">getBytes</span><span class="p">(</span><span class="n">StandardCharsets</span><span class="p">.</span><span class="na">UTF_8</span><span class="p">));</span>
+</span><span id="__span-8-101"><a id="__codelineno-8-101" name="__codelineno-8-101" href="#__codelineno-8-101"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-8-102"><a id="__codelineno-8-102" name="__codelineno-8-102" href="#__codelineno-8-102"></a>
+</span><span id="__span-8-103"><a id="__codelineno-8-103" name="__codelineno-8-103" href="#__codelineno-8-103"></a><span class="w">        </span><span class="c1">// 2. Ruta externa (variable de entorno o propiedad)</span>
+</span><span id="__span-8-104"><a id="__codelineno-8-104" name="__codelineno-8-104" href="#__codelineno-8-104"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">firebaseCredentialsPath</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">firebaseCredentialsPath</span><span class="p">.</span><span class="na">isBlank</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-105"><a id="__codelineno-8-105" name="__codelineno-8-105" href="#__codelineno-8-105"></a><span class="w">            </span><span class="n">Path</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Paths</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">firebaseCredentialsPath</span><span class="p">);</span>
+</span><span id="__span-8-106"><a id="__codelineno-8-106" name="__codelineno-8-106" href="#__codelineno-8-106"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Files</span><span class="p">.</span><span class="na">exists</span><span class="p">(</span><span class="n">path</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-107"><a id="__codelineno-8-107" name="__codelineno-8-107" href="#__codelineno-8-107"></a><span class="w">                </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;[Firebase] Cargando credenciales desde ruta externa: {}&quot;</span><span class="p">,</span>
+</span><span id="__span-8-108"><a id="__codelineno-8-108" name="__codelineno-8-108" href="#__codelineno-8-108"></a><span class="w">                        </span><span class="n">firebaseCredentialsPath</span><span class="p">);</span>
+</span><span id="__span-8-109"><a id="__codelineno-8-109" name="__codelineno-8-109" href="#__codelineno-8-109"></a><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">Files</span><span class="p">.</span><span class="na">newInputStream</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+</span><span id="__span-8-110"><a id="__codelineno-8-110" name="__codelineno-8-110" href="#__codelineno-8-110"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-8-111"><a id="__codelineno-8-111" name="__codelineno-8-111" href="#__codelineno-8-111"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">warn</span><span class="p">(</span><span class="s">&quot;[Firebase] Ruta de credenciales configurada pero archivo no encontrado: {}&quot;</span><span class="p">,</span>
+</span><span id="__span-8-112"><a id="__codelineno-8-112" name="__codelineno-8-112" href="#__codelineno-8-112"></a><span class="w">                    </span><span class="n">firebaseCredentialsPath</span><span class="p">);</span>
+</span><span id="__span-8-113"><a id="__codelineno-8-113" name="__codelineno-8-113" href="#__codelineno-8-113"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-8-114"><a id="__codelineno-8-114" name="__codelineno-8-114" href="#__codelineno-8-114"></a>
+</span><span id="__span-8-115"><a id="__codelineno-8-115" name="__codelineno-8-115" href="#__codelineno-8-115"></a><span class="w">        </span><span class="c1">// 3. Fallback a classpath</span>
+</span><span id="__span-8-116"><a id="__codelineno-8-116" name="__codelineno-8-116" href="#__codelineno-8-116"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;[Firebase] Cargando credenciales desde classpath: serviceAccountKey.json&quot;</span><span class="p">);</span>
+</span><span id="__span-8-117"><a id="__codelineno-8-117" name="__codelineno-8-117" href="#__codelineno-8-117"></a><span class="w">        </span><span class="n">InputStream</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getClass</span><span class="p">().</span><span class="na">getClassLoader</span><span class="p">()</span>
+</span><span id="__span-8-118"><a id="__codelineno-8-118" name="__codelineno-8-118" href="#__codelineno-8-118"></a><span class="w">                </span><span class="p">.</span><span class="na">getResourceAsStream</span><span class="p">(</span><span class="s">&quot;serviceAccountKey.json&quot;</span><span class="p">);</span>
+</span><span id="__span-8-119"><a id="__codelineno-8-119" name="__codelineno-8-119" href="#__codelineno-8-119"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stream</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-120"><a id="__codelineno-8-120" name="__codelineno-8-120" href="#__codelineno-8-120"></a><span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IOException</span><span class="p">(</span><span class="s">&quot;No se encontraron credenciales de Firebase: &quot;</span>
+</span><span id="__span-8-121"><a id="__codelineno-8-121" name="__codelineno-8-121" href="#__codelineno-8-121"></a><span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;ni en Secret Manager (property firebase-service-account vacía), &quot;</span>
+</span><span id="__span-8-122"><a id="__codelineno-8-122" name="__codelineno-8-122" href="#__codelineno-8-122"></a><span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;ni en ruta externa ni en classpath (serviceAccountKey.json). &quot;</span>
+</span><span id="__span-8-123"><a id="__codelineno-8-123" name="__codelineno-8-123" href="#__codelineno-8-123"></a><span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;Verifique que spring.config.import=optional:sm://firebase-service-account &quot;</span>
+</span><span id="__span-8-124"><a id="__codelineno-8-124" name="__codelineno-8-124" href="#__codelineno-8-124"></a><span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;está configurado y que el usuario tiene el rol &quot;</span>
+</span><span id="__span-8-125"><a id="__codelineno-8-125" name="__codelineno-8-125" href="#__codelineno-8-125"></a><span class="w">                    </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;roles/secretmanager.secretAccessor sobre el secreto.&quot;</span><span class="p">);</span>
+</span><span id="__span-8-126"><a id="__codelineno-8-126" name="__codelineno-8-126" href="#__codelineno-8-126"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-8-127"><a id="__codelineno-8-127" name="__codelineno-8-127" href="#__codelineno-8-127"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">stream</span><span class="p">;</span>
+</span><span id="__span-8-128"><a id="__codelineno-8-128" name="__codelineno-8-128" href="#__codelineno-8-128"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-129"><a id="__codelineno-8-129" name="__codelineno-8-129" href="#__codelineno-8-129"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="53-explicacion-de-los-cambios">5.3 Explicación de los cambios<a class="headerlink" href="#53-explicacion-de-los-cambios" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Cambio</th>
+<th>Antes</th>
+<th>Después</th>
+<th>Razón</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anotación de clase</td>
+<td><code>@ConditionalOnProperty(matchIfMissing = true)</code></td>
+<td><code>@ConditionalOnProperty(matchIfMissing = false)</code></td>
+<td>Firebase desactivado por defecto; solo se activa con <code>firebase.enabled=true</code></td>
+</tr>
+<tr>
+<td>Inyección de secreto</td>
+<td><code>SecretManagerTemplate</code> + bucle de formatos</td>
+<td><code>@Value("${firebase-service-account:}")</code></td>
+<td>Usa el mecanismo nativo de Spring Cloud GCP (<code>spring.config.import</code>)</td>
+</tr>
+<tr>
+<td>Resolución de credenciales</td>
+<td>Probaba <code>firebaseSecretName</code>, <code>sm://name</code>, <code>sm@name</code>, <code>projects/...</code></td>
+<td>Lee la property inyectada directamente</td>
+<td>Un solo camino, limpio y mantenible</td>
+</tr>
+<tr>
+<td>Dependencias</td>
+<td><code>@Autowired SecretManagerTemplate</code>, <code>@Value firebase.secret-name</code>, <code>@Value gcp.projectId</code></td>
+<td>Solo <code>@Value firebaseSecretPayload</code></td>
+<td>Menos dependencias, menos puntos de fallo</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-paso-3-refactorizacion-de-codigo-anti-patron-optional">6. Paso 3 — Refactorización de Código (Anti-patrón Optional)<a class="headerlink" href="#6-paso-3-refactorizacion-de-codigo-anti-patron-optional" title="Permanent link">&para;</a></h2>
+<h3 id="61-por-que-optional-es-un-anti-patron">6.1 Por qué Optional<Bean> es un anti-patrón<a class="headerlink" href="#61-por-que-optional-es-un-anti-patron" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Problema</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rompe el contrato del contenedor</strong></td>
+<td>Spring DI decide en tiempo de arranque si un bean existe o no. <code>@ConditionalOnBean</code> es el mecanismo nativo para condicionalidad.</td>
+</tr>
+<tr>
+<td><strong>Oculta errores de configuración</strong></td>
+<td>Si <code>FirebaseAuth</code> falta por un bug en <code>FirebaseConfig</code>, el desarrollador no se entera — solo recibe un 503 silencioso.</td>
+</tr>
+<tr>
+<td><strong>Contamina el código de negocio</strong></td>
+<td>Cada método debe hacer <code>isPresent()</code> / <code>isEmpty()</code>, ensuciando la lógica de dominio con comprobaciones de infraestructura.</td>
+</tr>
+<tr>
+<td><strong>Viola SOLID</strong></td>
+<td>Vierte la responsabilidad de "saber si Firebase está disponible" en cada consumidor, cuando es una decisión de configuración que pertenece a un solo lugar.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Solución:</strong> <code>@ConditionalOnBean(FirebaseApp.class)</code> a nivel de clase. Cuando <code>firebase.enabled=false</code> → <code>FirebaseConfig</code> no se registra → <code>FirebaseApp</code> no existe → toda la cadena Firebase se omite.</p>
+<h3 id="62-firebaseauthcontrollerjava-refactorizado">6.2 FirebaseAuthController.java (refactorizado)<a class="headerlink" href="#62-firebaseauthcontrollerjava-refactorizado" title="Permanent link">&para;</a></h3>
+<p>Archivo: <code>src/main/java/com/amani/amaniapirest/controllers/login/FirebaseAuthController.java</code></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">package</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.controllers.login</span><span class="p">;</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.models.Usuario</span><span class="p">;</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.repository.UsuarioRepository</span><span class="p">;</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.auth.FirebaseAuth</span><span class="p">;</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.auth.FirebaseAuthException</span><span class="p">;</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.FirebaseApp</span><span class="p">;</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="kn">import</span><span class="w"> </span><span class="nn">io.swagger.v3.oas.annotations.Operation</span><span class="p">;</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="kn">import</span><span class="w"> </span><span class="nn">io.swagger.v3.oas.annotations.tags.Tag</span><span class="p">;</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="kn">import</span><span class="w"> </span><span class="nn">lombok.RequiredArgsConstructor</span><span class="p">;</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.slf4j.Logger</span><span class="p">;</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.slf4j.LoggerFactory</span><span class="p">;</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.boot.autoconfigure.condition.ConditionalOnBean</span><span class="p">;</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.http.HttpStatus</span><span class="p">;</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.http.ResponseEntity</span><span class="p">;</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.security.core.annotation.AuthenticationPrincipal</span><span class="p">;</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.security.core.userdetails.UserDetails</span><span class="p">;</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.GetMapping</span><span class="p">;</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="p">;</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.RestController</span><span class="p">;</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.HashMap</span><span class="p">;</span>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Map</span><span class="p">;</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="cm">/**</span>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="cm"> * Controlador para la obtención de tokens personalizados de Firebase.</span>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="cm"> *</span>
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="cm"> * &lt;p&gt;Solo se registra cuando el bean {@link FirebaseApp} está disponible</span>
+</span><span id="__span-9-29"><a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="cm"> * (es decir, cuando {@code firebase.enabled=true}).&lt;/p&gt;</span>
+</span><span id="__span-9-30"><a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="cm"> */</span>
+</span><span id="__span-9-31"><a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="nd">@RestController</span>
+</span><span id="__span-9-32"><a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="nd">@RequestMapping</span><span class="p">(</span><span class="s">&quot;/api/auth&quot;</span><span class="p">)</span>
+</span><span id="__span-9-33"><a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="nd">@RequiredArgsConstructor</span>
+</span><span id="__span-9-34"><a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="nd">@Tag</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Firebase Auth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Obtención de tokens para Firebase&quot;</span><span class="p">)</span>
+</span><span id="__span-9-35"><a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="nd">@ConditionalOnBean</span><span class="p">(</span><span class="n">FirebaseApp</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+</span><span id="__span-9-36"><a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">FirebaseAuthController</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-37"><a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a>
+</span><span id="__span-9-38"><a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">FirebaseAuthController</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+</span><span id="__span-9-39"><a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">FirebaseAuth</span><span class="w"> </span><span class="n">firebaseAuth</span><span class="p">;</span>
+</span><span id="__span-9-40"><a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">UsuarioRepository</span><span class="w"> </span><span class="n">usuarioRepository</span><span class="p">;</span>
+</span><span id="__span-9-41"><a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a>
+</span><span id="__span-9-42"><a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a><span class="w">    </span><span class="nd">@Operation</span><span class="p">(</span><span class="n">summary</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Obtener Firebase Custom Token&quot;</span><span class="p">,</span>
+</span><span id="__span-9-43"><a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a><span class="w">               </span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Genera un token de Firebase para el usuario autenticado&quot;</span><span class="p">)</span>
+</span><span id="__span-9-44"><a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a><span class="w">    </span><span class="nd">@GetMapping</span><span class="p">(</span><span class="s">&quot;/firebase-token&quot;</span><span class="p">)</span>
+</span><span id="__span-9-45"><a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="nf">getFirebaseToken</span><span class="p">(</span>
+</span><span id="__span-9-46"><a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a><span class="w">            </span><span class="nd">@AuthenticationPrincipal</span><span class="w"> </span><span class="n">UserDetails</span><span class="w"> </span><span class="n">userDetails</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-47"><a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userDetails</span><span class="p">.</span><span class="na">getUsername</span><span class="p">();</span>
+</span><span id="__span-9-48"><a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a><span class="w">        </span><span class="n">Usuario</span><span class="w"> </span><span class="n">usuario</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">usuarioRepository</span><span class="p">.</span><span class="na">findByEmail</span><span class="p">(</span><span class="n">email</span><span class="p">).</span><span class="na">orElse</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+</span><span id="__span-9-49"><a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a>
+</span><span id="__span-9-50"><a id="__codelineno-9-50" name="__codelineno-9-50" href="#__codelineno-9-50"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">usuario</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-51"><a id="__codelineno-9-51" name="__codelineno-9-51" href="#__codelineno-9-51"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">warn</span><span class="p">(</span><span class="s">&quot;[Firebase Auth] Usuario no encontrado para email: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">);</span>
+</span><span id="__span-9-52"><a id="__codelineno-9-52" name="__codelineno-9-52" href="#__codelineno-9-52"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">status</span><span class="p">(</span><span class="n">HttpStatus</span><span class="p">.</span><span class="na">UNAUTHORIZED</span><span class="p">).</span><span class="na">build</span><span class="p">();</span>
+</span><span id="__span-9-53"><a id="__codelineno-9-53" name="__codelineno-9-53" href="#__codelineno-9-53"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-9-54"><a id="__codelineno-9-54" name="__codelineno-9-54" href="#__codelineno-9-54"></a>
+</span><span id="__span-9-55"><a id="__codelineno-9-55" name="__codelineno-9-55" href="#__codelineno-9-55"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-56"><a id="__codelineno-9-56" name="__codelineno-9-56" href="#__codelineno-9-56"></a><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">uid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">usuario</span><span class="p">.</span><span class="na">getIdUsuario</span><span class="p">());</span>
+</span><span id="__span-9-57"><a id="__codelineno-9-57" name="__codelineno-9-57" href="#__codelineno-9-57"></a>
+</span><span id="__span-9-58"><a id="__codelineno-9-58" name="__codelineno-9-58" href="#__codelineno-9-58"></a><span class="w">            </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">additionalClaims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-9-59"><a id="__codelineno-9-59" name="__codelineno-9-59" href="#__codelineno-9-59"></a><span class="w">            </span><span class="n">additionalClaims</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;role&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">usuario</span><span class="p">.</span><span class="na">getRol</span><span class="p">().</span><span class="na">name</span><span class="p">());</span>
+</span><span id="__span-9-60"><a id="__codelineno-9-60" name="__codelineno-9-60" href="#__codelineno-9-60"></a>
+</span><span id="__span-9-61"><a id="__codelineno-9-61" name="__codelineno-9-61" href="#__codelineno-9-61"></a><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">customToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">firebaseAuth</span><span class="p">.</span><span class="na">createCustomToken</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span><span class="w"> </span><span class="n">additionalClaims</span><span class="p">);</span>
+</span><span id="__span-9-62"><a id="__codelineno-9-62" name="__codelineno-9-62" href="#__codelineno-9-62"></a>
+</span><span id="__span-9-63"><a id="__codelineno-9-63" name="__codelineno-9-63" href="#__codelineno-9-63"></a><span class="w">            </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-9-64"><a id="__codelineno-9-64" name="__codelineno-9-64" href="#__codelineno-9-64"></a><span class="w">            </span><span class="n">response</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;firebaseToken&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">customToken</span><span class="p">);</span>
+</span><span id="__span-9-65"><a id="__codelineno-9-65" name="__codelineno-9-65" href="#__codelineno-9-65"></a>
+</span><span id="__span-9-66"><a id="__codelineno-9-66" name="__codelineno-9-66" href="#__codelineno-9-66"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;[Firebase Auth] Token generado correctamente para usuario ID: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">uid</span><span class="p">);</span>
+</span><span id="__span-9-67"><a id="__codelineno-9-67" name="__codelineno-9-67" href="#__codelineno-9-67"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">ok</span><span class="p">(</span><span class="n">response</span><span class="p">);</span>
+</span><span id="__span-9-68"><a id="__codelineno-9-68" name="__codelineno-9-68" href="#__codelineno-9-68"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">FirebaseAuthException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-69"><a id="__codelineno-9-69" name="__codelineno-9-69" href="#__codelineno-9-69"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;[Firebase Auth] Error al crear custom token&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+</span><span id="__span-9-70"><a id="__codelineno-9-70" name="__codelineno-9-70" href="#__codelineno-9-70"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">status</span><span class="p">(</span><span class="n">HttpStatus</span><span class="p">.</span><span class="na">INTERNAL_SERVER_ERROR</span><span class="p">).</span><span class="na">build</span><span class="p">();</span>
+</span><span id="__span-9-71"><a id="__codelineno-9-71" name="__codelineno-9-71" href="#__codelineno-9-71"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-9-72"><a id="__codelineno-9-72" name="__codelineno-9-72" href="#__codelineno-9-72"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-9-73"><a id="__codelineno-9-73" name="__codelineno-9-73" href="#__codelineno-9-73"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Cambios clave:</strong></p>
+<ul>
+<li><code>Optional&lt;FirebaseAuth&gt;</code> → <code>FirebaseAuth</code> (inyección directa)</li>
+<li>Añadido <code>@ConditionalOnBean(FirebaseApp.class)</code> a nivel de clase</li>
+<li>Eliminado <code>firebaseAuth.isEmpty()</code> check y <code>firebaseAuth.get()</code></li>
+<li>Eliminado <code>return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build()</code></li>
+</ul>
+<h3 id="63-mensajeeventlistenerjava-refactorizado">6.3 MensajeEventListener.java (refactorizado)<a class="headerlink" href="#63-mensajeeventlistenerjava-refactorizado" title="Permanent link">&para;</a></h3>
+<p>Archivo: <code>src/main/java/com/amani/amaniapirest/listeners/MensajeEventListener.java</code></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">package</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.listeners</span><span class="p">;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.events.MensajeNuevoEvent</span><span class="p">;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.models.Mensaje</span><span class="p">;</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.models.Usuario</span><span class="p">;</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.services.FirebaseChatService</span><span class="p">;</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.services.FirebaseNotificationService</span><span class="p">;</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.FirebaseApp</span><span class="p">;</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.boot.autoconfigure.condition.ConditionalOnBean</span><span class="p">;</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.scheduling.annotation.Async</span><span class="p">;</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.stereotype.Component</span><span class="p">;</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.transaction.event.TransactionPhase</span><span class="p">;</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.transaction.event.TransactionalEventListener</span><span class="p">;</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="cm">/**</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="cm"> * Listener del dominio {@link Mensaje} adaptado para no usar WebSocket.</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="cm"> *</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="cm"> * &lt;p&gt;Al recibir un {@link MensajeNuevoEvent} escribe el mensaje en Firebase RTDB</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="cm"> * para entrega en tiempo real a los clientes y desencadena notificación push.&lt;/p&gt;</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="cm"> *</span>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="cm"> * &lt;p&gt;Solo se instancia si {@link FirebaseApp} está disponible (es decir,</span>
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="cm"> * si Firebase está configurado). En entornos sin Firebase este bean se omite.&lt;/p&gt;</span>
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="cm"> */</span>
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="nd">@Component</span>
+</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="nd">@ConditionalOnBean</span><span class="p">(</span><span class="n">FirebaseApp</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+</span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MensajeEventListener</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-27"><a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>
+</span><span id="__span-10-28"><a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">FirebaseChatService</span><span class="w"> </span><span class="n">firebaseChatService</span><span class="p">;</span>
+</span><span id="__span-10-29"><a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">FirebaseNotificationService</span><span class="w"> </span><span class="n">firebaseService</span><span class="p">;</span>
+</span><span id="__span-10-30"><a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>
+</span><span id="__span-10-31"><a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">MensajeEventListener</span><span class="p">(</span><span class="n">FirebaseChatService</span><span class="w"> </span><span class="n">firebaseChatService</span><span class="p">,</span>
+</span><span id="__span-10-32"><a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a><span class="w">                                </span><span class="n">FirebaseNotificationService</span><span class="w"> </span><span class="n">firebaseService</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-33"><a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">firebaseChatService</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">firebaseChatService</span><span class="p">;</span>
+</span><span id="__span-10-34"><a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">firebaseService</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">firebaseService</span><span class="p">;</span>
+</span><span id="__span-10-35"><a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-10-36"><a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a>
+</span><span id="__span-10-37"><a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a><span class="w">    </span><span class="nd">@Async</span>
+</span><span id="__span-10-38"><a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a><span class="w">    </span><span class="nd">@TransactionalEventListener</span><span class="p">(</span><span class="n">phase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TransactionPhase</span><span class="p">.</span><span class="na">AFTER_COMMIT</span><span class="p">)</span>
+</span><span id="__span-10-39"><a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onMensajeNuevo</span><span class="p">(</span><span class="n">MensajeNuevoEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-40"><a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a><span class="w">        </span><span class="n">Mensaje</span><span class="w"> </span><span class="n">mensaje</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">getMensaje</span><span class="p">();</span>
+</span><span id="__span-10-41"><a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a><span class="w">        </span><span class="n">Usuario</span><span class="w"> </span><span class="n">receiver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mensaje</span><span class="p">.</span><span class="na">getReceiver</span><span class="p">();</span>
+</span><span id="__span-10-42"><a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a><span class="w">        </span><span class="n">Usuario</span><span class="w"> </span><span class="n">sender</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mensaje</span><span class="p">.</span><span class="na">getSender</span><span class="p">();</span>
+</span><span id="__span-10-43"><a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a>
+</span><span id="__span-10-44"><a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">receiver</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-10-45"><a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a>
+</span><span id="__span-10-46"><a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a><span class="w">        </span><span class="n">firebaseChatService</span><span class="p">.</span><span class="na">enviarMensaje</span><span class="p">(</span><span class="n">mensaje</span><span class="p">);</span>
+</span><span id="__span-10-47"><a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a>
+</span><span id="__span-10-48"><a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">receiver</span><span class="p">.</span><span class="na">getFcmToken</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">receiver</span><span class="p">.</span><span class="na">getFcmToken</span><span class="p">().</span><span class="na">isBlank</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-49"><a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">nombreRemitente</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">sender</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span>
+</span><span id="__span-10-50"><a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a><span class="w">                    </span><span class="o">?</span><span class="w"> </span><span class="n">sender</span><span class="p">.</span><span class="na">getNombre</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sender</span><span class="p">.</span><span class="na">getApellido</span><span class="p">()</span>
+</span><span id="__span-10-51"><a id="__codelineno-10-51" name="__codelineno-10-51" href="#__codelineno-10-51"></a><span class="w">                    </span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Alguien&quot;</span><span class="p">;</span>
+</span><span id="__span-10-52"><a id="__codelineno-10-52" name="__codelineno-10-52" href="#__codelineno-10-52"></a><span class="w">            </span><span class="n">firebaseService</span><span class="p">.</span><span class="na">enviarPush</span><span class="p">(</span>
+</span><span id="__span-10-53"><a id="__codelineno-10-53" name="__codelineno-10-53" href="#__codelineno-10-53"></a><span class="w">                    </span><span class="n">receiver</span><span class="p">.</span><span class="na">getFcmToken</span><span class="p">(),</span>
+</span><span id="__span-10-54"><a id="__codelineno-10-54" name="__codelineno-10-54" href="#__codelineno-10-54"></a><span class="w">                    </span><span class="s">&quot;Nuevo mensaje de &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nombreRemitente</span><span class="p">,</span>
+</span><span id="__span-10-55"><a id="__codelineno-10-55" name="__codelineno-10-55" href="#__codelineno-10-55"></a><span class="w">                    </span><span class="n">mensaje</span><span class="p">.</span><span class="na">getMensaje</span><span class="p">());</span>
+</span><span id="__span-10-56"><a id="__codelineno-10-56" name="__codelineno-10-56" href="#__codelineno-10-56"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-10-57"><a id="__codelineno-10-57" name="__codelineno-10-57" href="#__codelineno-10-57"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-10-58"><a id="__codelineno-10-58" name="__codelineno-10-58" href="#__codelineno-10-58"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Cambios clave:</strong></p>
+<ul>
+<li><code>Optional&lt;FirebaseChatService&gt;</code> → <code>FirebaseChatService</code> (inyección directa)</li>
+<li><code>Optional&lt;FirebaseNotificationService&gt;</code> → <code>FirebaseNotificationService</code> (inyección directa)</li>
+<li>Añadido <code>@ConditionalOnBean(FirebaseApp.class)</code> a nivel de clase</li>
+<li>Eliminados todos los <code>isPresent()</code> checks y <code>.get()</code> calls</li>
+</ul>
+<h3 id="64-firebasenotificationservicejava-refactorizado">6.4 FirebaseNotificationService.java (refactorizado)<a class="headerlink" href="#64-firebasenotificationservicejava-refactorizado" title="Permanent link">&para;</a></h3>
+<p>Archivo: <code>src/main/java/com/amani/amaniapirest/services/FirebaseNotificationService.java</code></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">package</span><span class="w"> </span><span class="nn">com.amani.amaniapirest.services</span><span class="p">;</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.FirebaseApp</span><span class="p">;</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.messaging.FirebaseMessaging</span><span class="p">;</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.messaging.Message</span><span class="p">;</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.messaging.Notification</span><span class="p">;</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.slf4j.Logger</span><span class="p">;</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.slf4j.LoggerFactory</span><span class="p">;</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.boot.autoconfigure.condition.ConditionalOnBean</span><span class="p">;</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.stereotype.Service</span><span class="p">;</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.util.StringUtils</span><span class="p">;</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="cm">/**</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="cm"> * Servicio para el envío de notificaciones push mediante Firebase Cloud Messaging (FCM).</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="cm"> *</span>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="cm"> * &lt;p&gt;Usa Firebase Admin SDK para enviar notificaciones. Si el token es nulo/vacío</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="cm"> * la notificación se omite. Solo se instancia si {@link FirebaseApp} está disponible.&lt;/p&gt;</span>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="cm"> */</span>
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="nd">@Service</span>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="nd">@ConditionalOnBean</span><span class="p">(</span><span class="n">FirebaseApp</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">FirebaseNotificationService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">FirebaseNotificationService</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>
+</span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">enviarPush</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">fcmToken</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">titulo</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">cuerpo</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-26"><a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">StringUtils</span><span class="p">.</span><span class="na">hasText</span><span class="p">(</span><span class="n">fcmToken</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-27"><a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">debug</span><span class="p">(</span><span class="s">&quot;[FCM] Token vacío — notificación omitida. Título: &#39;{}&#39;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">titulo</span><span class="p">);</span>
+</span><span id="__span-11-28"><a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a><span class="w">            </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-11-29"><a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-11-30"><a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>
+</span><span id="__span-11-31"><a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-32"><a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a><span class="w">            </span><span class="n">Message</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Message</span><span class="p">.</span><span class="na">builder</span><span class="p">()</span>
+</span><span id="__span-11-33"><a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a><span class="w">                    </span><span class="p">.</span><span class="na">setToken</span><span class="p">(</span><span class="n">fcmToken</span><span class="p">)</span>
+</span><span id="__span-11-34"><a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a><span class="w">                    </span><span class="p">.</span><span class="na">setNotification</span><span class="p">(</span><span class="n">Notification</span><span class="p">.</span><span class="na">builder</span><span class="p">()</span>
+</span><span id="__span-11-35"><a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a><span class="w">                            </span><span class="p">.</span><span class="na">setTitle</span><span class="p">(</span><span class="n">titulo</span><span class="p">)</span>
+</span><span id="__span-11-36"><a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a><span class="w">                            </span><span class="p">.</span><span class="na">setBody</span><span class="p">(</span><span class="n">cuerpo</span><span class="p">)</span>
+</span><span id="__span-11-37"><a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a><span class="w">                            </span><span class="p">.</span><span class="na">build</span><span class="p">())</span>
+</span><span id="__span-11-38"><a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a><span class="w">                    </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+</span><span id="__span-11-39"><a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>
+</span><span id="__span-11-40"><a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">messageId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FirebaseMessaging</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">send</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span><span id="__span-11-41"><a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;[FCM] Notificación enviada. messageId={}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">messageId</span><span class="p">);</span>
+</span><span id="__span-11-42"><a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">ex</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-43"><a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;[FCM] Error enviando notificación: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ex</span><span class="p">.</span><span class="na">getMessage</span><span class="p">(),</span><span class="w"> </span><span class="n">ex</span><span class="p">);</span>
+</span><span id="__span-11-44"><a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-11-45"><a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-11-46"><a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Cambios clave:</strong></p>
+<ul>
+<li>Añadido <code>@ConditionalOnBean(FirebaseApp.class)</code> (antes no lo tenía)</li>
+<li>Sin esta anotación, el servicio se instanciaría siempre y fallaría al usar <code>FirebaseMessaging.getInstance()</code> si Firebase no está configurado</li>
+</ul>
+<h3 id="65-firebasechatservicejava-sin-cambios-necesarios">6.5 FirebaseChatService.java (sin cambios necesarios)<a class="headerlink" href="#65-firebasechatservicejava-sin-cambios-necesarios" title="Permanent link">&para;</a></h3>
+<p>Ya tenía <code>@ConditionalOnBean(FirebaseApp.class)</code>. No se modificó.</p>
+<hr />
+<h2 id="7-paso-4-checklist-de-validacion-y-seguridad">7. Paso 4 — Checklist de Validación y Seguridad<a class="headerlink" href="#7-paso-4-checklist-de-validacion-y-seguridad" title="Permanent link">&para;</a></h2>
+<h3 id="71-checklist-de-5-pasos">7.1 Checklist de 5 pasos<a class="headerlink" href="#71-checklist-de-5-pasos" title="Permanent link">&para;</a></h3>
+<p>Ejecutar estos comandos en orden en la terminal de <code>felixpa2001@gmail.com</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># ┌─────────────────────────────────────────────────────────────┐</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># │ PASO 1: Verificar acceso al secreto en Secret Manager      │</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c1"># └─────────────────────────────────────────────────────────────┘</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>gcloud<span class="w"> </span>secrets<span class="w"> </span>versions<span class="w"> </span>access<span class="w"> </span>latest<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span>--secret<span class="o">=</span><span class="s2">&quot;firebase-service-account&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span>--project<span class="o">=</span>amani-160bf<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-c<span class="w"> </span><span class="m">80</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># ✅ Esperado: { &quot;type&quot;: &quot;service_account&quot;, &quot;project_id&quot;: &quot;amani-160bf&quot; ...</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="c1"># ❌ Si da PERMISSION_DENIED → volver al Paso 1 y ejecutar el script IAM</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="c1"># ┌─────────────────────────────────────────────────────────────┐</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="c1"># │ PASO 2: Verificar Application Default Credentials           │</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="c1"># └─────────────────────────────────────────────────────────────┘</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>gcloud<span class="w"> </span>auth<span class="w"> </span>application-default<span class="w"> </span>print-access-token
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="c1"># ✅ Esperado: un token de acceso (string largo)</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="c1"># ❌ Si da error → ejecutar: gcloud auth application-default login</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="c1"># ┌─────────────────────────────────────────────────────────────┐</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="c1"># │ PASO 3: Arrancar la app con Firebase habilitado             │</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="c1"># └─────────────────────────────────────────────────────────────┘</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="c1"># Cambiar en application.properties: firebase.enabled=true</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>./mvnw<span class="w"> </span>spring-boot:run
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="c1"># ✅ Esperado en el log: &quot;[Firebase] FirebaseApp inicializada correctamente.&quot;</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="c1"># ❌ Si aparece UnsatisfiedDependencyException → revisar ADC y permisos</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="c1"># ┌─────────────────────────────────────────────────────────────┐</span>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="c1"># │ PASO 4: Probar el endpoint de Firebase Token                │</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="c1"># └─────────────────────────────────────────────────────────────┘</span>
+</span><span id="__span-12-28"><a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>curl<span class="w"> </span>-s<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer TU_JWT_TOKEN&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-29"><a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a><span class="w">  </span>http://localhost:8080/api/auth/firebase-token
+</span><span id="__span-12-30"><a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="c1"># ✅ Esperado: {&quot;firebaseToken&quot;:&quot;...&quot;}</span>
+</span><span id="__span-12-31"><a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="c1"># ❌ Si devuelve 404 → firebase.enabled no está en true o FirebaseApp no se creó</span>
+</span><span id="__span-12-32"><a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>
+</span><span id="__span-12-33"><a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a><span class="c1"># ┌─────────────────────────────────────────────────────────────┐</span>
+</span><span id="__span-12-34"><a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="c1"># │ PASO 5: Verificar que la app arranca SIN Firebase           │</span>
+</span><span id="__span-12-35"><a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a><span class="c1"># └─────────────────────────────────────────────────────────────┘</span>
+</span><span id="__span-12-36"><a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a><span class="c1"># Cambiar en application.properties: firebase.enabled=false</span>
+</span><span id="__span-12-37"><a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>./mvnw<span class="w"> </span>spring-boot:run
+</span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a><span class="c1"># ✅ Esperado: la app arranca sin errores de Firebase</span>
+</span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a><span class="c1"># ✅ El endpoint /api/auth/firebase-token NO existe (404, no 503)</span>
+</span><span id="__span-12-40"><a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a><span class="c1"># ❌ Si aparece error de bean faltante → hay un @ConditionalOnBean faltante</span>
+</span></code></pre></div>
+<h3 id="72-verificacion-de-gitignore">7.2 Verificación de .gitignore<a class="headerlink" href="#72-verificacion-de-gitignore" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Confirmar que las claves JSON de Service Account están excluidas</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>git<span class="w"> </span>check-ignore<span class="w"> </span>*serviceAccount*.json<span class="w"> </span>firebase-*.json
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1"># ✅ Debe mostrar las rutas (confirmación de que están ignoradas)</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="c1"># Confirmar que no hay claves JSON en el historial de git</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>git<span class="w"> </span>log<span class="w"> </span>--all<span class="w"> </span>--diff-filter<span class="o">=</span>A<span class="w"> </span>--name-only<span class="w"> </span>--pretty<span class="o">=</span>format:<span class="w"> </span>--<span class="w"> </span><span class="s1">&#39;*serviceAccount*.json&#39;</span><span class="w"> </span><span class="s1">&#39;firebase-*.json&#39;</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># ✅ Debe estar vacío (ninguna clave fue commiteada)</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="c1"># ❌ Si aparecen archivos → ejecutar: git filter-branch o BFG Repo-Cleaner</span>
+</span></code></pre></div>
+<p><strong>Patrones añadidos al <code>.gitignore</code>:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>### Firebase / GCP Service Account Keys ###
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>*serviceAccount*.json
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>firebase-*.json
+</span></code></pre></div>
+<h3 id="73-mensaje-de-commit">7.3 Mensaje de Commit<a class="headerlink" href="#73-mensaje-de-commit" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>git<span class="w"> </span>add<span class="w"> </span>-A
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;fix(firebase): replace Optional DI anti-pattern with @ConditionalOnBean and clean Secret Manager integration</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="s2">- Remove Optional&lt;FirebaseAuth&gt;, Optional&lt;FirebaseChatService&gt;,</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="s2">  Optional&lt;FirebaseNotificationService&gt; from FirebaseAuthController</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="s2">  and MensajeEventListener</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="s2">- Add @ConditionalOnBean(FirebaseApp.class) to FirebaseAuthController,</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="s2">  MensajeEventListener, FirebaseNotificationService</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="s2">- Refactor FirebaseConfig: replace SecretManagerTemplate multi-format</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="s2">  hack with @Value from spring.config.import=optional:sm://</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="s2">- Set @ConditionalOnProperty(matchIfMissing=false) on FirebaseConfig</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="s2">- Update application.properties: optional:sm://firebase-service-account,</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="s2">  remove firebase.secret-name property</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="s2">- Add service account key patterns to .gitignore</span>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="s2">BREAKING CHANGE: firebase.enabled now defaults to false; set to true</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="s2">explicitly when Firebase credentials are available</span>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="s2">Refs: #PERMISSION_DENIED&quot;</span>
+</span></code></pre></div>
+<hr />
+<h2 id="8-resumen-de-archivos-modificados">8. Resumen de Archivos Modificados<a class="headerlink" href="#8-resumen-de-archivos-modificados" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Archivo</th>
+<th>Cambio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FirebaseConfig.java</code></td>
+<td>Eliminado <code>SecretManagerTemplate</code> + lógica multi-formato; usa <code>@Value("${firebase-service-account:}")</code> desde <code>optional:sm://</code>; <code>matchIfMissing=false</code></td>
+</tr>
+<tr>
+<td><code>FirebaseAuthController.java</code></td>
+<td>Eliminado <code>Optional&lt;FirebaseAuth&gt;</code>; <code>@ConditionalOnBean(FirebaseApp.class)</code>; inyección directa</td>
+</tr>
+<tr>
+<td><code>MensajeEventListener.java</code></td>
+<td>Eliminado <code>Optional&lt;FirebaseChatService&gt;</code> y <code>Optional&lt;FirebaseNotificationService&gt;</code>; <code>@ConditionalOnBean(FirebaseApp.class)</code>; inyección directa</td>
+</tr>
+<tr>
+<td><code>FirebaseNotificationService.java</code></td>
+<td>Añadido <code>@ConditionalOnBean(FirebaseApp.class)</code> (no lo tenía)</td>
+</tr>
+<tr>
+<td><code>application.properties</code></td>
+<td><code>optional:sm://firebase-service-account</code>; eliminado <code>firebase.secret-name</code></td>
+</tr>
+<tr>
+<td><code>.gitignore</code></td>
+<td>Añadidos <code>*serviceAccount*.json</code> y <code>firebase-*.json</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cadena-de-beans-firebaseenabledtrue">Cadena de beans (firebase.enabled=true)<a class="headerlink" href="#cadena-de-beans-firebaseenabledtrue" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>FirebaseConfig (@ConditionalOnProperty)
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>  ├── FirebaseApp
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>  ├── FirebaseDatabase
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>  └── FirebaseAuth
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>        │
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>        ├── FirebaseAuthController (@ConditionalOnBean FirebaseApp)
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>        ├── FirebaseChatService (@ConditionalOnBean FirebaseApp)
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>        ├── FirebaseNotificationService (@ConditionalOnBean FirebaseApp)
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>        └── MensajeEventListener (@ConditionalOnBean FirebaseApp)
+</span></code></pre></div>
+<h3 id="cadena-de-beans-firebaseenabledfalse">Cadena de beans (firebase.enabled=false)<a class="headerlink" href="#cadena-de-beans-firebaseenabledfalse" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>FirebaseConfig → NO se registra
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>FirebaseApp → NO existe
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Todos los @ConditionalOnBean(FirebaseApp.class) → NO se registran
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>App arranca limpia, sin beans Firebase
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Amani Team — Todos los derechos reservados
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/AmaniGrupo1/amani-apirest" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "toc.integrate", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

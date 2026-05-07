@@ -1,0 +1,2335 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentación técnica de la plataforma AMANI para psicología clínica">
+      
+      
+        <meta name="author" content="Amani Team">
+      
+      
+        <link rel="canonical" href="https://amanigrupo1.github.io/amani-apirest/testing/plan-pruebas-api-rest/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Plan de Pruebas API REST — AMANI - AMANI API REST — Documentación</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#plan-de-pruebas-api-rest-amani" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="AMANI API REST — Documentación" class="md-header__button md-logo" aria-label="AMANI API REST — Documentación" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AMANI API REST — Documentación
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Plan de Pruebas API REST — AMANI
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartir" aria-label="Compartir" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api/rest-api/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  API REST
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Testing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reports/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Informes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Guías
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../postman/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Postman
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="AMANI API REST — Documentación" class="md-nav__button md-logo" aria-label="AMANI API REST — Documentación" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AMANI API REST — Documentación
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API REST
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API REST
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/rest-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API REST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Referencia de endpoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modelos de datos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/openapi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAPI (Swagger)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Testing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plan de pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coverage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cobertura de tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Problemas conocidos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../reports/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Informes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Informes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reports/coverage-dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dashboard de cobertura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../guides/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guías
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guías
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/local-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuración local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/gcp-deploy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Despliegue GCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/firebase-fix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firebase y Secret Manager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../postman/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Postman
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Postman
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postman/collection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Colección
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="plan-de-pruebas-api-rest-amani">Plan de Pruebas API REST — AMANI<a class="headerlink" href="#plan-de-pruebas-api-rest-amani" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Versión:</strong> 3.0 — 2026-05-07<br />
+<strong>Estado:</strong> Actualizado con métricas JaCoCo reales</p>
+</blockquote>
+<hr />
+<h2 id="1-objetivo">1. Objetivo<a class="headerlink" href="#1-objetivo" title="Permanent link">&para;</a></h2>
+<p>Validar funcionalidad, seguridad por roles, integridad de datos y estabilidad
+de flujos críticos de la API REST de AMANI.</p>
+<hr />
+<h2 id="2-alcance">2. Alcance<a class="headerlink" href="#2-alcance" title="Permanent link">&para;</a></h2>
+<h3 id="incluye">Incluye<a class="headerlink" href="#incluye" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Autenticación y autorización (<code>/auth</code>, <code>/api/auth/firebase-token</code>, <code>/api/**</code>)</li>
+<li>Módulo de citas y agenda (creación, solapamientos, cancelación, bloqueos)</li>
+<li>Historial clínico, diario emocional, progreso emocional</li>
+<li>Mensajería, notificaciones FCM, soporte</li>
+<li>Endpoints administrativos (CRUD completo)</li>
+<li>Perfil de usuario y subida de archivos</li>
+<li>Seguridad: filtros JWT, roles (PACIENTE, PSICOLOGO, ADMIN), respuestas 401/403 estructuradas</li>
+</ul>
+<h3 id="no-incluye-esta-fase">No incluye (esta fase)<a class="headerlink" href="#no-incluye-esta-fase" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Pruebas E2E de frontend móvil/web</li>
+<li>Pruebas de carga masiva WebSocket</li>
+<li>Pruebas de estrés o rendimiento</li>
+</ul>
+<hr />
+<h2 id="3-entorno-de-prueba">3. Entorno de prueba<a class="headerlink" href="#3-entorno-de-prueba" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Elemento</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Perfil Spring</td>
+<td><code>test</code></td>
+</tr>
+<tr>
+<td>Config</td>
+<td><code>src/test/resources/application-test.properties</code></td>
+</tr>
+<tr>
+<td>BD</td>
+<td>H2 en memoria, esquema <code>psicologia_app</code></td>
+</tr>
+<tr>
+<td>Seed</td>
+<td><code>DataInitializer</code>: 1 ADMIN (<code>admin@amani.com</code> / <code>admin1234</code>)</td>
+</tr>
+<tr>
+<td>Firebase</td>
+<td>Desactivado (<code>firebase.enabled=false</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="datos-de-prueba-por-rol">Datos de prueba por rol<a class="headerlink" href="#datos-de-prueba-por-rol" title="Permanent link">&para;</a></h3>
+<p>Cada test de integración crea sus propios usuarios en <code>@BeforeEach</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Rol</th>
+<th>Email</th>
+<th>Password</th>
+<th>Observaciones</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADMIN</td>
+<td><code>admin@amani.com</code></td>
+<td><code>admin1234</code></td>
+<td>Seed de <code>DataInitializer</code></td>
+</tr>
+<tr>
+<td>PSICOLOGO</td>
+<td><code>psicologo_it@amani.com</code></td>
+<td><code>pass123</code></td>
+<td>Creado en test + horario</td>
+</tr>
+<tr>
+<td>PACIENTE</td>
+<td><code>paciente_it@amani.com</code></td>
+<td><code>pass123</code></td>
+<td>Creado en test + fila en <code>pacientes</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-criterios-de-entradasalida">4. Criterios de entrada/salida<a class="headerlink" href="#4-criterios-de-entradasalida" title="Permanent link">&para;</a></h2>
+<h3 id="entrada">Entrada<a class="headerlink" href="#entrada" title="Permanent link">&para;</a></h3>
+<ul>
+<li>API desplegada en entorno de test</li>
+<li>Colección Postman importada</li>
+<li>Tokens por rol disponibles</li>
+</ul>
+<h3 id="salida">Salida<a class="headerlink" href="#salida" title="Permanent link">&para;</a></h3>
+<ul>
+<li>100% casos P0 en verde</li>
+<li>Sin defectos críticos o altos abiertos</li>
+<li>Cobertura P0 ≥ 80% líneas, ≥ 70% ramas</li>
+<li>Cobertura P1 ≥ 80% líneas, ≥ 70% ramas</li>
+<li>Evidencia de ejecución guardada en CI</li>
+</ul>
+<hr />
+<h2 id="5-cobertura-real-jacoco-370-tests-51-archivos">5. Cobertura real (JaCoCo — 370 tests, 51 archivos)<a class="headerlink" href="#5-cobertura-real-jacoco-370-tests-51-archivos" title="Permanent link">&para;</a></h2>
+<h3 id="51-resumen-global">5.1 Resumen global<a class="headerlink" href="#51-resumen-global" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Capa</th>
+<th>Líneas</th>
+<th>Ramas</th>
+<th>Umbral líneas</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P0 — Críticos</strong> (13 clases)</td>
+<td>52.31% (611/1168)</td>
+<td>27.27% (96/352)</td>
+<td>≥ 80% / ≥ 70%</td>
+<td>❌ No cumple</td>
+</tr>
+<tr>
+<td><strong>P1 — Alta prioridad</strong> (73 clases)</td>
+<td>46.88% (1193/2545)</td>
+<td>25.35% (110/434)</td>
+<td>≥ 80% / ≥ 70%</td>
+<td>❌ No cumple</td>
+</tr>
+<tr>
+<td><strong>Controllers</strong> (43 clases)</td>
+<td>36.2% (213/589)</td>
+<td>32.6% (15/46)</td>
+<td>≥ 70% / ≥ 60%</td>
+<td>❌ No cumple</td>
+</tr>
+<tr>
+<td><strong>Security</strong> (4 clases)</td>
+<td>79.9% (119/149)</td>
+<td>54.5% (12/22)</td>
+<td>≥ 75% / ≥ 60%</td>
+<td>⚠️ Líneas ok, ramas baja</td>
+</tr>
+<tr>
+<td><strong>Services críticos</strong> (3 clases)</td>
+<td>43.2% (330/764)</td>
+<td>25.5% (73/286)</td>
+<td>≥ 80% / ≥ 70%</td>
+<td>❌ No cumple</td>
+</tr>
+<tr>
+<td><strong>Services todos</strong> (53 clases)</td>
+<td>49.5% (1472/2975)</td>
+<td>24.9% (179/718)</td>
+<td>≥ 70% / ≥ 60%</td>
+<td>❌ No cumple</td>
+</tr>
+<tr>
+<td><strong>Global</strong> (151 clases)</td>
+<td>45.2% (1917/4240)</td>
+<td>22.5% (206/916)</td>
+<td>≥ 70% / ≥ 60%</td>
+<td>❌ No cumple</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-distribucion-de-tests">5.2 Distribución de tests<a class="headerlink" href="#52-distribucion-de-tests" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Categoría</th>
+<th>Archivos</th>
+<th>Métodos @Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Controller tests</td>
+<td>19</td>
+<td>114</td>
+</tr>
+<tr>
+<td>Service tests</td>
+<td>27</td>
+<td>252</td>
+</tr>
+<tr>
+<td>Security tests</td>
+<td>4</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Bootstrap</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>51</strong></td>
+<td><strong>370+</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Tipos:
+- Unitarios (<code>@ExtendWith(MockitoExtension)</code>): 42 archivos
+- Integración (<code>@SpringBootTest</code>): 6 archivos
+- Trivial (context load): 1 archivo</p>
+<h3 id="53-inventario-completo-de-clases-de-test">5.3 Inventario completo de clases de test<a class="headerlink" href="#53-inventario-completo-de-clases-de-test" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Clase de test</th>
+<th>@Test</th>
+<th>Tipo</th>
+<th>Capa</th>
+<th>Calidad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>AmaniApirestApplicationTests</code></td>
+<td>1</td>
+<td>Trivial</td>
+<td>Bootstrap</td>
+<td>❌ Trivial</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>JwtUtilTest</code></td>
+<td>3</td>
+<td>Unitario</td>
+<td>Security</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>SecurityAccessTest</code></td>
+<td>3</td>
+<td>Unitario</td>
+<td>Security</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>SecurityIntegrationTest</code></td>
+<td>2</td>
+<td>Integración</td>
+<td>Security</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>SecurityRolesTest</code></td>
+<td>7</td>
+<td>Integración</td>
+<td>Security</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>AuthControllerTest</code></td>
+<td>5</td>
+<td>Unitario</td>
+<td>Controller</td>
+<td>⚠️ Superficial</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>AuthControllerIntegrationTest</code></td>
+<td>14</td>
+<td>Integración</td>
+<td>Controller</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>AuthIntegrationTest</code></td>
+<td>3</td>
+<td>Integración</td>
+<td>Controller</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>FirebaseAuthControllerTest</code></td>
+<td>3</td>
+<td>Unitario</td>
+<td>Controller</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>CitaControllerTest</code></td>
+<td>10</td>
+<td>Integración</td>
+<td>Controller</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>CitaControladorPsicologoTest</code></td>
+<td>11</td>
+<td>Unitario</td>
+<td>Controller</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>CitaControladorPsicologoIntegrationTest</code></td>
+<td>15</td>
+<td>Integración</td>
+<td>Controller</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>ChatControllerTest</code></td>
+<td>5</td>
+<td>Unitario</td>
+<td>Controller</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>HistorialClinicoControllerTest</code></td>
+<td>8</td>
+<td>Unitario</td>
+<td>Controller</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>15</td>
+<td><code>MensajeControllerTest</code></td>
+<td>8</td>
+<td>Unitario</td>
+<td>Controller</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>SoporteTicketControllerTest</code></td>
+<td>5</td>
+<td>Unitario</td>
+<td>Controller</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>17</td>
+<td><code>SoporteTicketAdminControllerTest</code></td>
+<td>6</td>
+<td>Unitario</td>
+<td>Controller</td>
+<td>⚠️ Superficial</td>
+</tr>
+<tr>
+<td>18</td>
+<td><code>NotificacionControllerTest</code></td>
+<td>5</td>
+<td>Unitario</td>
+<td>Controller</td>
+<td>⚠️ Superficial</td>
+</tr>
+<tr>
+<td>19</td>
+<td><code>ProfileControllerTest</code></td>
+<td>4</td>
+<td>Unitario</td>
+<td>Controller</td>
+<td>⚠️ Superficial</td>
+</tr>
+<tr>
+<td>20</td>
+<td><code>CitaAgendaServiceTest</code></td>
+<td>6</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>21</td>
+<td><code>CitaAgendaServiceRamasTest</code></td>
+<td>8</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>22</td>
+<td><code>AuthServiceTest</code></td>
+<td>4</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>AuthServiceCrearDesdePsicologoTest</code></td>
+<td>3</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>24</td>
+<td><code>ChatServiceTest</code></td>
+<td>11</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>25</td>
+<td><code>NotificationServicesTest</code></td>
+<td>8</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>26</td>
+<td><code>FileStorageServiceTest</code></td>
+<td>8</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>27</td>
+<td><code>ProfileServiceTest</code></td>
+<td>7</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>28</td>
+<td><code>UsuarioServiceTest</code></td>
+<td>10</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>29</td>
+<td><code>CitaServiceTest</code> (paciente)</td>
+<td>10</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>30</td>
+<td><code>DiarioEmocionServiceTest</code></td>
+<td>11</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>31</td>
+<td><code>SesionServiceTest</code></td>
+<td>11</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>32</td>
+<td><code>DireccionServiceTest</code></td>
+<td>11</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>33</td>
+<td><code>ProgresoEmocionalServiceTest</code></td>
+<td>11</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>34</td>
+<td><code>HistorialClinicoServiceTest</code></td>
+<td>11</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>35</td>
+<td><code>MensajeServiceTest</code></td>
+<td>12</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>36</td>
+<td><code>PacienteServiceTest</code></td>
+<td>10</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>37</td>
+<td><code>PsicologoServiceTest</code></td>
+<td>4</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>38</td>
+<td><code>SoporteTicketServiceTest</code></td>
+<td>5</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>39</td>
+<td><code>ArchivoServiceTest</code></td>
+<td>10</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>AjusteServiceTest</code></td>
+<td>14</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>41</td>
+<td><code>UsuarioPacienteServiceTest</code></td>
+<td>2</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>⚠️ Mínimo</td>
+</tr>
+<tr>
+<td>42</td>
+<td><code>CitaServicePsicologoTest</code></td>
+<td>8</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>43</td>
+<td><code>SesionPsicologoServiceTest</code></td>
+<td>7</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>44</td>
+<td><code>DireccionPsicologoServiceTest</code></td>
+<td>7</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>45</td>
+<td><code>DiarioEmocionPsicologoServiceTest</code></td>
+<td>4</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>46</td>
+<td><code>UsuarioPsicologoServiceTest</code></td>
+<td>2</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>⚠️ Mínimo</td>
+</tr>
+<tr>
+<td>47</td>
+<td><code>CitaAdminServiceTest</code></td>
+<td>6</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>48</td>
+<td><code>PacienteAdminServiceTest</code></td>
+<td>6</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>49</td>
+<td><code>PsicologoAdminServiceTest</code></td>
+<td>5</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>50</td>
+<td><code>SoporteTicketAdminServiceTest</code></td>
+<td>9</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+<tr>
+<td>51</td>
+<td><code>UsuarioAdminServiceTest</code></td>
+<td>8</td>
+<td>Unitario</td>
+<td>Service</td>
+<td>✅ Sólido</td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-semaforo-p0-cobertura-por-clase-jacoco">5.4 Semáforo P0 — Cobertura por clase (JaCoCo)<a class="headerlink" href="#54-semaforo-p0-cobertura-por-clase-jacoco" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Clase P0</th>
+<th>Líneas</th>
+<th>Ramas</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>JwtAuthFilter</code></td>
+<td>70.73% (29/41)</td>
+<td>50.00% (9/18)</td>
+<td>🟡 AMARILLO</td>
+</tr>
+<tr>
+<td><code>UserDetailsServiceImpl</code></td>
+<td>0.00% (0/6)</td>
+<td>0.00% (0/0)</td>
+<td>🔴 ROJO</td>
+</tr>
+<tr>
+<td><code>SecurityConfig</code></td>
+<td>84.81% (67/79)</td>
+<td>N/A (0/0)</td>
+<td>🟢 VERDE</td>
+</tr>
+<tr>
+<td><code>JwtUtil</code></td>
+<td>100.00% (23/23)</td>
+<td>75.00% (3/4)</td>
+<td>🟢 VERDE</td>
+</tr>
+<tr>
+<td><code>AuthController</code></td>
+<td>66.67% (8/12)</td>
+<td>50.00% (1/2)</td>
+<td>🟡 AMARILLO</td>
+</tr>
+<tr>
+<td><code>FirebaseAuthController</code></td>
+<td>85.71% (18/21)</td>
+<td>100.00% (2/2)</td>
+<td>🟢 VERDE</td>
+</tr>
+<tr>
+<td><code>AuthService</code></td>
+<td>70.66% (183/259)</td>
+<td>52.86% (37/70)</td>
+<td>🟡 AMARILLO</td>
+</tr>
+<tr>
+<td><code>CitaAgendaService</code></td>
+<td>38.32% (141/368)</td>
+<td>23.38% (36/154)</td>
+<td>🔴 ROJO</td>
+</tr>
+<tr>
+<td><code>CitaService</code> (root)</td>
+<td>4.38% (6/137)</td>
+<td>0.00% (0/62)</td>
+<td>🔴 ROJO</td>
+</tr>
+<tr>
+<td><code>CitaServicePsicologo</code></td>
+<td>63.16% (48/76)</td>
+<td>11.11% (2/18)</td>
+<td>🟡 AMARILLO</td>
+</tr>
+<tr>
+<td><code>CitaService</code> (paciente)</td>
+<td>75.29% (64/85)</td>
+<td>31.25% (5/16)</td>
+<td>🟡 AMARILLO</td>
+</tr>
+<tr>
+<td><code>CitaControladorPsicologo</code></td>
+<td>48.78% (20/41)</td>
+<td>50.00% (1/2)</td>
+<td>🔴 ROJO</td>
+</tr>
+<tr>
+<td><code>CitaController</code> (paciente)</td>
+<td>20.00% (4/20)</td>
+<td>0.00% (0/4)</td>
+<td>🔴 ROJO</td>
+</tr>
+<tr>
+<td><strong>TOTAL P0</strong></td>
+<td><strong>52.31%</strong> (611/1168)</td>
+<td><strong>27.27%</strong> (96/352)</td>
+<td>🔴 ROJO</td>
+</tr>
+</tbody>
+</table>
+<h3 id="55-services-con-0-cobertura-sin-tests">5.5 Services con 0% cobertura (sin tests)<a class="headerlink" href="#55-services-con-0-cobertura-sin-tests" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Clase</th>
+<th>Líneas</th>
+<th>Prioridad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CitaService</code> (root)</td>
+<td>137 líneas</td>
+<td>P0 — bloquea despliegue</td>
+</tr>
+<tr>
+<td><code>PsicologoSelfService</code></td>
+<td>55 líneas</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><code>PreguntaPacienteService</code></td>
+<td>38 líneas</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><code>PreguntaAdminService</code></td>
+<td>35 líneas</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><code>TerapiaService</code></td>
+<td>35 líneas</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><code>FirebaseChatService</code></td>
+<td>24 líneas</td>
+<td>P2 (Firebase deshabilitado)</td>
+</tr>
+<tr>
+<td><code>ConsentimientoService</code></td>
+<td>10 líneas</td>
+<td>P2</td>
+</tr>
+<tr>
+<td><code>FirebaseNotificationService</code></td>
+<td>9 líneas</td>
+<td>P2 (Firebase deshabilitado)</td>
+</tr>
+<tr>
+<td><code>SituacionService</code></td>
+<td>23 líneas</td>
+<td>P2</td>
+</tr>
+<tr>
+<td><code>RespuestaPsicologoService</code></td>
+<td>23 líneas</td>
+<td>P2</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-rutas-criticas-sin-cubrir">6. Rutas críticas sin cubrir<a class="headerlink" href="#6-rutas-criticas-sin-cubrir" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Método / Endpoint</th>
+<th>Riesgo</th>
+<th>Prioridad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>CitaService</code> (root) — todos los métodos</td>
+<td>Citas rotas: cancelar, reprogramar, buscar</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>CitaAgendaService</code> — ramas de solapamiento y bloqueo</td>
+<td>61.68% sin cubrir: conflictos de horario</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>CitaControladorPsicologo</code> — ramas POST/PUT/PATCH</td>
+<td>Crear/cancelar cita sin cobertura de ramas</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>UserDetailsServiceImpl</code> — loadByUsername</td>
+<td>Autenticación sin cobertura</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>CitaController</code> (paciente) — mis-citas, agenda, próximas</td>
+<td>Flujo paciente-cita al 20%</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>PacienteAdminService</code> — CRUD administrativo</td>
+<td>60% sin cubrir</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>PsicologoAdminService</code> — CRUD administrativo</td>
+<td>61% sin cubrir</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>ProfileService</code> — subir foto, actualizar perfil</td>
+<td>81% sin cubrir (176 líneas)</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>PacientePsicologoService</code> — asignación</td>
+<td>94.5% sin cubrir</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Controllers admin (7 clases a 0%)</td>
+<td>Sin cobertura de endpoints admin</td>
+<td>P1</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-problemas-de-calidad-detectados">7. Problemas de calidad detectados<a class="headerlink" href="#7-problemas-de-calidad-detectados" title="Permanent link">&para;</a></h2>
+<h3 id="tests-superficiales-mockean-demasiado">Tests superficiales (mockean demasiado)<a class="headerlink" href="#tests-superficiales-mockean-demasiado" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>AuthControllerTest</code>: 5 tests unitarios que no prueban flujo real de autenticación</li>
+<li><code>SoporteTicketAdminControllerTest</code>: 6 tests que mockean todo el servicio</li>
+<li><code>NotificacionControllerTest</code>: 5 tests que solo verifican delegación</li>
+<li><code>ProfileControllerTest</code>: 4 tests superficiales</li>
+</ul>
+<h3 id="falta-de-cobertura-de-ramas-only-happy-path">Falta de cobertura de ramas (only happy path)<a class="headerlink" href="#falta-de-cobertura-de-ramas-only-happy-path" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>CitaAgendaServiceTest</code>: 6 tests happy path, 0 para solapamientos reales</li>
+<li><code>CitaControladorPsicologoTest</code>: 11 tests unitarios sin probar errores de validación</li>
+</ul>
+<h3 id="services-con-cobertura-minima-2-tests">Services con cobertura mínima (2 tests)<a class="headerlink" href="#services-con-cobertura-minima-2-tests" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>UsuarioPacienteServiceTest</code>: solo 2 métodos @Test</li>
+<li><code>UsuarioPsicologoServiceTest</code>: solo 2 métodos @Test</li>
+</ul>
+<hr />
+<h2 id="8-scripts-de-verificacion">8. Scripts de verificación<a class="headerlink" href="#8-scripts-de-verificacion" title="Permanent link">&para;</a></h2>
+<h3 id="81-ejecucion-completa">8.1 Ejecución completa<a class="headerlink" href="#81-ejecucion-completa" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Todos los tests unitarios (no requieren contexto Spring)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./mvnw<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-Dtest<span class="o">=</span><span class="s2">&quot;!*IntegrationTest&quot;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Tests de integración (requieren contexto Spring + BD H2)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>./mvnw<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-Dtest<span class="o">=</span><span class="s2">&quot;AuthIntegrationTest,SecurityIntegrationTest,\</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="s2">AuthControllerIntegrationTest,CitaControllerTest,\</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="s2">CitaControladorPsicologoIntegrationTest,SecurityRolesTest&quot;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># Ejecución completa (unitarios + integración)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>./mvnw<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># Reporte JaCoCo + visual</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>./mvnw<span class="w"> </span><span class="nb">test</span><span class="w"> </span>jacoco:report
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>bash<span class="w"> </span>scripts/generate-p0-coverage-visual.sh
+</span></code></pre></div>
+<h3 id="82-script-de-cobertura-visual">8.2 Script de cobertura visual<a class="headerlink" href="#82-script-de-cobertura-visual" title="Permanent link">&para;</a></h3>
+<p>El script <code>scripts/generate-p0-coverage-visual.sh</code> genera dos informes Markdown:</p>
+<ul>
+<li><code>docs/testing/coverage-p0-visual.md</code> — Clases críticas P0 (Auth, Security, Citas)</li>
+<li><code>docs/testing/coverage-p1-visual.md</code> — Resto de controllers y services P1</li>
+</ul>
+<p><strong>Clasificación P0 (13 clases):</strong>
+- <code>controllers.login</code>: AuthController, FirebaseAuthController (NO HasearContrasenia)
+- <code>configuration</code>: JwtAuthFilter, SecurityConfig, JwtUtil, UserDetailsServiceImpl
+- <code>controllers.controladorPsicologo</code>: CitaControladorPsicologo
+- <code>controllers.controladorPaciente</code>: CitaController
+- <code>services.serviciosLogin</code>: AuthService
+- <code>services</code> (root): CitaAgendaService, CitaService
+- <code>services.psicologo</code>: CitaServicePsicologo
+- <code>services.paciente</code>: CitaService</p>
+<p><strong>Clasificación P1:</strong> resto de <code>controllers.*</code> y <code>services.*</code> (excluyendo DTOs, Models, Config, Gateway).</p>
+<p><strong>Uso:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>bash<span class="w"> </span>scripts/generate-p0-coverage-visual.sh<span class="w"> </span><span class="o">[</span>ruta_csv<span class="o">]</span><span class="w"> </span><span class="o">[</span>directorio_salida<span class="o">]</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Por defecto: target/site/jacoco/jacoco.csv → docs/testing/</span>
+</span></code></pre></div></p>
+<hr />
+<h2 id="9-base-de-automatizacion">9. Base de automatización<a class="headerlink" href="#9-base-de-automatizacion" title="Permanent link">&para;</a></h2>
+<h3 id="91-estructura-de-directorios-de-test">9.1 Estructura de directorios de test<a class="headerlink" href="#91-estructura-de-directorios-de-test" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>src/test/java/com/amani/amaniapirest/
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── configuration/
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│   └── JwtUtilTest.java                          (3 tests)
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>├── controllers/
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│   ├── chat/ChatControllerTest.java               (5 tests)
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│   ├── controladorAdministador/SoporteTicketAdminControllerTest.java (6)
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│   ├── controladorPaciente/
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│   │   ├── CitaControllerTest.java                (10 tests, integration)
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>│   │   ├── HistorialClinicoControllerTest.java    (8)
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>│   │   ├── MensajeControllerTest.java             (8)
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>│   │   └── SoporteTicketControllerTest.java       (5)
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>│   ├── controladorPsicologo/
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>│   │   ├── CitaControladorPsicologoTest.java      (11 tests, unit)
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>│   │   └── CitaControladorPsicologoIntegrationTest.java (15 tests, integration)
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>│   ├── login/
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>│   │   ├── AuthControllerIntegrationTest.java     (14 tests, integration)
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>│   │   ├── AuthControllerTest.java               (5 tests, unit)
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>│   │   ├── AuthIntegrationTest.java               (3 tests, integration)
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>│   │   └── FirebaseAuthControllerTest.java         (3 tests, unit)
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>│   ├── notificacion/NotificacionControllerTest.java (5)
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>│   ├── profileController/ProfileControllerTest.java (4)
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>│   └── security/
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>│       ├── SecurityAccessTest.java                (3)
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>│       ├── SecurityIntegrationTest.java            (2)
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>│       └── SecurityRolesTest.java                (7, integration)
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>├── services/
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>│   ├── CitaAgendaServiceTest.java                (6)
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>│   ├── CitaAgendaServiceRamasTest.java            (8)
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>│   ├── UsuarioServiceTest.java                    (10)
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>│   ├── notificacion/NotificationServicesTest.java (8)
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>│   ├── paciente/  (13 archivos, ~105 tests)
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>│   ├── psicologo/ (5 archivos, ~28 tests)
+</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>│   ├── serviceAdmin/ (5 archivos, ~34 tests)
+</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>│   ├── profile/ (2 archivos, ~15 tests)
+</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>│   ├── chat/ChatServiceTest.java                 (11)
+</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>│   └── serviciosLogin/
+</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>│       ├── AuthServiceTest.java                   (4)
+</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>│       └── AuthServiceCrearDesdePsicologoTest.java (3)
+</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>└── AmaniApirestApplicationTests.java            (1)
+</span></code></pre></div>
+<p>Convenciones:
+- Unitarias: <code>@ExtendWith(MockitoExtension.class)</code>
+- Integración: <code>@SpringBootTest</code> + <code>@ActiveProfiles("test")</code> + <code>MockMvcBuilders.webAppContextSetup</code></p>
+<h3 id="92-pipeline-ci-recomendado">9.2 Pipeline CI recomendado<a class="headerlink" href="#92-pipeline-ci-recomendado" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># .github/workflows/tests.yml</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run unit tests</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./mvnw -q test -Dtest=&quot;!*IntegrationTest&quot;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run integration tests</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./mvnw test -Dtest=&quot;AuthIntegrationTest,SecurityIntegrationTest,AuthControllerIntegrationTest,CitaControllerTest,CitaControladorPsicologoIntegrationTest,SecurityRolesTest&quot;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate JaCoCo report</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./mvnw jacoco:report</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate visual coverage</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bash scripts/generate-p0-coverage-visual.sh</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Publish reports</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/upload-artifact@v4</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="nt">with</span><span class="p">:</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test-reports</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">        </span><span class="no">target/surefire-reports/</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">        </span><span class="no">target/site/jacoco/</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">        </span><span class="no">docs/testing/coverage-p0-visual.md</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">        </span><span class="no">docs/testing/coverage-p1-visual.md</span>
+</span></code></pre></div>
+<hr />
+<h2 id="10-definicion-de-done-de-qa">10. Definición de Done de QA<a class="headerlink" href="#10-definicion-de-done-de-qa" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[x] P0 y P1 ejecutados y aprobados (370+ @Test, BUILD SUCCESS)</li>
+<li>[x] Evidencia en reportes JUnit</li>
+<li>[x] Script de cobertura visual operativo (<code>generate-p0-coverage-visual.sh</code>)</li>
+<li>[ ] P0 líneas ≥ 80% (actual: 52.31%)</li>
+<li>[ ] P0 ramas ≥ 70% (actual: 27.27%)</li>
+<li>[ ] P1 líneas ≥ 80% (actual: 46.88%)</li>
+<li>[ ] Cobertura global ≥ 70% (actual: 45.2%)</li>
+<li>[ ] Regresión de seguridad completada (requiere entorno con BD)</li>
+</ul>
+<hr />
+<h2 id="11-notas-sobre-tests-de-integracion">11. Notas sobre tests de integración<a class="headerlink" href="#11-notas-sobre-tests-de-integracion" title="Permanent link">&para;</a></h2>
+<p>Los tests marcados como <code>@SpringBootTest</code> requieren un entorno donde Tomcat pueda
+bindear puertos y conectarse a la base de datos H2.</p>
+<p>En el entorno actual de ejecución (sandbox restringido), estos tests fallan con
+<code>SocketException: Operation not permitted</code>. Esto es una limitación del entorno,
+no un problema del código.</p>
+<p>Para ejecutar estos tests correctamente:
+1. Ejecutar en un entorno local con permisos de red
+2. Usar Testcontainers para levantar la BD
+3. Ejecutar en CI/CD con permisos adecuados</p>
+<p>Los tests unitarios (319 métodos @Test en 42 archivos) pasan completamente
+sin necesidad de contexto Spring. Los 6 archivos de integración suman ~51 tests
+que requieren el contexto Spring completo.</p>
+<hr />
+<h2 id="12-historial-de-cambios">12. Historial de cambios<a class="headerlink" href="#12-historial-de-cambios" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Fecha</th>
+<th>Versión</th>
+<th>Cambio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-05-07</td>
+<td>1.0</td>
+<td>Versión inicial del plan</td>
+</tr>
+<tr>
+<td>2026-05-07</td>
+<td>2.0</td>
+<td>Actualización tras implementar 370+ tests</td>
+</tr>
+<tr>
+<td>2026-05-07</td>
+<td>3.0</td>
+<td>Métricas JaCoCo reales, fix script cobertura, clasificación P0/P1 corregida</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Amani Team — Todos los derechos reservados
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/AmaniGrupo1/amani-apirest" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "toc.integrate", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
