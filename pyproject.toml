@@ -1,0 +1,24 @@
+[project]
+name = "amani-docs"
+version = "0.1.0"
+description = "Documentación oficial de AMANI API REST"
+requires-python = ">=3.11"
+
+dependencies = [
+    "mkdocs>=1.6",
+    "mkdocs-material[imaging]>=9.5",
+    "mkdocs-awesome-pages-plugin>=2.9",
+    "mkdocs-minify-plugin>=0.8",
+    "mkdocs-redirects>=1.2",
+    "mkdocs-swagger-ui-tag>=0.6",
+    "mkdocs-mermaid2-plugin>=1.1",
+    "mkdocs-git-revision-date-localized-plugin>=1.2",
+    "mkdocs-include-markdown-plugin>=6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = false

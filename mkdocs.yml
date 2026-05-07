@@ -1,0 +1,103 @@
+site_name: AMANI API REST — Documentación
+site_description: Documentación técnica de la plataforma AMANI para psicología clínica
+site_author: Amani Team
+site_url: https://amanigrupo1.github.io/amani-apirest/
+
+theme:
+  name: material
+  language: es
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-7
+        name: Cambiar a modo oscuro
+    - scheme: slate
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-4
+        name: Cambiar a modo claro
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - toc.integrate
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+plugins:
+  - search:
+      lang: es
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+      title: En esta página
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/AmaniGrupo1/amani-apirest
+  version:
+    provider: mike
+
+copyright: Copyright © 2026 Amani Team — Todos los derechos reservados
+
+nav:
+  - Inicio: index.md
+  - API REST:
+    - api/rest-api.md
+    - Referencia de endpoints: api/endpoints.md
+    - Modelos de datos: api/models.md
+    - OpenAPI (Swagger): api/openapi.md
+  - Testing:
+    - testing/index.md
+    - Plan de pruebas: testing/test-plan.md
+    - Cobertura de tests: testing/coverage.md
+    - Problemas conocidos: testing/known-issues.md
+  - Informes:
+    - reports/index.md
+    - Dashboard de cobertura: reports/coverage-dashboard.md
+  - Guías:
+    - guides/index.md
+    - Configuración local: guides/local-setup.md
+    - Despliegue GCP: guides/gcp-deploy.md
+    - Firebase y Secret Manager: guides/firebase-fix.md
+  - Postman:
+    - postman/index.md
+    - Colección: postman/collection.md
+  - Changelog: changelog.md

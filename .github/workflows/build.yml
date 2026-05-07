@@ -15,7 +15,6 @@ permissions:
   checks: write         # escritura de checks (test-reporter)
   packages: write       # publicación en GitHub Packages (deploy)
   pull-requests: write  # comentarios de test-reporter en PRs
-  actions: read         # lectura de artefactos
 
 # ---------------------------------------------------------------------------
 # Evitar ejecuciones paralelas en la misma rama
@@ -38,12 +37,12 @@ on:
     branches:
       - main
       - develop
-      - 'release/**'
-  pull_request:
-    branches:
-      - main
-      - develop
-  workflow_dispatch:
+    paths-ignore:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "*.md"
 
 # =============================================================================
 # JOBS
@@ -200,7 +199,6 @@ jobs:
           name: jacoco-coverage-report
           path: target/site/jacoco
 
-  # ===========================================================================
   # Job 2: Construir artefacto y publicar en GitHub Packages
   # ===========================================================================
   build-artifact:

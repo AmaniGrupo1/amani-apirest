@@ -63,3 +63,15 @@ Thumbs.db
 ### Logs ###
 *.log
 out.log
+
+### MkDocs / Python ###
+site/
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+### UV lockfile (opcional — se suele commitear, pero puedes ignorarlo si prefieres regenerarlo) ###
+# uv.lock

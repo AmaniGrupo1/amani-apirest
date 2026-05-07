@@ -1,0 +1,14 @@
+nav:
+  - index.md
+  - API REST:
+    - api
+  - Testing:
+    - testing
+  - Informes:
+    - reports
+  - Guías:
+    - guides
+  - Postman:
+    - postman
+  - changelog.md
+collapse_single_pages: true
