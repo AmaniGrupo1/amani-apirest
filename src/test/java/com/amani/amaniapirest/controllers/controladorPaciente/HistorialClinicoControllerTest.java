@@ -1,6 +1,6 @@
 package com.amani.amaniapirest.controllers.controladorPaciente;
 
-import com.amani.amaniapirest.dto.dtoPaciente.response.HistorialClinicoResponseDTO;
+import com.amani.amaniapirest.dto.historialClinico.HistorialClinicoResponseDTO;
 import com.amani.amaniapirest.services.paciente.HistorialClinicoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

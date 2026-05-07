@@ -110,7 +110,6 @@ public class SecurityConfig {
                                 .requestMatchers("/api/pacientes/admin").hasRole("ADMIN") //Listamos pacientes
                                 .requestMatchers("/api/pacientes/sin-psicologo").hasRole("ADMIN") //Listamos pacientes sin psicologos
                                  //  PSICOLOGO + ADMIN
-                                .requestMatchers("/api/psicologo/**").hasAnyRole("ADMIN", "PSICOLOGO")
                                 .requestMatchers("/api/psicologo/update/*").hasRole( "PSICOLOGO")
                                 .requestMatchers("/api/citas/psicologo/*/horario").hasAnyRole("ADMIN", "PSICOLOGO")
                                 .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
@@ -134,6 +133,26 @@ public class SecurityConfig {
                                 .requestMatchers("/api/citas/cambio/*/estado").hasAnyRole("PSICOLOGO", "ADMIN")//  Otros
                                 .requestMatchers("/api/tickets-soporte/**").authenticated()
                                 .requestMatchers("/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+
+                                .requestMatchers("/api/psicologo/*/foto").hasRole("PSICOLOGO")
+                                .requestMatchers("/api/psicologo/*/perfil").hasRole("PSICOLOGO")
+                                .requestMatchers("/api/psicologo/update/*").hasRole("PSICOLOGO")
+                                .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
+
+                                .requestMatchers("/api/psicologo/admin/{id}/perfil").hasRole("ADMIN")
+                                .requestMatchers("/api/psicologo/admin/{id}/update").hasRole("ADMIN")
+                                .requestMatchers("/api/psicologo/admin/{id}/foto").hasRole("ADMIN")
+
+                                .requestMatchers("/api/psicologo/paciente/{id}/get").hasRole("PACIENTE")
+                                .requestMatchers("/api/psicologo/paciente/update/{id}").hasRole("PACIENTE")
+                                .requestMatchers("/api/psicologo/paciente/{id}/foto").hasRole("PACIENTE")
+
+                                .requestMatchers("/api/psicologo/*/foto").hasRole("PSICOLOGO")
+                                .requestMatchers("/api/psicologo/*/perfil").hasRole("PSICOLOGO")
+
+                                .requestMatchers("/api/historial-clinico/paciente/*")
+                                .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+
 
                                 //  Todo lo demás
                                 .anyRequest().authenticated()

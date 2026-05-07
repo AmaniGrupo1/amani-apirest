@@ -4,7 +4,7 @@ import com.amani.amaniapirest.dto.dtoAdmin.response.HistorialClinicoAdminRespons
 import com.amani.amaniapirest.dto.dtoPaciente.request.HistorialClinicoRequestDTO;
 import com.amani.amaniapirest.models.HistorialClinico;
 import com.amani.amaniapirest.models.Paciente;
-import com.amani.amaniapirest.repository.HistorialClinicoRepository;
+import com.amani.amaniapirest.repository.hostorialClinico.HistorialClinicoRepository;
 import com.amani.amaniapirest.repository.PacientesRepository;
 import org.springframework.stereotype.Service;
 

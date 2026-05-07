@@ -1,4 +1,4 @@
-package com.amani.amaniapirest.repository;
+package com.amani.amaniapirest.repository.hostorialClinico;
 
 import com.amani.amaniapirest.models.HistorialClinico;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +20,6 @@ public interface HistorialClinicoRepository extends JpaRepository<HistorialClini
      * @return lista de registros clinicos del paciente
      */
     List<HistorialClinico> findByPacienteIdPaciente(Long idPaciente);
+    
 }
 

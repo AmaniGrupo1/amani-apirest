@@ -1,155 +1,217 @@
 package com.amani.amaniapirest.services.paciente;
 
 import com.amani.amaniapirest.dto.dtoPaciente.request.HistorialClinicoRequestDTO;
-import com.amani.amaniapirest.dto.dtoPaciente.response.HistorialClinicoResponseDTO;
+import com.amani.amaniapirest.dto.historialClinico.HistorialClinicoResponseDTO;
+import com.amani.amaniapirest.enums.RolUsuario;
 import com.amani.amaniapirest.models.HistorialClinico;
 import com.amani.amaniapirest.models.Paciente;
-import com.amani.amaniapirest.repository.HistorialClinicoRepository;
+import com.amani.amaniapirest.models.Psicologo;
+import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.PacientesRepository;
+import com.amani.amaniapirest.repository.PsicologoPacienteRepository;
+import com.amani.amaniapirest.repository.PsicologoRepository;
+import com.amani.amaniapirest.repository.UsuarioRepository;
+import com.amani.amaniapirest.repository.hostorialClinico.HistorialClinicoRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Servicio de negocio para gestionar el historial clínico de los pacientes.
- *
- * <p>Permite crear, consultar, actualizar y eliminar registros clínicos,
- * validando la existencia del paciente referenciado en cada operación.</p>
- */
 @Service
+@RequiredArgsConstructor
 public class HistorialClinicoService {
 
     private final HistorialClinicoRepository historialClinicoRepository;
     private final PacientesRepository pacientesRepository;
+    private final PsicologoRepository psicologoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final PsicologoPacienteRepository psicologoPacienteRepository;
 
     /**
-     * Construye el servicio inyectando sus repositorios.
-     *
-     * @param historialClinicoRepository repositorio JPA de {@link HistorialClinico}
-     * @param pacientesRepository        repositorio JPA de {@link Paciente}
-     */
-    public HistorialClinicoService(HistorialClinicoRepository historialClinicoRepository,
-                                   PacientesRepository pacientesRepository) {
-        this.historialClinicoRepository = historialClinicoRepository;
-        this.pacientesRepository = pacientesRepository;
-    }
-
-    /**
-     * Obtiene la lista completa de registros del historial clínico.
-     *
-     * @return lista de {@link HistorialClinicoResponseDTO} con todos los registros
+     * Obtiene todos los historiales clínicos.
      */
     public List<HistorialClinicoResponseDTO> findAll() {
-        return historialClinicoRepository.findAll().stream().map(this::toResponse).toList();
+        return historialClinicoRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     /**
-     * Busca un registro clínico por su identificador único.
-     *
-     * @param idHistory identificador del registro
-     * @return {@link HistorialClinicoResponseDTO} con los datos encontrados
-     * @throws RuntimeException si no existe un registro con el id proporcionado
+     * Obtiene un historial clínico por ID.
      */
     public HistorialClinicoResponseDTO findById(Long idHistory) {
         return toResponse(getHistorialOrThrow(idHistory));
     }
 
     /**
-     * Obtiene todos los registros del historial clínico de un paciente.
-     *
-     * @param idPaciente identificador del paciente
-     * @return lista de {@link HistorialClinicoResponseDTO} del paciente indicado
+     * Obtiene el historial clínico de un paciente
+     * validando permisos según rol.
      */
     public List<HistorialClinicoResponseDTO> findByPaciente(Long idPaciente) {
-        return historialClinicoRepository.findByPacienteIdPaciente(idPaciente)
-                .stream().map(this::toResponse).toList();
+
+        Authentication auth = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        String email = auth.getName();
+
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("Usuario no encontrado"));
+
+        // =========================
+        // ADMIN
+        // =========================
+        if (usuario.getRol() == RolUsuario.admin) {
+
+            return historialClinicoRepository
+                    .findByPacienteIdPaciente(idPaciente)
+                    .stream()
+                    .map(this::toResponse)
+                    .toList();
+        }
+
+        // =========================
+        // PACIENTE
+        // =========================
+        if (usuario.getRol() == RolUsuario.paciente) {
+
+            Paciente paciente = pacientesRepository
+                    .findByUsuario_Email(email)
+                    .orElseThrow(() ->
+                            new RuntimeException("Paciente no encontrado"));
+
+            // impedir acceso a historiales ajenos
+            if (!paciente.getIdPaciente().equals(idPaciente)) {
+                throw new RuntimeException("No autorizado");
+            }
+
+            return historialClinicoRepository
+                    .findByPacienteIdPaciente(idPaciente)
+                    .stream()
+                    .map(this::toResponse)
+                    .toList();
+        }
+
+        // =========================
+        // PSICOLOGO
+        // =========================
+        if (usuario.getRol() == RolUsuario.psicologo) {
+
+            Psicologo psicologo = psicologoRepository
+                    .findByUsuario_Email(email)
+                    .orElseThrow(() ->
+                            new RuntimeException("Psicólogo no encontrado"));
+
+            boolean asignado =
+                    psicologoPacienteRepository
+                            .existsByPsicologo_IdPsicologoAndPaciente_IdPacienteAndFechaFinIsNull(
+                                    psicologo.getIdPsicologo(),
+                                    idPaciente
+                            );
+
+            // impedir acceso a pacientes no asignados
+            if (!asignado) {
+                throw new RuntimeException("No autorizado");
+            }
+
+            return historialClinicoRepository
+                    .findByPacienteIdPaciente(idPaciente)
+                    .stream()
+                    .map(this::toResponse)
+                    .toList();
+        }
+
+        throw new RuntimeException("No autorizado");
     }
 
     /**
-     * Crea un nuevo registro en el historial clínico de un paciente.
-     *
-     * @param request {@link HistorialClinicoRequestDTO} con los datos del registro
-     * @return {@link HistorialClinicoResponseDTO} con los datos creados
-     * @throws RuntimeException si el paciente referenciado no existe
+     * Crear historial clínico.
      */
     public HistorialClinicoResponseDTO create(HistorialClinicoRequestDTO request) {
+
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
 
         HistorialClinico historial = new HistorialClinico();
+
         historial.setPaciente(paciente);
         historial.setTitulo(request.getTitulo());
         historial.setDiagnostico(request.getDiagnostico());
         historial.setTratamiento(request.getTratamiento());
         historial.setObservaciones(request.getObservaciones());
-        historial.setCreadoEn(LocalDateTime.now());
 
-        return toResponse(historialClinicoRepository.save(historial));
+        return toResponse(
+                historialClinicoRepository.save(historial)
+        );
     }
 
     /**
-     * Actualiza un registro clínico existente.
-     *
-     * @param idHistory identificador del registro a actualizar
-     * @param request   {@link HistorialClinicoRequestDTO} con los nuevos datos
-     * @return {@link HistorialClinicoResponseDTO} con los datos actualizados
-     * @throws RuntimeException si el registro o el paciente referenciado no existen
+     * Actualizar historial clínico.
      */
-    public HistorialClinicoResponseDTO update(Long idHistory, HistorialClinicoRequestDTO request) {
-        HistorialClinico historial = getHistorialOrThrow(idHistory);
-        Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
+    public HistorialClinicoResponseDTO update(
+            Long idHistory,
+            HistorialClinicoRequestDTO request
+    ) {
 
-        historial.setPaciente(paciente);
+        HistorialClinico historial = getHistorialOrThrow(idHistory);
+
         historial.setTitulo(request.getTitulo());
         historial.setDiagnostico(request.getDiagnostico());
         historial.setTratamiento(request.getTratamiento());
         historial.setObservaciones(request.getObservaciones());
 
-        return toResponse(historialClinicoRepository.save(historial));
+        return toResponse(
+                historialClinicoRepository.save(historial)
+        );
     }
 
     /**
-     * Elimina el registro clínico con el identificador indicado.
-     *
-     * @param idHistory identificador del registro a eliminar
-     * @throws RuntimeException si no existe un registro con el id proporcionado
+     * Eliminar historial clínico.
      */
     public void delete(Long idHistory) {
-        historialClinicoRepository.delete(getHistorialOrThrow(idHistory));
+        historialClinicoRepository.delete(
+                getHistorialOrThrow(idHistory)
+        );
     }
 
     /**
-     * Recupera un registro clínico por id o lanza excepción si no existe.
-     *
-     * @param idHistory identificador del registro
-     * @return entidad {@link HistorialClinico} encontrada
-     * @throws RuntimeException si no existe un registro con el id proporcionado
+     * Busca historial o lanza excepción.
      */
     private HistorialClinico getHistorialOrThrow(Long idHistory) {
+
         return historialClinicoRepository.findById(idHistory)
-                .orElseThrow(() -> new RuntimeException("Historial clínico no encontrado con id: " + idHistory));
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Historial clínico no encontrado con id: "
+                                        + idHistory
+                        ));
     }
 
     /**
-     * Recupera un paciente por id o lanza excepción si no existe.
-     *
-     * @param idPaciente identificador del paciente
-     * @return entidad {@link Paciente} encontrada
-     * @throws RuntimeException si no existe un paciente con el id proporcionado
+     * Busca paciente o lanza excepción.
      */
     private Paciente getPacienteOrThrow(Long idPaciente) {
+
         return pacientesRepository.findById(idPaciente)
-                .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + idPaciente));
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Paciente no encontrado con id: "
+                                        + idPaciente
+                        ));
     }
 
     /**
-     * Convierte una entidad {@link HistorialClinico} en su DTO de respuesta.
-     *
-     * @param historial entidad a convertir
-     * @return {@link HistorialClinicoResponseDTO} con los datos mapeados
+     * Convierte entidad a DTO.
      */
-    private HistorialClinicoResponseDTO toResponse(HistorialClinico historial) {
+    private HistorialClinicoResponseDTO toResponse(
+            HistorialClinico historial
+    ) {
+
         return new HistorialClinicoResponseDTO(
+                historial.getIdHistory(),
                 historial.getTitulo(),
                 historial.getDiagnostico(),
                 historial.getTratamiento(),
@@ -158,4 +220,3 @@ public class HistorialClinicoService {
         );
     }
 }
-

@@ -2,7 +2,7 @@ package com.amani.amaniapirest.services.psicologo;
 
 import com.amani.amaniapirest.dto.dtoPsicologo.response.HistorialClinicoPsicologoResponseDTO;
 import com.amani.amaniapirest.models.HistorialClinico;
-import com.amani.amaniapirest.repository.HistorialClinicoRepository;
+import com.amani.amaniapirest.repository.hostorialClinico.HistorialClinicoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

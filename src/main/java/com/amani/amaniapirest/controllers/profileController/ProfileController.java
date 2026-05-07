@@ -155,7 +155,7 @@ public class ProfileController {
     // ============================================================
 
     @Operation(summary = "Obtener perfil paciente")
-    @GetMapping("/paciente/{id}")
+    @GetMapping("/paciente/{id}/get")
     public ResponseEntity<PacienteDTO> getPaciente(@PathVariable Long id) {
         return ResponseEntity.ok(psicologoSelfService.getPacienteProfile(id));
     }
