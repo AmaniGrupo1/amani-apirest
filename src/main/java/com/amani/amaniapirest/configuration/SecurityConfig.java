@@ -150,7 +150,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/psicologo/*/foto").hasRole("PSICOLOGO")
                                 .requestMatchers("/api/psicologo/*/perfil").hasRole("PSICOLOGO")
 
-                                .requestMatchers("/api/historial-clinico/paciente/*").hasRole("PACIENTE")
+                                .requestMatchers("/api/historial-clinico/paciente/*")
+                                .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
 
                                 //  Todo lo demás

@@ -30,4 +30,9 @@ public interface PsicologoPacienteRepository extends JpaRepository<PsicologoPaci
             AND pp.fechaFin IS NULL
             """)
     List<PsicologoPaciente> findPacientesConTutores(Long idPsicologo);
+
+    boolean existsByPsicologo_IdPsicologoAndPaciente_IdPacienteAndFechaFinIsNull(
+            Long idPsicologo,
+            Long idPaciente
+    );
 }
