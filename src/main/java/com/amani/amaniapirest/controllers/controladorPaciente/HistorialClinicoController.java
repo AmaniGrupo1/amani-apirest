@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -83,8 +85,14 @@ public class HistorialClinicoController {
 
     //-----------------------------------------
     @GetMapping("/paciente/{idPaciente}")
-    public ResponseEntity<List<HistorialClinicoResponseDTO>> findByPaciente(@PathVariable Long idPaciente) {
-        return ResponseEntity.ok(historialClinicoService.findByPaciente(idPaciente));
+    @PreAuthorize("hasAnyRole('PACIENTE','PSICOLOGO','ADMIN')")
+    public ResponseEntity<List<HistorialClinicoResponseDTO>> findByPaciente(
+            @PathVariable Long idPaciente,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(
+                historialClinicoService.findByPaciente(idPaciente, authentication)
+        );
     }
 
     /**
