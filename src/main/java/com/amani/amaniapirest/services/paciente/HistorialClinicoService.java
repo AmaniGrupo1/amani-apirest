@@ -1,12 +1,16 @@
 package com.amani.amaniapirest.services.paciente;
 
 
+import com.amani.amaniapirest.configuration.UserDetailsImpl;
 import com.amani.amaniapirest.dto.dtoPaciente.request.HistorialClinicoRequestDTO;
 import com.amani.amaniapirest.dto.historialClinico.HistorialClinicoResponseDTO;
 import com.amani.amaniapirest.models.HistorialClinico;
 import com.amani.amaniapirest.models.Paciente;
+import com.amani.amaniapirest.repository.PsicologoPacienteRepository;
 import com.amani.amaniapirest.repository.hostorialClinico.HistorialClinicoRepository;
 import com.amani.amaniapirest.repository.PacientesRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,22 +23,14 @@ import java.util.List;
  * validando la existencia del paciente referenciado en cada operación.</p>
  */
 @Service
+@RequiredArgsConstructor
 public class HistorialClinicoService {
 
     private final HistorialClinicoRepository historialClinicoRepository;
     private final PacientesRepository pacientesRepository;
+    private final PsicologoPacienteRepository psicologoPacienteRepository;
 
-    /**
-     * Construye el servicio inyectando sus repositorios.
-     *
-     * @param historialClinicoRepository repositorio JPA de {@link HistorialClinico}
-     * @param pacientesRepository        repositorio JPA de {@link Paciente}
-     */
-    public HistorialClinicoService(HistorialClinicoRepository historialClinicoRepository,
-                                   PacientesRepository pacientesRepository) {
-        this.historialClinicoRepository = historialClinicoRepository;
-        this.pacientesRepository = pacientesRepository;
-    }
+
 
     /**
      * Obtiene la lista completa de registros del historial clínico.
@@ -62,9 +58,50 @@ public class HistorialClinicoService {
      * @param idPaciente identificador del paciente
      * @return lista de {@link HistorialClinicoResponseDTO} del paciente indicado
      */
-    public List<HistorialClinicoResponseDTO> findByPaciente(Long idPaciente) {
+    public List<HistorialClinicoResponseDTO> findByPaciente(
+            Long idPaciente,
+            Authentication authentication
+    ) {
+
+        boolean isPaciente = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_PACIENTE"));
+
+        boolean isPsicologo = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_PSICOLOGO"));
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        // 👤 PACIENTE → solo su historial
+        if (isPaciente) {
+            Long idSesion = ((UserDetailsImpl) authentication.getPrincipal()).getIdUsuario();
+
+            if (!idSesion.equals(idPaciente)) {
+                throw new RuntimeException("No puedes ver otro paciente");
+            }
+        }
+
+        // 🧑‍⚕️ PSICOLOGO → validar relación real
+        if (isPsicologo) {
+            Long idPsicologo = ((UserDetailsImpl) authentication.getPrincipal()).getIdUsuario();
+
+            boolean asignado = psicologoPacienteRepository
+                    .existsByPacienteIdPacienteAndPsicologoIdPsicologoAndFechaFinIsNull(
+                            idPaciente,
+                            idPsicologo
+                    );
+
+            if (!asignado) {
+                throw new RuntimeException("Paciente no asignado a este psicólogo");
+            }
+        }
+
+        // 🛠 ADMIN → sin restricciones
+
         return historialClinicoRepository.findByPacienteIdPaciente(idPaciente)
-                .stream().map(this::toResponse).toList();
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     /**

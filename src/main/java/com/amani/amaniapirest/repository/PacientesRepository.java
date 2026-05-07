@@ -59,4 +59,6 @@ public interface PacientesRepository extends JpaRepository<Paciente, Long> {
                 )
             """)
     List<Paciente> findPacientesSinPsicologo();
+
+
 }

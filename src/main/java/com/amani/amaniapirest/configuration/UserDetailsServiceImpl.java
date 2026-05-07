@@ -36,11 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
 
-        return new User(
-                usuario.getEmail(),
-                usuario.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name().toUpperCase()))
-        );
+        return new UserDetailsImpl(usuario);
     }
 }
 
