@@ -87,11 +87,10 @@ public class HistorialClinicoController {
     @GetMapping("/paciente/{idPaciente}")
     @PreAuthorize("hasAnyRole('PACIENTE','PSICOLOGO','ADMIN')")
     public ResponseEntity<List<HistorialClinicoResponseDTO>> findByPaciente(
-            @PathVariable Long idPaciente,
-            Authentication authentication
+            @PathVariable Long idPaciente
     ) {
         return ResponseEntity.ok(
-                historialClinicoService.findByPaciente(idPaciente, authentication)
+                historialClinicoService.findByPaciente(idPaciente)
         );
     }
 
