@@ -139,13 +139,13 @@ public class SecurityConfig {
                                 .requestMatchers("/api/psicologo/update/*").hasRole("PSICOLOGO")
                                 .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
 
-                                .requestMatchers("/api/psicologo/admin/{id}/perfil").hasRole("ADMIN")
-                                .requestMatchers("/api/psicologo/admin/{id}/update").hasRole("ADMIN")
-                                .requestMatchers("/api/psicologo/admin/{id}/foto").hasRole("ADMIN")
+                                .requestMatchers("/api/psicologo/admin/*/perfil").hasRole("ADMIN")
+                                .requestMatchers("/api/psicologo/admin/*/update").hasRole("ADMIN")
+                                .requestMatchers("/api/psicologo/admin/*/foto").hasRole("ADMIN")
 
-                                .requestMatchers("/api/psicologo/paciente/{id}/get").hasRole("PACIENTE")
-                                .requestMatchers("/api/psicologo/paciente/update/{id}").hasRole("PACIENTE")
-                                .requestMatchers("/api/psicologo/paciente/{id}/foto").hasRole("PACIENTE")
+                                .requestMatchers("/api/psicologo/paciente/*/get").hasRole("PACIENTE")
+                                .requestMatchers("/api/psicologo/paciente/update/*").hasRole("PACIENTE")
+                                .requestMatchers("/api/psicologo/paciente/*/foto").hasRole("PACIENTE")
 
                                 .requestMatchers("/api/psicologo/*/foto").hasRole("PSICOLOGO")
                                 .requestMatchers("/api/psicologo/*/perfil").hasRole("PSICOLOGO")
