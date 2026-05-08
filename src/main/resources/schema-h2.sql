@@ -1,16 +1,7 @@
 DROP SCHEMA IF EXISTS psicologia_app CASCADE;
 CREATE SCHEMA psicologia_app;
 
-SET search_path TO psicologia_app;
-
--- ==============================
--- ENUMS
--- ==============================
-
-CREATE TYPE rol_usuario AS ENUM ('admin', 'psicologo', 'paciente');
-CREATE TYPE estado_cita AS ENUM ('pendiente', 'confirmada', 'cancelada', 'completada');
-CREATE TYPE metodo_pago AS ENUM ('PRESENCIAL', 'ONLINE');
-CREATE TYPE estado_pago AS ENUM ('PENDIENTE', 'PAGADO', 'FALLIDO', 'REEMBOLSADO');
+SET SCHEMA psicologia_app;
 
 -- ==============================
 -- TABLAS
@@ -24,30 +15,13 @@ CREATE TABLE usuarios
     dni             VARCHAR(50),
     email           VARCHAR(150) UNIQUE NOT NULL,
     password        VARCHAR(255)        NOT NULL,
-    rol             rol_usuario         NOT NULL,
+    rol             VARCHAR(50)         NOT NULL,
     activo          BOOLEAN             NOT NULL DEFAULT TRUE,
     fecha_registro  TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fecha_baja      TIMESTAMP,
     fcm_token       VARCHAR(512),
-    foto_perfil_url VARCHAR(500)
-);
-
-CREATE TABLE pacientes
-(
-    id_paciente      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_usuario       BIGINT      NOT NULL,
-    id_psicologo     BIGINT, -- asignación principal
-    fecha_nacimiento DATE,
-    genero           VARCHAR(30),
-    telefono         VARCHAR(30),
-    metodo_pago      metodo_pago NOT NULL DEFAULT 'PRESENCIAL',
-    estado_pago      estado_pago NOT NULL DEFAULT 'PENDIENTE',
-    created_at       TIMESTAMP            DEFAULT CURRENT_TIMESTAMP,
-    updated_at       TIMESTAMP            DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (id_usuario)
-        REFERENCES usuarios (id_usuario)
-        ON DELETE CASCADE
+    foto_perfil_url VARCHAR(500),
+    notificaciones_activas BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE psicologos
@@ -58,6 +32,7 @@ CREATE TABLE psicologos
     experiencia  INT CHECK (experiencia >= 0),
     descripcion  TEXT,
     licencia     VARCHAR(100),
+    duracion_default INT NOT NULL DEFAULT 50,
     created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -66,12 +41,27 @@ CREATE TABLE psicologos
         ON DELETE CASCADE
 );
 
--- FK diferida: pacientes.id_psicologo → psicologos (se añade tras crear psicologos)
-ALTER TABLE pacientes
-    ADD CONSTRAINT fk_paciente_psicologo
-        FOREIGN KEY (id_psicologo)
-            REFERENCES psicologos (id_psicologo)
-            ON DELETE SET NULL;
+CREATE TABLE pacientes
+(
+    id_paciente      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_usuario       BIGINT NOT NULL,
+    id_psicologo     BIGINT, -- asignación principal
+    fecha_nacimiento DATE,
+    genero           VARCHAR(30),
+    telefono         VARCHAR(30),
+    metodo_pago      VARCHAR(50) NOT NULL DEFAULT 'PRESENCIAL',
+    estado_pago      VARCHAR(50) NOT NULL DEFAULT 'PENDIENTE',
+    created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (id_usuario)
+        REFERENCES usuarios (id_usuario)
+        ON DELETE CASCADE,
+        
+    FOREIGN KEY (id_psicologo)
+        REFERENCES psicologos (id_psicologo)
+        ON DELETE SET NULL
+);
 
 CREATE TABLE direcciones
 (
@@ -89,15 +79,23 @@ CREATE TABLE direcciones
         ON DELETE CASCADE
 );
 
+CREATE TABLE tipos_terapia
+(
+    id_tipo_terapia  BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nombre           VARCHAR(100) NOT NULL,
+    descripcion      TEXT
+);
 
 CREATE TABLE citas
 (
     id_cita          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_paciente      BIGINT      NOT NULL,
     id_psicologo     BIGINT      NOT NULL,
+    id_tipo_terapia  BIGINT,
     start_datetime   TIMESTAMP   NOT NULL,
     duration_minutes INT                  DEFAULT 50,
-    estado           estado_cita NOT NULL DEFAULT 'pendiente',
+    estado           VARCHAR(50) NOT NULL DEFAULT 'pendiente',
+    modalidad        VARCHAR(50) NOT NULL DEFAULT 'ONLINE',
     motivo           TEXT,
     created_at       TIMESTAMP            DEFAULT CURRENT_TIMESTAMP,
     updated_at       TIMESTAMP            DEFAULT CURRENT_TIMESTAMP,
@@ -108,29 +106,33 @@ CREATE TABLE citas
 
     FOREIGN KEY (id_psicologo)
         REFERENCES psicologos (id_psicologo)
-        ON DELETE RESTRICT
+        ON DELETE RESTRICT,
+
+    FOREIGN KEY (id_tipo_terapia)
+        REFERENCES tipos_terapia (id_tipo_terapia)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE pagos
 (
-    id_pago                  BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_cita                  BIGINT          UNIQUE NOT NULL,
-    monto                    DECIMAL(10,2)   NOT NULL,
-    metodo_pago              metodo_pago     NOT NULL DEFAULT 'ONLINE',
-    estado_pago              estado_pago     NOT NULL DEFAULT 'PENDIENTE',
+    id_pago          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    monto            DECIMAL(10,2) NOT NULL,
+    metodo_pago      VARCHAR(50) NOT NULL,
+    estado_pago      VARCHAR(50) NOT NULL DEFAULT 'PENDIENTE',
+    fecha_pago       TIMESTAMP,
+    fecha_creacion   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stripe_payment_intent_id VARCHAR(255),
-    stripe_charge_id         VARCHAR(255),
-    idempotency_key          VARCHAR(255),
-    currency                 VARCHAR(3)      NOT NULL DEFAULT 'EUR',
-    fecha_pago               TIMESTAMP,
-    fecha_creacion           TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    fecha_actualizacion      TIMESTAMP       DEFAULT CURRENT_TIMESTAMP,
+    stripe_charge_id VARCHAR(255),
+    idempotency_key VARCHAR(255),
+    currency VARCHAR(3) NOT NULL DEFAULT 'EUR',
+
+    id_cita          BIGINT NOT NULL UNIQUE,
+
     FOREIGN KEY (id_cita)
         REFERENCES citas (id_cita)
         ON DELETE CASCADE
 );
-
-
 
 CREATE TABLE sesiones
 (
@@ -157,7 +159,6 @@ CREATE TABLE sesiones
         REFERENCES psicologos (id_psicologo)
         ON DELETE SET NULL
 );
-
 
 CREATE TABLE historial_clinico
 (
@@ -306,23 +307,16 @@ CREATE TABLE psicologo_paciente
         ON DELETE CASCADE
 );
 
-
--- ==============================
--- SITUACIONES Y CONSENTIMIENTOS
--- ==============================
-
--- Catálogo de situaciones (contexto del paciente: duelo, ansiedad, etc.)
 CREATE TABLE situaciones
 (
     id_situacion BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombre       VARCHAR(150) NOT NULL,
     categoria    VARCHAR(100),
     descripcion  TEXT,
-    activo       BOOLEAN   DEFAULT TRUE,
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    activo       BOOLEAN      DEFAULT TRUE,
+    created_at   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tutores legales de pacientes menores de edad
 CREATE TABLE tutores
 (
     id_tutor    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -331,35 +325,34 @@ CREATE TABLE tutores
     telefono    VARCHAR(30),
     email       VARCHAR(150),
     dni         VARCHAR(20),
-    tipo        VARCHAR(50)  NOT NULL, -- MADRE / PADRE / TUTOR
+    tipo        VARCHAR(50)  NOT NULL,
 
     FOREIGN KEY (id_paciente)
         REFERENCES pacientes (id_paciente)
         ON DELETE CASCADE
 );
 
--- Consentimientos informados aceptados por el paciente
 CREATE TABLE consentimientos
 (
-    id_consentimiento       BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_paciente             BIGINT       NOT NULL,
-    fecha_aceptacion        TIMESTAMP    NOT NULL,
-    version_documento       VARCHAR(255) NOT NULL,
-    acepta_videoconferencia BOOLEAN DEFAULT FALSE,
-    acepta_comunicacion     BOOLEAN DEFAULT FALSE,
+    id_consentimiento      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente            BIGINT    NOT NULL,
+    fecha_aceptacion       TIMESTAMP NOT NULL,
+    version_documento      VARCHAR(255) NOT NULL,
+    acepta_terminos       BOOLEAN   NOT NULL DEFAULT FALSE,
+    acepta_videoconferencia BOOLEAN   DEFAULT FALSE,
+    acepta_comunicacion    BOOLEAN   DEFAULT FALSE,
 
     FOREIGN KEY (id_paciente)
         REFERENCES pacientes (id_paciente)
         ON DELETE CASCADE
 );
 
--- Relación N:M entre pacientes y situaciones
 CREATE TABLE paciente_situacion
 (
-    id             BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_paciente    BIGINT NOT NULL,
-    id_situacion   BIGINT NOT NULL,
-    fecha_registro TIMESTAMP,
+    id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_paciente     BIGINT    NOT NULL,
+    id_situacion    BIGINT    NOT NULL,
+    fecha_registro  TIMESTAMP,
 
     FOREIGN KEY (id_paciente)
         REFERENCES pacientes (id_paciente)
@@ -370,12 +363,6 @@ CREATE TABLE paciente_situacion
         ON DELETE CASCADE
 );
 
--- ==============================
--- AGENDA DE PSICÓLOGOS
--- ==============================
-
--- Horario semanal recurrente
--- dia_semana: 0=lunes, 1=martes, ..., 6=domingo
 CREATE TABLE horario_psicologo
 (
     id_horario   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -394,9 +381,6 @@ CREATE TABLE horario_psicologo
         ON DELETE CASCADE
 );
 
-
--- Bloqueos puntuales: día completo o franja horaria concreta
--- hora_inicio/hora_fin = NULL → día completo bloqueado
 CREATE TABLE bloqueos_agenda
 (
     id_bloqueo   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -417,81 +401,30 @@ CREATE TABLE bloqueos_agenda
         ON DELETE CASCADE
 );
 
+CREATE TABLE tickets_soporte
+(
+    id_ticket       BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_usuario      BIGINT NOT NULL,
+    titulo          VARCHAR(200) NOT NULL,
+    descripcion     TEXT NOT NULL,
+    tipo            VARCHAR(50) NOT NULL,
+    categoria       VARCHAR(50) NOT NULL,
+    estado          VARCHAR(50) NOT NULL DEFAULT 'abierto',
+    creado_en       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en  TIMESTAMP,
+    cerrado_en      TIMESTAMP,
+
+    FOREIGN KEY (id_usuario)
+        REFERENCES usuarios (id_usuario)
+        ON DELETE CASCADE
+);
 
 -- ==============================
--- ÍNDICES
--- ==============================
-
-CREATE INDEX idx_usuarios_email ON usuarios (email);
-CREATE INDEX idx_citas_start ON citas (start_datetime);
-CREATE INDEX idx_citas_psicologo_fecha ON citas (id_psicologo, start_datetime);
-CREATE INDEX idx_archivos_sesion ON archivos (id_sesion);
-CREATE INDEX idx_horario_psicologo ON horario_psicologo (id_psicologo, dia_semana);
-CREATE INDEX idx_bloqueos_psicologo ON bloqueos_agenda (id_psicologo, fecha);
-
--- ==============================
--- VISTAS
--- ==============================
-
--- Agenda diaria consolidada: citas activas + bloqueos por psicólogo
-CREATE OR REPLACE VIEW vista_agenda_psicologo AS
-SELECT p.id_psicologo,
-       u.nombre || ' ' || COALESCE(u.apellido, '')                             AS nombre_psicologo,
-       c.start_datetime::DATE                                                  AS fecha,
-       c.start_datetime::TIME                                                  AS hora_inicio,
-       (c.start_datetime + (c.duration_minutes || ' minutes')::INTERVAL)::TIME AS hora_fin,
-       'cita'                                                                  AS tipo,
-       c.estado::TEXT                                                          AS detalle,
-       c.id_cita                                                               AS referencia_id
-FROM psicologos p
-         JOIN usuarios u ON u.id_usuario = p.id_usuario
-         JOIN citas c ON c.id_psicologo = p.id_psicologo
-WHERE c.estado IN ('pendiente', 'confirmada')
-
-UNION ALL
-
-SELECT b.id_psicologo,
-       u.nombre || ' ' || COALESCE(u.apellido, '') AS nombre_psicologo,
-       b.fecha,
-       COALESCE(b.hora_inicio, '00:00'::TIME)      AS hora_inicio,
-       COALESCE(b.hora_fin, '23:59'::TIME)         AS hora_fin,
-       'bloqueo'                                   AS tipo,
-       COALESCE(b.motivo, 'Día bloqueado')         AS detalle,
-       b.id_bloqueo                                AS referencia_id
-FROM bloqueos_agenda b
-         JOIN psicologos p ON p.id_psicologo = b.id_psicologo
-         JOIN usuarios u ON u.id_usuario = p.id_usuario
-
-ORDER BY fecha, hora_inicio;
-
--- Listado de pacientes asignados a un psicólogo (relación activa)
-CREATE OR REPLACE VIEW vista_pacientes_psicologo AS
-SELECT pp.id_psicologo,
-       up.nombre || ' ' || COALESCE(up.apellido, '') AS nombre_psicologo,
-       pa.id_paciente,
-       ua.nombre || ' ' || COALESCE(ua.apellido, '') AS nombre_paciente,
-       ua.email,
-       pa.telefono,
-       pa.fecha_nacimiento,
-       pa.genero,
-       pp.fecha_inicio
-FROM psicologo_paciente pp
-         JOIN psicologos ps ON ps.id_psicologo = pp.id_psicologo
-         JOIN usuarios up ON up.id_usuario = ps.id_usuario
-         JOIN pacientes pa ON pa.id_paciente = pp.id_paciente
-         JOIN usuarios ua ON ua.id_usuario = pa.id_usuario
-WHERE pp.fecha_fin IS NULL
-ORDER BY pp.id_psicologo, ua.apellido, ua.nombre;
-
--- ==============================
--- DATOS INICIALES
+-- DATOS INICIALES PARA TESTS
 -- ==============================
 
 INSERT INTO usuarios (nombre, apellido, email, password, rol, activo)
-VALUES ('Admin', 'Principal', 'felixb@example.com',
-        '$2a$10$f6IeTQIpuzXWdeXYJ5O8zugtvd2rQESGanenPgsdDqtlRe3xrZIhO',
+VALUES ('Admin', 'Principal', 'admin@amani.com',
+        '$2b$12$Ln0bfXA8cJR.W/NW4.XipOJGsNqvS70SZDJ9KuAXftKGnMrPyMzJe',
         'admin', TRUE);
 
-SELECT p.id_psicologo, u.id_usuario, u.email
-FROM psicologos p
-         JOIN usuarios u ON u.id_usuario = p.id_usuario;

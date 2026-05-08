@@ -1,6 +1,5 @@
 package com.amani.amaniapirest.models;
 
-
 import com.amani.amaniapirest.enums.EstadoPago;
 import com.amani.amaniapirest.enums.MetodoPago;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,6 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Pago {
 
     @Id
@@ -32,14 +32,30 @@ public class Pago {
 
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(nullable = false, length = 50)
+    @Builder.Default
     private EstadoPago estadoPago = EstadoPago.PENDIENTE;
+
+    @Column(name = "stripe_payment_intent_id", length = 255)
+    private String stripePaymentIntentId;
+
+    @Column(name = "stripe_charge_id", length = 255)
+    private String stripeChargeId;
+
+    @Column(name = "idempotency_key", length = 255)
+    private String idempotencyKey;
+
+    @Column(nullable = false, length = 3)
+    @Builder.Default
+    private String currency = "EUR";
 
     private LocalDateTime fechaPago;
 
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;
 
-    // 🔥 RELACIÓN PRINCIPAL
+    @Column(name = "fecha_actualizacion")
+    private LocalDateTime fechaActualizacion;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cita", nullable = false, unique = true)
     @JsonIgnoreProperties({"pago"})
@@ -48,7 +64,16 @@ public class Pago {
     @PrePersist
     protected void onCreate() {
         this.fechaCreacion = LocalDateTime.now();
+        this.fechaActualizacion = LocalDateTime.now();
         if (fechaPago == null && estadoPago == EstadoPago.PAGADO) {
+            this.fechaPago = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.fechaActualizacion = LocalDateTime.now();
+        if (estadoPago == EstadoPago.PAGADO && fechaPago == null) {
             this.fechaPago = LocalDateTime.now();
         }
     }

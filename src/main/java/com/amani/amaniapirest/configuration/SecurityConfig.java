@@ -154,7 +154,9 @@ public class SecurityConfig {
                                 .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
 
-                                //  Todo lo demás
+                                .requestMatchers("/api/webhooks/stripe").permitAll()
+                                .requestMatchers("/api/payments/create-intent").hasRole("PACIENTE")
+                                .requestMatchers("/api/payments/refund").hasAnyRole("ADMIN", "PSICOLOGO")
                                 .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())

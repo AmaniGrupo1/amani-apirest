@@ -91,7 +91,7 @@ public class HistorialClinicoController {
             Authentication authentication
     ) {
         return ResponseEntity.ok(
-                historialClinicoService.findByPaciente(idPaciente, authentication)
+                historialClinicoService.findByPaciente(idPaciente)
         );
     }
 
