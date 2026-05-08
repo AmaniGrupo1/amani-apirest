@@ -150,8 +150,11 @@ public class SecurityConfig {
                                 .requestMatchers("/api/psicologo/*/foto").hasRole("PSICOLOGO")
                                 .requestMatchers("/api/psicologo/*/perfil").hasRole("PSICOLOGO")
 
-                                .requestMatchers("/api/historial-clinico/paciente/*")
-                                .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                                .requestMatchers("/api/historial-clinico/paciente/*").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                                .requestMatchers("/api/documentos-legales").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
+                                .requestMatchers("/api/documentos-legales/crear").hasRole( "ADMIN")
+                                .requestMatchers("/api/documentos-legales/*").hasRole( "ADMIN")
+                                .requestMatchers("/api/documentos-legales/delete/*").hasRole( "ADMIN")
 
 
                                 //  Todo lo demás
