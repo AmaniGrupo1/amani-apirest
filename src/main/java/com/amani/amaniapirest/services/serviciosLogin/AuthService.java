@@ -393,13 +393,44 @@ public class AuthService {
      **/
 
     // ================= BAJA =================
-    public void darBajaPaciente(Long idPaciente) {
-        Paciente paciente = pacienteRepository.findByUsuario_IdUsuario(idPaciente)
-                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+    @Transactional
+    public void darBajaPsicologo(Long idPsicologo) {
 
-        paciente.getUsuario().setActivo(false);
-        paciente.getUsuario().setFechaBaja(LocalDateTime.now());
-        usuarioRepository.save(paciente.getUsuario());
+        // 1. Buscar psicólogo
+        Psicologo psicologo = psicologoRepository.findById(idPsicologo)
+                .orElseThrow(() ->
+                        new RuntimeException("Psicólogo no encontrado"));
+
+        // 2. Desactivar usuario
+        Usuario usuario = psicologo.getUsuario();
+
+        usuario.setActivo(false);
+        usuario.setFechaBaja(LocalDateTime.now());
+
+        usuarioRepository.save(usuario);
+
+        // 3. Obtener relaciones activas
+        List<PsicologoPaciente> relaciones =
+                psicologoPacienteRepository
+                        .findByPsicologo_IdPsicologoAndFechaFinIsNull(idPsicologo);
+
+        System.out.println("RELACIONES ACTIVAS: " + relaciones.size());
+
+        // 4. Liberar pacientes
+        for (PsicologoPaciente relacion : relaciones) {
+
+            // cerrar historial relación
+            relacion.setFechaFin(LocalDateTime.now());
+
+            psicologoPacienteRepository.save(relacion);
+
+            // quitar psicólogo principal
+            Paciente paciente = relacion.getPaciente();
+
+            paciente.setPsicologo(null);
+
+            pacienteRepository.save(paciente);
+        }
     }
 
     @Transactional

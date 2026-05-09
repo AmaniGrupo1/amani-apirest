@@ -145,6 +145,7 @@ public class SecurityConfig {
 
                                 .requestMatchers("/api/psicologo/paciente/*/get").hasRole("PACIENTE")
                                 .requestMatchers("/api/psicologo/paciente/update/*").hasRole("PACIENTE")
+                                .requestMatchers("/api/psicologo/paciente/update/*").hasRole("PACIENTE")
                                 .requestMatchers("/api/psicologo/paciente/*/foto").hasRole("PACIENTE")
 
                                 .requestMatchers("/api/psicologo/*/foto").hasRole("PSICOLOGO")

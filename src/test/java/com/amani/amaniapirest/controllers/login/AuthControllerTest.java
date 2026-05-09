@@ -98,7 +98,7 @@ class AuthControllerTest {
 
     @Test
     void darBajaPacienteReturnsConfirmationMessage() throws Exception {
-        doNothing().when(authService).darBajaPaciente(25L);
+        doNothing().when(authService).darBajaPsicologo(25L);
 
         mockMvc.perform(put("/auth/pacientes/25/baja"))
                 .andExpect(status().isOk())

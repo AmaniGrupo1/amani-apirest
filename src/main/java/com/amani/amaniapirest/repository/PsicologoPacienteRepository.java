@@ -35,4 +35,7 @@ public interface PsicologoPacienteRepository extends JpaRepository<PsicologoPaci
             Long idPsicologo,
             Long idPaciente
     );
+
+
+    List<PsicologoPaciente> findByPsicologo_IdPsicologoAndFechaFinIsNull(Long idPsicologo);
 }

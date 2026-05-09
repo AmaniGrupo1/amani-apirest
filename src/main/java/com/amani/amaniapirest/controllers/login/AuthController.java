@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controlador REST para la autenticación de usuarios y registro de nuevos usuarios.
@@ -120,9 +121,15 @@ public class AuthController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PutMapping("/pacientes/{id}/baja")
-    public ResponseEntity<String> darBajaPaciente(@PathVariable Long id) {
-        authService.darBajaPaciente(id);
-        return ResponseEntity.ok("Paciente dado de baja correctamente");
+    public ResponseEntity<Map<String, String>> darBajaPaciente(
+            @PathVariable Long id
+    ) {
+
+        authService.darBajaPsicologo(id);
+
+        return ResponseEntity.ok(
+                Map.of("message", "Paciente dado de baja correctamente")
+        );
     }
 
 
