@@ -13,8 +13,8 @@
     },
     "typing": {
       "$roomId": {
-        ".read": "auth != null",
         "$userId": {
+          ".read": "auth != null",
           ".write": "auth != null && $userId === auth.uid"
         }
       }

@@ -25,7 +25,7 @@ services:
       POSTGRES_PASSWORD: Sandia4you
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./src/main/resources/amani.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      # DEPRECADO: amani.sql eliminado. Flyway (V1+V2) gestiona el schema automáticamente.
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s

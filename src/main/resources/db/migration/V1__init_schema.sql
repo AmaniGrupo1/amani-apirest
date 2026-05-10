@@ -3,18 +3,14 @@
 -- Fusión completa: v1-fusionado + v2
 -- ============================================================
 
-DROP SCHEMA IF EXISTS psicologia_app CASCADE;
-CREATE SCHEMA psicologia_app;
-SET search_path TO psicologia_app;
-
 -- ==============================
 -- ENUMS CORE
 -- ==============================
 
-CREATE TYPE rol_usuario    AS ENUM ('admin', 'psicologo', 'paciente');
-CREATE TYPE estado_cita    AS ENUM ('pendiente', 'confirmada', 'cancelada', 'completada');
-CREATE TYPE estado_pago    AS ENUM ('PENDIENTE', 'PAGADO', 'FALLIDO', 'REEMBOLSADO');
-CREATE TYPE metodo_pago    AS ENUM ('PRESENCIAL', 'ONLINE');
+CREATE TYPE rol_usuario AS ENUM ('admin', 'psicologo', 'paciente');
+CREATE TYPE estado_cita AS ENUM ('pendiente', 'confirmada', 'cancelada', 'completada');
+CREATE TYPE estado_pago AS ENUM ('PENDIENTE', 'PAGADO', 'FALLIDO', 'REEMBOLSADO');
+CREATE TYPE metodo_pago AS ENUM ('PRESENCIAL', 'ONLINE');
 CREATE TYPE modalidad_cita AS ENUM ('PRESENCIAL', 'LLAMADA');
 
 -- ==============================
@@ -48,21 +44,21 @@ CREATE TABLE usuarios
     activo                 BOOLEAN             NOT NULL DEFAULT TRUE,
     fecha_registro         TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fecha_baja             TIMESTAMP,
-    fcm_token              VARCHAR(512),                    -- ampliado para tokens FCM largos
+    fcm_token              VARCHAR(512), -- ampliado para tokens FCM largos
     notificaciones_activas BOOLEAN             NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE psicologos
 (
     id_psicologo     BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_usuario       BIGINT       NOT NULL,
+    id_usuario       BIGINT    NOT NULL,
     especialidad     VARCHAR(150),
     experiencia      INT CHECK (experiencia >= 0),
     descripcion      TEXT,
     licencia         VARCHAR(100),
-    duracion_default INT          NOT NULL DEFAULT 50,
-    created_at       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    duracion_default INT       NOT NULL DEFAULT 50,
+    created_at       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (id_usuario)
         REFERENCES usuarios (id_usuario)
@@ -73,7 +69,7 @@ CREATE TABLE pacientes
 (
     id_paciente      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_usuario       BIGINT    NOT NULL,
-    id_psicologo     BIGINT,                               -- FK diferida ↓
+    id_psicologo     BIGINT, -- FK diferida ↓
     fecha_nacimiento DATE,
     genero           VARCHAR(30),
     telefono         VARCHAR(30),
@@ -103,7 +99,7 @@ CREATE TABLE psicologo_paciente
     id_paciente  BIGINT    NOT NULL,
     id_psicologo BIGINT    NOT NULL,
     fecha_inicio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    fecha_fin    TIMESTAMP,                                -- NULL = relación activa
+    fecha_fin    TIMESTAMP, -- NULL = relación activa
 
     FOREIGN KEY (id_paciente)
         REFERENCES pacientes (id_paciente)
@@ -212,13 +208,13 @@ CREATE TABLE sesiones
 CREATE TABLE horario_psicologo
 (
     id_horario   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_psicologo BIGINT   NOT NULL,
-    dia_semana   SMALLINT NOT NULL,
-    hora_inicio  TIME     NOT NULL,
-    hora_fin     TIME     NOT NULL,
-    activo       BOOLEAN  NOT NULL DEFAULT TRUE,
-    created_at   TIMESTAMP         NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at   TIMESTAMP         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_psicologo BIGINT    NOT NULL,
+    dia_semana   SMALLINT  NOT NULL,
+    hora_inicio  TIME      NOT NULL,
+    hora_fin     TIME      NOT NULL,
+    activo       BOOLEAN   NOT NULL DEFAULT TRUE,
+    created_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CHECK (dia_semana BETWEEN 0 AND 6),
     CHECK (hora_fin > hora_inicio),
@@ -232,8 +228,8 @@ CREATE TABLE horario_psicologo
 CREATE TABLE bloqueos_agenda
 (
     id_bloqueo   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_psicologo BIGINT NOT NULL,
-    fecha        DATE   NOT NULL,
+    id_psicologo BIGINT    NOT NULL,
+    fecha        DATE      NOT NULL,
     hora_inicio  TIME,
     hora_fin     TIME,
     motivo       TEXT,
@@ -241,8 +237,8 @@ CREATE TABLE bloqueos_agenda
 
     CHECK (
         (hora_inicio IS NULL AND hora_fin IS NULL)
-        OR (hora_inicio IS NOT NULL AND hora_fin IS NOT NULL AND hora_fin > hora_inicio)
-    ),
+            OR (hora_inicio IS NOT NULL AND hora_fin IS NOT NULL AND hora_fin > hora_inicio)
+        ),
 
     FOREIGN KEY (id_psicologo)
         REFERENCES psicologos (id_psicologo)
@@ -256,7 +252,7 @@ CREATE TABLE bloqueos_agenda
 CREATE TABLE historial_clinico
 (
     id_history    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_paciente   BIGINT NOT NULL,
+    id_paciente   BIGINT    NOT NULL,
     titulo        VARCHAR(200),
     diagnostico   TEXT,
     tratamiento   TEXT,
@@ -338,13 +334,13 @@ CREATE TABLE mensajes
     sender_id   BIGINT,
     receiver_id BIGINT,
     id_cita     BIGINT,
-    mensaje     TEXT      NOT NULL,
+    mensaje     TEXT NOT NULL,
     enviado_en  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     leido       BOOLEAN   DEFAULT FALSE,
 
-    FOREIGN KEY (sender_id)   REFERENCES usuarios (id_usuario) ON DELETE SET NULL,
+    FOREIGN KEY (sender_id) REFERENCES usuarios (id_usuario) ON DELETE SET NULL,
     FOREIGN KEY (receiver_id) REFERENCES usuarios (id_usuario) ON DELETE SET NULL,
-    FOREIGN KEY (id_cita)     REFERENCES citas (id_cita)       ON DELETE SET NULL
+    FOREIGN KEY (id_cita) REFERENCES citas (id_cita) ON DELETE SET NULL
 );
 
 -- ==============================
@@ -354,7 +350,7 @@ CREATE TABLE mensajes
 CREATE TABLE preguntas
 (
     id_pregunta BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    texto       TEXT        NOT NULL,
+    texto       TEXT NOT NULL,
     tipo        VARCHAR(50) DEFAULT 'texto',
     creado_en   TIMESTAMP   DEFAULT CURRENT_TIMESTAMP
 );
@@ -416,7 +412,7 @@ CREATE TABLE direcciones
 CREATE TABLE ajustes
 (
     id_ajuste      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_usuario     BIGINT       NOT NULL,
+    id_usuario     BIGINT NOT NULL,
     idioma         VARCHAR(10)  DEFAULT 'es',
     notificaciones BOOLEAN      DEFAULT TRUE,
     dark_mode      BOOLEAN      DEFAULT FALSE,
@@ -431,10 +427,10 @@ CREATE TABLE ajustes
 CREATE TABLE archivos
 (
     id_archivo BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_sesion  BIGINT       NOT NULL,
+    id_sesion  BIGINT NOT NULL,
     nombre     VARCHAR(200),
     tipo_mime  VARCHAR(100),
-    datos      BYTEA        NOT NULL,
+    datos      BYTEA  NOT NULL,
     creado_en  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (id_sesion)
@@ -454,7 +450,7 @@ CREATE TABLE tutores
     telefono    VARCHAR(30),
     email       VARCHAR(150),
     dni         VARCHAR(20),
-    tipo        VARCHAR(50)  NOT NULL,                     -- 'MADRE', 'PADRE', 'TUTOR'
+    tipo        VARCHAR(50)  NOT NULL, -- 'MADRE', 'PADRE', 'TUTOR'
 
     FOREIGN KEY (id_paciente)
         REFERENCES pacientes (id_paciente)
@@ -487,7 +483,7 @@ CREATE TABLE consentimientos
 CREATE TABLE notificaciones
 (
     id_notificacion BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_usuario      BIGINT       NOT NULL,
+    id_usuario      BIGINT NOT NULL,
     titulo          VARCHAR(200),
     mensaje         TEXT,
     leida           BOOLEAN   DEFAULT FALSE,
@@ -526,16 +522,16 @@ CREATE TABLE tickets_soporte
 
 CREATE TABLE documentos_legales
 (
-    id_documento         BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    tipo                 tipo_documento_legal NOT NULL,
-    titulo               VARCHAR(255)         NOT NULL,
-    contenido            TEXT                 NOT NULL,
-    icono                VARCHAR(100),
-    orden_visualizacion  INT                  NOT NULL DEFAULT 0,
-    version              VARCHAR(20),
-    activo               BOOLEAN              NOT NULL DEFAULT TRUE,
-    creado_en            TIMESTAMP            NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en       TIMESTAMP            NOT NULL DEFAULT CURRENT_TIMESTAMP
+    id_documento        BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tipo                tipo_documento_legal NOT NULL,
+    titulo              VARCHAR(255)         NOT NULL,
+    contenido           TEXT                 NOT NULL,
+    icono               VARCHAR(100),
+    orden_visualizacion INT                  NOT NULL DEFAULT 0,
+    version             VARCHAR(20),
+    activo              BOOLEAN              NOT NULL DEFAULT TRUE,
+    creado_en           TIMESTAMP            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en      TIMESTAMP            NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ==============================
@@ -543,27 +539,27 @@ CREATE TABLE documentos_legales
 -- ==============================
 
 -- Core
-CREATE INDEX idx_usuarios_email             ON usuarios (email);
-CREATE INDEX idx_citas_start                ON citas (start_datetime);
-CREATE INDEX idx_citas_psicologo_fecha      ON citas (id_psicologo, start_datetime);
-CREATE INDEX idx_archivos_sesion            ON archivos (id_sesion);
+CREATE INDEX idx_usuarios_email ON usuarios (email);
+CREATE INDEX idx_citas_start ON citas (start_datetime);
+CREATE INDEX idx_citas_psicologo_fecha ON citas (id_psicologo, start_datetime);
+CREATE INDEX idx_archivos_sesion ON archivos (id_sesion);
 
 -- Agenda
-CREATE INDEX idx_horario_psicologo          ON horario_psicologo (id_psicologo, dia_semana);
-CREATE INDEX idx_bloqueos_psicologo         ON bloqueos_agenda (id_psicologo, fecha);
+CREATE INDEX idx_horario_psicologo ON horario_psicologo (id_psicologo, dia_semana);
+CREATE INDEX idx_bloqueos_psicologo ON bloqueos_agenda (id_psicologo, fecha);
 
 -- Mensajería
-CREATE INDEX idx_mensajes_sender            ON mensajes (sender_id, enviado_en);
-CREATE INDEX idx_mensajes_receiver          ON mensajes (receiver_id, leido);
+CREATE INDEX idx_mensajes_sender ON mensajes (sender_id, enviado_en);
+CREATE INDEX idx_mensajes_receiver ON mensajes (receiver_id, leido);
 
 -- Soporte
-CREATE INDEX idx_tickets_usuario            ON tickets_soporte (id_usuario);
-CREATE INDEX idx_tickets_estado             ON tickets_soporte (estado);
-CREATE INDEX idx_tickets_creado             ON tickets_soporte (creado_en);
+CREATE INDEX idx_tickets_usuario ON tickets_soporte (id_usuario);
+CREATE INDEX idx_tickets_estado ON tickets_soporte (estado);
+CREATE INDEX idx_tickets_creado ON tickets_soporte (creado_en);
 
 -- Documentos legales
-CREATE INDEX idx_documentos_tipo            ON documentos_legales (tipo);
-CREATE INDEX idx_documentos_activo          ON documentos_legales (activo);
+CREATE INDEX idx_documentos_tipo ON documentos_legales (tipo);
+CREATE INDEX idx_documentos_activo ON documentos_legales (activo);
 
 -- ==============================
 -- VISTAS
@@ -572,13 +568,13 @@ CREATE INDEX idx_documentos_activo          ON documentos_legales (activo);
 -- Agenda diaria consolidada: citas activas + bloqueos por psicólogo
 CREATE OR REPLACE VIEW vista_agenda_psicologo AS
 SELECT p.id_psicologo,
-       u.nombre || ' ' || COALESCE(u.apellido, '')                               AS nombre_psicologo,
-       c.start_datetime::DATE                                                     AS fecha,
-       c.start_datetime::TIME                                                     AS hora_inicio,
-       (c.start_datetime + (c.duration_minutes || ' minutes')::INTERVAL)::TIME   AS hora_fin,
-       'cita'                                                                     AS tipo,
-       c.estado::TEXT                                                             AS detalle,
-       c.id_cita                                                                  AS referencia_id
+       u.nombre || ' ' || COALESCE(u.apellido, '')                             AS nombre_psicologo,
+       c.start_datetime::DATE                                                  AS fecha,
+       c.start_datetime::TIME                                                  AS hora_inicio,
+       (c.start_datetime + (c.duration_minutes || ' minutes')::INTERVAL)::TIME AS hora_fin,
+       'cita'                                                                  AS tipo,
+       c.estado::TEXT                                                          AS detalle,
+       c.id_cita                                                               AS referencia_id
 FROM psicologos p
          JOIN usuarios u ON u.id_usuario = p.id_usuario
          JOIN citas c ON c.id_psicologo = p.id_psicologo
@@ -589,11 +585,11 @@ UNION ALL
 SELECT b.id_psicologo,
        u.nombre || ' ' || COALESCE(u.apellido, '') AS nombre_psicologo,
        b.fecha,
-       COALESCE(b.hora_inicio, '00:00'::TIME)       AS hora_inicio,
-       COALESCE(b.hora_fin, '23:59'::TIME)           AS hora_fin,
-       'bloqueo'                                     AS tipo,
-       COALESCE(b.motivo, 'Día bloqueado')            AS detalle,
-       b.id_bloqueo                                   AS referencia_id
+       COALESCE(b.hora_inicio, '00:00'::TIME)      AS hora_inicio,
+       COALESCE(b.hora_fin, '23:59'::TIME)         AS hora_fin,
+       'bloqueo'                                   AS tipo,
+       COALESCE(b.motivo, 'Día bloqueado')         AS detalle,
+       b.id_bloqueo                                AS referencia_id
 FROM bloqueos_agenda b
          JOIN psicologos p ON p.id_psicologo = b.id_psicologo
          JOIN usuarios u ON u.id_usuario = p.id_usuario
@@ -613,9 +609,9 @@ SELECT pp.id_psicologo,
        pp.fecha_inicio
 FROM psicologo_paciente pp
          JOIN psicologos ps ON ps.id_psicologo = pp.id_psicologo
-         JOIN usuarios up   ON up.id_usuario   = ps.id_usuario
-         JOIN pacientes pa  ON pa.id_paciente  = pp.id_paciente
-         JOIN usuarios ua   ON ua.id_usuario   = pa.id_usuario
+         JOIN usuarios up ON up.id_usuario = ps.id_usuario
+         JOIN pacientes pa ON pa.id_paciente = pp.id_paciente
+         JOIN usuarios ua ON ua.id_usuario = pa.id_usuario
 WHERE pp.fecha_fin IS NULL
 ORDER BY pp.id_psicologo, ua.apellido, ua.nombre;
 
@@ -624,7 +620,6 @@ ORDER BY pp.id_psicologo, ua.apellido, ua.nombre;
 -- PostgreSQL database dump
 --
 
-\restrict WRiFZlwpSidLnwp83BQyOltHnjV0NqXfbJrphErfFAbGr9JtYlBxfudfWlgzu28
 
 -- Dumped from database version 16.13 (Debian 16.13-1.pgdg13+1)
 -- Dumped by pg_dump version 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
@@ -644,10 +639,30 @@ SET row_security = off;
 -- Data for Name: usuarios; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
 
-INSERT INTO psicologia_app.usuarios (id_usuario, nombre, apellido, dni, email, password, rol, activo, fecha_registro, fecha_baja, fcm_token, foto_perfil_url, notificaciones_activas) OVERRIDING SYSTEM VALUE VALUES (1, 'Admin', 'Principal', NULL, 'felixb@example.com', '$2a$10$f6IeTQIpuzXWdeXYJ5O8zugtvd2rQESGanenPgsdDqtlRe3xrZIhO', 'admin', true, '2026-05-06 12:07:34.675224', NULL, NULL, NULL, true);
-INSERT INTO psicologia_app.usuarios (id_usuario, nombre, apellido, dni, email, password, rol, activo, fecha_registro, fecha_baja, fcm_token, foto_perfil_url, notificaciones_activas) OVERRIDING SYSTEM VALUE VALUES (2, 'Marta', 'Burgos', NULL, 'marta.burgos@amani.com', '$2a$10$9c.u2qSNY7UwtyC6w6S/7ucy2Kk8xfPizpgZ3Kl7tgMVaFKSMG6.u', 'psicologo', true, '2026-05-06 12:07:59.420882', NULL, NULL, NULL, true);
-INSERT INTO psicologia_app.usuarios (id_usuario, nombre, apellido, dni, email, password, rol, activo, fecha_registro, fecha_baja, fcm_token, foto_perfil_url, notificaciones_activas) OVERRIDING SYSTEM VALUE VALUES (3, 'Juan', 'Pérez', NULL, 'juan.perez@email.com', '$2a$10$9c.u2qSNY7UwtyC6w6S/7ucy2Kk8xfPizpgZ3Kl7tgMVaFKSMG6.u', 'paciente', true, '2026-05-06 12:07:59.420882', NULL, NULL, NULL, true);
-INSERT INTO psicologia_app.usuarios (id_usuario, nombre, apellido, dni, email, password, rol, activo, fecha_registro, fecha_baja, fcm_token, foto_perfil_url, notificaciones_activas) OVERRIDING SYSTEM VALUE VALUES (4, 'Laura', 'García', NULL, 'laura.garcia@email.com', '$2a$10$9c.u2qSNY7UwtyC6w6S/7ucy2Kk8xfPizpgZ3Kl7tgMVaFKSMG6.u', 'paciente', true, '2026-05-06 12:07:59.420882', NULL, NULL, NULL, true);
+INSERT INTO psicologia_app.usuarios (id_usuario, nombre, apellido, dni, email, password, rol, activo, fecha_registro,
+                                     fecha_baja, fcm_token, foto_perfil_url,
+                                     notificaciones_activas) OVERRIDING SYSTEM VALUE
+VALUES (1, 'Admin', 'Principal', NULL, 'felixb@example.com',
+        '$2a$10$f6IeTQIpuzXWdeXYJ5O8zugtvd2rQESGanenPgsdDqtlRe3xrZIhO', 'admin', true, '2026-05-06 12:07:34.675224',
+        NULL, NULL, NULL, true);
+INSERT INTO psicologia_app.usuarios (id_usuario, nombre, apellido, dni, email, password, rol, activo, fecha_registro,
+                                     fecha_baja, fcm_token, foto_perfil_url,
+                                     notificaciones_activas) OVERRIDING SYSTEM VALUE
+VALUES (2, 'Marta', 'Burgos', NULL, 'marta.burgos@amani.com',
+        '$2a$10$9c.u2qSNY7UwtyC6w6S/7ucy2Kk8xfPizpgZ3Kl7tgMVaFKSMG6.u', 'psicologo', true, '2026-05-06 12:07:59.420882',
+        NULL, NULL, NULL, true);
+INSERT INTO psicologia_app.usuarios (id_usuario, nombre, apellido, dni, email, password, rol, activo, fecha_registro,
+                                     fecha_baja, fcm_token, foto_perfil_url,
+                                     notificaciones_activas) OVERRIDING SYSTEM VALUE
+VALUES (3, 'Juan', 'Pérez', NULL, 'juan.perez@email.com',
+        '$2a$10$9c.u2qSNY7UwtyC6w6S/7ucy2Kk8xfPizpgZ3Kl7tgMVaFKSMG6.u', 'paciente', true, '2026-05-06 12:07:59.420882',
+        NULL, NULL, NULL, true);
+INSERT INTO psicologia_app.usuarios (id_usuario, nombre, apellido, dni, email, password, rol, activo, fecha_registro,
+                                     fecha_baja, fcm_token, foto_perfil_url,
+                                     notificaciones_activas) OVERRIDING SYSTEM VALUE
+VALUES (4, 'Laura', 'García', NULL, 'laura.garcia@email.com',
+        '$2a$10$9c.u2qSNY7UwtyC6w6S/7ucy2Kk8xfPizpgZ3Kl7tgMVaFKSMG6.u', 'paciente', true, '2026-05-06 12:07:59.420882',
+        NULL, NULL, NULL, true);
 
 
 --
@@ -655,20 +670,28 @@ INSERT INTO psicologia_app.usuarios (id_usuario, nombre, apellido, dni, email, p
 --
 
 
-
 --
 -- Data for Name: psicologos; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
 
-INSERT INTO psicologia_app.psicologos (id_psicologo, id_usuario, especialidad, experiencia, descripcion, licencia, created_at, updated_at, duracion_default) OVERRIDING SYSTEM VALUE VALUES (1, 2, 'Psicología Clínica', 5, 'Especialista en terapia cognitivo-conductual y gestión de ansiedad.', 'COL-12345', '2026-05-06 12:07:59.420882', '2026-05-06 12:07:59.420882', 50);
+INSERT INTO psicologia_app.psicologos (id_psicologo, id_usuario, especialidad, experiencia, descripcion, licencia,
+                                       created_at, updated_at, duracion_default) OVERRIDING SYSTEM VALUE
+VALUES (1, 2, 'Psicología Clínica', 5, 'Especialista en terapia cognitivo-conductual y gestión de ansiedad.',
+        'COL-12345', '2026-05-06 12:07:59.420882', '2026-05-06 12:07:59.420882', 50);
 
 
 --
 -- Data for Name: pacientes; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
 
-INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fecha_nacimiento, genero, telefono, metodo_pago, estado_pago, created_at, updated_at) OVERRIDING SYSTEM VALUE VALUES (1, 3, 1, '1990-05-15', 'Masculino', '600000001', 'PRESENCIAL', 'PENDIENTE', '2026-05-06 12:07:59.420882', '2026-05-06 12:07:59.420882');
-INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fecha_nacimiento, genero, telefono, metodo_pago, estado_pago, created_at, updated_at) OVERRIDING SYSTEM VALUE VALUES (2, 4, 1, '1985-11-20', 'Femenino', '600000002', 'PRESENCIAL', 'PENDIENTE', '2026-05-06 12:07:59.420882', '2026-05-06 12:07:59.420882');
+INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fecha_nacimiento, genero, telefono,
+                                      metodo_pago, estado_pago, created_at, updated_at) OVERRIDING SYSTEM VALUE
+VALUES (1, 3, 1, '1990-05-15', 'Masculino', '600000001', 'PRESENCIAL', 'PENDIENTE', '2026-05-06 12:07:59.420882',
+        '2026-05-06 12:07:59.420882');
+INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fecha_nacimiento, genero, telefono,
+                                      metodo_pago, estado_pago, created_at, updated_at) OVERRIDING SYSTEM VALUE
+VALUES (2, 4, 1, '1985-11-20', 'Femenino', '600000002', 'PRESENCIAL', 'PENDIENTE', '2026-05-06 12:07:59.420882',
+        '2026-05-06 12:07:59.420882');
 
 
 --
@@ -676,11 +699,9 @@ INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fec
 --
 
 
-
 --
 -- Data for Name: citas; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
-
 
 
 --
@@ -688,11 +709,9 @@ INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fec
 --
 
 
-
 --
 -- Data for Name: archivos; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
-
 
 
 --
@@ -700,11 +719,9 @@ INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fec
 --
 
 
-
 --
 -- Data for Name: consentimientos; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
-
 
 
 --
@@ -712,11 +729,9 @@ INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fec
 --
 
 
-
 --
 -- Data for Name: direcciones; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
-
 
 
 --
@@ -724,11 +739,9 @@ INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fec
 --
 
 
-
 --
 -- Data for Name: horario_psicologo; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
-
 
 
 --
@@ -736,11 +749,9 @@ INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fec
 --
 
 
-
 --
 -- Data for Name: notificaciones; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
-
 
 
 --
@@ -748,11 +759,9 @@ INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fec
 --
 
 
-
 --
 -- Data for Name: opciones; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
-
 
 
 --
@@ -760,11 +769,9 @@ INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fec
 --
 
 
-
 --
 -- Data for Name: paciente_situacion; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
-
 
 
 --
@@ -772,19 +779,19 @@ INSERT INTO psicologia_app.pacientes (id_paciente, id_usuario, id_psicologo, fec
 --
 
 
-
 --
 -- Data for Name: progreso_emocional; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
-
 
 
 --
 -- Data for Name: psicologo_paciente; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
 
-INSERT INTO psicologia_app.psicologo_paciente (id, id_paciente, id_psicologo, fecha_inicio, fecha_fin) OVERRIDING SYSTEM VALUE VALUES (1, 1, 1, '2026-05-06 12:07:59.420882', NULL);
-INSERT INTO psicologia_app.psicologo_paciente (id, id_paciente, id_psicologo, fecha_inicio, fecha_fin) OVERRIDING SYSTEM VALUE VALUES (2, 2, 1, '2026-05-06 12:07:59.420882', NULL);
+INSERT INTO psicologia_app.psicologo_paciente (id, id_paciente, id_psicologo, fecha_inicio, fecha_fin) OVERRIDING SYSTEM VALUE
+VALUES (1, 1, 1, '2026-05-06 12:07:59.420882', NULL);
+INSERT INTO psicologia_app.psicologo_paciente (id, id_paciente, id_psicologo, fecha_inicio, fecha_fin) OVERRIDING SYSTEM VALUE
+VALUES (2, 2, 1, '2026-05-06 12:07:59.420882', NULL);
 
 
 --
@@ -792,17 +799,14 @@ INSERT INTO psicologia_app.psicologo_paciente (id, id_paciente, id_psicologo, fe
 --
 
 
-
 --
 -- Data for Name: tickets_soporte; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
 
 
-
 --
 -- Data for Name: tutores; Type: TABLE DATA; Schema: psicologia_app; Owner: postgres
 --
-
 
 
 --
@@ -991,5 +995,4 @@ SELECT pg_catalog.setval('psicologia_app.usuarios_id_usuario_seq', 4, true);
 -- PostgreSQL database dump complete
 --
 
-\unrestrict WRiFZlwpSidLnwp83BQyOltHnjV0NqXfbJrphErfFAbGr9JtYlBxfudfWlgzu28
 
