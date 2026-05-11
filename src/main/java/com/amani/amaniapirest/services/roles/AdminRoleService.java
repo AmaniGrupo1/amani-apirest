@@ -5,8 +5,14 @@ import com.amani.amaniapirest.dto.roles.CambiarRolRequestDTO;
 import com.amani.amaniapirest.dto.roles.CambiarRolResponseDTO;
 import com.amani.amaniapirest.dto.roles.UsuarioDTO;
 import com.amani.amaniapirest.enums.RolUsuario;
+import com.amani.amaniapirest.models.Paciente;
+import com.amani.amaniapirest.models.Psicologo;
 import com.amani.amaniapirest.models.Usuario;
+import com.amani.amaniapirest.repository.PacientesRepository;
+import com.amani.amaniapirest.repository.PsicologoPacienteRepository;
+import com.amani.amaniapirest.repository.PsicologoRepository;
 import com.amani.amaniapirest.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +24,89 @@ import java.util.stream.Collectors;
 public class AdminRoleService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PacientesRepository pacienteRepository;
+    private final PsicologoRepository psicologoRepository;
+    private final PsicologoPacienteRepository psicologoPacienteRepository;
 
+    @Transactional
     public CambiarRolResponseDTO cambiarRol(CambiarRolRequestDTO request) {
 
         Usuario usuario = usuarioRepository.findById(request.getIdUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         RolUsuario rolAnterior = usuario.getRol();
+        RolUsuario nuevoRol = request.getNuevoRol();
 
-        usuario.setRol(request.getNuevoRol());
+        // ====================================
+        // ELIMINAR PERFIL ANTERIOR
+        // ====================================
+
+        // Si era paciente
+        if (usuario.getPaciente() != null) {
+
+            Long idPaciente = usuario.getPaciente().getIdPaciente();
+
+            // eliminar relaciones con psicólogos
+            psicologoPacienteRepository.deleteByPacienteId(idPaciente);
+
+            // eliminar perfil paciente
+            pacienteRepository.delete(usuario.getPaciente());
+
+            usuario.setPaciente(null);
+        }
+
+        // Si era psicólogo
+        if (usuario.getPsicologo() != null) {
+
+            psicologoRepository.delete(usuario.getPsicologo());
+
+            usuario.setPsicologo(null);
+        }
+
+        // ====================================
+        // CAMBIAR ROL
+        // ====================================
+
+        usuario.setRol(nuevoRol);
 
         usuarioRepository.save(usuario);
+
+        // ====================================
+        // CREAR NUEVO PERFIL
+        // ====================================
+
+        switch (nuevoRol) {
+
+            case psicologo -> {
+
+                Psicologo psicologo = new Psicologo();
+
+                psicologo.setUsuario(usuario);
+                psicologo.setEspecialidad("General");
+
+                psicologoRepository.save(psicologo);
+            }
+
+            case paciente -> {
+
+                Paciente paciente = new Paciente();
+
+                paciente.setUsuario(usuario);
+
+                pacienteRepository.save(paciente);
+            }
+
+            case admin -> {
+                // no necesita perfil extra
+            }
+        }
 
         return CambiarRolResponseDTO.builder()
                 .idUsuario(usuario.getIdUsuario())
                 .nombre(usuario.getNombre())
                 .email(usuario.getEmail())
                 .rolAnterior(rolAnterior)
-                .nuevoRol(usuario.getRol())
+                .nuevoRol(nuevoRol)
                 .mensaje("Rol actualizado correctamente")
                 .build();
     }
