@@ -1,7 +1,6 @@
 package com.amani.amaniapirest.configuration;
 
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.auth.oauth2.AccessToken;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
 
 /**
  * Configuración del cliente Firebase Admin SDK.
@@ -92,9 +90,6 @@ public class FirebaseConfig {
         if (credentialsStream != null) {
             credentials = GoogleCredentials.fromStream(credentialsStream);
             log.info("[Firebase] Credenciales cargadas desde fuente explícita.");
-        } else if (emulatorEnabled) {
-            log.info("[Firebase] Emulador activo sin credenciales. Usando MockCredentials.");
-            credentials = GoogleCredentials.create(new AccessToken("mock-token", new Date(Long.MAX_VALUE)));
         } else {
             log.info("[Firebase] Usando Application Default Credentials (ADC).");
             credentials = GoogleCredentials.getApplicationDefault();

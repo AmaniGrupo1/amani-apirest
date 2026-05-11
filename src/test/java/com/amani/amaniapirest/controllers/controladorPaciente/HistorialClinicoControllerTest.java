@@ -61,7 +61,7 @@ class HistorialClinicoControllerTest {
 
     @Test
     void createReturnsCreatedWhenValid() throws Exception {
-        HistorialClinicoResponseDTO dto = new HistorialClinicoResponseDTO("Eval", "Dx", "Tx", "Obs", LocalDateTime.now());
+        HistorialClinicoResponseDTO dto = new HistorialClinicoResponseDTO(1L, "Eval", "Dx", "Tx", "Obs", LocalDateTime.now());
         when(historialClinicoService.create(any())).thenReturn(dto);
 
         mockMvc.perform(post("/api/historial-clinico")
