@@ -161,6 +161,11 @@ public class SecurityConfig {
                                 .requestMatchers("/api/webhooks/stripe").permitAll()
                                 .requestMatchers("/api/payments/create-intent").hasRole("PACIENTE")
                                 .requestMatchers("/api/payments/refund").hasAnyRole("ADMIN", "PSICOLOGO")
+
+
+                                .requestMatchers("/api/admin/cambiar-rol").hasRole("ADMIN")
+                                .requestMatchers("/api/admin/listarUsuarios").hasRole("ADMIN")
+
                                 .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())

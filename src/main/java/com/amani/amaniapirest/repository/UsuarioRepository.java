@@ -4,6 +4,7 @@ import com.amani.amaniapirest.enums.RolUsuario;
 import com.amani.amaniapirest.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,11 +24,28 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     List<Usuario> findByRol(RolUsuario rol); // 👈 ESTE
 
+    /** Buscar usuarios cuyo DNI contiene la cadena dada. */
+    List<Usuario> findByDniContaining(String dni);
+
+    /** Buscar usuarios por rol y cuyo DNI contiene la cadena dada. */
+    List<Usuario> findByRolAndDniContaining(RolUsuario rol, String dni);
+
     @Query("""
         SELECT u.fcmToken
         FROM Usuario u
         WHERE u.idUsuario = :idUsuario
     """)
     String obtenerToken(Long idUsuario);
+
+
+    @Query("""
+    SELECT u FROM Usuario u
+    WHERE (:rol IS NULL OR u.rol = :rol)
+    AND (:dni IS NULL OR u.dni LIKE %:dni%)
+""")
+    List<Usuario> filtrarUsuarios(
+            @Param("rol") RolUsuario rol,
+            @Param("dni") String dni
+    );
 
 }
