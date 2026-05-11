@@ -439,7 +439,6 @@ public class AuthService {
         // 1. Obtener psicólogo logueado
         Psicologo psicologo = psicologoRepository.findByUsuario_Email(emailPsicologo)
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
-
         // 2. Validar email único
         if (usuarioRepository.findByEmail(request.getUsuario().getEmail()).isPresent()) {
             throw new RuntimeException("El correo ya está registrado");
