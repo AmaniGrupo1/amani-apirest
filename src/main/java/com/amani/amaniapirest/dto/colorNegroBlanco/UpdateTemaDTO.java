@@ -1,7 +1,7 @@
 package com.amani.amaniapirest.dto.colorNegroBlanco;
 
 import com.amani.amaniapirest.enums.TemaApp;
-import com.google.firebase.database.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

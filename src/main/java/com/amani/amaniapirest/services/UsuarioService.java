@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Servicio de negocio para gestionar los usuarios del sistema.
@@ -37,6 +38,10 @@ public class UsuarioService {
         this.eventPublisher = eventPublisher;
     }
 
+    public Optional<Long> findIdByEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .map(usuario -> usuario.getIdUsuario());
+    }
     /**
      * Obtiene la lista de todos los usuarios registrados.
      *

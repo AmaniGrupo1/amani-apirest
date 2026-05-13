@@ -107,7 +107,7 @@ public class AjusteService {
         ajuste.setUsuario(usuario);
         ajuste.setIdioma(request.getIdioma());
         if (request.getNotificaciones() != null) ajuste.setNotificaciones(request.getNotificaciones());
-        if (request.getDarkMode() != null) ajuste.setTema(request.getDarkMode() ? TemaApp.DARK : TemaApp.LIGHT );
+        if (request.getDarkMode() != null) ajuste.setTema(request.getDarkMode() ? TemaApp.DARK : TemaApp.LIGHT);
         ajuste.setTimezone(request.getTimezone());
         ajuste.setUpdatedAt(LocalDateTime.now());
 
@@ -169,7 +169,6 @@ public class AjusteService {
 
     @Transactional
     public void actualizarIdioma(Long idUsuario, IdiomaRequestDTO request) {
-
         Ajuste ajuste = ajusteRepository.findByUsuario_IdUsuario(idUsuario)
                 .orElseGet(() -> {
                     Ajuste nuevo = new Ajuste();
@@ -179,16 +178,12 @@ public class AjusteService {
                 });
 
         ajuste.setIdioma(request.getIdioma());
-
         ajusteRepository.save(ajuste);
     }
 
 
     @Transactional
-    public AjusteResponseDTO actualizarTema(
-            Long idUsuario,
-            UpdateTemaDTO dto
-    ) {
+    public AjusteResponseDTO actualizarTema(Long idUsuario,UpdateTemaDTO dto) {
 
         Ajuste ajuste = ajusteRepository
                 .findByUsuario_IdUsuario(idUsuario)
