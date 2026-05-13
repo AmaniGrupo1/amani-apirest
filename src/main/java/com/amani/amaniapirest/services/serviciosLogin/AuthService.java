@@ -12,6 +12,7 @@ import com.amani.amaniapirest.dto.loginDTO.RegistryRequestDTO;
 import com.amani.amaniapirest.enums.EstadoPago;
 import com.amani.amaniapirest.enums.MetodoPago;
 import com.amani.amaniapirest.enums.RolUsuario;
+import com.amani.amaniapirest.enums.TemaApp;
 import com.amani.amaniapirest.models.*;
 import com.amani.amaniapirest.repository.*;
 import com.amani.amaniapirest.services.ConsentimientoService;
@@ -86,6 +87,12 @@ public class AuthService {
                 .findByUsuario_IdUsuario(usuario.getIdUsuario())
                 .map(Ajuste::getIdioma)
                 .orElse("es");
+
+        TemaApp tema = ajustesRepository
+                .findByUsuario_IdUsuario(usuario.getIdUsuario())
+                .map(Ajuste::getTema)
+                .orElse(TemaApp.SYSTEM);
+
         // ========================
         // 🔥 PACIENTE LOGIC FIX
         // ========================
@@ -109,7 +116,8 @@ public class AuthService {
                 token,
                 idPsicologo,
                 idPaciente,
-                idioma
+                idioma,
+                tema
         );
     }
     // ================= REGISTER PACIENTE =================
@@ -262,6 +270,10 @@ public class AuthService {
                 .findByUsuario_IdUsuario(usuario.getIdUsuario())
                 .map(Ajuste::getIdioma)
                 .orElse("es");
+        TemaApp tema = ajustesRepository
+                .findByUsuario_IdUsuario(usuario.getIdUsuario())
+                .map(Ajuste::getTema)
+                .orElse(TemaApp.SYSTEM);
 
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
@@ -270,7 +282,8 @@ public class AuthService {
                 token,
                 idPsicologo,
                 idPaciente,
-                idioma
+                idioma,
+                tema
         );
     }
 
@@ -321,6 +334,12 @@ public class AuthService {
                 .map(Ajuste::getIdioma)
                 .orElse("es");
 
+
+        TemaApp tema = ajustesRepository
+                .findByUsuario_IdUsuario(usuario.getIdUsuario())
+                .map(Ajuste::getTema)
+                .orElse(TemaApp.SYSTEM);
+
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
         return new LoginResponseDTO(
@@ -330,7 +349,8 @@ public class AuthService {
                 token,
                 idPsicologo,   // 👈 AQUÍ
                 idPaciente,   // 👈 AQUÍ
-                idioma
+                idioma,
+                tema
         );
     }
 
@@ -544,6 +564,11 @@ public class AuthService {
                 .map(Ajuste::getIdioma)
                 .orElse("es");
 
+        TemaApp tema = ajustesRepository
+                .findByUsuario_IdUsuario(usuario.getIdUsuario())
+                .map(Ajuste::getTema)
+                .orElse(TemaApp.SYSTEM);
+
         // 12. RESPONSE FINAL
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
@@ -552,7 +577,8 @@ public class AuthService {
                 token,
                 idPsicologo,
                 idPaciente,
-                idioma
+                idioma,
+                tema
         );
     }
 

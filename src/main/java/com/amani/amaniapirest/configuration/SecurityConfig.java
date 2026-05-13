@@ -165,6 +165,7 @@ public class SecurityConfig {
 
                                 .requestMatchers("/api/admin/cambiar-rol").hasRole("ADMIN")
                                 .requestMatchers("/api/admin/listarUsuarios").hasRole("ADMIN")
+                                .requestMatchers("/api/ajustes/tema").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
                                 .anyRequest().authenticated()
                 )

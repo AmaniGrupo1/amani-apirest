@@ -1,8 +1,10 @@
 package com.amani.amaniapirest.services.paciente;
 
 import com.amani.amaniapirest.dto.ajustes.IdiomaRequestDTO;
+import com.amani.amaniapirest.dto.colorNegroBlanco.UpdateTemaDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.AjusteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.AjusteResponseDTO;
+import com.amani.amaniapirest.enums.TemaApp;
 import com.amani.amaniapirest.models.Ajuste;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.AjusteRepository;
@@ -83,7 +85,7 @@ public class AjusteService {
         ajuste.setUsuario(usuario);
         ajuste.setIdioma(request.getIdioma());
         ajuste.setNotificaciones(request.getNotificaciones() != null ? request.getNotificaciones() : true);
-        ajuste.setDarkMode(request.getDarkMode() != null ? request.getDarkMode() : false);
+        ajuste.setTema(request.getDarkMode() != null ? request.getDarkMode() ? TemaApp.DARK : TemaApp.LIGHT : TemaApp.SYSTEM);
         ajuste.setTimezone(request.getTimezone());
         ajuste.setUpdatedAt(LocalDateTime.now());
 
@@ -105,7 +107,7 @@ public class AjusteService {
         ajuste.setUsuario(usuario);
         ajuste.setIdioma(request.getIdioma());
         if (request.getNotificaciones() != null) ajuste.setNotificaciones(request.getNotificaciones());
-        if (request.getDarkMode() != null) ajuste.setDarkMode(request.getDarkMode());
+        if (request.getDarkMode() != null) ajuste.setTema(request.getDarkMode() ? TemaApp.DARK : TemaApp.LIGHT );
         ajuste.setTimezone(request.getTimezone());
         ajuste.setUpdatedAt(LocalDateTime.now());
 
@@ -158,7 +160,7 @@ public class AjusteService {
                 ajuste.getUsuario() != null ? ajuste.getUsuario().getIdUsuario() : null,
                 ajuste.getIdioma(),
                 ajuste.isNotificaciones(),
-                ajuste.isDarkMode(),
+                ajuste.getTema(),
                 ajuste.getTimezone(),
                 ajuste.getUpdatedAt()
         );
@@ -181,6 +183,42 @@ public class AjusteService {
         ajusteRepository.save(ajuste);
     }
 
+
+    @Transactional
+    public AjusteResponseDTO actualizarTema(
+            Long idUsuario,
+            UpdateTemaDTO dto
+    ) {
+
+        Ajuste ajuste = ajusteRepository
+                .findByUsuario_IdUsuario(idUsuario)
+                .orElseGet(() -> {
+
+                    Usuario usuario = usuarioRepository.findById(idUsuario)
+                            .orElseThrow(() ->
+                                    new RuntimeException("Usuario no encontrado"));
+
+                    Ajuste nuevo = new Ajuste();
+                    nuevo.setUsuario(usuario);
+
+                    // valores por defecto
+                    nuevo.setIdioma("es");
+                    nuevo.setNotificaciones(true);
+                    nuevo.setTema(TemaApp.SYSTEM);
+                    nuevo.setTimezone("Europe/Madrid");
+                    nuevo.setUpdatedAt(LocalDateTime.now());
+
+                    return nuevo;
+                });
+
+        ajuste.setTema(dto.getTema());
+
+        ajuste.setUpdatedAt(LocalDateTime.now());
+
+        Ajuste guardado = ajusteRepository.save(ajuste);
+
+        return toResponse(guardado);
+    }
 
 }
 

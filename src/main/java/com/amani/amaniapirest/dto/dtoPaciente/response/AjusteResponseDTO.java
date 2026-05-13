@@ -1,4 +1,5 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
+import com.amani.amaniapirest.enums.TemaApp;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,8 +30,11 @@ public class AjusteResponseDTO {
     @Schema(description = "Indica si las notificaciones están activadas", example = "true")
     private Boolean notificaciones;
 
-    @Schema(description = "Indica si el modo oscuro está activado", example = "false")
-    private Boolean darkMode;
+    @Schema(
+            description = "Tema visual configurado en la aplicación",
+            example = "DARK"
+    )
+    private TemaApp tema;
 
     @Schema(description = "Zona horaria configurada", example = "Europe/Madrid")
     private String timezone;
