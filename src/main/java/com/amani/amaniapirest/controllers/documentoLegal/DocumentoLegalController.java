@@ -3,6 +3,7 @@ package com.amani.amaniapirest.controllers.documentoLegal;
 
 import com.amani.amaniapirest.dto.documentoLegales.DocumentoLegalRequestDTO;
 import com.amani.amaniapirest.dto.documentoLegales.DocumentoLegalResponseDTO;
+import com.amani.amaniapirest.enums.TipoDocumentoLegal;
 import com.amani.amaniapirest.services.documentoLegal.DocumentoLegalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -73,5 +74,13 @@ public class DocumentoLegalController {
             @PathVariable Long idDocumento
     ) {
         documentoLegalService.eliminarDocumento(idDocumento);
+    }
+
+
+    @GetMapping("/tipo/{tipo}")
+    public DocumentoLegalResponseDTO obtenerPorTipo(
+            @PathVariable TipoDocumentoLegal tipo
+    ) {
+        return documentoLegalService.obtenerPorTipo(tipo);
     }
 }

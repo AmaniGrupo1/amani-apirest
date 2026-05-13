@@ -156,6 +156,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/documentos-legales/crear").hasRole( "ADMIN")
                                 .requestMatchers("/api/documentos-legales/*").hasRole( "ADMIN")
                                 .requestMatchers("/api/documentos-legales/delete/*").hasRole( "ADMIN")
+                                .requestMatchers("/api/documentos-legales/tipo/*").hasAnyRole( "PSICOLOGO","PACIENTE")
 
 
                                 .requestMatchers("/api/webhooks/stripe").permitAll()
