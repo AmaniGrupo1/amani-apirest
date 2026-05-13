@@ -1,5 +1,6 @@
 package com.amani.amaniapirest.dto.dtoPaciente.request;
 
+import com.amani.amaniapirest.enums.TemaApp;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -31,9 +32,9 @@ public class AjusteRequestDTO {
     @Schema(description = "Indica si el usuario desea recibir notificaciones", example = "true")
     private Boolean notificaciones;
 
-    /** Indica si el usuario prefiere el modo oscuro. */
-    @Schema(description = "Indica si el usuario prefiere el modo oscuro", example = "false")
-    private Boolean darkMode;
+    /** Tema visual configurado en la aplicación. */
+    @Schema(description = "Tema visual configurado en la aplicación", example = "SYSTEM")
+    private TemaApp tema;
 
     /** Zona horaria preferida (p.ej. "Europe/Madrid"). */
     @Schema(description = "Zona horaria preferida", example = "Europe/Madrid")

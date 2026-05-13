@@ -23,6 +23,9 @@
       "port": 4000
     }
   },
+  "storage": {
+    "rules": "storage.rules"
+  },
   "database": {
     "rules": "src/main/resources/firebase-rules.json"
   }

@@ -222,10 +222,10 @@ CREATE TABLE mensajes
 CREATE TABLE ajustes
 (
     id_ajuste      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_usuario     BIGINT NOT NULL,
+    id_usuario     BIGINT       NOT NULL,
     idioma         VARCHAR(10)  DEFAULT 'es',
     notificaciones BOOLEAN      DEFAULT TRUE,
-    dark_mode      BOOLEAN      DEFAULT FALSE,
+    tema           VARCHAR(50)  NOT NULL DEFAULT 'SYSTEM',
     timezone       VARCHAR(100) DEFAULT 'Europe/Madrid',
     updated_at     TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
 

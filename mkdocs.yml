@@ -41,6 +41,7 @@ theme:
 plugins:
   - search:
       lang: es
+  - awesome-pages
 
 markdown_extensions:
   - admonition
@@ -100,4 +101,6 @@ nav:
   - Postman:
     - postman/index.md
     - Colección: postman/collection.md
+  - Referencia API:
+      - Backend (Javadoc/Dokka): api/backend/index.md
   - Changelog: changelog.md

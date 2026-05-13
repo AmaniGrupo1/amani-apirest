@@ -85,7 +85,7 @@ public class AjusteService {
         ajuste.setUsuario(usuario);
         ajuste.setIdioma(request.getIdioma());
         ajuste.setNotificaciones(request.getNotificaciones() != null ? request.getNotificaciones() : true);
-        ajuste.setTema(request.getDarkMode() != null ? request.getDarkMode() ? TemaApp.DARK : TemaApp.LIGHT : TemaApp.SYSTEM);
+        ajuste.setTema(request.getTema() != null ? request.getTema() : TemaApp.SYSTEM);
         ajuste.setTimezone(request.getTimezone());
         ajuste.setUpdatedAt(LocalDateTime.now());
 
@@ -107,7 +107,7 @@ public class AjusteService {
         ajuste.setUsuario(usuario);
         ajuste.setIdioma(request.getIdioma());
         if (request.getNotificaciones() != null) ajuste.setNotificaciones(request.getNotificaciones());
-        if (request.getDarkMode() != null) ajuste.setTema(request.getDarkMode() ? TemaApp.DARK : TemaApp.LIGHT );
+        if (request.getTema() != null) ajuste.setTema(request.getTema());
         ajuste.setTimezone(request.getTimezone());
         ajuste.setUpdatedAt(LocalDateTime.now());
 

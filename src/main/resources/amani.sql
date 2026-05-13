@@ -11,6 +11,7 @@ CREATE TYPE rol_usuario AS ENUM ('admin', 'psicologo', 'paciente');
 CREATE TYPE estado_cita AS ENUM ('pendiente', 'confirmada', 'cancelada', 'completada');
 CREATE TYPE metodo_pago AS ENUM ('PRESENCIAL', 'ONLINE');
 CREATE TYPE estado_pago AS ENUM ('PENDIENTE', 'PAGADO', 'FALLIDO', 'REEMBOLSADO');
+CREATE TYPE tema_app AS ENUM ('LIGHT', 'DARK', 'SYSTEM');
 
 -- ==============================
 -- TABLAS
@@ -221,10 +222,10 @@ CREATE TABLE mensajes
 CREATE TABLE ajustes
 (
     id_ajuste      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_usuario     BIGINT NOT NULL,
+    id_usuario     BIGINT       NOT NULL,
     idioma         VARCHAR(10)  DEFAULT 'es',
     notificaciones BOOLEAN      DEFAULT TRUE,
-    dark_mode      BOOLEAN      DEFAULT FALSE,
+    tema           tema_app     NOT NULL DEFAULT 'SYSTEM',
     timezone       VARCHAR(100) DEFAULT 'Europe/Madrid',
     updated_at     TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
 
