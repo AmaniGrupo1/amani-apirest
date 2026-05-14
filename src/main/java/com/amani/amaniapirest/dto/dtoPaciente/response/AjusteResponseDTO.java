@@ -1,5 +1,4 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
-import com.amani.amaniapirest.enums.TemaApp;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +33,7 @@ public class AjusteResponseDTO {
             description = "Tema visual configurado en la aplicación",
             example = "DARK"
     )
-    private TemaApp tema;
+    private boolean tema;
 
     @Schema(description = "Zona horaria configurada", example = "Europe/Madrid")
     private String timezone;

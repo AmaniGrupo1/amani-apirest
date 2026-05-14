@@ -107,7 +107,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/admin/psicologos/create").hasRole("ADMIN") //creamos psicologo con admin
                                 .requestMatchers("/api/admin/psicologos/asignar-psicologo").hasRole("ADMIN") //Asignamos el paciente al psicologo
                                 .requestMatchers("/api/admin/psicologos/pacientes").hasRole("ADMIN") //creamos psicologo con admin
-                                .requestMatchers("/api/pacientes/admin").hasRole("ADMIN") //Listamos pacientes
+                                .requestMatchers("/api/pacientes/admin").hasAnyRole("ADMIN","PSICOLOGO") //Listamos pacientes
                                 .requestMatchers("/api/pacientes/sin-psicologo").hasRole("ADMIN") //Listamos pacientes sin psicologos
                                  //  PSICOLOGO + ADMIN
                                 .requestMatchers("/api/psicologo/update/*").hasRole( "PSICOLOGO")
@@ -124,7 +124,10 @@ public class SecurityConfig {
 
                                 .requestMatchers("/api/citas/psicologo/terapias")
                                 .hasAnyRole("PACIENTE","PSICOLOGO", "ADMIN")
+                                .requestMatchers("/api/citas/psicologo/terapias/get")
+                                .hasAnyRole("PACIENTE","PSICOLOGO", "ADMIN")
                                 .requestMatchers("/api/citas/psicologo/*/duracion").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo actualice la duración de una cita
+                                .requestMatchers("/api/citas/psicologo/*/duracion-obtenida").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo obtenga la duración de una cita
                                 .requestMatchers("/api/citas/psicologo/*/agenda").hasAnyRole("PACIENTE","PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
                                 .requestMatchers("/api/citas/psicologo/*/horario-actual").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
 // PACIENTE
