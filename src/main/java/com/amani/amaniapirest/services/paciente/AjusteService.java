@@ -204,7 +204,7 @@ public class AjusteService {
                     // valores por defecto
                     nuevo.setIdioma("es");
                     nuevo.setNotificaciones(true);
-                    nuevo.setTema(true);
+                    nuevo.setTema(false);
                     nuevo.setTimezone("Europe/Madrid");
                     nuevo.setUpdatedAt(LocalDateTime.now());
 
