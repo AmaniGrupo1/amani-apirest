@@ -161,7 +161,7 @@ class CitaAgendaServiceTest {
         Cita cita = cita(100L, LocalDateTime.of(MONDAY, LocalTime.of(10, 0)), 50);
         Pago pago = new Pago();
         pago.setEstadoPago(EstadoPago.PAGADO);
-        pago.setMetodoPago(MetodoPago.ONLINE);
+        pago.setMetodoPago(MetodoPago.TARJETA);
         pago.setMonto(BigDecimal.valueOf(45));
         cita.setPago(pago);
 
@@ -225,7 +225,7 @@ class CitaAgendaServiceTest {
         request.setStartDatetime(start);
         request.setDurationMinutes(durationMinutes);
         request.setEstado(EstadoCita.pendiente);
-        request.setMetodoPago(MetodoPago.ONLINE);
+        request.setMetodoPago(MetodoPago.TARJETA);
         request.setEstadoPago(EstadoPago.PENDIENTE);
         request.setMonto(BigDecimal.valueOf(45));
         request.setMotivo("Seguimiento");

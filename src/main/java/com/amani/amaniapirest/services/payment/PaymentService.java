@@ -9,7 +9,6 @@ import com.amani.amaniapirest.enums.MetodoPago;
 import com.amani.amaniapirest.exception.PaymentProcessingException;
 import com.amani.amaniapirest.models.Cita;
 import com.amani.amaniapirest.models.Pago;
-import com.amani.amaniapirest.models.Paciente;
 import com.amani.amaniapirest.repository.CitaRepository;
 import com.amani.amaniapirest.repository.PaymentRepository;
 import com.amani.amaniapirest.stripe.StripePaymentGateway;
@@ -73,7 +72,7 @@ public class PaymentService {
         Pago pago = Pago.builder()
                 .cita(cita)
                 .monto(amount)
-                .metodoPago(MetodoPago.ONLINE)
+                .metodoPago(MetodoPago.TARJETA)
                 .estadoPago(EstadoPago.PENDIENTE)
                 .stripePaymentIntentId(stripeIntent.getId())
                 .idempotencyKey(idempotencyKey)

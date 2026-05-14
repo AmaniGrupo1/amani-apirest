@@ -1,6 +1,8 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
 
 import com.amani.amaniapirest.enums.EstadoCita;
+import com.amani.amaniapirest.enums.EstadoPago;
+import com.amani.amaniapirest.enums.MetodoPago;
 import com.amani.amaniapirest.enums.ModalidadCita;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -38,4 +40,7 @@ public class CitaPacienteViewResponseDTO {
     private Long minutosRestantes;
 
     private Boolean esProxima;
+
+    private MetodoPago metodoPago;
+    private EstadoPago estadoPago;
 }

@@ -4,10 +4,7 @@ import com.amani.amaniapirest.dto.dtoPaciente.request.CitaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.AgendaPacienteItemDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.CitaPacienteViewResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
-import com.amani.amaniapirest.models.Cita;
-import com.amani.amaniapirest.models.Paciente;
-import com.amani.amaniapirest.models.Psicologo;
-import com.amani.amaniapirest.models.TiposTerapia;
+import com.amani.amaniapirest.models.*;
 import com.amani.amaniapirest.repository.CitaRepository;
 import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.repository.PsicologoRepository;
@@ -194,6 +191,9 @@ public class CitaService {
                 .between(LocalDateTime.now(), start)
                 .toMinutes();
 
+        // ✅ OBTENER EL PAGO ASOCIADO A LA CITA
+        Pago pago = cita.getPago();
+
         return CitaPacienteViewResponseDTO.builder()
                 .idCita(cita.getIdCita())
                 .fecha(start.toLocalDate())
@@ -210,6 +210,9 @@ public class CitaService {
                 )
                 .minutosRestantes(minutosRestantes)
                 .esProxima(minutosRestantes >= 0 && minutosRestantes <= 60)
+                // ✅ AÑADIR ESTAS DOS LÍNEAS
+                .metodoPago(pago != null ? pago.getMetodoPago() : null)
+                .estadoPago(pago != null ? pago.getEstadoPago() : null)
                 .build();
     }
 

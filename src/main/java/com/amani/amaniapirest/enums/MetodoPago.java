@@ -5,7 +5,7 @@ package com.amani.amaniapirest.enums;
  */
 public enum MetodoPago {
     /** Pago presencial en consultorio. */
-    PRESENCIAL,
+    EFECTIVO,
     /** Pago online a traves de plataforma digital. */
-    ONLINE
+    TARJETA
 }
