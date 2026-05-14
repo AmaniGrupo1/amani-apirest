@@ -4,6 +4,7 @@ import com.amani.amaniapirest.enums.RolUsuario;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,15 +39,20 @@ public class UsuarioRequestDTO {
     private String apellido;
 
     /** Correo electrónico del usuario. Debe tener formato válido. */
-    @Email
-    @NotBlank
-    @Schema(description = "Correo electrónico del usuario", example = "carlos@amani.com")
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "Formato de email inválido")
+    @Pattern(
+            regexp = "^[a-z][a-z0-9._%+-]*@[a-z0-9.-]+\\.[a-z]{2,}$",
+            message = "El email debe empezar en minúscula"
+    )
     private String email;
 
-    /** Contraseña en texto plano. Será hasheada con BCrypt antes de persistir. */
-    @NotBlank
-    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
-    @Schema(description = "Contraseña en texto plano (mín. 6 caracteres)", example = "miPassword123")
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 8, message = "Mínimo 8 caracteres")
+    @Pattern(
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d).{8,}$",
+            message = "Debe contener letras y números"
+    )
     private String password;
 
     @Schema(description = "Rol funcional del usuario (admin, psicologo, paciente)", example = "paciente")

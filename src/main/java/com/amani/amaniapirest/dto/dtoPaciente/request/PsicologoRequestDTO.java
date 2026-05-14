@@ -2,6 +2,8 @@ package com.amani.amaniapirest.dto.dtoPaciente.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,12 +34,21 @@ public class PsicologoRequestDTO {
     private String nombrePsicologo;
     @NotBlank
     private String apellidoPsicologo;
-    
-    @Email
-    @NotBlank
+
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "Formato de email inválido")
+    @Pattern(
+            regexp = "^[a-z][a-z0-9._%+-]*@[a-z0-9.-]+\\.[a-z]{2,}$",
+            message = "El email debe empezar en minúscula"
+    )
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 8, message = "Mínimo 8 caracteres")
+    @Pattern(
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d).{8,}$",
+            message = "Debe contener letras y números"
+    )
     private String password;
 
     @NotBlank

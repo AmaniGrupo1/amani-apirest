@@ -1,6 +1,10 @@
 package com.amani.amaniapirest.dto.loginDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 /**
@@ -13,11 +17,19 @@ import lombok.Data;
 @Schema(name = "LoginRequest", description = "Credenciales para iniciar sesión y obtener un token JWT")
 public class LoginRequestDTO {
 
-    /** Correo electrónico registrado del usuario. */
-    @Schema(description = "Correo electrónico registrado del usuario", example = "paciente@amani.com")
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "Formato de email inválido")
+    @Pattern(
+            regexp = "^[a-z][a-z0-9._%+-]*@[a-z0-9.-]+\\.[a-z]{2,}$",
+            message = "El email debe empezar en minúscula"
+    )
     private String email;
 
-    /** Contraseña en texto plano del usuario. */
-    @Schema(description = "Contraseña en texto plano", example = "miPassword123")
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 8, message = "Mínimo 8 caracteres")
+    @Pattern(
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d).{8,}$",
+            message = "Debe contener letras y números"
+    )
     private String password;
 }

@@ -1,6 +1,10 @@
 package com.amani.amaniapirest.dto.loginDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -24,11 +28,19 @@ public class RegistryRequestDTO {
     @Schema(description = "Apellido del nuevo usuario", example = "López")
     private String apellido;
 
-    /** Correo electrónico que se usará como credencial de acceso. */
-    @Schema(description = "Correo electrónico del nuevo usuario", example = "carlos@amani.com")
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "Formato de email inválido")
+    @Pattern(
+            regexp = "^[a-z][a-z0-9._%+-]*@[a-z0-9.-]+\\.[a-z]{2,}$",
+            message = "El email debe empezar en minúscula"
+    )
     private String email;
 
-    /** Contraseña en texto plano; se almacenará cifrada con BCrypt. */
-    @Schema(description = "Contraseña en texto plano (se cifra con BCrypt)", example = "miPassword123")
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 8, message = "Mínimo 8 caracteres")
+    @Pattern(
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d).{8,}$",
+            message = "Debe contener letras y números"
+    )
     private String password;
 }

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -95,7 +96,7 @@ public class PsicologoAdminController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PostMapping("/create")
-    public ResponseEntity<PsicologoSelfResponseDTO> create(@RequestBody PsicologoRequestDTO request) {
+    public ResponseEntity<PsicologoSelfResponseDTO> create(@Valid @RequestBody PsicologoRequestDTO request) {
         var psi = selfService.create(request);
         if (psi == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(psi);

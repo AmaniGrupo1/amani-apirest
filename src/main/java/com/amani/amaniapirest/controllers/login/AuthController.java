@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -47,7 +48,7 @@ public class AuthController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PostMapping("/login")
-    public LoginResponseDTO login(@RequestBody LoginRequestDTO request) {
+    public LoginResponseDTO login(@Valid @RequestBody LoginRequestDTO request) {
         return authService.login(request);
     }
 
@@ -64,7 +65,7 @@ public class AuthController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PostMapping("/register-paciente")
-    public LoginResponseDTO registerPaciente(@RequestBody PacienteRequestDTO request){
+    public LoginResponseDTO registerPaciente(@Valid @RequestBody PacienteRequestDTO request){
         return authService.registerPaciente(request);
     }
 
@@ -103,7 +104,7 @@ public class AuthController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
     @PostMapping("/register-admin")
-    public LoginResponseDTO registerAdmin(@RequestBody RegistryRequestDTO request){
+    public LoginResponseDTO registerAdmin(@Valid @RequestBody RegistryRequestDTO request){
         return authService.registerAdmin(request);
     }
 
@@ -135,7 +136,7 @@ public class AuthController {
 
     @PostMapping("/registrar/pacienteDesde/psicologo")
     public ResponseEntity<LoginResponseDTO> crearPacienteDesdePsicologo(
-            @RequestBody PacienteRequestDTO request,
+            @Valid @RequestBody PacienteRequestDTO request,
             Authentication authentication
     ) {
         String emailPsicologo = authentication.getName();
