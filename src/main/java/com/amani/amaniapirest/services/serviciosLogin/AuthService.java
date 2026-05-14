@@ -9,10 +9,7 @@ import com.amani.amaniapirest.dto.dtoPaciente.request.TutorRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginRequestDTO;
 import com.amani.amaniapirest.dto.loginDTO.LoginResponseDTO;
 import com.amani.amaniapirest.dto.loginDTO.RegistryRequestDTO;
-import com.amani.amaniapirest.enums.EstadoPago;
-import com.amani.amaniapirest.enums.MetodoPago;
 import com.amani.amaniapirest.enums.RolUsuario;
-import com.amani.amaniapirest.enums.TemaApp;
 import com.amani.amaniapirest.models.*;
 import com.amani.amaniapirest.repository.*;
 import com.amani.amaniapirest.services.ConsentimientoService;
@@ -88,10 +85,10 @@ public class AuthService {
                 .map(Ajuste::getIdioma)
                 .orElse("es");
 
-        TemaApp tema = ajustesRepository
+        Boolean tema = ajustesRepository
                 .findByUsuario_IdUsuario(usuario.getIdUsuario())
                 .map(Ajuste::getTema)
-                .orElse(TemaApp.SYSTEM);
+                .orElse(false);
 
         // ========================
         // 🔥 PACIENTE LOGIC FIX
@@ -270,10 +267,10 @@ public class AuthService {
                 .findByUsuario_IdUsuario(usuario.getIdUsuario())
                 .map(Ajuste::getIdioma)
                 .orElse("es");
-        TemaApp tema = ajustesRepository
+        Boolean tema = ajustesRepository
                 .findByUsuario_IdUsuario(usuario.getIdUsuario())
                 .map(Ajuste::getTema)
-                .orElse(TemaApp.SYSTEM);
+                .orElse(false);
 
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
@@ -335,10 +332,10 @@ public class AuthService {
                 .orElse("es");
 
 
-        TemaApp tema = ajustesRepository
+        Boolean tema = ajustesRepository
                 .findByUsuario_IdUsuario(usuario.getIdUsuario())
                 .map(Ajuste::getTema)
-                .orElse(TemaApp.SYSTEM);
+                .orElse(false);
 
         String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
 
@@ -564,10 +561,10 @@ public class AuthService {
                 .map(Ajuste::getIdioma)
                 .orElse("es");
 
-        TemaApp tema = ajustesRepository
+        Boolean tema = ajustesRepository
                 .findByUsuario_IdUsuario(usuario.getIdUsuario())
                 .map(Ajuste::getTema)
-                .orElse(TemaApp.SYSTEM);
+                .orElse(false);
 
         // 12. RESPONSE FINAL
         return new LoginResponseDTO(

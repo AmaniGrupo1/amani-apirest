@@ -1,9 +1,7 @@
 package com.amani.amaniapirest.models;
 
-import com.amani.amaniapirest.enums.TemaApp;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -37,10 +35,7 @@ public class Ajuste {
 
     /** Indica si el usuario tiene activado el modo oscuro. */
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tema", nullable = false, length = 50)
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    private TemaApp tema;
+    private Boolean tema;
 
     /** Zona horaria preferida del usuario (p.ej. "Europe/Madrid"). */
     private String timezone;

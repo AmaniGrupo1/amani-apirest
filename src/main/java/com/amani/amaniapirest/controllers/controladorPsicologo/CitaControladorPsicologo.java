@@ -206,7 +206,7 @@ public class CitaControladorPsicologo {
             summary = "Obtener tipos de terapia",
             description = "Devuelve todas las terapias disponibles para seleccionar en la UI"
     )
-    @GetMapping("/psicologo/terapias")
+    @GetMapping("/psicologo/terapias/get")
     public ResponseEntity<List<TerapiaResponseDTO>> getTerapias() {
         return ResponseEntity.ok(terapiaService.getAllTerapias());
     }
@@ -258,5 +258,12 @@ public class CitaControladorPsicologo {
     @DeleteMapping("/delete/{id}")
     public void eliminarTerapia(@PathVariable Long id) {
         terapiaService.eliminarTerapia(id);
+    }
+
+    @Operation(summary = "Obtener duración de cita", description = "Devuelve la duración predeterminada en minutos")
+    @GetMapping("/psicologo/{idPsicologo}/duracion-obtenida")
+    public ResponseEntity<Integer> getDuracionCita(@PathVariable Long idPsicologo) {
+        Integer duracion = citaAgendaService.getDuracionDefault(idPsicologo);
+        return ResponseEntity.ok(duracion);
     }
 }

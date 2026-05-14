@@ -2,6 +2,7 @@ package com.amani.amaniapirest.services.documentoLegal;
 
 import com.amani.amaniapirest.dto.documentoLegales.DocumentoLegalRequestDTO;
 import com.amani.amaniapirest.dto.documentoLegales.DocumentoLegalResponseDTO;
+import com.amani.amaniapirest.enums.TipoDocumentoLegal;
 import com.amani.amaniapirest.models.DocumentoLegal;
 import com.amani.amaniapirest.repository.DocumentoLegalRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -56,7 +57,6 @@ public class DocumentoLegalService {
     public DocumentoLegalResponseDTO obtenerPorId(
             Long idDocumento
     ) {
-
         DocumentoLegal documento = documentoLegalRepository.findById(idDocumento)
                 .orElseThrow(() ->
                         new EntityNotFoundException(
@@ -132,5 +132,21 @@ public class DocumentoLegalService {
                 .creadoEn(documento.getCreadoEn())
                 .actualizadoEn(documento.getActualizadoEn())
                 .build();
+    }
+
+
+    public DocumentoLegalResponseDTO obtenerPorTipo(
+            TipoDocumentoLegal tipo
+    ) {
+
+        DocumentoLegal documento = documentoLegalRepository
+                .findByTipoAndActivoTrue(tipo)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Documento legal no encontrado"
+                        )
+                );
+
+        return mapToResponse(documento);
     }
 }

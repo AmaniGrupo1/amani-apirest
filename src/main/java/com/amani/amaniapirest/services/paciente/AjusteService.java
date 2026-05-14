@@ -4,7 +4,6 @@ import com.amani.amaniapirest.dto.ajustes.IdiomaRequestDTO;
 import com.amani.amaniapirest.dto.colorNegroBlanco.UpdateTemaDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.request.AjusteRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.AjusteResponseDTO;
-import com.amani.amaniapirest.enums.TemaApp;
 import com.amani.amaniapirest.models.Ajuste;
 import com.amani.amaniapirest.models.Usuario;
 import com.amani.amaniapirest.repository.AjusteRepository;
@@ -85,7 +84,11 @@ public class AjusteService {
         ajuste.setUsuario(usuario);
         ajuste.setIdioma(request.getIdioma());
         ajuste.setNotificaciones(request.getNotificaciones() != null ? request.getNotificaciones() : true);
-        ajuste.setTema(request.getTema() != null ? request.getTema() : TemaApp.SYSTEM);
+        ajuste.setTema(
+                request.getDarkMode() != null
+                        ? request.getDarkMode()
+                        : false
+        );
         ajuste.setTimezone(request.getTimezone());
         ajuste.setUpdatedAt(LocalDateTime.now());
 
@@ -107,7 +110,9 @@ public class AjusteService {
         ajuste.setUsuario(usuario);
         ajuste.setIdioma(request.getIdioma());
         if (request.getNotificaciones() != null) ajuste.setNotificaciones(request.getNotificaciones());
-        if (request.getTema() != null) ajuste.setTema(request.getTema());
+        if (request.getDarkMode() != null) {
+            ajuste.setTema(request.getDarkMode());
+        }
         ajuste.setTimezone(request.getTimezone());
         ajuste.setUpdatedAt(LocalDateTime.now());
 
@@ -169,7 +174,6 @@ public class AjusteService {
 
     @Transactional
     public void actualizarIdioma(Long idUsuario, IdiomaRequestDTO request) {
-
         Ajuste ajuste = ajusteRepository.findByUsuario_IdUsuario(idUsuario)
                 .orElseGet(() -> {
                     Ajuste nuevo = new Ajuste();
@@ -179,16 +183,12 @@ public class AjusteService {
                 });
 
         ajuste.setIdioma(request.getIdioma());
-
         ajusteRepository.save(ajuste);
     }
 
 
     @Transactional
-    public AjusteResponseDTO actualizarTema(
-            Long idUsuario,
-            UpdateTemaDTO dto
-    ) {
+    public AjusteResponseDTO actualizarTema(Long idUsuario,UpdateTemaDTO dto) {
 
         Ajuste ajuste = ajusteRepository
                 .findByUsuario_IdUsuario(idUsuario)
@@ -204,7 +204,7 @@ public class AjusteService {
                     // valores por defecto
                     nuevo.setIdioma("es");
                     nuevo.setNotificaciones(true);
-                    nuevo.setTema(TemaApp.SYSTEM);
+                    nuevo.setTema(false);
                     nuevo.setTimezone("Europe/Madrid");
                     nuevo.setUpdatedAt(LocalDateTime.now());
 

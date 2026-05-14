@@ -3,7 +3,6 @@ package com.amani.amaniapirest.dto.loginDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.amani.amaniapirest.enums.TemaApp;
 
 /**
  * DTO de respuesta devuelto tras una autenticación exitosa.
@@ -22,5 +21,5 @@ public class LoginResponseDTO {
     private Long idPsicologo;  // Solo se llena si el usuario es un psicólogo
     private Long idPaciente;    // Solo se llena si el usuario es un paciente
     private String idioma;
-    private TemaApp tema;
+    private Boolean tema;
 }
