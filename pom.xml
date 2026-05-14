@@ -23,7 +23,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <lombok.version>1.18.42</lombok.version>
-        <dokka.version>2.0.0</dokka.version>
+        <dokka.version>1.9.20</dokka.version>
         <openapi.output.dir>${project.basedir}/../documentacion-amani/api/openapi</openapi.output.dir>
         <spring-cloud-gcp.version>8.0.2</spring-cloud-gcp.version>
     <kotlin.version>2.3.10</kotlin.version>
@@ -359,6 +359,37 @@
                     <additionalOptions>
                         <additionalOption>-Xdoclint:none</additionalOption>
                     </additionalOptions>
+                </configuration>
+            </plugin>
+
+            <!-- Dokka - Generación de documentación en Markdown (GFM) compatible con MkDocs -->
+            <plugin>
+                <groupId>org.jetbrains.dokka</groupId>
+                <artifactId>dokka-maven-plugin</artifactId>
+                <version>${dokka.version}</version>
+                <executions>
+                    <execution>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>dokka</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDir>${project.basedir}/docs/api/backend/dokka</outputDir>
+                    <moduleName>AMANI Backend</moduleName>
+                    <documentedVisibilities>
+                        <visibility>PUBLIC</visibility>
+                        <visibility>PROTECTED</visibility>
+                    </documentedVisibilities>
+                    <sourceLinks>
+                        <link>
+                            <path>${project.basedir}/src/main/java</path>
+                            <url>https://github.com/AmaniGrupo1/amani-apirest/tree/main/src/main/java</url>
+                            <lineSuffix>#L</lineSuffix>
+                        </link>
+                    </sourceLinks>
+                    <footerMessage>AMANI Backend — Documentación generada con Dokka</footerMessage>
                 </configuration>
             </plugin>
 

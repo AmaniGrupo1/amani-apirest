@@ -47,4 +47,9 @@ public class Situacion {
     // Relación inversa con paciente_situacion
     @OneToMany(mappedBy = "situacion", cascade = CascadeType.ALL)
     private List<PacienteSituacion> pacientesSituaciones;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

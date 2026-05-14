@@ -1,33 +1,26 @@
 {
   "rules": {
     "chats": {
-      "$chatId": {
+      "$room_id": {
+        ".read": "auth != null && ($room_id.matches('^' + auth.uid + '_[0-9]+$') || $room_id.matches('^[0-9]+_' + auth.uid + '$'))",
+        ".write": "auth != null && ($room_id.matches('^' + auth.uid + '_[0-9]+$') || $room_id.matches('^[0-9]+_' + auth.uid + '$'))",
         "messages": {
-          ".read": "auth != null",
-          ".write": "auth != null",
-          "$messageId": {
-            ".validate": "newData.hasChildren(['idSender', 'idReceiver', 'mensaje'])"
+          "$message_id": {
+            ".indexOn": ["enviadoEn", "idMensaje", "leido"]
           }
         }
       }
     },
     "typing": {
-      "$roomId": {
-        ".read": "auth != null",
-        "$userId": {
-          ".write": "auth != null && $userId === auth.uid"
-        }
+      "$room_id": {
+        ".read": "auth != null && ($room_id.matches('^' + auth.uid + '_[0-9]+$') || $room_id.matches('^[0-9]+_' + auth.uid + '$'))",
+        ".write": "auth != null && ($room_id.matches('^' + auth.uid + '_[0-9]+$') || $room_id.matches('^[0-9]+_' + auth.uid + '$'))"
       }
     },
     "users": {
-      "$userId": {
+      "$user_id": {
         ".read": "auth != null",
-        "isOnline": {
-          ".write": "auth != null && $userId === auth.uid"
-        },
-        "lastSeen": {
-          ".write": "auth != null && $userId === auth.uid"
-        }
+        ".write": "auth != null && $user_id === auth.uid"
       }
     }
   }

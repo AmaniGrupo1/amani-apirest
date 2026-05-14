@@ -2,6 +2,7 @@ package com.amani.amaniapirest.controllers.controladorPaciente;
 
 import com.amani.amaniapirest.dto.ajustes.IdiomaRequestDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.AjusteResponseDTO;
+import com.amani.amaniapirest.enums.TemaApp;
 import com.amani.amaniapirest.services.paciente.AjusteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +48,7 @@ class AjusteControllerTest {
         dto.setIdUsuario(id);
         dto.setIdioma(idioma);
         dto.setNotificaciones(true);
-        dto.setTema(false);
+        dto.setTema(TemaApp.SYSTEM);
         dto.setTimezone("Europe/Madrid");
         dto.setUpdatedAt(LocalDateTime.now());
         return dto;
