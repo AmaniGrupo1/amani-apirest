@@ -1,10 +1,10 @@
 package com.amani.amaniapirest.controllers.payment;
 
 import com.amani.amaniapirest.configuration.GlobalExceptionHandler;
-import com.amani.amaniapirest.configuration.UserDetailsImpl;
 import com.amani.amaniapirest.dto.payment.request.CreatePaymentIntentRequest;
 import com.amani.amaniapirest.dto.payment.response.PaymentIntentResponse;
-import com.amani.amaniapirest.models.Usuario;
+import com.amani.amaniapirest.models.Paciente;
+import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.services.payment.PaymentService;
 import com.amani.amaniapirest.services.payment.WebhookService;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,6 +34,9 @@ class PaymentControllerTest {
 
     @Mock
     private PaymentService paymentService;
+
+    @Mock
+    private PacientesRepository pacientesRepository;
 
     @Mock
     private WebhookService webhookService;
@@ -55,19 +58,19 @@ class PaymentControllerTest {
 
     @Test
     void createIntentWithAuthReturns200() {
-        Usuario usuario = new Usuario();
-        usuario.setIdUsuario(10L);
-        UserDetailsImpl userDetails = new UserDetailsImpl(usuario);
+        Paciente paciente = new Paciente();
+        paciente.setIdPaciente(10L);
 
         Authentication auth = mock(Authentication.class);
-        when(auth.getPrincipal()).thenReturn(userDetails);
+        when(auth.getName()).thenReturn("paciente@amani.com");
+        when(pacientesRepository.findByUsuario_Email("paciente@amani.com")).thenReturn(java.util.Optional.of(paciente));
 
         PaymentIntentResponse responseDto = new PaymentIntentResponse("secret", "pi_123", new BigDecimal("50.00"), "EUR");
-        when(paymentService.createPaymentIntent(anyLong(), anyLong())).thenReturn(responseDto);
+        when(paymentService.createPaymentIntent(any(CreatePaymentIntentRequest.class), eq(10L))).thenReturn(responseDto);
 
         var response = paymentController.createPaymentIntent(new CreatePaymentIntentRequest(1L), auth);
 
-        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getPaymentIntentId()).isEqualTo("pi_123");
     }

@@ -56,7 +56,9 @@ class CitaControladorPsicologoTest {
     void setUp() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new com.amani.amaniapirest.configuration.GlobalExceptionHandler())
+                .build();
     }
 
     @Test
@@ -116,7 +118,7 @@ class CitaControladorPsicologoTest {
     void getTerapiasReturnsOk() throws Exception {
         when(terapiaService.getAllTerapias()).thenReturn(List.of(new TerapiaResponseDTO(1L, "TCC", 60, BigDecimal.valueOf(45.50))));
 
-        mockMvc.perform(get("/api/citas/psicologo/terapias"))
+        mockMvc.perform(get("/api/citas/psicologo/terapias/get"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].idTipo").value(1))
                 .andExpect(jsonPath("$[0].nombre").value("TCC"));
@@ -176,7 +178,7 @@ class CitaControladorPsicologoTest {
                   "startDatetime": "2026-05-02T10:00:00",
                   "durationMinutes": 60,
                   "estado": "pendiente",
-                  "metodoPago": "ONLINE",
+                  "metodoPago": "TARJETA",
                   "estadoPago": "PENDIENTE",
                   "monto": 45.50,
                   "motivo": "Seguimiento",

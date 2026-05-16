@@ -54,11 +54,11 @@ class AuthControllerTest {
     @Test
     @DisplayName("login retorna token y datos del usuario")
     void loginReturnsTokenAndUserData() throws Exception {
-        when(authService.login(any())).thenReturn(new LoginResponseDTO(1L, "Ana", "PACIENTE", "jwt-token", null, 10L, "es"));
+        when(authService.login(any())).thenReturn(new LoginResponseDTO(1L, "Ana", "PACIENTE", "jwt-token", null, 10L, "es", true));
 
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"ana@amani.com\",\"password\":\"secret\"}"))
+                        .content("{\"email\":\"ana@amani.com\",\"password\":\"secret123\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idUsuario").value(1))
                 .andExpect(jsonPath("$.nombre").value("Ana"))
@@ -69,7 +69,7 @@ class AuthControllerTest {
     @Test
     @DisplayName("register paciente retorna LoginResponse")
     void registerPacienteReturnsLoginResponse() throws Exception {
-        when(authService.registerPaciente(any())).thenReturn(new LoginResponseDTO(2L, "Pedro", "PACIENTE", "token-2", null, 20L, "es"));
+        when(authService.registerPaciente(any())).thenReturn(new LoginResponseDTO(2L, "Pedro", "PACIENTE", "token-2", null, 20L, "es", true));
 
         mockMvc.perform(post("/auth/register-paciente")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -95,9 +95,9 @@ class AuthControllerTest {
     @DisplayName("register admin retorna LoginResponse")
     void registerAdminReturnsLoginResponse() throws Exception {
         when(authService.registerAdmin(any(RegistryRequestDTO.class)))
-                .thenReturn(new LoginResponseDTO(3L, "Root", "ADMIN", "token-admin", null, null, "es"));
+                .thenReturn(new LoginResponseDTO(3L, "Root", "ADMIN", "token-admin", null, null, "es", true));
 
-        String body = objectMapper.writeValueAsString(new RegistryRequestDTO("Root", "User", "root@amani.com", "strong-pass"));
+        String body = objectMapper.writeValueAsString(new RegistryRequestDTO("Root", "User", "root@amani.com", "strongpass1"));
 
         mockMvc.perform(post("/auth/register-admin")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +114,7 @@ class AuthControllerTest {
 
         mockMvc.perform(put("/auth/pacientes/25/baja"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value("Paciente dado de baja correctamente"));
+                .andExpect(jsonPath("$.message").value("Paciente dado de baja correctamente"));
     }
 
     @Test
@@ -124,7 +124,7 @@ class AuthControllerTest {
 
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"bad@amani.com\",\"password\":\"wrong\"}"))
+                        .content("{\"email\":\"bad@amani.com\",\"password\":\"wrong123\"}"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -135,7 +135,7 @@ class AuthControllerTest {
 
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"missing@amani.com\",\"password\":\"secret\"}"))
+                        .content("{\"email\":\"missing@amani.com\",\"password\":\"secret123\"}"))
                 .andExpect(status().isNotFound());
     }
 
@@ -144,7 +144,7 @@ class AuthControllerTest {
     void registerAdmin_debeRetornar400_cuandoEmailYaExiste() throws Exception {
         when(authService.registerAdmin(any())).thenThrow(new IllegalStateException("Email ya existe"));
 
-        String body = objectMapper.writeValueAsString(new RegistryRequestDTO("Root", "User", "dup@amani.com", "strong-pass"));
+        String body = objectMapper.writeValueAsString(new RegistryRequestDTO("Root", "User", "dup@amani.com", "strongpass1"));
 
         mockMvc.perform(post("/auth/register-admin")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -155,7 +155,7 @@ class AuthControllerTest {
     @Test
     @DisplayName("darBajaPaciente debe retornar 404 cuando paciente no existe")
     void darBajaPaciente_debeRetornar404_cuandoPacienteNoExiste() throws Exception {
-        doThrow(new NoSuchElementException("No existe")).when(authService).darBajaPaciente(99L);
+        doThrow(new NoSuchElementException("No existe")).when(authService).darBajaPsicologo(99L);
 
         mockMvc.perform(put("/auth/pacientes/99/baja"))
                 .andExpect(status().isNotFound());

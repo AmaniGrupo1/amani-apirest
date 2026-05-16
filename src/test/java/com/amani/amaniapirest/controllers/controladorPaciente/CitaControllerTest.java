@@ -56,7 +56,9 @@ class CitaControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new com.amani.amaniapirest.configuration.GlobalExceptionHandler())
+                .build();
     }
 
     @Test
@@ -155,7 +157,7 @@ class CitaControllerTest {
                   "startDatetime": "2026-05-10T12:00:00",
                   "durationMinutes": 60,
                   "estado": "confirmada",
-                  "metodoPago": "ONLINE",
+                  "metodoPago": "TARJETA",
                   "estadoPago": "PENDIENTE",
                   "monto": 45.50,
                   "motivo": "Seguimiento",
