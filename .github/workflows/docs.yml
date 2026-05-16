@@ -1,8 +1,9 @@
-name: Docs — Build & Deploy to GitHub Pages
+name: "Docs - Build & Deploy to GitHub Pages"
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
       - "docs/**"
       - "mkdocs.yml"
@@ -19,33 +20,38 @@ concurrency:
 
 jobs:
   deploy-docs:
-    name: Deploy docs to gh-pages
+    name: "Deploy docs to gh-pages"
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: write
+
     steps:
-      - name: Checkout repository
+      - name: "Checkout repository"
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Configurar JDK 21
+      - name: "Set up JDK 21"
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
 
-      - name: Instalar uv
+      - name: "Set up uv"
         uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
 
-      - name: Instalar dependencias MkDocs
+      - name: "Install MkDocs dependencies"
         run: uv sync --frozen
 
-      - name: Hacer ejecutable mvnw
-        run: chmod +x mvnw
+      - name: "Grant execute permission to mvnw"
+        run: chmod +x ./mvnw
 
-      - name: Generar Dokka Backend
-        run: ./mvnw dokka:dokka -q
+      - name: "Generate Dokka backend docs"
+        run: ./mvnw --batch-mode --no-transfer-progress dokka:dokka -Dskip.openapi=true -q
 
-      - name: Deploy to gh-pages
+      - name: "Deploy to gh-pages"
         run: uv run mkdocs gh-deploy --force --clean

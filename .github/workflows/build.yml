@@ -1,37 +1,5 @@
-# =============================================================================
-# CI – Build, Test & Visual Dashboard
-# =============================================================================
-# distributionManagement ya configurado en pom.xml para GitHub Packages
-# (amanigrupo1/amani-apirest).
-# =============================================================================
+name: "CI/CD - Backend"
 
-name: "CI – Build & Test Dashboard"
-
-# ---------------------------------------------------------------------------
-# Permisos globales del workflow
-# ---------------------------------------------------------------------------
-permissions:
-  contents: read        # lectura del repo (checkout)
-  checks: write         # escritura de checks (test-reporter)
-  packages: write       # publicación en GitHub Packages (deploy)
-  pull-requests: write  # comentarios de test-reporter en PRs
-
-# ---------------------------------------------------------------------------
-# Evitar ejecuciones paralelas en la misma rama
-# ---------------------------------------------------------------------------
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-# ---------------------------------------------------------------------------
-# Variables de entorno globales
-# ---------------------------------------------------------------------------
-env:
-  JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
-
-# ---------------------------------------------------------------------------
-# Disparadores del workflow
-# ---------------------------------------------------------------------------
 on:
   push:
     branches:
@@ -43,20 +11,105 @@ on:
       - "pyproject.toml"
       - "uv.lock"
       - "*.md"
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths-ignore:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "*.md"
 
-# =============================================================================
-# JOBS
-# =============================================================================
+permissions:
+  contents: read
+  checks: write
+  packages: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
+  MAVEN_ARGS: "--batch-mode --no-transfer-progress"
+  IMAGE_NAME: "amani-apirest"
+  GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID || 'amani-160bf' }}
+  GCP_REGION: ${{ vars.GCP_REGION || 'europe-west1' }}
+  GCP_ARTIFACT_REPOSITORY: ${{ vars.GCP_ARTIFACT_REPOSITORY }}
+  GCP_CLOUD_RUN_SERVICE: ${{ vars.GCP_CLOUD_RUN_SERVICE || 'amani-api' }}
+  GCP_CLOUD_RUN_SERVICE_ACCOUNT: ${{ vars.GCP_CLOUD_RUN_SERVICE_ACCOUNT }}
+
 jobs:
-
-  # ===========================================================================
-  # Job 1: Verificar compilación, ejecutar tests y generar dashboard HTML
-  # ===========================================================================
-  verify:
-    name: "Verify – Compile, Test & Dashboard"
+  lint:
+    name: "Lint"
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
-    # --- Servicio PostgreSQL para los tests de integración ---
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Set up JDK 21"
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
+
+      - name: "Grant execute permission to mvnw"
+        run: chmod +x ./mvnw
+
+      - name: "Run Maven lint checks"
+        run: ./mvnw $MAVEN_ARGS -DskipTests -Dskip.openapi=true compile checkstyle:check pmd:check spotbugs:spotbugs
+
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs:
+      - lint
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Set up JDK 21"
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
+
+      - name: "Grant execute permission to mvnw"
+        run: chmod +x ./mvnw
+
+      - name: "Package JAR"
+        run: ./mvnw $MAVEN_ARGS -Dmaven.test.skip=true -Dskip.openapi=true package
+
+      - name: "Upload Maven artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven-artifact-${{ github.run_number }}
+          path: |
+            target/*.jar
+            target/*.war
+          if-no-files-found: error
+          retention-days: 30
+
+  test:
+    name: "Test"
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs:
+      - build
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
     services:
       postgres:
         image: postgres:16
@@ -73,13 +126,21 @@ jobs:
           --health-retries 5
 
     steps:
-      # --- Checkout del código fuente ---
       - name: "Checkout repository"
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # --- Inicializar el esquema de la base de datos ---
+      - name: "Set up JDK 21"
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
+
+      - name: "Grant execute permission to mvnw"
+        run: chmod +x ./mvnw
+
       - name: "Initialize database schema"
         run: |
           for i in $(seq 1 30); do
@@ -90,6 +151,7 @@ jobs:
             echo "Waiting for PostgreSQL... ($i/30)"
             sleep 1
           done
+
           PGPASSWORD=amani psql \
             -h localhost \
             -p 5432 \
@@ -97,21 +159,8 @@ jobs:
             -d psicologia_app \
             -f src/main/resources/amani.sql
 
-      # --- Configurar JDK 21 (coincide con <java.version> del pom.xml) ---
-      - name: "Set up JDK 21"
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'maven'
-
-      # --- Dar permisos de ejecución al Maven Wrapper ---
-      - name: "Grant execute permission to mvnw"
-        run: chmod +x ./mvnw
-
-      # --- Compilar y ejecutar tests (propiedades de BD sobreescribas por env vars) ---
-      - name: "Compile & test (verify)"
-        run: ./mvnw --batch-mode --no-transfer-progress verify -Dskip.openapi=true
+      - name: "Run Maven tests"
+        run: ./mvnw $MAVEN_ARGS verify -Dskip.openapi=true
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/psicologia_app
           SPRING_DATASOURCE_USERNAME: amani
@@ -119,7 +168,6 @@ jobs:
           SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
           SPRING_SQL_INIT_MODE: never
 
-      # --- Generar dashboard HTML desde JUnit XML ---
       - name: "Generate HTML Test Dashboard"
         if: always()
         run: |
@@ -128,7 +176,6 @@ jobs:
             --failsafe target/failsafe-reports \
             --output reports/html
 
-      # --- Generar resumen visual en GitHub Step Summary ---
       - name: "Generate Visual Summary"
         if: always()
         run: |
@@ -136,139 +183,165 @@ jobs:
             target/surefire-reports \
             target/failsafe-reports \
             target/site/jacoco/jacoco.csv
-          if [ -f target/site/jacoco/jacoco.csv ]; then
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "---" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "## 📋 Cobertura P0 y P1" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            bash scripts/generate-p0-coverage-visual.sh target/site/jacoco/jacoco.csv doc
-            cat doc/coverage-p0-visual.md >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "---" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            cat doc/coverage-p1-visual.md >> $GITHUB_STEP_SUMMARY
-          fi
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## 🔗 Artefactos" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- [📥 Descargar HTML Dashboard](reports/html/index.html)" >> $GITHUB_STEP_SUMMARY
-          echo "- [📥 Descargar JaCoCo Coverage](target/site/jacoco)" >> $GITHUB_STEP_SUMMARY
 
-      # --- Publicar resultados de tests como check de GitHub ---
+          if [ -f target/site/jacoco/jacoco.csv ]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "---" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "## Cobertura P0 y P1" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            bash scripts/generate-p0-coverage-visual.sh target/site/jacoco/jacoco.csv doc
+            cat doc/coverage-p0-visual.md >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "---" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            cat doc/coverage-p1-visual.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "## Artefactos" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- HTML Dashboard: reports/html/index.html" >> "$GITHUB_STEP_SUMMARY"
+          echo "- JaCoCo Coverage: target/site/jacoco" >> "$GITHUB_STEP_SUMMARY"
+
       - name: "Publish test results"
-        if: always()
+        if: always() && hashFiles('**/target/**/TEST-*.xml') != ''
         uses: dorny/test-reporter@v1.9.1
         with:
-          name: Maven Test Results
-          path: '**/target/**/TEST-*.xml'
-          reporter: java-junit
+          name: "Maven Test Results"
+          path: "**/target/**/TEST-*.xml"
+          reporter: "java-junit"
           fail-on-error: true
 
-      # --- SonarQube Scan (opcional, solo si hay token configurado) ---
       - name: "SonarQube Scan"
-        if: env.SONAR_TOKEN != ''
-        run: ./mvnw --batch-mode --no-transfer-progress sonar:sonar
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        if: env.SONAR_TOKEN != '' && env.SONAR_HOST_URL != ''
+        run: ./mvnw $MAVEN_ARGS sonar:sonar
 
-      # --- Subir reportes JUnit XML como artefactos ---
       - name: "Upload JUnit XML Reports"
-        uses: actions/upload-artifact@v4
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: junit-xml-reports
           path: |
             target/surefire-reports
             target/failsafe-reports
+          if-no-files-found: ignore
 
-      # --- Subir dashboard HTML como artefacto ---
       - name: "Upload HTML Dashboard"
-        uses: actions/upload-artifact@v4
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: html-test-dashboard
           path: reports/html
+          if-no-files-found: ignore
 
-      # --- Subir cobertura JaCoCo como artefacto ---
       - name: "Upload JaCoCo Coverage"
-        uses: actions/upload-artifact@v4
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: jacoco-coverage-report
           path: target/site/jacoco
+          if-no-files-found: ignore
 
-  # Job 2: Construir artefacto y publicar en GitHub Packages
-  # ===========================================================================
-  build-artifact:
-    name: "Build – Maven Artifact"
-    needs: [verify]                  # Solo se ejecuta si verify pasó
-    if: github.event_name == 'push'  # Solo en push, no en pull_request
+  docker-build:
+    name: "Docker Build"
     runs-on: ubuntu-latest
-
-    # --- Variables de entorno para autenticación con GitHub Packages ---
+    timeout-minutes: 25
+    needs:
+      - test
+    if: github.event_name == 'push'
     env:
-      MAVEN_USERNAME: ${{ github.actor }}
-      MAVEN_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
     steps:
-      # --- Checkout del código fuente ---
       - name: "Checkout repository"
         uses: actions/checkout@v4
 
-      # --- Configurar JDK 21 con credenciales para GitHub Packages ---
       - name: "Set up JDK 21"
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'maven'
-          server-id: github
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_TOKEN
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
 
-      # --- Dar permisos de ejecución al Maven Wrapper ---
+      - name: "Validate image publish configuration"
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then
+            echo "::error::Missing repository secret GCP_SA_KEY."
+            exit 1
+          fi
+
+          if [ -z "$GCP_ARTIFACT_REPOSITORY" ]; then
+            echo "::error::Missing repository variable GCP_ARTIFACT_REPOSITORY."
+            exit 1
+          fi
+
+          echo "IMAGE_URI=$GCP_REGION-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_ARTIFACT_REPOSITORY/$IMAGE_NAME:$GITHUB_SHA" >> "$GITHUB_ENV"
+
+      - name: "Authenticate to Google Cloud"
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: "Set up gcloud"
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: "Configure Docker for Artifact Registry"
+        run: gcloud auth configure-docker "$GCP_REGION-docker.pkg.dev" --quiet
+
       - name: "Grant execute permission to mvnw"
         run: chmod +x ./mvnw
 
-      # --- Empaquetar sin re-ejecutar tests (ya pasaron en Job 1) ---
-      - name: "Package JAR"
-        run: ./mvnw --batch-mode --no-transfer-progress -DskipTests package
+      - name: "Build image with Spring Boot Buildpacks"
+        run: ./mvnw $MAVEN_ARGS -Dmaven.test.skip=true -Dskip.openapi=true spring-boot:build-image -Dspring-boot.build-image.imageName="$IMAGE_URI"
 
-      # --- Subir artefacto al workflow run ---
-      - name: "Upload artifact"
-        uses: actions/upload-artifact@v4
-        with:
-          name: maven-artifact-${{ github.run_number }}
-          path: |
-            target/*.jar
-            target/*.war
-          if-no-files-found: error
-          retention-days: 30
+      - name: "Push image"
+        run: docker push "$IMAGE_URI"
 
-      # --- Validar que artifactId sea todo minúsculas (GitHub Packages lo exige) ---
-      - name: "Validate lowercase artifactId"
+  deploy:
+    name: "Deploy"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs:
+      - docker-build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    env:
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+    steps:
+      - name: "Validate deploy configuration"
         run: |
-          ARTIFACT_ID=$(./mvnw -q help:evaluate -Dexpression=project.artifactId -DforceStdout)
-          echo "artifactId detectado: $ARTIFACT_ID"
-          if [[ "$ARTIFACT_ID" =~ [A-Z] ]]; then
-            echo "ERROR: artifactId inválido para GitHub Packages (contiene mayúsculas): $ARTIFACT_ID"
+          if [ -z "$GCP_SA_KEY" ]; then
+            echo "::error::Missing repository secret GCP_SA_KEY."
             exit 1
           fi
-          echo "OK: artifactId '$ARTIFACT_ID' es válido para GitHub Packages."
 
-      # --- Imprimir coordenadas Maven efectivas antes del deploy ---
-      - name: "Debug Maven coordinates"
+          if [ -z "$GCP_ARTIFACT_REPOSITORY" ]; then
+            echo "::error::Missing repository variable GCP_ARTIFACT_REPOSITORY."
+            exit 1
+          fi
+
+          echo "IMAGE_URI=$GCP_REGION-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_ARTIFACT_REPOSITORY/$IMAGE_NAME:$GITHUB_SHA" >> "$GITHUB_ENV"
+
+      - name: "Authenticate to Google Cloud"
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: "Set up gcloud"
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: "Deploy to Cloud Run"
         run: |
-          echo "=== Coordenadas Maven efectivas ==="
-          echo -n "groupId:    " && ./mvnw -q help:evaluate -Dexpression=project.groupId -DforceStdout && echo
-          echo -n "artifactId: " && ./mvnw -q help:evaluate -Dexpression=project.artifactId -DforceStdout && echo
-          echo -n "version:    " && ./mvnw -q help:evaluate -Dexpression=project.version -DforceStdout && echo
-          echo -n "finalName:  " && ./mvnw -q help:evaluate -Dexpression=project.build.finalName -DforceStdout && echo
-          echo -n "registry:   " && ./mvnw -q help:evaluate -Dexpression=project.distributionManagement.repository.url -DforceStdout && echo
+          SERVICE_ACCOUNT_ARG=()
+          if [ -n "$GCP_CLOUD_RUN_SERVICE_ACCOUNT" ]; then
+            SERVICE_ACCOUNT_ARG=(--service-account "$GCP_CLOUD_RUN_SERVICE_ACCOUNT")
+          fi
 
-      # --- Publicar en GitHub Packages (solo desde main) ---
-      - name: "Deploy to GitHub Packages"
-        if: github.ref == 'refs/heads/main'
-        run: ./mvnw --batch-mode --no-transfer-progress -DskipTests deploy
+          gcloud run deploy "$GCP_CLOUD_RUN_SERVICE" \
+            --image "$IMAGE_URI" \
+            --region "$GCP_REGION" \
+            --project "$GCP_PROJECT_ID" \
+            --platform managed \
+            --set-env-vars "SPRING_PROFILES_ACTIVE=gcp" \
+            "${SERVICE_ACCOUNT_ARG[@]}"
