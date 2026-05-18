@@ -3,6 +3,7 @@ nav:
   - endpoints.md
   - models.md
   - openapi.md
+  - backend
   - Legal:
     - legal
 collapse_single_pages: true

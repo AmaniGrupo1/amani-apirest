@@ -84,30 +84,3 @@ extra:
     provider: mike
 
 copyright: Copyright © 2026 Amani Team — Todos los derechos reservados
-
-nav:
-  - Inicio: index.md
-  - API REST:
-    - api/rest-api.md
-    - Referencia de endpoints: api/endpoints.md
-    - Modelos de datos: api/models.md
-    - OpenAPI (Swagger): api/openapi.md
-  - Testing:
-    - testing/index.md
-    - Plan de pruebas: testing/test-plan.md
-    - Cobertura de tests: testing/coverage.md
-    - Problemas conocidos: testing/known-issues.md
-  - Informes:
-    - reports/index.md
-    - Dashboard de cobertura: reports/coverage-dashboard.md
-  - Guías:
-    - guides/index.md
-    - Configuración local: guides/local-setup.md
-    - Despliegue GCP: guides/gcp-deploy.md
-    - Firebase y Secret Manager: guides/firebase-fix.md
-  - Postman:
-    - postman/index.md
-    - Colección: postman/collection.md
-  - Referencia API:
-      - Backend (Javadoc/Dokka): api/backend/index.md
-  - Changelog: changelog.md

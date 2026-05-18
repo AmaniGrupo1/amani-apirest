@@ -3,12 +3,12 @@ nav:
   - API REST:
     - api/
   - Testing:
-    - testing/
+    - testing
   - Informes:
-    - reports/
+    - reports
   - Guías:
-    - guides/
+    - guides
   - Postman:
-    - postman/
+    - postman
   - changelog.md
 collapse_single_pages: true

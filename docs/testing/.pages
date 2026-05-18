@@ -1,1 +1,10 @@
+nav:
+  - index.md
+  - test-plan.md
+  - plan-pruebas-api-rest.md
+  - coverage.md
+  - coverage-p0-visual.md
+  - coverage-p1-visual.md
+  - error-detectados.md
+  - known-issues.md
 collapse_single_pages: true

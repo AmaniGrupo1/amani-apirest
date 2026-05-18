@@ -1,1 +1,3 @@
-collapse_single_pages: true
+nav:
+  - jquery.md
+  - jqueryUI.md

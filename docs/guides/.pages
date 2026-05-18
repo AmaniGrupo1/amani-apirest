@@ -1,1 +1,7 @@
+nav:
+  - index.md
+  - local-setup.md
+  - gcp-deploy.md
+  - firebase-fix.md
+  - FIREBASE-FIX-GUIDE.md
 collapse_single_pages: true
