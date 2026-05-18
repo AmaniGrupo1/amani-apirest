@@ -94,49 +94,25 @@ public class CitaAgendaService {
     // GET /api/citas/psicologo/{id}/agenda?month=YYYY-MM
     // ─────────────────────────────────────────────────────────
     public List<AgendaItemDTO> getAgendaPsicologo(Long idPsicologo, String month) {
-        System.out.println("📡 getAgendaPsicologo llamado con idPsicologo: " + idPsicologo + ", month: " + month);
-        System.out.println("===== GET AGENDA PSICOLOGO =====");
-        System.out.println("ID URL: " + idPsicologo);
-        System.out.println("MONTH: " + month);
-
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-        System.out.println("AUTH EMAIL: " + email);
-        System.out.println("AUTH ROLES: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-
-        Psicologo logueado = psicologoRepository.findByUsuario_Email(email)
-                .orElseThrow(() -> new NoSuchElementException("Psicólogo no encontrado"));
-
-        Long idPsicologoToken = logueado.getIdPsicologo();
-
-        if (idPsicologo == null || !idPsicologo.equals(idPsicologoToken)) {
-            idPsicologo = idPsicologoToken;
-        }
 
         var rango = rangoMes(month);
 
         List<AgendaItemDTO> items = new ArrayList<>();
 
-        // Agregar citas
         citaRepository.findByPsicologo_IdPsicologoAndStartDatetimeBetween(
                 idPsicologo, rango[0], rango[1]
         ).stream().map(this::citaToAgendaItem).forEach(items::add);
 
-        // Agregar bloqueos
         LocalDate inicio = rango[0].toLocalDate();
         LocalDate fin = rango[1].toLocalDate();
 
         bloqueoRepository.findByPsicologoIdPsicologoAndFechaBetween(idPsicologo, inicio, fin)
                 .stream().map(this::bloqueoToAgendaItem).forEach(items::add);
 
-        // Ordenar
         items.sort(Comparator.comparing(AgendaItemDTO::getFecha)
                 .thenComparing(AgendaItemDTO::getHoraInicio));
 
-        System.out.println("📡 Resultado: " + items.size() + " citas encontradas");
-
-        return items;  // ← SOLO UN RETURN AL FINAL
+        return items;
     }
 
     // ─────────────────────────────────────────────────────────
