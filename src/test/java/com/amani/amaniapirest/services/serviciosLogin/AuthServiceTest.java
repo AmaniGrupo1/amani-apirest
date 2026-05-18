@@ -212,6 +212,138 @@ class AuthServiceTest {
         assertThat(response.getIdioma()).isEqualTo("es");
     }
 
+    @Test
+    void loginPsicologoReturnsPsicologoId() {
+        when(securityConfig.passwordEncoder()).thenReturn(passwordEncoder);
+        Usuario usuario = usuario(12L, "Psi", "psi@amani.com", RolUsuario.psicologo);
+        usuario.setPassword(passwordEncoder.encode("secret"));
+        Psicologo psicologo = psicologo(32L, usuario);
+
+        when(usuarioRepository.findByEmail("psi@amani.com")).thenReturn(Optional.of(usuario));
+        when(psicologoRepository.findByUsuario_IdUsuario(12L)).thenReturn(Optional.of(psicologo));
+        when(jwtUtil.generateToken(any(), org.mockito.ArgumentMatchers.eq("psicologo"))).thenReturn("jwt-token");
+        when(ajusteRepository.findByUsuario_IdUsuario(12L)).thenReturn(Optional.empty());
+
+        LoginResponseDTO response = authService.login(loginRequest("psi@amani.com", "secret"));
+
+        assertThat(response.getIdPsicologo()).isEqualTo(32L);
+        assertThat(response.getRol()).isEqualTo("psicologo");
+    }
+
+    @Test
+    void loginRejectsDeactivatedAccount() {
+        Usuario usuario = usuario(11L, "Ana", "ana@amani.com", RolUsuario.paciente);
+        usuario.setActivo(false);
+        when(usuarioRepository.findByEmail("ana@amani.com")).thenReturn(Optional.of(usuario));
+
+        assertThatThrownBy(() -> authService.login(loginRequest("ana@amani.com", "secret")))
+                .isInstanceOf(org.springframework.security.authentication.DisabledException.class)
+                .hasMessageContaining("cuenta ha sido desactivada");
+    }
+
+    @Test
+    void registerAdminCreatesAdminUser() {
+        when(securityConfig.passwordEncoder()).thenReturn(passwordEncoder);
+        com.amani.amaniapirest.dto.loginDTO.RegistryRequestDTO request = new com.amani.amaniapirest.dto.loginDTO.RegistryRequestDTO(
+                "Admin",
+                "Amani",
+                "admin@amani.com",
+                "adminPass"
+        );
+
+        when(usuarioRepository.save(any())).thenAnswer(inv -> {
+            Usuario u = inv.getArgument(0);
+            u.setIdUsuario(99L);
+            return u;
+        });
+        when(jwtUtil.generateToken(any(), any())).thenReturn("admin-token");
+
+        LoginResponseDTO response = authService.registerAdmin(request);
+
+        assertThat(response.getRol()).isEqualTo("admin");
+        assertThat(response.getToken()).isEqualTo("admin-token");
+        verify(usuarioRepository).save(any(Usuario.class));
+    }
+
+    @Test
+    void darBajaPsicologoDeactivatesUserAndFreesPatients() {
+        Psicologo psicologo = psicologo(31L, usuario(12L, "Psi", "psi@amani.com", RolUsuario.psicologo));
+        Paciente paciente = paciente(21L, usuario(11L, "Ana", "ana@amani.com", RolUsuario.paciente));
+        PsicologoPaciente relacion = new PsicologoPaciente();
+        relacion.setPsicologo(psicologo);
+        relacion.setPaciente(paciente);
+
+        when(psicologoRepository.findById(31L)).thenReturn(Optional.of(psicologo));
+        when(psicologoPacienteRepository.findByPsicologo_IdPsicologoAndFechaFinIsNull(31L)).thenReturn(List.of(relacion));
+
+        authService.darBajaPsicologo(31L);
+
+        assertThat(psicologo.getUsuario().getActivo()).isFalse();
+        assertThat(psicologo.getUsuario().getFechaBaja()).isNotNull();
+        assertThat(relacion.getFechaFin()).isNotNull();
+        assertThat(paciente.getPsicologo()).isNull();
+        verify(usuarioRepository).save(psicologo.getUsuario());
+        verify(psicologoPacienteRepository).save(relacion);
+        verify(pacienteRepository).save(paciente);
+    }
+
+    @Test
+    void registerPacienteRejectsDuplicateEmail() {
+        PacienteRequestDTO request = validAdultRequest();
+        when(usuarioRepository.findByEmail(request.getUsuario().getEmail())).thenReturn(Optional.of(new Usuario()));
+
+        assertThatThrownBy(() -> authService.registerPaciente(request))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("El correo ya está registrado");
+    }
+
+    @Test
+    void registerPacienteRejectsMissingFechaNacimiento() {
+        PacienteRequestDTO request = validAdultRequest();
+        request.setFechaNacimiento(null);
+
+        assertThatThrownBy(() -> authService.registerPaciente(request))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("La fecha de nacimiento es obligatoria");
+    }
+
+    @Test
+    void registerPacienteRejectsTermsNotAccepted() {
+        PacienteRequestDTO request = validAdultRequest();
+        request.setAceptaTerminos(false);
+
+        assertThatThrownBy(() -> authService.registerPaciente(request))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Debe aceptar los términos y condiciones");
+    }
+
+    @Test
+    void crearPacienteDesdePsicologoSuccess() {
+        when(securityConfig.passwordEncoder()).thenReturn(passwordEncoder);
+        Psicologo psicologo = psicologo(31L, usuario(12L, "Psi", "psi@amani.com", RolUsuario.psicologo));
+        PacienteRequestDTO request = validAdultRequest();
+
+        when(psicologoRepository.findByUsuario_Email("psi@amani.com")).thenReturn(Optional.of(psicologo));
+        when(usuarioRepository.findByEmail(request.getUsuario().getEmail())).thenReturn(Optional.empty());
+        when(usuarioRepository.save(any())).thenAnswer(inv -> {
+            Usuario u = inv.getArgument(0);
+            u.setIdUsuario(105L);
+            return u;
+        });
+        when(pacienteRepository.save(any())).thenAnswer(inv -> {
+            Paciente p = inv.getArgument(0);
+            p.setIdPaciente(205L);
+            return p;
+        });
+        when(jwtUtil.generateToken(any(), any())).thenReturn("token-psico");
+
+        LoginResponseDTO response = authService.crearPacienteDesdePsicologo(request, "psi@amani.com");
+
+        assertThat(response.getIdPaciente()).isEqualTo(205L);
+        assertThat(response.getIdPsicologo()).isEqualTo(31L);
+        verify(psicologoPacienteRepository).save(any(PsicologoPaciente.class));
+    }
+
     private LoginRequestDTO loginRequest(String email, String password) {
         LoginRequestDTO request = new LoginRequestDTO();
         request.setEmail(email);

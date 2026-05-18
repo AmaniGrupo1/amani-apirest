@@ -50,8 +50,11 @@ jobs:
       - name: "Grant execute permission to mvnw"
         run: chmod +x ./mvnw
 
-      - name: "Generate Dokka backend docs"
-        run: ./mvnw --batch-mode --no-transfer-progress dokka:dokka -Dskip.openapi=true -q
+      - name: "Generate Documentation (Javadoc, Dokka, OpenAPI)"
+        run: |
+          ./mvnw javadoc:javadoc dokka:dokka -DskipTests -q
+          # Generar OpenAPI JSON (requiere contexto de Spring)
+          ./mvnw springdoc-openapi:generate -Dspring.profiles.active=test -DskipTests -q
 
       - name: "Deploy to gh-pages"
         run: uv run mkdocs gh-deploy --force --clean

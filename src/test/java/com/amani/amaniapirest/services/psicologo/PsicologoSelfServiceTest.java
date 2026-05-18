@@ -55,6 +55,7 @@ class PsicologoSelfServiceTest {
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);
         usuario.setEmail(nombre.toLowerCase() + "@amani.com");
+        usuario.setActivo(true);
 
         Psicologo psicologo = new Psicologo();
         psicologo.setIdPsicologo(id);
@@ -83,7 +84,7 @@ class PsicologoSelfServiceTest {
     void findAllConDatos() {
         Psicologo p1 = buildPsicologo(1L, "Ana", "López");
         Psicologo p2 = buildPsicologo(2L, "Luis", "Ruiz");
-        when(psicologoRepository.findAll()).thenReturn(List.of(p1, p2));
+        when(psicologoRepository.findByUsuario_ActivoTrue()).thenReturn(List.of(p1, p2));
 
         List<PsicologoSelfResponseDTO> result = service.findAll();
 
@@ -95,7 +96,7 @@ class PsicologoSelfServiceTest {
 
     @Test
     void findAllVacio() {
-        when(psicologoRepository.findAll()).thenReturn(List.of());
+        when(psicologoRepository.findByUsuario_ActivoTrue()).thenReturn(List.of());
 
         List<PsicologoSelfResponseDTO> result = service.findAll();
 

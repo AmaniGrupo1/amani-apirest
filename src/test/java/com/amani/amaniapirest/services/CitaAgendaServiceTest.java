@@ -26,6 +26,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -38,6 +40,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -200,6 +203,215 @@ class CitaAgendaServiceTest {
         assertThatThrownBy(() -> service.cancelarCita(404L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Cita no encontrada");
+    }
+
+    @Test
+    void getAgendaPacienteReturnsList() {
+        Cita c = cita(100L, LocalDateTime.of(MONDAY, LocalTime.of(10, 0)), 50);
+        when(citaRepository.findByPaciente_IdPacienteAndStartDatetimeBetween(anyLong(), any(), any()))
+                .thenReturn(List.of(c));
+
+        List<AgendaItemDTO> result = service.getAgendaPaciente(ID_PACIENTE, "2026-05");
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getId()).isEqualTo(100L);
+    }
+
+    @Test
+    void actualizarDuracionPsicologoExitoso() {
+        when(psicologoRepository.findById(ID_PSICOLOGO)).thenReturn(Optional.of(psicologo));
+
+        service.actualizarDuracionPsicologo(ID_PSICOLOGO, 60);
+
+        assertThat(psicologo.getDuracionDefault()).isEqualTo(60);
+        verify(psicologoRepository).save(psicologo);
+    }
+
+    @Test
+    void getDisponibilidadConDiaBloqueoCompleto() {
+        com.amani.amaniapirest.models.BloqueoAgenda bloqueo = new com.amani.amaniapirest.models.BloqueoAgenda();
+        bloqueo.setHoraInicio(null); // Bloqueo día completo
+
+        when(bloqueoRepository.findByPsicologoIdPsicologoAndFechaAndHoraInicioIsNull(ID_PSICOLOGO, MONDAY))
+                .thenReturn(Optional.of(bloqueo));
+
+        com.amani.amaniapirest.dto.dtoAgenda.response.DisponibilidadDTO result = service.getDisponibilidad(ID_PSICOLOGO, MONDAY.toString());
+
+        assertThat(result.isDiaCompleto()).isTrue();
+        assertThat(result.getSlotsLibres()).isEmpty();
+    }
+
+    @Test
+    void getDisponibilidadConFranjasYCuposOcupados() {
+        when(bloqueoRepository.findByPsicologoIdPsicologoAndFechaAndHoraInicioIsNull(ID_PSICOLOGO, MONDAY))
+                .thenReturn(Optional.empty());
+        when(horarioRepository.findByPsicologoIdPsicologoAndActivoTrue(ID_PSICOLOGO))
+                .thenReturn(List.of(mondaySchedule()));
+        
+        // Cita de 9:00 a 9:50
+        Cita c = cita(101L, LocalDateTime.of(MONDAY, LocalTime.of(9, 0)), 50);
+        when(citaRepository.findByPsicologo_IdPsicologoAndStartDatetimeBetweenAndEstadoNot(anyLong(), any(), any(), any()))
+                .thenReturn(List.of(c));
+        when(bloqueoRepository.findByPsicologoIdPsicologoAndFecha(ID_PSICOLOGO, MONDAY))
+                .thenReturn(List.of());
+
+        com.amani.amaniapirest.dto.dtoAgenda.response.DisponibilidadDTO result = service.getDisponibilidad(ID_PSICOLOGO, MONDAY.toString());
+
+        assertThat(result.getSlotsLibres()).hasSize(2); // 09:50, 10:40
+        assertThat(result.getSlotsLibres().get(0).getHora()).isEqualTo(LocalTime.of(9, 50));
+    }
+
+    @Test
+    void editarCitaExitoso() {
+        Cita cita = cita(100L, LocalDateTime.of(MONDAY, LocalTime.of(9, 0)), 50);
+        CitaRequestDTO request = request(LocalDateTime.of(MONDAY, LocalTime.of(11, 0)), 50);
+
+        when(citaRepository.findById(100L)).thenReturn(Optional.of(cita));
+        when(psicologoRepository.findById(ID_PSICOLOGO)).thenReturn(Optional.of(psicologo));
+        when(pacienteRepository.findById(ID_PACIENTE)).thenReturn(Optional.of(paciente));
+        when(horarioRepository.findByPsicologoIdPsicologoAndActivoTrue(ID_PSICOLOGO)).thenReturn(List.of(mondaySchedule()));
+        when(bloqueoRepository.findByPsicologoIdPsicologoAndFecha(ID_PSICOLOGO, MONDAY)).thenReturn(List.of());
+        when(citaRepository.findByPsicologo_IdPsicologoAndStartDatetimeBetweenAndEstadoNot(anyLong(), any(), any(), any()))
+                .thenReturn(List.of());
+        when(terapiaRepository.findById(ID_TERAPIA)).thenReturn(Optional.of(terapia));
+
+        AgendaItemDTO result = service.editarCita(100L, request);
+
+        assertThat(result.getHoraInicio()).isEqualTo(LocalTime.of(11, 0));
+        verify(citaRepository).save(cita);
+    }
+
+    @Test
+    void editarCitaRejectsDifferentPsychologist() {
+        Cita cita = cita(100L, LocalDateTime.of(MONDAY, LocalTime.of(9, 0)), 50);
+        CitaRequestDTO request = request(LocalDateTime.of(MONDAY, LocalTime.of(11, 0)), 50);
+        request.setIdPsicologo(999L); // Diferente
+
+        when(citaRepository.findById(100L)).thenReturn(Optional.of(cita));
+        when(psicologoRepository.findById(999L)).thenReturn(Optional.of(psicologo(999L, "Otro", "Psi")));
+        when(pacienteRepository.findById(ID_PACIENTE)).thenReturn(Optional.of(paciente));
+
+        assertThatThrownBy(() -> service.editarCita(100L, request))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("No se puede cambiar el psicólogo de la cita");
+    }
+
+    @Test
+    void addBloqueoExitoso() {
+        when(psicologoRepository.findById(ID_PSICOLOGO)).thenReturn(Optional.of(psicologo));
+        com.amani.amaniapirest.dto.dtoAgenda.request.BloqueoRequestDTO req = new com.amani.amaniapirest.dto.dtoAgenda.request.BloqueoRequestDTO();
+        req.setFecha(MONDAY.toString());
+        req.setHoraInicio("14:00");
+        req.setHoraFin("15:00");
+        req.setMotivo("Descanso");
+
+        service.addBloqueo(ID_PSICOLOGO, req);
+
+        verify(bloqueoRepository).save(any(com.amani.amaniapirest.models.BloqueoAgenda.class));
+    }
+
+    @Test
+    void getDuracionDefaultExitoso() {
+        psicologo.setDuracionDefault(45);
+        when(psicologoRepository.findById(ID_PSICOLOGO)).thenReturn(Optional.of(psicologo));
+
+        Integer result = service.getDuracionDefault(ID_PSICOLOGO);
+
+        assertThat(result).isEqualTo(45);
+    }
+
+    @Test
+    void removeBloqueoExitoso() {
+        service.removeBloqueo(ID_PSICOLOGO, MONDAY.toString());
+        verify(bloqueoRepository).deleteByPsicologoIdPsicologoAndFecha(ID_PSICOLOGO, MONDAY);
+    }
+
+    @Test
+    void getHorarioActualReturnsDTO() {
+        when(horarioRepository.findByPsicologoIdPsicologoAndActivoTrue(ID_PSICOLOGO))
+                .thenReturn(List.of(mondaySchedule()));
+
+        com.amani.amaniapirest.dto.dtoAgenda.request.HorarioRequestDTO result = service.getHorarioActual(ID_PSICOLOGO);
+
+        assertThat(result.getFranjas()).hasSize(1);
+        assertThat(result.getFranjas().get(0).getDiaSemana()).isEqualTo((short) 0);
+    }
+
+    @Test
+    void getAgendaPsicologoSuccess() {
+        // Mock SecurityContextHolder
+        Authentication auth = org.mockito.Mockito.mock(Authentication.class);
+        when(auth.getName()).thenReturn("psi@amani.com");
+        org.springframework.security.core.context.SecurityContext context = org.mockito.Mockito.mock(org.springframework.security.core.context.SecurityContext.class);
+        when(context.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(context);
+
+        when(psicologoRepository.findByUsuario_Email("psi@amani.com")).thenReturn(Optional.of(psicologo));
+        when(citaRepository.findByPsicologo_IdPsicologoAndStartDatetimeBetween(anyLong(), any(), any()))
+                .thenReturn(List.of(cita(100L, LocalDateTime.of(MONDAY, LocalTime.of(10, 0)), 50)));
+        when(bloqueoRepository.findByPsicologoIdPsicologoAndFechaBetween(anyLong(), any(), any()))
+                .thenReturn(List.of());
+
+        List<AgendaItemDTO> result = service.getAgendaPsicologo(ID_PSICOLOGO, "2026-05");
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getId()).isEqualTo(100L);
+        
+        SecurityContextHolder.clearContext();
+    }
+
+    @Test
+    void actualizarHorarioExitoso() {
+        when(psicologoRepository.findById(ID_PSICOLOGO)).thenReturn(Optional.of(psicologo));
+        com.amani.amaniapirest.dto.dtoAgenda.request.HorarioRequestDTO req = new com.amani.amaniapirest.dto.dtoAgenda.request.HorarioRequestDTO(List.of(
+                new com.amani.amaniapirest.dto.dtoAgenda.request.HorarioRequestDTO.FranjaHorarioDTO((short) 0, "09:00", "12:00", true, null)
+        ));
+
+        service.actualizarHorario(ID_PSICOLOGO, req);
+
+        verify(horarioRepository).deleteByPsicologoIdPsicologoAndDiaSemana(ID_PSICOLOGO, (short) 0);
+        verify(horarioRepository).save(any(HorarioPsicologo.class));
+    }
+
+    @Test
+    void editarCitaRejectsCancelledAppointment() {
+        Cita cita = cita(100L, LocalDateTime.of(MONDAY, LocalTime.of(9, 0)), 50);
+        cita.setEstado(EstadoCita.cancelada);
+        when(citaRepository.findById(100L)).thenReturn(Optional.of(cita));
+
+        assertThatThrownBy(() -> service.editarCita(100L, new CitaRequestDTO()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("No se puede editar una cita cancelada");
+    }
+
+    @Test
+    void editarCitaRejectsCompletedAppointment() {
+        Cita cita = cita(100L, LocalDateTime.of(MONDAY, LocalTime.of(9, 0)), 50);
+        cita.setEstado(EstadoCita.completada);
+        when(citaRepository.findById(100L)).thenReturn(Optional.of(cita));
+
+        assertThatThrownBy(() -> service.editarCita(100L, new CitaRequestDTO()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("No se puede editar una cita completada");
+    }
+
+    @Test
+    void getDisponibilidadConDuracionPersonalizada() {
+        when(bloqueoRepository.findByPsicologoIdPsicologoAndFechaAndHoraInicioIsNull(ID_PSICOLOGO, MONDAY))
+                .thenReturn(Optional.empty());
+        when(horarioRepository.findByPsicologoIdPsicologoAndActivoTrue(ID_PSICOLOGO))
+                .thenReturn(List.of(mondaySchedule()));
+        when(citaRepository.findByPsicologo_IdPsicologoAndStartDatetimeBetweenAndEstadoNot(anyLong(), any(), any(), any()))
+                .thenReturn(List.of());
+        when(bloqueoRepository.findByPsicologoIdPsicologoAndFecha(ID_PSICOLOGO, MONDAY))
+                .thenReturn(List.of());
+
+        // Slots de 60m en franja de 9:00 a 12:00 -> 3 slots: 9:00, 10:00, 11:00
+        com.amani.amaniapirest.dto.dtoAgenda.response.DisponibilidadDTO result = service.getDisponibilidadConDuracion(ID_PSICOLOGO, MONDAY.toString(), 60);
+
+        assertThat(result.getSlotsLibres()).hasSize(3);
+        assertThat(result.getSlotsLibres().get(0).getHora()).isEqualTo(LocalTime.of(9, 0));
+        assertThat(result.getSlotsLibres().get(2).getHora()).isEqualTo(LocalTime.of(11, 0));
     }
 
     private void givenCreateDependencies(List<Cita> existingAppointments, boolean includeTherapy) {

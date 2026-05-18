@@ -42,6 +42,7 @@ class PsicologoAdminServiceTest {
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);
         usuario.setEmail(email);
+        usuario.setActivo(true);
         return usuario;
     }
 
@@ -82,14 +83,12 @@ class PsicologoAdminServiceTest {
 
         when(psicologoRepository.findById(1L)).thenReturn(Optional.of(psicologo));
         when(psicologoRepository.save(any(Psicologo.class))).thenAnswer(inv -> inv.getArgument(0));
-        when(psicologoPacienteRepository.findByPsicologoIdPsicologoAndFechaFinIsNull(1L)).thenReturn(List.of());
 
         PsicologoConPacientesDTO result = service.update(1L, request);
 
         assertThat(result.getIdPsicologo()).isEqualTo(1L);
         assertThat(result.getEspecialidad()).isEqualTo("Trauma");
         assertThat(result.getLicencia()).isEqualTo("LIC-NEW");
-        assertThat(result.getPacientes()).isEmpty();
         verify(psicologoRepository).save(psicologo);
     }
 
@@ -134,7 +133,7 @@ class PsicologoAdminServiceTest {
         PsicologoPaciente pp1 = buildPsicologoPaciente(pac1, p1);
         PsicologoPaciente pp2 = buildPsicologoPaciente(pac2, p2);
 
-        when(psicologoRepository.findAll()).thenReturn(List.of(p1, p2));
+        when(psicologoRepository.findByUsuario_ActivoTrue()).thenReturn(List.of(p1, p2));
         when(psicologoPacienteRepository.findByPsicologoIdPsicologoAndFechaFinIsNull(1L)).thenReturn(List.of(pp1));
         when(psicologoPacienteRepository.findByPsicologoIdPsicologoAndFechaFinIsNull(2L)).thenReturn(List.of(pp2));
 
@@ -149,7 +148,7 @@ class PsicologoAdminServiceTest {
 
     @Test
     void getPsicologosConPacientesVacio() {
-        when(psicologoRepository.findAll()).thenReturn(List.of());
+        when(psicologoRepository.findByUsuario_ActivoTrue()).thenReturn(List.of());
 
         List<PsicologoConPacientesDTO> result = service.getPsicologosConPacientes();
 

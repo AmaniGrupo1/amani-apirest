@@ -149,6 +149,21 @@ class CitaControllerTest {
                 .andExpect(jsonPath("$[0].estado").value("pendiente"));
     }
 
+    @Test
+    void getProximasReturns200() throws Exception {
+        CitaPacienteViewResponseDTO c1 = CitaPacienteViewResponseDTO.builder()
+                .idCita(1L).minutosRestantes(30L).build();
+        CitaPacienteViewResponseDTO c2 = CitaPacienteViewResponseDTO.builder()
+                .idCita(2L).minutosRestantes(-10L).build();
+        
+        when(citaService.findByPaciente(1L)).thenReturn(List.of(c1, c2));
+
+        mockMvc.perform(get("/api/citas/1/proximas"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].idCita").value(1));
+    }
+
     private String validCitaRequestBody() {
         return """
                 {

@@ -7,11 +7,11 @@ Visualización inline de la especificación OpenAPI generada por SpringDoc.
     ```bash
     ./mvnw verify -DskipTests
     ```
-    El resultado se escribe en `../documentacion-amani/api/openapi/openapi.json`.
+    El resultado se escribe en `docs/api/openapi.json`.
 
 ---
 
-<swagger-ui src="openapi.yml" />
+<swagger-ui src="openapi.json" />
 
 ---
 

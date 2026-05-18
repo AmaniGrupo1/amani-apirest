@@ -81,9 +81,11 @@ CREATE TABLE direcciones
 
 CREATE TABLE tipos_terapia
 (
-    id_tipo_terapia  BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_tipo          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombre           VARCHAR(100) NOT NULL,
-    descripcion      TEXT
+    duracion_minutos INT NOT NULL DEFAULT 50,
+    precio           DECIMAL(19,4) DEFAULT 0,
+    activo           BOOLEAN DEFAULT TRUE NOT NULL
 );
 
 CREATE TABLE citas
@@ -109,7 +111,7 @@ CREATE TABLE citas
         ON DELETE RESTRICT,
 
     FOREIGN KEY (id_tipo_terapia)
-        REFERENCES tipos_terapia (id_tipo_terapia)
+        REFERENCES tipos_terapia (id_tipo)
         ON DELETE SET NULL
 );
 
@@ -401,18 +403,46 @@ CREATE TABLE bloqueos_agenda
         ON DELETE CASCADE
 );
 
+CREATE TABLE documentos_legales
+(
+    id_documento        BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tipo                VARCHAR(50)          NOT NULL,
+    titulo              VARCHAR(255)         NOT NULL,
+    contenido           TEXT                 NOT NULL,
+    icono               VARCHAR(100),
+    orden_visualizacion INT                  NOT NULL DEFAULT 0,
+    version             VARCHAR(20),
+    activo              BOOLEAN              NOT NULL DEFAULT TRUE,
+    creado_en           TIMESTAMP            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en      TIMESTAMP            NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE notificaciones
+(
+    id_notificacion BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_usuario      BIGINT NOT NULL,
+    titulo          VARCHAR(200),
+    mensaje         TEXT,
+    leida           BOOLEAN   DEFAULT FALSE,
+    creada_en       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (id_usuario)
+        REFERENCES usuarios (id_usuario)
+        ON DELETE CASCADE
+);
+
 CREATE TABLE tickets_soporte
 (
-    id_ticket       BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_usuario      BIGINT NOT NULL,
-    titulo          VARCHAR(200) NOT NULL,
-    descripcion     TEXT NOT NULL,
-    tipo            VARCHAR(50) NOT NULL,
-    categoria       VARCHAR(50) NOT NULL,
-    estado          VARCHAR(50) NOT NULL DEFAULT 'abierto',
-    creado_en       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en  TIMESTAMP,
-    cerrado_en      TIMESTAMP,
+    id_ticket      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_usuario     BIGINT                   NOT NULL,
+    titulo         VARCHAR(200)             NOT NULL,
+    descripcion    TEXT                     NOT NULL,
+    tipo           VARCHAR(50)              NOT NULL,
+    categoria      VARCHAR(50)              NOT NULL,
+    estado         VARCHAR(50)              NOT NULL DEFAULT 'abierto',
+    creado_en      TIMESTAMP                NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP                         DEFAULT CURRENT_TIMESTAMP,
+    cerrado_en     TIMESTAMP,
 
     FOREIGN KEY (id_usuario)
         REFERENCES usuarios (id_usuario)
@@ -427,4 +457,3 @@ INSERT INTO usuarios (nombre, apellido, email, password, rol, activo)
 VALUES ('Admin', 'Principal', 'admin@amani.com',
         '$2b$12$Ln0bfXA8cJR.W/NW4.XipOJGsNqvS70SZDJ9KuAXftKGnMrPyMzJe',
         'admin', TRUE);
-

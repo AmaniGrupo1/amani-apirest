@@ -1,33 +1,33 @@
 #!/bin/bash
-# Script para generar toda la documentación (Javadoc y OpenAPI)
-# y copiarla a la documentación de MkDocs
+# Script para generar toda la documentación (Javadoc, Dokka y OpenAPI)
+# y dejarla lista para MkDocs
 
 set -e
 
-DOCS_DIR="/home/ivan/documentacion-amani"
+# Directorio raíz del proyecto
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-echo "=== Generando documentación Amani ==="
+echo "=== Generando documentación Amani en $PROJECT_ROOT ==="
 
-# 1. Generar Javadoc
-echo "1. Generando Javadoc..."
-cd /home/ivan/amani-apirest
-./mvnw javadoc:javadoc -q
+cd "$PROJECT_ROOT"
 
-# 2. Copiar Javadoc a docs
-echo "2. Copiando Javadoc a documentación..."
-cp -r target/site/apidocs/* "$DOCS_DIR/docs/javadoc/"
-rm -f "$DOCS_DIR/docs/javadoc/*.md"  # Eliminar MD antiguos
+# 1. Generar Javadoc, Dokka y OpenAPI
+echo "1. Generando Javadoc, Dokka y OpenAPI..."
+./mvnw javadoc:javadoc dokka:dokka springdoc-openapi:generate -Dspring.profiles.active=test -DskipTests -q
 
-# 3. Generar OpenAPI (requiere que la app esté corrienda)
-echo "3. Generando OpenAPI..."
-echo "   Nota: Para generar OpenAPI completo, inicia la app y visita:"
-echo "   http://localhost:8080/v3/api-docs.yaml"
-echo "   Luego guarda el YAML en docs/api/openapi/openapi.yaml"
+echo "2. Verificando archivos generados..."
+ls -l docs/api/backend/javadoc/index.html
+ls -l docs/api/backend/dokka/index.html
+ls -l docs/api/openapi.json
 
-# 4. Construir MkDocs
-echo "4. Construyendo MkDocs..."
-cd "$DOCS_DIR"
-.venv/bin/mkdocs build --strict
+# 3. Construir MkDocs (opcional si se quiere ver localmente)
+if command -v mkdocs &> /dev/null; then
+    echo "3. Construyendo MkDocs localmente..."
+    mkdocs build
+    echo "Documentación construida en el directorio 'site/'"
+else
+    echo "3. MkDocs no está instalado, saltando construcción local."
+fi
 
 echo ""
-echo "=== Documentación generada en $DOCS_DIR/build ==="
+echo "=== Proceso finalizado ==="

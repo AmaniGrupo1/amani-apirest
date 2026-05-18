@@ -169,4 +169,39 @@ class AuthControllerTest {
         mockMvc.perform(get("/auth/admins"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("dar alta psicólogo retorna mensaje de confirmación")
+    void darAltaPsicologoReturnsConfirmationMessage() throws Exception {
+        doNothing().when(authService).darAltaPsicologo(30L);
+
+        mockMvc.perform(put("/auth/psicologos/30/alta"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Psicólogo dado de alta correctamente"));
+    }
+
+    @Test
+    @DisplayName("crear paciente desde psicólogo retorna 200")
+    void crearPacienteDesdePsicologoReturnsOk() throws Exception {
+        org.springframework.security.core.Authentication auth = org.mockito.Mockito.mock(org.springframework.security.core.Authentication.class);
+        when(auth.getName()).thenReturn("psico@amani.com");
+        when(authService.crearPacienteDesdePsicologo(any(), org.mockito.ArgumentMatchers.eq("psico@amani.com")))
+                .thenReturn(new LoginResponseDTO(10L, "Nuevo", "PACIENTE", "t", null, 20L, "es", false));
+
+        mockMvc.perform(post("/auth/registrar/pacienteDesde/psicologo")
+                        .principal(auth)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"aceptaTerminos\":true}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nombre").value("Nuevo"));
+    }
+
+    @Test
+    @DisplayName("darAltaPsicologo debe retornar 404 cuando psicólogo no existe")
+    void darAltaPsicologo_debeRetornar404_cuandoPsicologoNoExiste() throws Exception {
+        doThrow(new NoSuchElementException("No existe")).when(authService).darAltaPsicologo(99L);
+
+        mockMvc.perform(put("/auth/psicologos/99/alta"))
+                .andExpect(status().isNotFound());
+    }
 }
