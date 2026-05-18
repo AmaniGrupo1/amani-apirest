@@ -71,4 +71,6 @@ public class Psicologo {
     void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    private String telefono;
 }

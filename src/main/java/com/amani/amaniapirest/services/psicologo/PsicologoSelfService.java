@@ -138,15 +138,29 @@ public class PsicologoSelfService {
                 psicologo.getEspecialidad(),
                 psicologo.getExperiencia(),
                 psicologo.getDescripcion(),
-                psicologo.getLicencia()
+                psicologo.getLicencia(),
+                psicologo.getTelefono(),
+                psicologo.getUsuario().getEmail()
         );
     }
 
     /** Mapear campos del request a psicólogo */
+    /** Mapear campos del request a psicólogo */
     private void mapRequestToPsicologo(Psicologo psicologo, PsicologoRequestDTO request) {
-        if (request.getEspecialidad() != null) psicologo.setEspecialidad(request.getEspecialidad());
-        if (request.getExperiencia() != null) psicologo.setExperiencia(request.getExperiencia());
-        if (request.getDescripcion() != null) psicologo.setDescripcion(request.getDescripcion());
-        if (request.getLicencia() != null) psicologo.setLicencia(request.getLicencia());
+
+        if (request.getEspecialidad() != null)
+            psicologo.setEspecialidad(request.getEspecialidad());
+
+        if (request.getExperiencia() != null)
+            psicologo.setExperiencia(request.getExperiencia());
+
+        if (request.getDescripcion() != null)
+            psicologo.setDescripcion(request.getDescripcion());
+
+        if (request.getLicencia() != null)
+            psicologo.setLicencia(request.getLicencia());
+
+        if (request.getTelefono() != null)
+            psicologo.setTelefono(request.getTelefono());
     }
 }

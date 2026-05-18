@@ -31,5 +31,9 @@ public class PsicologoSelfResponseDTO {
 
     /** Número de licencia o colegiación profesional. */
     private String licencia;
+
+    private String telefono;
+
+    private String email;
 }
 

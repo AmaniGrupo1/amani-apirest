@@ -32,6 +32,7 @@ public class PsicologoRequestDTO {
 
     @NotBlank
     private String nombrePsicologo;
+
     @NotBlank
     private String apellidoPsicologo;
 
@@ -60,4 +61,5 @@ public class PsicologoRequestDTO {
 
     private String licencia;
 
+    private String telefono;
 }

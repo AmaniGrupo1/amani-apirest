@@ -132,7 +132,7 @@ public class PsicologoAdminController {
             @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @PutMapping("/{id}")
+    @PutMapping("/editar/{id}")
     public ResponseEntity<PsicologoConPacientesDTO> update(@PathVariable Long id, @RequestBody PsicologoRequestDTO request) {
         try {
             return ResponseEntity.ok(service.update(id, request));
