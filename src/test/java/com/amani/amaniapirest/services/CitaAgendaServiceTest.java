@@ -26,8 +26,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -339,14 +337,6 @@ class CitaAgendaServiceTest {
 
     @Test
     void getAgendaPsicologoSuccess() {
-        // Mock SecurityContextHolder
-        Authentication auth = org.mockito.Mockito.mock(Authentication.class);
-        when(auth.getName()).thenReturn("psi@amani.com");
-        org.springframework.security.core.context.SecurityContext context = org.mockito.Mockito.mock(org.springframework.security.core.context.SecurityContext.class);
-        when(context.getAuthentication()).thenReturn(auth);
-        SecurityContextHolder.setContext(context);
-
-        when(psicologoRepository.findByUsuario_Email("psi@amani.com")).thenReturn(Optional.of(psicologo));
         when(citaRepository.findByPsicologo_IdPsicologoAndStartDatetimeBetween(anyLong(), any(), any()))
                 .thenReturn(List.of(cita(100L, LocalDateTime.of(MONDAY, LocalTime.of(10, 0)), 50)));
         when(bloqueoRepository.findByPsicologoIdPsicologoAndFechaBetween(anyLong(), any(), any()))
@@ -356,8 +346,6 @@ class CitaAgendaServiceTest {
 
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getId()).isEqualTo(100L);
-        
-        SecurityContextHolder.clearContext();
     }
 
     @Test
