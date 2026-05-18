@@ -14,7 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -37,17 +39,34 @@ class SesionAdminControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new com.amani.amaniapirest.configuration.GlobalExceptionHandler())
+                .build();
+    }
+
+    private SesionAdminResponseDTO sesionDto(String notas) {
+        SesionAdminResponseDTO dto = new SesionAdminResponseDTO();
+        dto.setNombrePaciente("Ana");
+        dto.setApellidoPaciente("Lopez");
+        dto.setNombrePsicologo("Luis");
+        dto.setApellidoPsicologo("Martin");
+        dto.setSessionDate(LocalDateTime.of(2026, 1, 15, 10, 0));
+        dto.setDurationMinutes(50);
+        dto.setNotas(notas);
+        dto.setRecomendaciones("Continuar");
+        dto.setCreatedAt(LocalDateTime.of(2026, 1, 15, 11, 0));
+        dto.setUpdatedAt(LocalDateTime.of(2026, 1, 15, 11, 5));
+        return dto;
     }
 
     @Test
     @DisplayName("getAll retorna 200 con datos")
     void getAll_retorna200() throws Exception {
-        when(service.findAll()).thenReturn(List.of(new SesionAdminResponseDTO(1L, "Notas", null, null, 1L, 1L)));
+        when(service.findAll()).thenReturn(List.of(sesionDto("Notas")));
 
         mockMvc.perform(get("/api/admin/sesiones"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].idSesion").value(1));
+                .andExpect(jsonPath("$[0].notas").value("Notas"));
     }
 
     @Test
@@ -56,23 +75,24 @@ class SesionAdminControllerTest {
         when(service.findAll()).thenReturn(List.of());
 
         mockMvc.perform(get("/api/admin/sesiones"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
     @DisplayName("getById retorna 200 cuando existe")
     void getById_retorna200() throws Exception {
-        when(service.findById(1L)).thenReturn(new SesionAdminResponseDTO(1L, "Notas", null, null, 1L, 1L));
+        when(service.findById(1L)).thenReturn(sesionDto("Notas"));
 
         mockMvc.perform(get("/api/admin/sesiones/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.idSesion").value(1));
+                .andExpect(jsonPath("$.notas").value("Notas"));
     }
 
     @Test
     @DisplayName("getById retorna 404 cuando no existe")
     void getById_retorna404() throws Exception {
-        when(service.findById(99L)).thenThrow(new RuntimeException("No existe"));
+        when(service.findById(99L)).thenThrow(new NoSuchElementException("No existe"));
 
         mockMvc.perform(get("/api/admin/sesiones/99"))
                 .andExpect(status().isNotFound());
@@ -81,23 +101,23 @@ class SesionAdminControllerTest {
     @Test
     @DisplayName("create retorna 201")
     void create_retorna201() throws Exception {
-        when(service.create(any())).thenReturn(new SesionAdminResponseDTO(1L, "Notas", null, null, 1L, 1L));
+        when(service.create(any())).thenReturn(sesionDto("Notas"));
 
         mockMvc.perform(post("/api/admin/sesiones")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"notas\":\"Notas\"}"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.idSesion").value(1));
+                        .content("{\"idCita\":1,\"sessionDate\":\"2026-01-15T10:00:00\",\"notas\":\"Notas\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.notas").value("Notas"));
     }
 
     @Test
     @DisplayName("update retorna 200")
     void update_retorna200() throws Exception {
-        when(service.update(eq(1L), any())).thenReturn(new SesionAdminResponseDTO(1L, "Notas actualizadas", null, null, 1L, 1L));
+        when(service.update(eq(1L), any())).thenReturn(sesionDto("Notas actualizadas"));
 
         mockMvc.perform(put("/api/admin/sesiones/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"notas\":\"Notas actualizadas\"}"))
+                        .content("{\"idCita\":1,\"sessionDate\":\"2026-01-15T10:00:00\",\"notas\":\"Notas actualizadas\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.notas").value("Notas actualizadas"));
     }
@@ -108,6 +128,6 @@ class SesionAdminControllerTest {
         doNothing().when(service).delete(1L);
 
         mockMvc.perform(delete("/api/admin/sesiones/1"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
     }
 }

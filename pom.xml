@@ -24,6 +24,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <lombok.version>1.18.42</lombok.version>
         <dokka.version>1.9.20</dokka.version>
+        <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
         <openapi.output.dir>${project.basedir}/../documentacion-amani/api/openapi</openapi.output.dir>
         <spring-cloud-gcp.version>8.0.2</spring-cloud-gcp.version>
     <kotlin.version>2.3.10</kotlin.version>
@@ -186,6 +187,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -389,7 +395,6 @@
                             <lineSuffix>#L</lineSuffix>
                         </link>
                     </sourceLinks>
-                    <footerMessage>AMANI Backend — Documentación generada con Dokka</footerMessage>
                 </configuration>
             </plugin>
 
@@ -565,6 +570,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven-project-info-reports-plugin.version}</version>
                 <reportSets>
                     <reportSet>
                         <reports>

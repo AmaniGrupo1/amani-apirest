@@ -47,7 +47,7 @@ class UserDetailsServiceImplTest {
         assertThat(userDetails.getUsername()).isEqualTo("ana@example.com");
         assertThat(userDetails.getPassword()).isEqualTo("encodedPassword");
         assertThat(userDetails.getAuthorities())
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_paciente"));
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PACIENTE"));
     }
 
     @Test

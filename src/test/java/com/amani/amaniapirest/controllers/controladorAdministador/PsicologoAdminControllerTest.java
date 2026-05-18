@@ -105,7 +105,7 @@ class PsicologoAdminControllerTest {
         mockMvc.perform(post("/api/admin/psicologos/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"nombrePsicologo":"Carlos","apellidoPsicologo":"Ruiz","email":"carlos@example.com","password":"secret","especialidad":"Psicodinámica","experiencia":3,"descripcion":"Desc","licencia":"LIC-002"}
+                                {"nombrePsicologo":"Carlos","apellidoPsicologo":"Ruiz","email":"carlos@example.com","password":"secret123","especialidad":"Psicodinámica","experiencia":3,"descripcion":"Desc","licencia":"LIC-002"}
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idPsicologo").value(1));
@@ -118,7 +118,7 @@ class PsicologoAdminControllerTest {
         mockMvc.perform(post("/api/admin/psicologos/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"nombrePsicologo":"Carlos","apellidoPsicologo":"Ruiz","email":"carlos@example.com","password":"secret","especialidad":"TCC","experiencia":3,"descripcion":"Desc","licencia":"LIC-002"}
+                                {"nombrePsicologo":"Carlos","apellidoPsicologo":"Ruiz","email":"carlos@example.com","password":"secret123","especialidad":"TCC","experiencia":3,"descripcion":"Desc","licencia":"LIC-002"}
                                 """))
                 .andExpect(status().isNotFound());
     }
@@ -131,7 +131,7 @@ class PsicologoAdminControllerTest {
         mockMvc.perform(put("/api/admin/psicologos/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"nombrePsicologo":"Ana","apellidoPsicologo":"Lopez","email":"ana@example.com","password":"secret","especialidad":"TCC","experiencia":5,"descripcion":"Desc","licencia":"LIC-001"}
+                                {"nombrePsicologo":"Ana","apellidoPsicologo":"Lopez","email":"ana@example.com","password":"secret123","especialidad":"TCC","experiencia":5,"descripcion":"Desc","licencia":"LIC-001"}
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idPsicologo").value(1));
@@ -144,7 +144,7 @@ class PsicologoAdminControllerTest {
         mockMvc.perform(put("/api/admin/psicologos/99")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"nombrePsicologo":"Ana","apellidoPsicologo":"Lopez","email":"ana@example.com","password":"secret","especialidad":"TCC","experiencia":5,"descripcion":"Desc","licencia":"LIC-001"}
+                                {"nombrePsicologo":"Ana","apellidoPsicologo":"Lopez","email":"ana@example.com","password":"secret123","especialidad":"TCC","experiencia":5,"descripcion":"Desc","licencia":"LIC-001"}
                                 """))
                 .andExpect(status().isNotFound());
     }

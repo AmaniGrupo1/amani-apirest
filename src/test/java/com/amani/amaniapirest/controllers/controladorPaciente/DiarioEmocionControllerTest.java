@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -40,24 +41,35 @@ class DiarioEmocionControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
+    private DiarioEmocionResponseDTO diarioDto(Long id, String emocion, String nota) {
+        DiarioEmocionResponseDTO dto = new DiarioEmocionResponseDTO();
+        dto.setIdDiario(id);
+        dto.setTitulo("Entrada");
+        dto.setFecha(LocalDateTime.of(2026, 2, 10, 9, 0));
+        dto.setEmocion(emocion);
+        dto.setIntensidad(7);
+        dto.setNota(nota);
+        return dto;
+    }
+
     @Test
     @DisplayName("findAll retorna 200 con datos")
     void findAll_retorna200() throws Exception {
-        when(service.findAll()).thenReturn(List.of(new DiarioEmocionResponseDTO(1L, "Feliz", "Buen día", null, 1L)));
+        when(service.findAll()).thenReturn(List.of(diarioDto(1L, "Feliz", "Buen dia")));
 
         mockMvc.perform(get("/api/diario-emocion"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1));
+                .andExpect(jsonPath("$[0].idDiario").value(1));
     }
 
     @Test
     @DisplayName("findById retorna 200 cuando existe")
     void findById_retorna200() throws Exception {
-        when(service.findById(1L)).thenReturn(new DiarioEmocionResponseDTO(1L, "Feliz", "Buen día", null, 1L));
+        when(service.findById(1L)).thenReturn(diarioDto(1L, "Feliz", "Buen dia"));
 
         mockMvc.perform(get("/api/diario-emocion/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1));
+                .andExpect(jsonPath("$.idDiario").value(1));
     }
 
     @Test
@@ -72,20 +84,18 @@ class DiarioEmocionControllerTest {
     @Test
     @DisplayName("create retorna 201 cuando datos válidos")
     void create_retorna201() throws Exception {
-        when(service.create(any())).thenReturn(new DiarioEmocionResponseDTO(1L, "Feliz", "Buen día", null, 1L));
+        when(service.create(any())).thenReturn(diarioDto(1L, "alegria", "Buen dia"));
 
         mockMvc.perform(post("/api/diario-emocion")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"estadoAnimo\":\"Feliz\",\"notas\":\"Buen día\",\"idPaciente\":1}"))
+                        .content("{\"idPaciente\":1,\"titulo\":\"Entrada\",\"emocion\":\"alegria\",\"intensidad\":7,\"nota\":\"Buen dia\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.estadoAnimo").value("Feliz"));
+                .andExpect(jsonPath("$.emocion").value("alegria"));
     }
 
     @Test
     @DisplayName("create retorna 400 cuando datos inválidos")
     void create_retorna400() throws Exception {
-        when(service.create(any())).thenThrow(new RuntimeException("Datos inválidos"));
-
         mockMvc.perform(post("/api/diario-emocion")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
@@ -95,13 +105,13 @@ class DiarioEmocionControllerTest {
     @Test
     @DisplayName("update retorna 200 cuando existe")
     void update_retorna200() throws Exception {
-        when(service.update(eq(1L), any())).thenReturn(new DiarioEmocionResponseDTO(1L, "Triste", "Mal día", null, 1L));
+        when(service.update(eq(1L), any())).thenReturn(diarioDto(1L, "tristeza", "Mal dia"));
 
         mockMvc.perform(put("/api/diario-emocion/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"estadoAnimo\":\"Triste\"}"))
+                        .content("{\"idPaciente\":1,\"titulo\":\"Entrada\",\"emocion\":\"tristeza\",\"intensidad\":4,\"nota\":\"Mal dia\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.estadoAnimo").value("Triste"));
+                .andExpect(jsonPath("$.emocion").value("tristeza"));
     }
 
     @Test
@@ -111,7 +121,7 @@ class DiarioEmocionControllerTest {
 
         mockMvc.perform(put("/api/diario-emocion/99")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"estadoAnimo\":\"Triste\"}"))
+                        .content("{\"idPaciente\":1,\"titulo\":\"Entrada\",\"emocion\":\"tristeza\",\"intensidad\":4,\"nota\":\"Mal dia\"}"))
                 .andExpect(status().isNotFound());
     }
 
