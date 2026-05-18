@@ -103,7 +103,11 @@ public class SecurityConfig {
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/auth/pacientes/**").hasRole("ADMIN")
                                 .requestMatchers("/auth/admins").hasRole("ADMIN")
+
                                 .requestMatchers("/api/admin/psicologos").hasRole("ADMIN") //Listamos psicologo
+                                .requestMatchers("/api/admin/psicologos/listaPsicologoBaja").hasRole("ADMIN") //Listamos psicologo dados de baja
+                                .requestMatchers("/auth/psicologos/*/alta").hasRole("ADMIN") //Listamos psicologo dados de baja
+                                .requestMatchers("/auth/pacientes/*/baja").hasRole("ADMIN") //Listamos psicologo dados de baja
                                 .requestMatchers("/api/admin/psicologos/create").hasRole("ADMIN") //creamos psicologo con admin
                                 .requestMatchers("/api/admin/psicologos/asignar-psicologo").hasRole("ADMIN") //Asignamos el paciente al psicologo
                                 .requestMatchers("/api/admin/psicologos/pacientes").hasRole("ADMIN") //creamos psicologo con admin

@@ -81,6 +81,21 @@ public class PsicologoAdminController {
         return ResponseEntity.ok(user);
     }
 
+    @Operation(summary = "Listar psicologos que se han dado de baja", description = "Obtiene la lista de todos los psicologos del sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operación realizada correctamente"),
+            @ApiResponse(responseCode = "204", description = "No hay psicólogos registrados", content = @Content),
+            @ApiResponse(responseCode = "401", description = "No autenticado — token JWT ausente o inválido", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+    })
+    @GetMapping("/listaPsicologoBaja")
+    public ResponseEntity<List<PsicologoSelfResponseDTO>> findAllPsicologosBajas() {
+        List<PsicologoSelfResponseDTO> user = selfService.findAllPsicologosBaja();
+        if (user.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(user);
+    }
+
+
     /**
      * Crea un nuevo psicólogo en el sistema.
      *

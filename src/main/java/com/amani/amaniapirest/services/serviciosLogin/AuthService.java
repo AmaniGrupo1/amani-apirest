@@ -49,37 +49,105 @@ public class AuthService {
     // ================= LOGIN =================
     public LoginResponseDTO login(LoginRequestDTO request) {
 
+        // 1. Buscar usuario
         Usuario usuario = usuarioRepository
                 .findByEmail(request.getEmail())
-                .orElseThrow(() -> new org.springframework.security.authentication.BadCredentialsException("Usuario no encontrado"));
+                .orElseThrow(() ->
+                        new org.springframework.security.authentication
+                                .BadCredentialsException("Usuario no encontrado"));
 
-        var encoder = securityConfig.passwordEncoder();
-        if (!encoder.matches(request.getPassword(), usuario.getPassword())) {
-            throw new org.springframework.security.authentication.BadCredentialsException("Contraseña incorrecta");
+        // 2. Verificar si está activo
+        if (!Boolean.TRUE.equals(usuario.getActivo())) {
+
+            throw new org.springframework.security.authentication
+                    .DisabledException(
+                    "Tu cuenta ha sido desactivada. Contacte con administración."
+            );
         }
 
+        // 3. Validar contraseña
+        var encoder = securityConfig.passwordEncoder();
+
+        if (!encoder.matches(request.getPassword(), usuario.getPassword())) {
+
+            throw new org.springframework.security.authentication
+                    .BadCredentialsException("Contraseña incorrecta");
+        }
+
+        // 4. Crear UserDetails
         UserDetails userDetails = new User(
                 usuario.getEmail(),
                 usuario.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name().toUpperCase()))
+                true,   // enabled
+                true,   // accountNonExpired
+                true,   // credentialsNonExpired
+                true,   // accountNonLocked
+                List.of(
+                        new SimpleGrantedAuthority(
+                                "ROLE_" + usuario.getRol().name().toUpperCase()
+                        )
+                )
         );
 
-        String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
+        // 5. Generar JWT
+        String token = jwtUtil.generateToken(
+                userDetails,
+                usuario.getRol().name()
+        );
 
         Long idPsicologo = null;
         Long idPaciente = null;
 
         // ========================
-        // 🔥 PSICÓLOGO LOGIC FIX
+        // PSICÓLOGO
         // ========================
         if (usuario.getRol() == RolUsuario.psicologo) {
 
-            idPsicologo = psicologoRepository
+            Psicologo psicologo = psicologoRepository
                     .findByUsuario_IdUsuario(usuario.getIdUsuario())
-                    .map(Psicologo::getIdPsicologo)
+                    .orElseThrow(() ->
+                            new RuntimeException("Psicólogo no encontrado"));
+
+            // Verificación extra de seguridad
+            if (!Boolean.TRUE.equals(psicologo.getUsuario().getActivo())) {
+
+                throw new org.springframework.security.authentication
+                        .DisabledException(
+                        "Psicólogo dado de baja"
+                );
+            }
+
+            idPsicologo = psicologo.getIdPsicologo();
+        }
+
+        // ========================
+        // PACIENTE
+        // ========================
+        if (usuario.getRol() == RolUsuario.paciente) {
+
+            idPaciente = pacienteRepository
+                    .findByUsuario_IdUsuario(usuario.getIdUsuario())
+                    .map(Paciente::getIdPaciente)
+                    .orElse(null);
+
+            idPsicologo = psicologoPacienteRepository
+                    .findByPaciente_Usuario_IdUsuario(usuario.getIdUsuario())
+                    .filter(rel ->
+                            rel.getPsicologo() != null &&
+                                    rel.getPsicologo().getUsuario() != null &&
+                                    Boolean.TRUE.equals(
+                                            rel.getPsicologo()
+                                                    .getUsuario()
+                                                    .getActivo()
+                                    )
+                    )
+                    .map(rel -> rel.getPsicologo().getIdPsicologo())
                     .orElse(null);
         }
-        
+
+        // ========================
+        // AJUSTES
+        // ========================
         String idioma = ajustesRepository
                 .findByUsuario_IdUsuario(usuario.getIdUsuario())
                 .map(Ajuste::getIdioma)
@@ -91,21 +159,8 @@ public class AuthService {
                 .orElse(false);
 
         // ========================
-        // 🔥 PACIENTE LOGIC FIX
+        // RESPONSE FINAL
         // ========================
-        if (usuario.getRol() == RolUsuario.paciente) {
-
-            idPaciente = pacienteRepository
-                    .findByUsuario_IdUsuario(usuario.getIdUsuario())
-                    .map(Paciente::getIdPaciente)
-                    .orElse(null);
-
-            idPsicologo = psicologoPacienteRepository
-                    .findByPaciente_Usuario_IdUsuario(usuario.getIdUsuario())
-                    .map(rel -> rel.getPsicologo().getIdPsicologo())
-                    .orElse(null);
-        }
-
         return new LoginResponseDTO(
                 usuario.getIdUsuario(),
                 usuario.getNombre(),
@@ -448,6 +503,33 @@ public class AuthService {
 
             pacienteRepository.save(paciente);
         }
+    }
+
+
+    @Transactional
+    public void darAltaPsicologo(Long idPsicologo) {
+
+        // 1. Buscar psicólogo
+        Psicologo psicologo = psicologoRepository.findById(idPsicologo)
+                .orElseThrow(() ->
+                        new RuntimeException("Psicólogo no encontrado"));
+
+        // 2. Reactivar usuario
+        Usuario usuario = psicologo.getUsuario();
+
+        usuario.setActivo(true);
+
+        // limpiar fecha baja
+        usuario.setFechaBaja(null);
+
+        // opcional: actualizar fecha modificación
+        usuario.setFechaRegistro(
+                usuario.getFechaRegistro() != null
+                        ? usuario.getFechaRegistro()
+                        : LocalDateTime.now()
+        );
+
+        usuarioRepository.save(usuario);
     }
 
     @Transactional

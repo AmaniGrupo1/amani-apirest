@@ -134,6 +134,29 @@ public class AuthController {
     }
 
 
+    @Operation(
+            summary = "Dar de alta psicólogo",
+            description = "Reactiva la cuenta de un psicólogo"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Psicólogo dado de alta exitosamente"),
+            @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Psicólogo no encontrado", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+    })
+    @PutMapping("/psicologos/{id}/alta")
+    public ResponseEntity<Map<String, String>> darAltaPsicologo(
+            @PathVariable Long id
+    ) {
+
+        authService.darAltaPsicologo(id);
+
+        return ResponseEntity.ok(
+                Map.of("message", "Psicólogo dado de alta correctamente")
+        );
+    }
+
+
     @PostMapping("/registrar/pacienteDesde/psicologo")
     public ResponseEntity<LoginResponseDTO> crearPacienteDesdePsicologo(
             @Valid @RequestBody PacienteRequestDTO request,

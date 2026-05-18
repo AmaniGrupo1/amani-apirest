@@ -31,10 +31,20 @@ public class PsicologoSelfService {
 
     /** Obtener todos los psicólogos */
     public List<PsicologoSelfResponseDTO> findAll() {
-        return psicologoRepository.findAll().stream()
+        return psicologoRepository.findByUsuario_ActivoTrue().stream()
                 .map(this::toResponse)
                 .toList();
     }
+
+
+    // Listo todos los psicologos que se han dado de baja
+    public List<PsicologoSelfResponseDTO> findAllPsicologosBaja() {
+        return psicologoRepository.findByUsuario_ActivoFalse().stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+
 
     /** Obtener psicólogo por id */
     public PsicologoSelfResponseDTO findById(Long idPsicologo) {

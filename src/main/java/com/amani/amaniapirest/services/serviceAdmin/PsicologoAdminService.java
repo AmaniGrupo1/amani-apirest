@@ -49,37 +49,56 @@ public class PsicologoAdminService {
 
     // Listar psicólogos con sus pacientes
     public List<PsicologoConPacientesDTO> getPsicologosConPacientes() {
-        List<Psicologo> psicologos = psicologoRepository.findAll();
+
+        // SOLO psicólogos activos
+        List<Psicologo> psicologos =
+                psicologoRepository.findByUsuario_ActivoTrue();
+
         List<PsicologoConPacientesDTO> result = new ArrayList<>();
 
         for (Psicologo psicologo : psicologos) {
-            // Traer pacientes activos asignados a este psicólogo
-            List<PacientesAsignadoDTO> pacientes = psicologoPacienteRepository
-                    .findByPsicologoIdPsicologoAndFechaFinIsNull(psicologo.getIdPsicologo())
-                    .stream()
-                    .map(pp -> {
-                        var usuarioPaciente = pp.getPaciente().getUsuario();
-                        return new PacientesAsignadoDTO(
-                                pp.getPaciente().getIdPaciente(),
-                                usuarioPaciente.getNombre(),
-                                usuarioPaciente.getApellido(),
-                                usuarioPaciente.getEmail()
-                        );
-                    })
-                    .toList();
-            System.out.println("Psicologo " + psicologo.getIdPsicologo() + " tiene pacientes: " + pacientes.size());
-            result.add(new PsicologoConPacientesDTO(
-                    psicologo.getIdPsicologo(),
-                    psicologo.getUsuario().getNombre(),
-                    psicologo.getUsuario().getApellido(),
-                    psicologo.getUsuario().getEmail(),
-                    psicologo.getEspecialidad(),
-                    psicologo.getLicencia(),
-                    psicologo.getUpdatedAt(),
-                    pacientes
-            ));
-        }
 
+            // Pacientes activos asignados
+            List<PacientesAsignadoDTO> pacientes =
+                    psicologoPacienteRepository
+                            .findByPsicologoIdPsicologoAndFechaFinIsNull(
+                                    psicologo.getIdPsicologo()
+                            )
+                            .stream()
+                            .map(pp -> {
+
+                                var usuarioPaciente =
+                                        pp.getPaciente().getUsuario();
+
+                                return new PacientesAsignadoDTO(
+                                        pp.getPaciente().getIdPaciente(),
+                                        usuarioPaciente.getNombre(),
+                                        usuarioPaciente.getApellido(),
+                                        usuarioPaciente.getEmail()
+                                );
+                            })
+                            .toList();
+
+            System.out.println(
+                    "Psicologo "
+                            + psicologo.getIdPsicologo()
+                            + " tiene pacientes: "
+                            + pacientes.size()
+            );
+
+            result.add(
+                    new PsicologoConPacientesDTO(
+                            psicologo.getIdPsicologo(),
+                            psicologo.getUsuario().getNombre(),
+                            psicologo.getUsuario().getApellido(),
+                            psicologo.getUsuario().getEmail(),
+                            psicologo.getEspecialidad(),
+                            psicologo.getLicencia(),
+                            psicologo.getUpdatedAt(),
+                            pacientes
+                    )
+            );
+        }
 
         return result;
     }
