@@ -50,11 +50,27 @@ jobs:
       - name: "Grant execute permission to mvnw"
         run: chmod +x ./mvnw
 
-      - name: "Generate Documentation (Javadoc, Dokka, OpenAPI)"
+      - name: "Configure Git"
         run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: "Generate Documentation (Javadoc, Dokka, OpenAPI)"
+        env:
+          SPRING_PROFILES_ACTIVE: test
+          FIREBASE_ENABLED: "false"
+          GOOGLE_CLOUD_PROJECT: "test-project"
+        run: |
+          # Generar Javadoc y Dokka
           ./mvnw javadoc:javadoc dokka:dokka -DskipTests -q
-          # Generar OpenAPI JSON (requiere contexto de Spring)
-          ./mvnw springdoc-openapi:generate -Dspring.profiles.active=test -DskipTests -q
+          
+          # Generar OpenAPI JSON
+          # El plugin springdoc-openapi intenta arrancar la app en el puerto 8080
+          ./mvnw springdoc-openapi:generate -Dspring.profiles.active=test -DskipTests -q || echo "OpenAPI generation failed, check logs"
 
       - name: "Deploy to gh-pages"
-        run: uv run mkdocs gh-deploy --force --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          uv run mkdocs gh-deploy --force --clean

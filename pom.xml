@@ -402,7 +402,7 @@
             <plugin>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>
-                <version>1.4</version>
+                <version>1.6</version>
                 <executions>
                     <execution>
                         <id>generate-openapi</id>
@@ -415,11 +415,10 @@
                 <configuration>
                     <outputDir>${openapi.output.dir}</outputDir>
                     <outputFileName>openapi.json</outputFileName>
-                    <apiDocsUrl>http://localhost:8080/v3/api-docs.yaml</apiDocsUrl>
+                    <apiDocsUrl>http://localhost:8080/v3/api-docs</apiDocsUrl>
                     <skip>${skip.openapi}</skip>
                 </configuration>
-            </plugin>
-            <plugin>
+            </plugin>            <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
