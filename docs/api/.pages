@@ -1,0 +1,8 @@
+nav:
+  - rest-api.md
+  - endpoints.md
+  - models.md
+  - openapi.md
+  - Legal:
+    - legal
+collapse_single_pages: true
