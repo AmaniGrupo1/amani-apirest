@@ -23,4 +23,17 @@ public class CambiarRolResponseDTO {
     private RolUsuario nuevoRol;
 
     private String mensaje;
+
+    // NUEVO TOKEN
+    private String token;
+
+    // NUEVOS IDS
+    private Long idPsicologo;
+
+    private Long idPaciente;
+
+    // AJUSTES
+    private String idioma;
+
+    private Boolean tema;
 }

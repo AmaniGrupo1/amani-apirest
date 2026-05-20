@@ -47,4 +47,18 @@ public interface PsicologoPacienteRepository extends JpaRepository<PsicologoPaci
         WHERE pp.paciente.idPaciente = :idPaciente
     """)
     void deleteByPacienteId(@Param("idPaciente") Long idPaciente);
+
+    @Modifying
+    @Query("""
+    DELETE FROM PsicologoPaciente pp
+    WHERE pp.psicologo.idPsicologo = :idPsicologo
+""")
+    void deleteByPsicologo_IdPsicologo(
+            @Param("idPsicologo") Long idPsicologo
+    );
+
+
+    boolean existsByPsicologo_IdPsicologo(Long idPsicologo);
+
+    boolean existsByPaciente_IdPaciente(Long idPaciente);
 }

@@ -171,6 +171,9 @@ public class SecurityConfig {
                                 .requestMatchers("/api/payments/refund").hasAnyRole("ADMIN", "PSICOLOGO")
 
 
+                                .requestMatchers("/api/historial-citas").hasRole("PACIENTE")
+
+
                                 .requestMatchers("/api/admin/cambiar-rol").hasRole("ADMIN")
                                 .requestMatchers("/api/admin/listarUsuarios").hasRole("ADMIN")
                                 .requestMatchers("/api/ajustes/tema").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
