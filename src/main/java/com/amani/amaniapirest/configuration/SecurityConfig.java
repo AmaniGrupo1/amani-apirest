@@ -86,6 +86,11 @@ public class SecurityConfig {
 
                                 //  Públicos
                                 .requestMatchers("/auth/login", "/auth/register-paciente").permitAll()
+                                // Actuator — expuesto en puerto 8081 (management.server.port), no en 8080
+                                // Se permite aquí como fallback de seguridad si comparten puerto
+                                .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
+                                .requestMatchers("/actuator/prometheus").permitAll()
+                                .requestMatchers("/actuator/**").hasRole("ADMIN")
                                 .requestMatchers("/api/situaciones").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
                                 .requestMatchers("/api/situaciones/create").hasRole("ADMIN") // Solo admin puede crear situaciones
                                 .requestMatchers("/api/situaciones/update/*").hasRole("ADMIN") // Solo admin puede crear situaciones
