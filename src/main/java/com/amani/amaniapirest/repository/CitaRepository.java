@@ -60,4 +60,18 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
             WHERE c.idCita = :idCita
             """)
     Long obtenerUsuarioPaciente(Long idCita);
+
+
+    @Query("""
+    SELECT c
+    FROM Cita c
+    JOIN FETCH c.paciente pa
+    JOIN FETCH pa.usuario up
+    JOIN FETCH c.psicologo ps
+    JOIN FETCH ps.usuario us
+    JOIN FETCH c.tipoTerapia tt
+    LEFT JOIN FETCH c.pago p
+    ORDER BY c.startDatetime DESC
+""")
+    List<Cita> obtenerHistorialCitas();
 }
