@@ -1,0 +1,80 @@
+# =============================================================================
+# Prometheus — Configuración de Scraping para Amani API REST
+# =============================================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+  external_labels:
+    cluster: "amani-production"
+    env: "production"
+
+# Archivos de reglas de alerta
+rule_files:
+  - "/etc/prometheus/alerts.yml"
+
+# Conexión con Alertmanager
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - "alertmanager:9093"
+      timeout: 10s
+
+# =============================================================================
+# Scrape configurations
+# =============================================================================
+scrape_configs:
+
+  # ---------------------------------------------------------------------------
+  # Spring Boot Actuator — métricas de la aplicación
+  # Puerto 8081 (management.server.port), endpoint /actuator/prometheus
+  # ---------------------------------------------------------------------------
+  - job_name: "amani-api"
+    metrics_path: "/actuator/prometheus"
+    scrape_interval: 15s
+    static_configs:
+      - targets:
+          - "host.docker.internal:8081"  # Local/staging
+          # Para producción GCP, reemplazar con la URL de Cloud Run:
+          # - "amani-api-XXXX-uc.a.run.app:443"
+        labels:
+          application: "amani-apirest"
+          environment: "local"
+    # Para producción GCP con HTTPS:
+    # scheme: https
+    # tls_config:
+    #   insecure_skip_verify: false
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL — métricas de la base de datos
+  # ---------------------------------------------------------------------------
+  - job_name: "postgres"
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+          - "postgres-exporter:9187"
+        labels:
+          application: "amani-db"
+          environment: "local"
+
+  # ---------------------------------------------------------------------------
+  # Node Exporter — métricas del host (CPU, RAM, disco, red)
+  # ---------------------------------------------------------------------------
+  - job_name: "node"
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+          - "node-exporter:9100"
+        labels:
+          instance: "amani-host"
+          environment: "local"
+
+  # ---------------------------------------------------------------------------
+  # Prometheus self-monitoring
+  # ---------------------------------------------------------------------------
+  - job_name: "prometheus"
+    static_configs:
+      - targets:
+          - "localhost:9090"

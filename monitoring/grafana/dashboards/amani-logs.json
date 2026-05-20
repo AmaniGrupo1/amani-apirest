@@ -1,0 +1,124 @@
+{
+  "annotations": { "list": [] },
+  "description": "Logs centralizados de Amani API REST vía Loki + Promtail",
+  "editable": false,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "title": "📊 Resumen de Logs",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "${loki_datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "short" } },
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 1 },
+      "id": 2,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "title": "Tasa de logs por nivel",
+      "targets": [
+        { "datasource": { "type": "loki", "uid": "${loki_datasource}" }, "expr": "sum(rate({container=\"amani-api\"}[5m])) by (level)", "legendFormat": "{{ level }}" }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "${loki_datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "unit": "short", "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 10 }, { "color": "red", "value": 50 } ] } } },
+      "gridPos": { "h": 3, "w": 4, "x": 8, "y": 1 },
+      "id": 3,
+      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["sum"] } },
+      "title": "Errores última hora",
+      "targets": [ { "datasource": { "type": "loki", "uid": "${loki_datasource}" }, "expr": "sum(count_over_time({container=\"amani-api\", level=\"ERROR\"}[1h]))", "legendFormat": "Errors" } ],
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "${loki_datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "unit": "short", "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 50 }, { "color": "red", "value": 200 } ] } } },
+      "gridPos": { "h": 3, "w": 4, "x": 12, "y": 1 },
+      "id": 4,
+      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["sum"] } },
+      "title": "Warnings última hora",
+      "targets": [ { "datasource": { "type": "loki", "uid": "${loki_datasource}" }, "expr": "sum(count_over_time({container=\"amani-api\", level=\"WARN\"}[1h]))", "legendFormat": "Warnings" } ],
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "${loki_datasource}" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "unit": "short", "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null } ] } } },
+      "gridPos": { "h": 3, "w": 4, "x": 16, "y": 1 },
+      "id": 5,
+      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["sum"] } },
+      "title": "Total logs última hora",
+      "targets": [ { "datasource": { "type": "loki", "uid": "${loki_datasource}" }, "expr": "sum(count_over_time({container=\"amani-api\"}[1h]))", "legendFormat": "Total" } ],
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 7 },
+      "id": 10,
+      "title": "📝 Logs en Vivo — Amani API",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "${loki_datasource}" },
+      "gridPos": { "h": 15, "w": 24, "x": 0, "y": 8 },
+      "id": 11,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "title": "Todos los logs de la API",
+      "targets": [ { "datasource": { "type": "loki", "uid": "${loki_datasource}" }, "expr": "{container=\"amani-api\"} |= `$search`", "legendFormat": "", "queryType": "range" } ],
+      "type": "logs"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 23 },
+      "id": 20,
+      "title": "🚨 Solo Errores",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "${loki_datasource}" },
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 24 },
+      "id": 21,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "title": "Logs de nivel ERROR",
+      "targets": [ { "datasource": { "type": "loki", "uid": "${loki_datasource}" }, "expr": "{container=\"amani-api\", level=\"ERROR\"}", "legendFormat": "", "queryType": "range" } ],
+      "type": "logs"
+    }
+  ],
+  "refresh": "15s",
+  "schemaVersion": 39,
+  "tags": ["amani", "logs", "loki", "production"],
+  "templating": {
+    "list": [
+      { "current": {}, "hide": 0, "includeAll": false, "label": "Loki Datasource", "multi": false, "name": "loki_datasource", "options": [], "query": "loki", "refresh": 1, "type": "datasource" },
+      { "current": { "value": "" }, "hide": 0, "label": "Buscar", "name": "search", "options": [ { "selected": true, "text": "", "value": "" } ], "query": "", "type": "textbox" }
+    ]
+  },
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Amani — Logs Centralizados",
+  "uid": "amani-logs",
+  "version": 1
+}

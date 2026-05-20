@@ -1,0 +1,137 @@
+# =============================================================================
+# Alertmanager — Configuración de Enrutamiento y Receptores
+# Amani API REST — Producción
+# =============================================================================
+# Variables de entorno requeridas:
+#   SLACK_WEBHOOK_URL  — URL del webhook de Slack (Incoming Webhook)
+# =============================================================================
+
+global:
+  # Tiempo sin recibir RESOLVED para que se envíe la notificación de resolución
+  resolve_timeout: 5m
+
+# Plantillas personalizadas
+templates:
+  - "/etc/alertmanager/templates/*.tmpl"
+
+# Árbol de enrutamiento
+route:
+  # Receptor por defecto
+  receiver: slack-critical
+  # Agrupar alertas por nombre y severidad
+  group_by: ["alertname", "severity", "job"]
+  # Espera inicial antes de enviar el primer mensaje del grupo
+  group_wait: 30s
+  # Intervalo entre envíos del mismo grupo
+  group_interval: 5m
+  # Intervalo de repetición de alertas no resueltas
+  repeat_interval: 4h
+
+  routes:
+    # Alertas críticas — canal #amani-alerts-critical
+    - matchers:
+        - severity = "critical"
+      receiver: slack-critical
+      group_wait: 10s
+      repeat_interval: 1h
+      continue: true
+
+    # Alertas de warning — canal #amani-alerts-warning
+    - matchers:
+        - severity = "warning"
+      receiver: slack-warning
+      group_wait: 30s
+      repeat_interval: 4h
+
+    # Alertas de seguridad — canal #amani-security
+    - matchers:
+        - team = "security"
+      receiver: slack-security
+      group_wait: 10s
+      repeat_interval: 30m
+
+# Inhibición: si la app está caída, no enviar alertas secundarias
+inhibit_rules:
+  - source_matchers:
+      - alertname = "AmaniApiDown"
+      - severity = "critical"
+    target_matchers:
+      - severity =~ "warning|info"
+      - job = "amani-api"
+    equal: ["job"]
+
+  - source_matchers:
+      - alertname = "AmaniDbDown"
+      - severity = "critical"
+    target_matchers:
+      - alertname = "AmaniDbConnectionPoolExhausted"
+    equal: ["job"]
+
+# =============================================================================
+# Receptores
+# =============================================================================
+receivers:
+
+  # ---------------------------------------------------------------------------
+  # Slack — Alertas críticas
+  # ---------------------------------------------------------------------------
+  - name: slack-critical
+    slack_configs:
+      - api_url: "https://hooks.slack.com/services/dummy"
+        channel: "#amani-alerts-critical"
+        send_resolved: true
+        icon_emoji: "🚨"
+        username: "Amani Monitor"
+        title: |-
+          {{ if eq .Status "firing" }}🚨 [CRITICAL] {{ .CommonAnnotations.summary }}{{ else }}✅ [RESOLVED] {{ .CommonAnnotations.summary }}{{ end }}
+        text: |-
+          {{ range .Alerts }}
+          *Alerta:* {{ .Annotations.summary }}
+          *Descripción:* {{ .Annotations.description }}
+          *Severidad:* {{ .Labels.severity }}
+          *Inicio:* {{ .StartsAt.Format "2006-01-02 15:04:05" }}
+          {{ if .Annotations.runbook_url }}*Runbook:* {{ .Annotations.runbook_url }}{{ end }}
+          {{ end }}
+        color: |-
+          {{ if eq .Status "firing" }}danger{{ else }}good{{ end }}
+
+  # ---------------------------------------------------------------------------
+  # Slack — Alertas de warning
+  # ---------------------------------------------------------------------------
+  - name: slack-warning
+    slack_configs:
+      - api_url: "https://hooks.slack.com/services/dummy"
+        channel: "#amani-alerts-warning"
+        send_resolved: true
+        icon_emoji: "⚠️"
+        username: "Amani Monitor"
+        title: |-
+          {{ if eq .Status "firing" }}⚠️ [WARNING] {{ .CommonAnnotations.summary }}{{ else }}✅ [RESOLVED] {{ .CommonAnnotations.summary }}{{ end }}
+        text: |-
+          {{ range .Alerts }}
+          *Alerta:* {{ .Annotations.summary }}
+          *Descripción:* {{ .Annotations.description }}
+          *Severidad:* {{ .Labels.severity }}
+          {{ end }}
+        color: |-
+          {{ if eq .Status "firing" }}warning{{ else }}good{{ end }}
+
+  # ---------------------------------------------------------------------------
+  # Slack — Alertas de seguridad
+  # ---------------------------------------------------------------------------
+  - name: slack-security
+    slack_configs:
+      - api_url: "https://hooks.slack.com/services/dummy"
+        channel: "#amani-security"
+        send_resolved: true
+        icon_emoji: "🔐"
+        username: "Amani Security Monitor"
+        title: "🔐 [SECURITY] {{ .CommonAnnotations.summary }}"
+        text: |-
+          {{ range .Alerts }}
+          *Alerta de Seguridad:* {{ .Annotations.summary }}
+          *Descripción:* {{ .Annotations.description }}
+          *Inicio:* {{ .StartsAt.Format "2006-01-02 15:04:05" }}
+          *Acción recomendada:* Revisar logs y bloquear IPs si es necesario.
+          {{ end }}
+        color: "danger"

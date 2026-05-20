@@ -1,0 +1,51 @@
+# =============================================================================
+# Grafana — Provisioning de Datasources
+# Amani API REST Monitoring
+# =============================================================================
+
+apiVersion: 1
+
+deleteDatasources:
+  - name: Prometheus
+    orgId: 1
+  - name: Loki
+    orgId: 1
+
+datasources:
+
+  # ---------------------------------------------------------------------------
+  # Prometheus — métricas
+  # ---------------------------------------------------------------------------
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    orgId: 1
+    url: http://prometheus:9090
+    isDefault: true
+    version: 1
+    editable: false
+    jsonData:
+      httpMethod: POST
+      timeInterval: "15s"
+      exemplarTraceIdDestinations:
+        - name: traceID
+          datasourceUid: prometheus
+
+  # ---------------------------------------------------------------------------
+  # Loki — logs centralizados
+  # ---------------------------------------------------------------------------
+  - name: Loki
+    type: loki
+    access: proxy
+    orgId: 1
+    url: http://loki:3100
+    isDefault: false
+    version: 1
+    editable: false
+    jsonData:
+      maxLines: 5000
+      derivedFields:
+        - datasourceUid: prometheus
+          matcherRegex: "traceID=(\\w+)"
+          name: TraceID
+          url: "$${__value.raw}"
