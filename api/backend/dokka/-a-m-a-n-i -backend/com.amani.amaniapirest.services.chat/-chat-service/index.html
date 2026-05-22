@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ChatService</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            AMANI Backend
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter="AMANI Backend/JVM">JVM</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="AMANI Backend::com.amani.amaniapirest.services.chat/ChatService///PointingToDeclaration//-489949542">
+  <div class="breadcrumbs"><a href="../../../index.html">AMANI Backend</a><span class="delimiter">/</span><a href="../index.html">com.amani.amaniapirest.services.chat</a><span class="delimiter">/</span><span class="current">ChatService</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Chat</span><wbr></wbr><span><span>Service</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.stereotype/Service///PointingToDeclaration/"><span class="token annotation builtin">Service</span></span></div></div><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">ChatService</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/AmaniGrupo1/amani-apirest/tree/main/src/main/java/com/amani/amaniapirest/services/chat/ChatService.java#L33">source</a>)</span></span></div><p class="paragraph">Servicio de dominio para la funcionalidad de chat. </p><p class="paragraph">Orquesta la comunicación entre PostgreSQL (canónico) y Firebase RTDB (tiempo real). La publicación a RTDB se realiza de forma única a través del evento de dominio <a href="../../com.amani.amaniapirest.events/-mensaje-nuevo-event/index.html">MensajeNuevoEvent</a>, procesado por <code class="lang-kotlin">MensajeEventListener</code>.</p><p class="paragraph">Utiliza caché Caffeine (<code class="lang-kotlin">chatMessages</code>) para reducir lecturas repetitivas de historial reciente. La caché se invalida automáticamente al enviar un nuevo mensaje.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="1641403675%2FConstructors%2F-489949542" anchor-label="ChatService" id="1641403675%2FConstructors%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-chat-service.html"><span>Chat</span><wbr></wbr><span><span>Service</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1641403675%2FConstructors%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mensajeRepository<span class="token operator">: </span><a href="../../com.amani.amaniapirest.repository/-mensaje-repository/index.html">MensajeRepository</a><span class="token punctuation">, </span></span><span class="parameter ">usuarioRepository<span class="token operator">: </span><a href="../../com.amani.amaniapirest.repository/-usuario-repository/index.html">UsuarioRepository</a><span class="token punctuation">, </span></span><span class="parameter ">eventPublisher<span class="token operator">: </span><span data-unresolved-link="org.springframework.context/ApplicationEventPublisher///PointingToDeclaration/">ApplicationEventPublisher</span></span></span><span class="token punctuation">)</span></div><div class="brief ">Ejecuta la operación correspondiente a ChatService.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1650712005%2FFunctions%2F-489949542" anchor-label="canAccessChat" id="1650712005%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="can-access-chat.html"><span>can</span><wbr></wbr><span>Access</span><wbr></wbr><span><span>Chat</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1650712005%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="can-access-chat.html"><span class="token function">canAccessChat</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">chatId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief ">Verifica que un usuario pueda acceder a una conversación de chat.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-498311784%2FFunctions%2F-489949542" anchor-label="getConversationId" id="-498311784%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-conversation-id.html"><span>get</span><wbr></wbr><span>Conversation</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-498311784%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-conversation-id.html"><span class="token function">getConversationId</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">user1Id<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">user2Id<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></div><div class="brief ">Genera el chatId para una conversación entre dos usuarios.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="289546949%2FFunctions%2F-489949542" anchor-label="getConversationMessages" id="289546949%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-conversation-messages.html"><span>get</span><wbr></wbr><span>Conversation</span><wbr></wbr><span><span>Messages</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="289546949%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.cache.annotation/Cacheable///PointingToDeclaration/"><span class="token annotation builtin">Cacheable</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;chatMessages&quot;</span></span><span class="token punctuation">, </span></span><wbr></wbr><span>key<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;#chatId + '_' + #limit&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-conversation-messages.html"><span class="token function">getConversationMessages</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">chatId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">limit<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.chat/-chat-message-d-t-o/index.html">ChatMessageDTO</a><span class="token operator">&gt;</span></div><div class="brief ">Recupera el historial de mensajes de una conversación.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="430438528%2FFunctions%2F-489949542" anchor-label="getUserConversations" id="430438528%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-user-conversations.html"><span>get</span><wbr></wbr><span>User</span><wbr></wbr><span><span>Conversations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="430438528%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-user-conversations.html"><span class="token function">getUserConversations</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userId<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.chat/-chat-conversation-d-t-o/index.html">ChatConversationDTO</a><span class="token operator">&gt;</span></div><div class="brief ">Recupera la lista de conversaciones de un usuario.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="507966878%2FFunctions%2F-489949542" anchor-label="sendMessage" id="507966878%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="send-message.html"><span>send</span><wbr></wbr><span><span>Message</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="507966878%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.transaction.annotation/Transactional///PointingToDeclaration/"><span class="token annotation builtin">Transactional</span></span></div><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.cache.annotation/CacheEvict///PointingToDeclaration/"><span class="token annotation builtin">CacheEvict</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;chatMessages&quot;</span></span><span class="token punctuation">, </span></span><wbr></wbr><span>key<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;#request.idSender + '_' + #request.idReceiver&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="send-message.html"><span class="token function">sendMessage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">request<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.request/-mensaje-request-d-t-o/index.html">MensajeRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.chat/-chat-message-d-t-o/index.html">ChatMessageDTO</a></div><div class="brief ">Envía un mensaje en una conversación de chat.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2026 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

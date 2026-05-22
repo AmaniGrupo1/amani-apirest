@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>AgendaPacienteItemDTO</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            AMANI Backend
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter="AMANI Backend/JVM">JVM</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="AMANI Backend::com.amani.amaniapirest.dto.dtoPaciente.response/AgendaPacienteItemDTO///PointingToDeclaration//-489949542">
+  <div class="breadcrumbs"><a href="../../../index.html">AMANI Backend</a><span class="delimiter">/</span><a href="../index.html">com.amani.amaniapirest.dto.dtoPaciente.response</a><span class="delimiter">/</span><span class="current">AgendaPacienteItemDTO</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Agenda</span><wbr></wbr><span>Paciente</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>DTO</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">AgendaPacienteItemDTO</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/AmaniGrupo1/amani-apirest/tree/main/src/main/java/com/amani/amaniapirest/dto/dtoPaciente/response/AgendaPacienteItemDTO.java#L15">source</a>)</span></span></div><p class="paragraph">DTO de respuesta para representar un item de agenda de un paciente. </p><p class="paragraph">Contiene la información detallada de una cita o evento en la agenda del paciente, incluyendo fecha, horario, estado y motivo.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-131399303%2FConstructors%2F-489949542" anchor-label="AgendaPacienteItemDTO" id="-131399303%2FConstructors%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agenda-paciente-item-d-t-o.html"><span>Agenda</span><wbr></wbr><span>Paciente</span><wbr></wbr><span>Item</span><wbr></wbr><span><span>DTO</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-131399303%2FConstructors%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fecha<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html">LocalDate</a><span class="token punctuation">, </span></span><span class="parameter ">horaInicio<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/time/LocalTime.html">LocalTime</a><span class="token punctuation">, </span></span><span class="parameter ">horaFin<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/time/LocalTime.html">LocalTime</a><span class="token punctuation">, </span></span><span class="parameter ">estado<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">motivo<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">idCita<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Creates a new instance of <code class="lang-kotlin">AgendaPacienteItemDTO</code> with the specified parameters.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="726723835%2FProperties%2F-489949542" anchor-label="estado" id="726723835%2FProperties%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="estado.html"><span><span>estado</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="726723835%2FProperties%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">var </span><a href="estado.html">estado</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1253573244%2FProperties%2F-489949542" anchor-label="fecha" id="1253573244%2FProperties%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="fecha.html"><span><span>fecha</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1253573244%2FProperties%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">var </span><a href="fecha.html">fecha</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html">LocalDate</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1175994180%2FProperties%2F-489949542" anchor-label="horaFin" id="1175994180%2FProperties%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="hora-fin.html"><span>hora</span><wbr></wbr><span><span>Fin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1175994180%2FProperties%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">var </span><a href="hora-fin.html">horaFin</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/time/LocalTime.html">LocalTime</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1076201094%2FProperties%2F-489949542" anchor-label="horaInicio" id="1076201094%2FProperties%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="hora-inicio.html"><span>hora</span><wbr></wbr><span><span>Inicio</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1076201094%2FProperties%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">var </span><a href="hora-inicio.html">horaInicio</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/time/LocalTime.html">LocalTime</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1908277677%2FProperties%2F-489949542" anchor-label="idCita" id="-1908277677%2FProperties%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="id-cita.html"><span>id</span><wbr></wbr><span><span>Cita</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1908277677%2FProperties%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">var </span><a href="id-cita.html">idCita</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1579149585%2FProperties%2F-489949542" anchor-label="motivo" id="1579149585%2FProperties%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="motivo.html"><span><span>motivo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1579149585%2FProperties%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">var </span><a href="motivo.html">motivo</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2026 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>PsicologoAdminController</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            AMANI Backend
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter="AMANI Backend/JVM">JVM</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="AMANI Backend::com.amani.amaniapirest.controllers.controladorAdministador/PsicologoAdminController///PointingToDeclaration//-489949542">
+  <div class="breadcrumbs"><a href="../../../index.html">AMANI Backend</a><span class="delimiter">/</span><a href="../index.html">com.amani.amaniapirest.controllers.controladorAdministador</a><span class="delimiter">/</span><span class="current">PsicologoAdminController</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Psicologo</span><wbr></wbr><span>Admin</span><wbr></wbr><span><span>Controller</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RestController///PointingToDeclaration/"><span class="token annotation builtin">RestController</span></span></div><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestMapping///PointingToDeclaration/"><span class="token annotation builtin">RequestMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/api/admin/psicologos&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">PsicologoAdminController</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/AmaniGrupo1/amani-apirest/tree/main/src/main/java/com/amani/amaniapirest/controllers/controladorAdministador/PsicologoAdminController.java#L32">source</a>)</span></span></div><p class="paragraph">Controlador REST de administración para la gestión de psicólogos. </p><p class="paragraph">Base path: <code class="lang-kotlin">/api/admin/psicologos</code>. Permite asignar pacientes, crear, listar, actualizar y eliminar psicólogos.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="191766645%2FConstructors%2F-489949542" anchor-label="PsicologoAdminController" id="191766645%2FConstructors%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-psicologo-admin-controller.html"><span>Psicologo</span><wbr></wbr><span>Admin</span><wbr></wbr><span><span>Controller</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="191766645%2FConstructors%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1201231398%2FFunctions%2F-489949542" anchor-label="asignarPsicologo" id="-1201231398%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="asignar-psicologo.html"><span>asignar</span><wbr></wbr><span><span>Psicologo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1201231398%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PostMapping///PointingToDeclaration/"><span class="token annotation builtin">PostMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/asignar-psicologo&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="asignar-psicologo.html"><span class="token function">asignarPsicologo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>request<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.request/-asignar-paciente-al-psicologo-request-d-t-o/index.html">AsignarPacienteAlPsicologoRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a><span class="token operator">&gt;</span></div><div class="brief ">Asigna un paciente a un psicólogo.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-705845333%2FFunctions%2F-489949542" anchor-label="create" id="-705845333%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create.html"><span><span>create</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-705845333%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PostMapping///PointingToDeclaration/"><span class="token annotation builtin">PostMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/create&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="create.html"><span class="token function">create</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="jakarta.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span> <span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>request<span class="token operator">: </span><span><span class="token annotation builtin">@</span><span data-unresolved-link="jakarta.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span> </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.request/-psicologo-request-d-t-o/index.html">PsicologoRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoPsicologo.response/-psicologo-self-response-d-t-o/index.html">PsicologoSelfResponseDTO</a><span class="token operator">&gt;</span></div><div class="brief ">Crea un nuevo psicólogo en el sistema.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1747896536%2FFunctions%2F-489949542" anchor-label="delete" id="-1747896536%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="delete.html"><span><span>delete</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1747896536%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/DeleteMapping///PointingToDeclaration/"><span class="token annotation builtin">DeleteMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/{id}&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="delete.html"><span class="token function">delete</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>id<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Void.html">Void</a><span class="token operator">&gt;</span></div><div class="brief ">Elimina un psicólogo por su identificador.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-881236124%2FFunctions%2F-489949542" anchor-label="findAllPacientesAndPsicologos" id="-881236124%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-all-pacientes-and-psicologos.html"><span>find</span><wbr></wbr><span>All</span><wbr></wbr><span>Pacientes</span><wbr></wbr><span>And</span><wbr></wbr><span><span>Psicologos</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-881236124%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/GetMapping///PointingToDeclaration/"><span class="token annotation builtin">GetMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/pacientes&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="find-all-pacientes-and-psicologos.html"><span class="token function">findAllPacientesAndPsicologos</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.loginDTO/-psicologo-con-pacientes-d-t-o/index.html">PsicologoConPacientesDTO</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief ">Lista todos los psicólogos con sus pacientes asignados.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1366263154%2FFunctions%2F-489949542" anchor-label="findAllPsicologo" id="-1366263154%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-all-psicologo.html"><span>find</span><wbr></wbr><span>All</span><wbr></wbr><span><span>Psicologo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1366263154%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/GetMapping///PointingToDeclaration/"><span class="token annotation builtin">GetMapping</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="find-all-psicologo.html"><span class="token function">findAllPsicologo</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoPsicologo.response/-psicologo-self-response-d-t-o/index.html">PsicologoSelfResponseDTO</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief ">Lista todos los psicólogos registrados en el sistema.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1699668036%2FFunctions%2F-489949542" anchor-label="findAllPsicologosBajas" id="1699668036%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-all-psicologos-bajas.html"><span>find</span><wbr></wbr><span>All</span><wbr></wbr><span>Psicologos</span><wbr></wbr><span><span>Bajas</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1699668036%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/GetMapping///PointingToDeclaration/"><span class="token annotation builtin">GetMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/listaPsicologoBaja&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="find-all-psicologos-bajas.html"><span class="token function">findAllPsicologosBajas</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoPsicologo.response/-psicologo-self-response-d-t-o/index.html">PsicologoSelfResponseDTO</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1654042777%2FFunctions%2F-489949542" anchor-label="update" id="1654042777%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="update.html"><span><span>update</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1654042777%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PutMapping///PointingToDeclaration/"><span class="token annotation builtin">PutMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/editar/{id}&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="update.html"><span class="token function">update</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>id<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>request<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.request/-psicologo-request-d-t-o/index.html">PsicologoRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.loginDTO/-psicologo-con-pacientes-d-t-o/index.html">PsicologoConPacientesDTO</a><span class="token operator">&gt;</span></div><div class="brief ">Actualiza los datos de un psicólogo existente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2026 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

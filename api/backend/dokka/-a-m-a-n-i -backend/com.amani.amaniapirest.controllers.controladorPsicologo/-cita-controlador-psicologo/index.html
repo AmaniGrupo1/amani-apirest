@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>CitaControladorPsicologo</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            AMANI Backend
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter="AMANI Backend/JVM">JVM</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="AMANI Backend::com.amani.amaniapirest.controllers.controladorPsicologo/CitaControladorPsicologo///PointingToDeclaration//-489949542">
+  <div class="breadcrumbs"><a href="../../../index.html">AMANI Backend</a><span class="delimiter">/</span><a href="../index.html">com.amani.amaniapirest.controllers.controladorPsicologo</a><span class="delimiter">/</span><span class="current">CitaControladorPsicologo</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Cita</span><wbr></wbr><span>Controlador</span><wbr></wbr><span><span>Psicologo</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RestController///PointingToDeclaration/"><span class="token annotation builtin">RestController</span></span></div><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestMapping///PointingToDeclaration/"><span class="token annotation builtin">RequestMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/api/citas&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">CitaControladorPsicologo</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/AmaniGrupo1/amani-apirest/tree/main/src/main/java/com/amani/amaniapirest/controllers/controladorPsicologo/CitaControladorPsicologo.java#L31">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-1988205625%2FConstructors%2F-489949542" anchor-label="CitaControladorPsicologo" id="-1988205625%2FConstructors%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-cita-controlador-psicologo.html"><span>Cita</span><wbr></wbr><span>Controlador</span><wbr></wbr><span><span>Psicologo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1988205625%2FConstructors%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="521069352%2FFunctions%2F-489949542" anchor-label="actualizarDuracion" id="521069352%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="actualizar-duracion.html"><span>actualizar</span><wbr></wbr><span><span>Duracion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="521069352%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PutMapping///PointingToDeclaration/"><span class="token annotation builtin">PutMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{idPsicologo}/duracion&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="actualizar-duracion.html"><span class="token function">actualizarDuracion</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>idPsicologo<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestParam///PointingToDeclaration/"><span class="token annotation builtin">RequestParam</span></span> </span>duracion<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Void.html">Void</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="125978442%2FFunctions%2F-489949542" anchor-label="actualizarHorarioPsicologo" id="125978442%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="actualizar-horario-psicologo.html"><span>actualizar</span><wbr></wbr><span>Horario</span><wbr></wbr><span><span>Psicologo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="125978442%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PutMapping///PointingToDeclaration/"><span class="token annotation builtin">PutMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{idPsicologo}/horario&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="actualizar-horario-psicologo.html"><span class="token function">actualizarHorarioPsicologo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>idPsicologo<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>horarioRequest<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoAgenda.request/-horario-request-d-t-o/index.html">HorarioRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Void.html">Void</a><span class="token operator">&gt;</span></div><div class="brief ">PUT /api/citas/psicologo/{idPsicologo}/horario — Actualiza el horario del psicólogo.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1335696983%2FFunctions%2F-489949542" anchor-label="actualizarTerapia" id="1335696983%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="actualizar-terapia.html"><span>actualizar</span><wbr></wbr><span><span>Terapia</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1335696983%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PutMapping///PointingToDeclaration/"><span class="token annotation builtin">PutMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/update/{id}&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="actualizar-terapia.html"><span class="token function">actualizarTerapia</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>id<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>request<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.terapiasDTO/-terapia-request-d-t-o/index.html">TerapiaRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.terapiasDTO/-terapia-response-d-t-o/index.html">TerapiaResponseDTO</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="560548063%2FFunctions%2F-489949542" anchor-label="agregarDiaNoDisponible" id="560548063%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="agregar-dia-no-disponible.html"><span>agregar</span><wbr></wbr><span>Dia</span><wbr></wbr><span>No</span><wbr></wbr><span><span>Disponible</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="560548063%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PostMapping///PointingToDeclaration/"><span class="token annotation builtin">PostMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{idPsicologo}/dias-no-disponibles&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="agregar-dia-no-disponible.html"><span class="token function">agregarDiaNoDisponible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>idPsicologo<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>diaNoDisponibleRequest<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoAgenda.request/-bloqueo-request-d-t-o/index.html">BloqueoRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Void.html">Void</a><span class="token operator">&gt;</span></div><div class="brief ">POST /api/citas/psicologo/{idPsicologo}/dias-no-disponibles — Añade un día no disponible.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1227000412%2FFunctions%2F-489949542" anchor-label="cambiarEstado" id="-1227000412%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="cambiar-estado.html"><span>cambiar</span><wbr></wbr><span><span>Estado</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1227000412%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PatchMapping///PointingToDeclaration/"><span class="token annotation builtin">PatchMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/cambio/{id}/estado&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="cambiar-estado.html"><span class="token function">cambiarEstado</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>id<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>request<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html">Map</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1091821126%2FFunctions%2F-489949542" anchor-label="cancelarCita" id="1091821126%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="cancelar-cita.html"><span>cancelar</span><wbr></wbr><span><span>Cita</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1091821126%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PatchMapping///PointingToDeclaration/"><span class="token annotation builtin">PatchMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/{id}/cancelar&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="cancelar-cita.html"><span class="token function">cancelarCita</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>id<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoAgenda.response/-agenda-item-d-t-o/index.html">AgendaItemDTO</a><span class="token operator">&gt;</span></div><div class="brief ">PATCH /api/citas/{id}/cancelar — Cancela una cita.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-309879998%2FFunctions%2F-489949542" anchor-label="crearCita" id="-309879998%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="crear-cita.html"><span>crear</span><wbr></wbr><span><span>Cita</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-309879998%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PostMapping///PointingToDeclaration/"><span class="token annotation builtin">PostMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/cita&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="crear-cita.html"><span class="token function">crearCita</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>request<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.request/-cita-request-d-t-o/index.html">CitaRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoAgenda.response/-agenda-item-d-t-o/index.html">AgendaItemDTO</a><span class="token operator">&gt;</span></div><div class="brief ">POST /api/citas/psicologo/cita - Crea una nueva cita (vista psicólogo)</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2132945289%2FFunctions%2F-489949542" anchor-label="crearTerapia" id="2132945289%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="crear-terapia.html"><span>crear</span><wbr></wbr><span><span>Terapia</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2132945289%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PostMapping///PointingToDeclaration/"><span class="token annotation builtin">PostMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/terapias&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="crear-terapia.html"><span class="token function">crearTerapia</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>request<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.terapiasDTO/-terapia-request-d-t-o/index.html">TerapiaRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.terapiasDTO/-terapia-response-d-t-o/index.html">TerapiaResponseDTO</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="124694021%2FFunctions%2F-489949542" anchor-label="editarCita" id="124694021%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="editar-cita.html"><span>editar</span><wbr></wbr><span><span>Cita</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="124694021%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PutMapping///PointingToDeclaration/"><span class="token annotation builtin">PutMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{idCita}/editar&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="editar-cita.html"><span class="token function">editarCita</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>idCita<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>request<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.request/-cita-request-d-t-o/index.html">CitaRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoAgenda.response/-agenda-item-d-t-o/index.html">AgendaItemDTO</a><span class="token operator">&gt;</span></div><div class="brief ">PUT /api/citas/psicologo/{idCita} - Edita una cita existente</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="119476243%2FFunctions%2F-489949542" anchor-label="eliminarDiaNoDisponible" id="119476243%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="eliminar-dia-no-disponible.html"><span>eliminar</span><wbr></wbr><span>Dia</span><wbr></wbr><span>No</span><wbr></wbr><span><span>Disponible</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="119476243%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/DeleteMapping///PointingToDeclaration/"><span class="token annotation builtin">DeleteMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{idPsicologo}/dias-no-disponibles/{fecha}&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="eliminar-dia-no-disponible.html"><span class="token function">eliminarDiaNoDisponible</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>idPsicologo<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>fecha<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Void.html">Void</a><span class="token operator">&gt;</span></div><div class="brief ">DELETE /api/citas/psicologo/{idPsicologo}/dias-no-disponibles/{fecha} — Elimina un día no disponible.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1013263663%2FFunctions%2F-489949542" anchor-label="eliminarTerapia" id="1013263663%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="eliminar-terapia.html"><span>eliminar</span><wbr></wbr><span><span>Terapia</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1013263663%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/DeleteMapping///PointingToDeclaration/"><span class="token annotation builtin">DeleteMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/delete/{id}&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="eliminar-terapia.html"><span class="token function">eliminarTerapia</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>id<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="61468582%2FFunctions%2F-489949542" anchor-label="findAllByPsicologo" id="61468582%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-all-by-psicologo.html"><span>find</span><wbr></wbr><span>All</span><wbr></wbr><span>By</span><wbr></wbr><span><span>Psicologo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="61468582%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/GetMapping///PointingToDeclaration/"><span class="token annotation builtin">GetMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{idPsicologo}&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="find-all-by-psicologo.html"><span class="token function">findAllByPsicologo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>idPsicologo<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoPsicologo.response/-cita-psicologo-response-d-t-o/index.html">CitaPsicologoResponseDTO</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief ">GET /api/citas/psicologo/{idPsicologo} — Lista las citas asignadas a un psicólogo.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1097308772%2FFunctions%2F-489949542" anchor-label="findByIdPsicologo" id="1097308772%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-by-id-psicologo.html"><span>find</span><wbr></wbr><span>By</span><wbr></wbr><span>Id</span><wbr></wbr><span><span>Psicologo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1097308772%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/GetMapping///PointingToDeclaration/"><span class="token annotation builtin">GetMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/detalle/{id}&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="find-by-id-psicologo.html"><span class="token function">findByIdPsicologo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>id<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoPsicologo.response/-cita-psicologo-response-d-t-o/index.html">CitaPsicologoResponseDTO</a><span class="token operator">&gt;</span></div><div class="brief ">GET /api/citas/psicologo/detalle/{id} — Obtiene una cita desde la vista del psicólogo.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2049796092%2FFunctions%2F-489949542" anchor-label="getAgendaPsicologoMes" id="-2049796092%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-agenda-psicologo-mes.html"><span>get</span><wbr></wbr><span>Agenda</span><wbr></wbr><span>Psicologo</span><wbr></wbr><span><span>Mes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2049796092%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/GetMapping///PointingToDeclaration/"><span class="token annotation builtin">GetMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{idPsicologo}/agenda&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-agenda-psicologo-mes.html"><span class="token function">getAgendaPsicologoMes</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>idPsicologo<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestParam///PointingToDeclaration/"><span class="token annotation builtin">RequestParam</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;month&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span> </span>month<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoAgenda.response/-agenda-item-d-t-o/index.html">AgendaItemDTO</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief ">GET /api/citas/psicologo/{idPsicologo}/agenda?month=YYYY-MM Devuelve la agenda consolidada del psicólogo para el mes indicado.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1546171195%2FFunctions%2F-489949542" anchor-label="getDisponibilidadPsicologo" id="1546171195%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-disponibilidad-psicologo.html"><span>get</span><wbr></wbr><span>Disponibilidad</span><wbr></wbr><span><span>Psicologo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1546171195%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/GetMapping///PointingToDeclaration/"><span class="token annotation builtin">GetMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{idPsicologo}/disponibilidad&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-disponibilidad-psicologo.html"><span class="token function">getDisponibilidadPsicologo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>idPsicologo<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestParam///PointingToDeclaration/"><span class="token annotation builtin">RequestParam</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;fecha&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span> </span>fecha<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestParam///PointingToDeclaration/"><span class="token annotation builtin">RequestParam</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;duracion&quot;</span></span><span class="token punctuation">, </span></span><wbr></wbr><span>required<span class="token operator"> = </span><span class="breakable-word"><span class="token boolean">false</span></span></span><wbr></wbr><span class="token punctuation">)</span> </span>duracion<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoAgenda.response/-disponibilidad-d-t-o/index.html">DisponibilidadDTO</a><span class="token operator">&gt;</span></div><div class="brief ">b GET /api/citas/psicologo/{idPsicologo}/disponibilidad?fecha=YYYY-MM-DD Devuelve la disponibilidad del psicólogo para un día concreto.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1506876904%2FFunctions%2F-489949542" anchor-label="getDuracionCita" id="1506876904%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-duracion-cita.html"><span>get</span><wbr></wbr><span>Duracion</span><wbr></wbr><span><span>Cita</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1506876904%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/GetMapping///PointingToDeclaration/"><span class="token annotation builtin">GetMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{idPsicologo}/duracion-obtenida&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-duracion-cita.html"><span class="token function">getDuracionCita</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>idPsicologo<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html">Integer</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="550189834%2FFunctions%2F-489949542" anchor-label="getHorarioActual" id="550189834%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-horario-actual.html"><span>get</span><wbr></wbr><span>Horario</span><wbr></wbr><span><span>Actual</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="550189834%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/GetMapping///PointingToDeclaration/"><span class="token annotation builtin">GetMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{idPsicologo}/horario-actual&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-horario-actual.html"><span class="token function">getHorarioActual</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>idPsicologo<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoAgenda.request/-horario-request-d-t-o/index.html">HorarioRequestDTO</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1081583813%2FFunctions%2F-489949542" anchor-label="getTerapias" id="1081583813%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-terapias.html"><span>get</span><wbr></wbr><span><span>Terapias</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1081583813%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/GetMapping///PointingToDeclaration/"><span class="token annotation builtin">GetMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/terapias/get&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-terapias.html"><span class="token function">getTerapias</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.terapiasDTO/-terapia-response-d-t-o/index.html">TerapiaResponseDTO</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1265393924%2FFunctions%2F-489949542" anchor-label="updateEstado" id="1265393924%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="update-estado.html"><span>update</span><wbr></wbr><span><span>Estado</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1265393924%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PatchMapping///PointingToDeclaration/"><span class="token annotation builtin">PatchMapping</span></span><span class="token punctuation">(</span><span>value<span class="token operator"> = </span><span class="breakable-word"><span class="token string">&quot;/psicologo/{id}/estado&quot;</span></span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="update-estado.html"><span class="token function">updateEstado</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/PathVariable///PointingToDeclaration/"><span class="token annotation builtin">PathVariable</span></span> </span>id<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.web.bind.annotation/RequestBody///PointingToDeclaration/"><span class="token annotation builtin">RequestBody</span></span> </span>request<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.request/-cita-request-d-t-o/index.html">CitaRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.springframework.http/ResponseEntity///PointingToDeclaration/">ResponseEntity</span><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoPsicologo.response/-cita-psicologo-response-d-t-o/index.html">CitaPsicologoResponseDTO</a><span class="token operator">&gt;</span></div><div class="brief ">PATCH /api/citas/psicologo/{id}/estado — Actualiza el estado de una cita (psicólogo).</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2026 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

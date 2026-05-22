@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>CitaService</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            AMANI Backend
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter="AMANI Backend/JVM">JVM</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="AMANI Backend::com.amani.amaniapirest.services.paciente/CitaService///PointingToDeclaration//-489949542">
+  <div class="breadcrumbs"><a href="../../../index.html">AMANI Backend</a><span class="delimiter">/</span><a href="../index.html">com.amani.amaniapirest.services.paciente</a><span class="delimiter">/</span><span class="current">CitaService</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Cita</span><wbr></wbr><span><span>Service</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="org.springframework.stereotype/Service///PointingToDeclaration/"><span class="token annotation builtin">Service</span></span></div></div><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">CitaService</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/AmaniGrupo1/amani-apirest/tree/main/src/main/java/com/amani/amaniapirest/services/paciente/CitaService.java#L36">source</a>)</span></span></div><p class="paragraph">Gestiona las citas del paciente autenticado desde su perspectiva de uso. </p><p class="paragraph">Expone operaciones de consulta de citas propias (por identificador, por mes) y la cancelación de citas pendientes. La resolución de la identidad del paciente se realiza a partir del contexto de seguridad JWT mediante <a href="obtener-id-paciente-desde-auth.html">obtenerIdPacienteDesdeAuth</a>.</p><span class="kdoc-tag"><h4 class="">Author</h4><p class="paragraph">Ivan Lopez</p></span><span class="kdoc-tag"><h4 class="">Since</h4><p class="paragraph">1.0</p></span></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="812605563%2FConstructors%2F-489949542" anchor-label="CitaService" id="812605563%2FConstructors%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-cita-service.html"><span>Cita</span><wbr></wbr><span><span>Service</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="812605563%2FConstructors%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="335609293%2FFunctions%2F-489949542" anchor-label="create" id="335609293%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create.html"><span><span>create</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="335609293%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="create.html"><span class="token function">create</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">request<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.request/-cita-request-d-t-o/index.html">CitaRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.response/-cita-paciente-view-response-d-t-o/index.html">CitaPacienteViewResponseDTO</a></div><div class="brief ">Crea una nueva cita a partir de los datos del request.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1219810654%2FFunctions%2F-489949542" anchor-label="delete" id="-1219810654%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="delete.html"><span><span>delete</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1219810654%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="delete.html"><span class="token function">delete</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">idCita<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span></div><div class="brief ">Elimina la cita con el identificador indicado.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1915973854%2FFunctions%2F-489949542" anchor-label="findById" id="-1915973854%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-by-id.html"><span>find</span><wbr></wbr><span>By</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1915973854%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="find-by-id.html"><span class="token function">findById</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">idCita<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.response/-cita-paciente-view-response-d-t-o/index.html">CitaPacienteViewResponseDTO</a></div><div class="brief ">Busca una cita por su identificador único.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1506562036%2FFunctions%2F-489949542" anchor-label="findByPaciente" id="-1506562036%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-by-paciente.html"><span>find</span><wbr></wbr><span>By</span><wbr></wbr><span><span>Paciente</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1506562036%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="find-by-paciente.html"><span class="token function">findByPaciente</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">idPaciente<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.response/-cita-paciente-view-response-d-t-o/index.html">CitaPacienteViewResponseDTO</a><span class="token operator">&gt;</span></div><div class="brief ">Obtiene las citas de un paciente ordenadas cronológicamente de más antigua a más reciente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="126217141%2FFunctions%2F-489949542" anchor-label="getAgendaPacienteMes" id="126217141%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-agenda-paciente-mes.html"><span>get</span><wbr></wbr><span>Agenda</span><wbr></wbr><span>Paciente</span><wbr></wbr><span><span>Mes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="126217141%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="get-agenda-paciente-mes.html"><span class="token function">getAgendaPacienteMes</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">idPaciente<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">month<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.response/-agenda-paciente-item-d-t-o/index.html">AgendaPacienteItemDTO</a><span class="token operator">&gt;</span></div><div class="brief ">Devuelve la agenda mensual del paciente con las citas comprendidas en el mes indicado.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-235028123%2FFunctions%2F-489949542" anchor-label="obtenerIdPacienteDesdeAuth" id="-235028123%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="obtener-id-paciente-desde-auth.html"><span>obtener</span><wbr></wbr><span>Id</span><wbr></wbr><span>Paciente</span><wbr></wbr><span>Desde</span><wbr></wbr><span><span>Auth</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-235028123%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="obtener-id-paciente-desde-auth.html"><span class="token function">obtenerIdPacienteDesdeAuth</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">auth<span class="token operator">: </span><span data-unresolved-link="org.springframework.security.core/Authentication///PointingToDeclaration/">Authentication</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a></div><div class="brief ">Extrae el identificador del paciente vinculado al usuario autenticado mediante JWT.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-752975661%2FFunctions%2F-489949542" anchor-label="update" id="-752975661%2FFunctions%2F-489949542" data-filterable-set="AMANI Backend/JVM"></a>
+          <div class="table-row" data-filterable-current="AMANI Backend/JVM" data-filterable-set="AMANI Backend/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="update.html"><span><span>update</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-752975661%2FFunctions%2F-489949542"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="AMANI Backend/JVM"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="update.html"><span class="token function">update</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">idCita<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">request<span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.request/-cita-request-d-t-o/index.html">CitaRequestDTO</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.amani.amaniapirest.dto.dtoPaciente.response/-cita-paciente-view-response-d-t-o/index.html">CitaPacienteViewResponseDTO</a></div><div class="brief ">Actualiza los datos de una cita existente.</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2026 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
