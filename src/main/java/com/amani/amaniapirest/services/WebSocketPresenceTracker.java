@@ -60,9 +60,9 @@ public class WebSocketPresenceTracker {
     }
 
     /**
-     * Método isConnected.
+     * Ejecuta la operación correspondiente a isConnected.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public boolean isConnected(Long userId) {
         return userId != null && connectedUsers.contains(userId);

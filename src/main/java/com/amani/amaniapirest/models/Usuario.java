@@ -10,6 +10,17 @@ import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Entidad central de identidad y autenticación de la plataforma.
+ *
+ * <p>Concentra los datos comunes a todos los perfiles del sistema (paciente, psicólogo
+ * y administrador): credenciales de acceso, rol, estado de la cuenta y token FCM para
+ * notificaciones push. Cada {@link Paciente} o {@link Psicologo} se vincula a un
+ * Usuario mediante una relación 1:1.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
+ */
 @JsonIgnoreProperties({"psicologo", "paciente", "enviados", "recibidos", "hibernateLazyInitializer"})
 @Entity
 @Getter
@@ -19,15 +30,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "usuarios")
-/**
- * Entidad Usuario.
- * 
- * Representa la entidad Usuario en el modelo de dominio.
- */
 public class Usuario {
 
     /**
-     * Identificador unico del usuario.
+     * Identificador único del usuario.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,22 +49,24 @@ public class Usuario {
      */
     private String apellido;
 
-
+    /** Documento Nacional de Identidad del usuario. */
     private String dni;
+
     /**
-     * Correo electronico unico utilizado para el inicio de sesion.
+     * Correo electrónico único utilizado para el inicio de sesión.
      */
     private String email;
 
+    /** URL de la foto de perfil del usuario. Si no se asigna, se usa {@link #AVATAR_DEFAULT}. */
     private String fotoPerfilUrl;
 
     /**
-     * Contrasena del usuario almacenada con hash BCrypt.
+     * Contraseña del usuario almacenada con hash BCrypt.
      */
     private String password;
 
     /**
-     * Rol funcional del usuario segun {@link RolUsuario}.
+     * Rol funcional del usuario según {@link RolUsuario}.
      */
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
@@ -66,7 +74,7 @@ public class Usuario {
     private RolUsuario rol;
 
     /**
-     * Indica si la cuenta del usuario esta activa.
+     * Indica si la cuenta del usuario está activa.
      */
     private Boolean activo;
 
@@ -79,11 +87,16 @@ public class Usuario {
     /** URL del avatar por defecto, servido como recurso estático por Spring Boot. */
     public static final String AVATAR_DEFAULT = "/avatar-default.svg";
 
+    /**
+     * Inicializa los campos de auditoría al persistir el registro por primera vez.
+     *
+     * <p>Establece la fecha de registro, activa la cuenta y asigna el avatar por defecto
+     * si no se proporcionó foto de perfil.</p>
+     */
     @PrePersist
     public void prePersist() {
         this.fechaRegistro = LocalDateTime.now();
         this.activo = true;
-        // Si no se asignó foto al crear el usuario, se usa el avatar por defecto
         if (this.fotoPerfilUrl == null || this.fotoPerfilUrl.isBlank()) {
             this.fotoPerfilUrl = AVATAR_DEFAULT;
         }
@@ -112,7 +125,7 @@ public class Usuario {
     private Paciente paciente;
 
     /**
-     * Perfil de psicologo asociado a este usuario, si aplica.
+     * Perfil de psicólogo asociado a este usuario, si aplica.
      */
     @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
     private Psicologo psicologo;
@@ -129,9 +142,11 @@ public class Usuario {
     @OneToMany(mappedBy = "receiver")
     private List<Mensaje> recibidos;
 
+    /** Lista de notificaciones push dirigidas a este usuario. */
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notificacion> notificaciones;
 
+    /** Indica si el usuario tiene habilitada la recepción de notificaciones push. */
     @Column(name = "notificaciones_activas")
     private boolean notificacionesActivas = true;
 }

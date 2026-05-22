@@ -29,9 +29,9 @@ public class FirebaseChatService {
     private final PushNotificationGateway pushGateway;
 
     /**
-     * Método FirebaseChatService.
+     * Ejecuta la operación correspondiente a FirebaseChatService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public FirebaseChatService(ChatGateway chatGateway,
                                 PushNotificationGateway pushGateway) {

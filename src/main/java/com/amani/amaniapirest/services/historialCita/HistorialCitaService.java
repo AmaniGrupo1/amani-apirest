@@ -10,9 +10,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Servicio HistorialCitaService.
+ * Servicio que implementa la lógica de negocio para HistorialCita.
  *
- * Proporciona la lógica de negocio asociada a HistorialCitaService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de HistorialCitaService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 @RequiredArgsConstructor

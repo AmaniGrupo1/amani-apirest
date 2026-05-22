@@ -20,9 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Servicio PsicologoAdminService.
+ * Servicio que implementa la lógica de negocio para PsicologoAdmin.
  *
- * Proporciona la lógica de negocio asociada a PsicologoAdminService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de PsicologoAdminService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 @RequiredArgsConstructor
@@ -33,9 +37,9 @@ public class PsicologoAdminService {
 
     // Actualizar psicólogo
     /**
-     * Método update.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public PsicologoConPacientesDTO update(Long idPsicologo, PsicologoRequestDTO request) {
         Psicologo psicologo = getPsicologoOrThrow(idPsicologo);
@@ -53,9 +57,9 @@ public class PsicologoAdminService {
 
     // Eliminar psicólogo
     /**
-     * Método delete.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void delete(Long idPsicologo) {
         Psicologo psicologo = getPsicologoOrThrow(idPsicologo);
@@ -64,9 +68,9 @@ public class PsicologoAdminService {
 
     // Listar psicólogos con sus pacientes
     /**
-     * Método getPsicologosConPacientes.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<PsicologoConPacientesDTO> getPsicologosConPacientes() {
 
@@ -161,9 +165,9 @@ public class PsicologoAdminService {
 
     //OBTNER PSICOLOGO LOGUEADO
     /**
-     * Método getPsicologoLogueado.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public Psicologo getPsicologoLogueado() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -174,9 +178,9 @@ public class PsicologoAdminService {
     }
 
     /**
-     * Método getPacientesDelPsicologoLogueado.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<PacientePsicologoResponseDTO> getPacientesDelPsicologoLogueado() {
         Psicologo psicologo = getPsicologoLogueado();

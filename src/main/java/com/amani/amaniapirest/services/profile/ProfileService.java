@@ -31,9 +31,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- * Servicio ProfileService.
+ * Servicio que implementa la lógica de negocio para Profile.
  *
- * Proporciona la lógica de negocio asociada a ProfileService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de ProfileService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 @RequiredArgsConstructor
@@ -49,9 +53,9 @@ public class ProfileService {
 
 
     /**
-     * Método updateProfilePhoto.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public PsicologoDTO updateProfilePhoto(Long idPsicologo, MultipartFile file) {
         Psicologo psicologo = psicologoRepository.findById(idPsicologo)
@@ -87,9 +91,9 @@ public class ProfileService {
 
 
     /**
-     * Método obtenerPsicologoAsignado.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public PsicologoDTO obtenerPsicologoAsignado(Long idPaciente) {
 
@@ -121,9 +125,9 @@ public class ProfileService {
     }
 
     /**
-     * Método updatePsicologoProfile.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     @Transactional
     public UpdatePsicologoResponseDTO updatePsicologoProfile(Long idPsicologo, UpdatePsicologoRequestDTO dto) {
@@ -178,9 +182,9 @@ public class ProfileService {
     //-------------------------------------------
 
     /**
-     * Método getAdminProfile.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     @Transactional
     public AdminDTO getAdminProfile(Long idUsuario) {
@@ -202,9 +206,9 @@ public class ProfileService {
     }
 
     /**
-     * Método updateAdminProfile.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     @Transactional
     public AdminResponseDTO updateAdminProfile(Long idUsuario, UpdateAdminRequestDTO dto) {
@@ -254,9 +258,9 @@ public class ProfileService {
 
 
     /**
-     * Método updateAdminPhoto.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public AdminDTO updateAdminPhoto(Long idUsuario, MultipartFile file) {
 
@@ -289,9 +293,9 @@ public class ProfileService {
     // PACIENTE
     //-------------------------------------------
     /**
-     * Método getPacienteProfile.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     @Transactional
     public PacienteDTO getPacienteProfile(Long idPaciente) {
@@ -319,9 +323,9 @@ public class ProfileService {
     }
 
     /**
-     * Método updatePacienteProfile.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     @Transactional
     public PacienteResponseDTO updatePacienteProfile(Long idPaciente, UpdatePacienteRequestDTO dto) {
@@ -386,9 +390,9 @@ public class ProfileService {
 
 
     /**
-     * Método updatePacientePhoto.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public PacienteDTO updatePacientePhoto(Long idPaciente, MultipartFile file) {
 

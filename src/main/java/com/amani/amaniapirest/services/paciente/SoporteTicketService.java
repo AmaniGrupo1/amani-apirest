@@ -27,9 +27,9 @@ public class SoporteTicketService {
     private final UsuarioRepository usuarioRepository;
 
     /**
-     * Método SoporteTicketService.
+     * Ejecuta la operación correspondiente a SoporteTicketService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public SoporteTicketService(TicketSoporteRepository ticketSoporteRepository,
                                 UsuarioRepository usuarioRepository) {

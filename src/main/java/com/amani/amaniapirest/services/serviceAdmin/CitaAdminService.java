@@ -19,7 +19,12 @@ import java.util.stream.Collectors;
 /**
  * Servicio de administración para consultar y gestionar todas las citas del sistema.
  *
- * @see com.amani.amaniapirest.dto.dtoAdmin.response.CitaAdminResponseDTO
+ * <p>Permite al panel de administración listar, consultar, crear y actualizar citas
+ * entre pacientes y psicólogos, sin restricción de propietario. Cada operación
+ * valida la existencia de los recursos referenciados antes de persistir.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 @Service
 public class CitaAdminService {
@@ -28,11 +33,6 @@ public class CitaAdminService {
     private final PacientesRepository pacientesRepository;
     private final PsicologoRepository psicologoRepository;
 
-    /**
-     * Método CitaAdminService.
-     *
-     * @return el resultado de la operación
-     */
     public CitaAdminService(CitaRepository citaRepository,
                             PacientesRepository pacientesRepository,
                             PsicologoRepository psicologoRepository) {
@@ -42,9 +42,9 @@ public class CitaAdminService {
     }
 
     /**
-     * Método findAllAdmin.
+     * Obtiene todas las citas del sistema con datos completos de paciente y psicólogo.
      *
-     * @return el resultado de la operación
+     * @return lista de {@link CitaAdminResponseDTO} con la información de todas las citas.
      */
     public List<CitaAdminResponseDTO> findAllAdmin() {
         return citaRepository.findAll()
@@ -53,13 +53,25 @@ public class CitaAdminService {
                 .collect(Collectors.toList());
     }
 
-    /** Obtiene una cita específica con datos completos (admin). */
+    /**
+     * Obtiene los datos completos de una cita identificada por su ID.
+     *
+     * @param id identificador único de la cita.
+     * @return {@link CitaAdminResponseDTO} con la información de la cita.
+     * @throws RuntimeException si no existe una cita con el identificador proporcionado.
+     */
     public CitaAdminResponseDTO findByIdAdmin(Long id) {
         Cita cita = getCitaOrThrow(id);
         return toAdminResponse(cita);
     }
 
-    /** Crea una nueva cita desde la vista admin. */
+    /**
+     * Crea una nueva cita asignando el paciente, psicólogo, fecha, duración, estado y motivo.
+     *
+     * @param request DTO con los datos necesarios para crear la cita.
+     * @return {@link CitaAdminResponseDTO} con los datos de la cita recién creada.
+     * @throws RuntimeException si el paciente o el psicólogo referenciado no existe.
+     */
     public CitaAdminResponseDTO createAdmin(CitaRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
         Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
@@ -76,7 +88,17 @@ public class CitaAdminService {
         return toAdminResponse(citaRepository.save(cita));
     }
 
-    /** Actualiza una cita existente desde la vista admin. */
+    /**
+     * Actualiza los datos de una cita existente identificada por su ID.
+     *
+     * <p>Reemplaza el paciente, el psicólogo, la fecha, la duración, el estado y el motivo
+     * con los valores del DTO proporcionado. Actualiza automáticamente la fecha de modificación.</p>
+     *
+     * @param id      identificador de la cita a actualizar.
+     * @param request DTO con los nuevos valores de la cita.
+     * @return {@link CitaAdminResponseDTO} con los datos actualizados.
+     * @throws RuntimeException si la cita, el paciente o el psicólogo no existen.
+     */
     public CitaAdminResponseDTO updateAdmin(Long id, CitaRequestDTO request) {
         Cita cita = getCitaOrThrow(id);
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
@@ -121,7 +143,12 @@ public class CitaAdminService {
         }
     }
 
-    /** Convierte una entidad Cita a CitaAdminResponseDTO con datos completos. */
+    /**
+     * Convierte una entidad {@link Cita} en su representación DTO para el panel de administración.
+     *
+     * @param cita entidad a convertir.
+     * @return {@link CitaAdminResponseDTO} con los datos del paciente, psicólogo y la cita.
+     */
     private CitaAdminResponseDTO toAdminResponse(Cita cita) {
         return new CitaAdminResponseDTO(
                 cita.getPaciente().getUsuario().getNombre(),

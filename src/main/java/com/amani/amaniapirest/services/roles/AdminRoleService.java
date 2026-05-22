@@ -25,9 +25,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Servicio AdminRoleService.
+ * Servicio que implementa la lógica de negocio para AdminRole.
  *
- * Proporciona la lógica de negocio asociada a AdminRoleService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de AdminRoleService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 @RequiredArgsConstructor
@@ -42,9 +46,9 @@ public class AdminRoleService {
     private final SecurityConfig securityConfig;
 
     /**
-     * Método cambiarRol.
+     * Ejecuta la operación correspondiente a cambiarRol.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     @Transactional
     public CambiarRolResponseDTO cambiarRol(CambiarRolRequestDTO request) {
@@ -242,9 +246,9 @@ public class AdminRoleService {
     }
 
     /**
-     * Método getUsuarios.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<UsuarioDTO> getUsuarios(String rol, String dni) {
 

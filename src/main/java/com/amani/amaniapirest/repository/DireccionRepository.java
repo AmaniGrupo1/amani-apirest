@@ -6,18 +6,25 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * Repositorio JPA para operaciones de persistencia sobre la entidad {@link Direccion}.
+ * Repositorio de acceso a datos para la gestión de direcciones postales asociadas a los pacientes.
  *
- * <p>Extiende {@link JpaRepository} para proveer operaciones CRUD basicas.
- * Incluye consulta para listar direcciones por paciente.</p>
+ * <p>Un paciente puede tener registradas múltiples direcciones (domicilio habitual,
+ * dirección de facturación, etc.). Extiende {@link JpaRepository} para proveer
+ * operaciones CRUD estándar.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 public interface DireccionRepository extends JpaRepository<Direccion, Long> {
 
     /**
-     * Obtiene todas las direcciones registradas para un paciente.
+     * Recupera todas las direcciones registradas para un paciente concreto.
      *
-     * @param idPaciente identificador del paciente
-     * @return lista de direcciones del paciente
+     * <p>Permite obtener el listado completo de domicilios del paciente, utilizado
+     * en la gestión del perfil y en procesos de facturación.</p>
+     *
+     * @param idPaciente Identificador único del paciente.
+     * @return Lista de {@link Direccion} del paciente; lista vacía si no tiene direcciones registradas.
      */
     List<Direccion> findByPaciente_IdPaciente(Long idPaciente);
 }

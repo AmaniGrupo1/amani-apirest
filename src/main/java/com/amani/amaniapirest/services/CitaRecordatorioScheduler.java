@@ -31,9 +31,9 @@ public class CitaRecordatorioScheduler {
     private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * Método CitaRecordatorioScheduler.
+     * Ejecuta la operación correspondiente a CitaRecordatorioScheduler.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public CitaRecordatorioScheduler(CitaRepository citaRepository,
                                       ApplicationEventPublisher eventPublisher) {

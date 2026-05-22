@@ -60,6 +60,7 @@ skills-lock.json
 src/main/resources/serviceAccountKey.json
 ### Firebase / GCP Service Account Keys ###
 *serviceAccount*.json
+*service-account*.json
 firebase-*.json
 *.key.json
 gcp-*.json

@@ -22,9 +22,9 @@ public class ProgresoEmocionalAdminService {
     private final PacientesRepository pacientesRepository;
 
     /**
-     * Método ProgresoEmocionalAdminService.
+     * Ejecuta la operación correspondiente a ProgresoEmocionalAdminService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public ProgresoEmocionalAdminService(ProgresoEmocionalRepository progresoRepository,
                                          PacientesRepository pacientesRepository) {
@@ -33,9 +33,9 @@ public class ProgresoEmocionalAdminService {
     }
 
     /**
-     * Método findAll.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<ProgresoEmocionalAdminResponseDTO> findAll() {
         return progresoRepository.findAll().stream()
@@ -44,9 +44,9 @@ public class ProgresoEmocionalAdminService {
     }
 
     /**
-     * Método findById.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public ProgresoEmocionalAdminResponseDTO findById(Long idProgreso) {
         return toResponse(getProgresoOrThrow(idProgreso));
@@ -66,9 +66,9 @@ public class ProgresoEmocionalAdminService {
     }
 
     /**
-     * Método update.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public ProgresoEmocionalAdminResponseDTO update(Long idProgreso, ProgresoEmocionalRequestDTO request) {
         ProgresoEmocional progreso = getProgresoOrThrow(idProgreso);
@@ -81,9 +81,9 @@ public class ProgresoEmocionalAdminService {
     }
 
     /**
-     * Método delete.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void delete(Long idProgreso) {
         ProgresoEmocional progreso = getProgresoOrThrow(idProgreso);

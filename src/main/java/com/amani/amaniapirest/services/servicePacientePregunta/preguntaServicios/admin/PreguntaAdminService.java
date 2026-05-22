@@ -14,9 +14,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Servicio PreguntaAdminService.
+ * Servicio que implementa la lógica de negocio para PreguntaAdmin.
  *
- * Proporciona la lógica de negocio asociada a PreguntaAdminService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de PreguntaAdminService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 @RequiredArgsConstructor
@@ -26,9 +30,9 @@ public class PreguntaAdminService {
 
 
     /**
-     * Método findAll.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<OpcionAdminResponseDTO> findAll() {
         return preguntaRepository.findAll()
@@ -52,9 +56,9 @@ public class PreguntaAdminService {
     }
 
     /**
-     * Método create.
+     * Crea y persiste un nuevo registro en el sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public PreguntaPacienteResponseDTO create(OpcionAdminResDTO request) {
 
@@ -78,9 +82,9 @@ public class PreguntaAdminService {
     }
 
     /**
-     * Método delete.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void delete(Long idPregunta) {
 

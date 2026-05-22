@@ -23,9 +23,9 @@ public class SesionPsicologoService {
     private final UsuarioRepository usuarioRepository;
 
     /**
-     * Método SesionPsicologoService.
+     * Ejecuta la operación correspondiente a SesionPsicologoService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public SesionPsicologoService(SesionRepository sesionRepository, UsuarioRepository usuarioRepository) {
         this.sesionRepository = sesionRepository;
@@ -33,9 +33,9 @@ public class SesionPsicologoService {
     }
 
     /**
-     * Método findAllByPsicologo.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<SesionPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
         return sesionRepository.findByPsicologo_IdPsicologo(idPsicologo)
@@ -43,9 +43,9 @@ public class SesionPsicologoService {
     }
 
     /**
-     * Método findById.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public SesionPsicologoResponseDTO findById(Long idSesion) {
         return toResponse(getSesionOrThrow(idSesion));
@@ -65,9 +65,9 @@ public class SesionPsicologoService {
     }
 
     /**
-     * Método update.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public SesionPsicologoResponseDTO update(Long idSesion, SesionRequestDTO request) {
         Sesion sesion = getSesionOrThrow(idSesion);
@@ -79,9 +79,9 @@ public class SesionPsicologoService {
     }
 
     /**
-     * Método delete.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void delete(Long idSesion) {
         sesionRepository.delete(getSesionOrThrow(idSesion));

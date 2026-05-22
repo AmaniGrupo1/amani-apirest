@@ -17,9 +17,9 @@ public class UsuarioPacienteService {
     private final UsuarioRepository usuarioRepository;
 
     /**
-     * Método UsuarioPacienteService.
+     * Ejecuta la operación correspondiente a UsuarioPacienteService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public UsuarioPacienteService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;

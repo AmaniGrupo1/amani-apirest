@@ -18,9 +18,9 @@ public class PsicologoService {
     private final PsicologoRepository psicologoRepository;
 
     /**
-     * Método PsicologoService.
+     * Ejecuta la operación correspondiente a PsicologoService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public PsicologoService(PsicologoRepository psicologoRepository) {
         this.psicologoRepository = psicologoRepository;
@@ -31,9 +31,9 @@ public class PsicologoService {
     }
 
     /**
-     * Método findById.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public PsicologoResponseDTO findById(Long idPsicologo) {
         return toResponse(getPsicologoOrThrow(idPsicologo));

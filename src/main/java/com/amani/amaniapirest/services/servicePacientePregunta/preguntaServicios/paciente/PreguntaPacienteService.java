@@ -19,9 +19,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Servicio PreguntaPacienteService.
+ * Servicio que implementa la lógica de negocio para PreguntaPaciente.
  *
- * Proporciona la lógica de negocio asociada a PreguntaPacienteService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de PreguntaPacienteService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 @RequiredArgsConstructor
@@ -48,9 +52,9 @@ public class PreguntaPacienteService {
 
     // Devuelve todas las preguntas convertidas a DTO
     /**
-     * Método getPreguntas.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<PreguntaPacienteResponseDTO> getPreguntas(){
         return preguntaRepository.findAllWithOpciones()
@@ -60,9 +64,9 @@ public class PreguntaPacienteService {
     }
 
     /**
-     * Método responder.
+     * Ejecuta la operación correspondiente a responder.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public ResultadoTestResponseDTO responder(
             Long idPaciente,

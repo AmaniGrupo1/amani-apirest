@@ -29,9 +29,9 @@ public class NotificationServices {
     private final NotificacionRepository notificacionRepository;
 
     /**
-     * Método enviarNotificacion.
+     * Procesa y envía el elemento indicado.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void enviarNotificacion(Usuario usuario, String titulo, String mensaje) {
         if (usuario == null) return;
@@ -57,9 +57,9 @@ public class NotificationServices {
     }
 
     /**
-     * Método getNotificaciones.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<NotificacionResponseDTO> getNotificaciones(Long idUsuario) {
         return notificacionRepository.findByUsuario_IdUsuarioOrderByCreadaEnDesc(idUsuario)
@@ -69,9 +69,9 @@ public class NotificationServices {
     }
 
     /**
-     * Método marcarLeida.
+     * Actualiza el estado del registro indicado.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public NotificacionResponseDTO marcarLeida(Long id) {
         Notificacion n = notificacionRepository.findById(id)
@@ -82,9 +82,9 @@ public class NotificationServices {
     }
 
     /**
-     * Método marcarTodasLeidas.
+     * Actualiza el estado del registro indicado.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void marcarTodasLeidas(Long idUsuario) {
         List<Notificacion> lista =
@@ -96,9 +96,9 @@ public class NotificationServices {
     }
 
     /**
-     * Método contarNoLeidas.
+     * Ejecuta la operación correspondiente a contarNoLeidas.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public long contarNoLeidas(Long idUsuario) {
         return notificacionRepository.countByUsuario_IdUsuarioAndLeidaFalse(idUsuario);

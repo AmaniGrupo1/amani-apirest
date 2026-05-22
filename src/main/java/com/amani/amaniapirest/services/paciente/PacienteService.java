@@ -120,9 +120,9 @@ public class PacienteService {
 
 
     /**
-     * Método delete.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void delete(Long idPaciente) {
         Paciente paciente = getPacienteOrThrow(idPaciente);
@@ -151,9 +151,9 @@ public class PacienteService {
     // LISTAR PACIENTES SIN PSICOLOGOS ASIGNADOS
     //----------------------------------------------------------------------------------------------------
     /**
-     * Método getPacientesSinPsicologo.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<PacienteBasicoResponseDTO> getPacientesSinPsicologo() {
 

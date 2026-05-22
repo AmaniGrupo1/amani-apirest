@@ -13,7 +13,14 @@ import java.util.List;
 
 
 /**
- * Servicio de administración para gestionar las direcciones de todos los usuarios.
+ * Servicio de administración para gestionar las direcciones postales de los pacientes.
+ *
+ * <p>Permite al panel de administración listar, consultar, crear, actualizar y eliminar
+ * las direcciones asociadas a un paciente. En la creación y actualización se valida
+ * la existencia del paciente referenciado.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 @Service
 public class DireccionAdminService {
@@ -21,33 +28,36 @@ public class DireccionAdminService {
     private final DireccionRepository direccionRepository;
     private final PacientesRepository pacientesRepository;
 
-    /**
-     * Método DireccionAdminService.
-     *
-     * @return el resultado de la operación
-     */
     public DireccionAdminService(DireccionRepository direccionRepository, PacientesRepository pacientesRepository) {
         this.direccionRepository = direccionRepository;
         this.pacientesRepository = pacientesRepository;
     }
 
     /**
-     * Método findAll.
+     * Obtiene todas las direcciones registradas en el sistema.
      *
-     * @return el resultado de la operación
+     * @return lista de {@link DireccionAdminResponseDTO} con todas las direcciones.
      */
     public List<DireccionAdminResponseDTO> findAll() {
         return direccionRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Obtiene los datos de una dirección identificada por su ID.
+     *
+     * @param idDireccion identificador único de la dirección.
+     * @return {@link DireccionAdminResponseDTO} con los datos de la dirección.
+     * @throws RuntimeException si no existe una dirección con el identificador proporcionado.
+     */
     public DireccionAdminResponseDTO findById(Long idDireccion) {
         return toResponse(getDireccionOrThrow(idDireccion));
     }
 
     /**
-     * Método create.
+     * Crea una nueva dirección postal y la asocia al paciente indicado en el DTO.
      *
-     * @return el resultado de la operación
+     * @param direccion DTO con los datos de la nueva dirección y el ID del paciente.
+     * @return {@link DireccionAdminResponseDTO} con los datos de la dirección creada.
      */
     public DireccionAdminResponseDTO create(DireccionRequestDTO direccion) {
         // Validamos paciente
@@ -64,9 +74,11 @@ public class DireccionAdminService {
     }
 
     /**
-     * Método update.
+     * Actualiza los campos de una dirección existente identificada por el ID de la entidad.
      *
-     * @return el resultado de la operación
+     * @param direccion entidad con el ID de la dirección a actualizar y los nuevos valores.
+     * @return {@link DireccionAdminResponseDTO} con los datos actualizados.
+     * @throws RuntimeException si la dirección o el paciente referenciado no existen.
      */
     public DireccionAdminResponseDTO update(Direccion direccion) {
         Direccion existing = getDireccionOrThrow(direccion.getIdDireccion());
@@ -87,9 +99,10 @@ public class DireccionAdminService {
     }
 
     /**
-     * Método delete.
+     * Elimina una dirección del sistema por su identificador.
      *
-     * @return el resultado de la operación
+     * @param idDireccion identificador de la dirección a eliminar.
+     * @throws RuntimeException si no existe una dirección con el identificador proporcionado.
      */
     public void delete(Long idDireccion) {
         direccionRepository.delete(getDireccionOrThrow(idDireccion));

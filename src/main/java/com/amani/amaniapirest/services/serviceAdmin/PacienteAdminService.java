@@ -23,9 +23,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Servicio PacienteAdminService.
+ * Servicio que implementa la lógica de negocio para PacienteAdmin.
  *
- * Proporciona la lógica de negocio asociada a PacienteAdminService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de PacienteAdminService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 @RequiredArgsConstructor

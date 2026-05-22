@@ -20,9 +20,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Servicio PsicologoSelfService.
+ * Servicio que implementa la lógica de negocio para PsicologoSelf.
  *
- * Proporciona la lógica de negocio asociada a PsicologoSelfService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de PsicologoSelfService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @RequiredArgsConstructor
 @Service
@@ -44,9 +48,9 @@ public class PsicologoSelfService {
 
     // Listo todos los psicologos que se han dado de baja
     /**
-     * Método findAllPsicologosBaja.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<PsicologoSelfResponseDTO> findAllPsicologosBaja() {
         return psicologoRepository.findByUsuario_ActivoFalse().stream()

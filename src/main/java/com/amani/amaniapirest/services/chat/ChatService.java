@@ -39,9 +39,9 @@ public class ChatService {
     private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * Método ChatService.
+     * Ejecuta la operación correspondiente a ChatService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public ChatService(MensajeRepository mensajeRepository,
                        UsuarioRepository usuarioRepository,

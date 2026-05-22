@@ -25,9 +25,9 @@ public class PacientePsicologoService {
     private final PacientesRepository pacientesRepository;
 
     /**
-     * Método PacientePsicologoService.
+     * Ejecuta la operación correspondiente a PacientePsicologoService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public PacientePsicologoService(PacientesRepository pacientesRepository) {
         this.pacientesRepository = pacientesRepository;

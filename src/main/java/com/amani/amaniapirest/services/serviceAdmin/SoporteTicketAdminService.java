@@ -19,9 +19,9 @@ public class SoporteTicketAdminService {
     private final TicketSoporteRepository ticketSoporteRepository;
 
     /**
-     * Método SoporteTicketAdminService.
+     * Ejecuta la operación correspondiente a SoporteTicketAdminService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public SoporteTicketAdminService(TicketSoporteRepository ticketSoporteRepository) {
         this.ticketSoporteRepository = ticketSoporteRepository;

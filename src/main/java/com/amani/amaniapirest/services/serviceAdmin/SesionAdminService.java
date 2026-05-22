@@ -21,9 +21,9 @@ public class SesionAdminService {
     private final SesionRepository sesionRepository;
 
     /**
-     * Método SesionAdminService.
+     * Ejecuta la operación correspondiente a SesionAdminService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public SesionAdminService(SesionRepository sesionRepository) {
         this.sesionRepository = sesionRepository;
@@ -34,9 +34,9 @@ public class SesionAdminService {
     }
 
     /**
-     * Método findById.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public SesionAdminResponseDTO findById(Long idSesion) {
         return toResponse(getSesionOrThrow(idSesion));
@@ -55,9 +55,9 @@ public class SesionAdminService {
     }
 
     /**
-     * Método update.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public SesionAdminResponseDTO update(Long idSesion, SesionRequestDTO request) {
         Sesion sesion = getSesionOrThrow(idSesion);
@@ -71,9 +71,9 @@ public class SesionAdminService {
     }
 
     /**
-     * Método delete.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void delete(Long idSesion) {
         sesionRepository.delete(getSesionOrThrow(idSesion));

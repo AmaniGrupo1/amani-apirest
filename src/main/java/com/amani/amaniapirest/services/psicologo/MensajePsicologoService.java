@@ -23,9 +23,9 @@ public class MensajePsicologoService {
     private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * Método MensajePsicologoService.
+     * Ejecuta la operación correspondiente a MensajePsicologoService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public MensajePsicologoService(MensajeRepository mensajeRepository, UsuarioRepository usuarioRepository, ApplicationEventPublisher eventPublisher) {
         this.mensajeRepository = mensajeRepository;
@@ -34,9 +34,9 @@ public class MensajePsicologoService {
     }
 
     /**
-     * Método findEnviados.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<MensajePsicologoResponseDTO> findEnviados(Long idUsuario) {
         return mensajeRepository.findBySender_IdUsuario(idUsuario)
@@ -44,9 +44,9 @@ public class MensajePsicologoService {
     }
 
     /**
-     * Método findRecibidos.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<MensajePsicologoResponseDTO> findRecibidos(Long idUsuario) {
         return mensajeRepository.findByReceiver_IdUsuario(idUsuario)
@@ -54,9 +54,9 @@ public class MensajePsicologoService {
     }
 
     /**
-     * Método create.
+     * Crea y persiste un nuevo registro en el sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public MensajePsicologoResponseDTO create(MensajeRequestDTO request) {
         Usuario sender = getUsuarioOrThrow(request.getIdSender());
@@ -76,9 +76,9 @@ public class MensajePsicologoService {
     }
 
     /**
-     * Método marcarLeido.
+     * Actualiza el estado del registro indicado.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public MensajePsicologoResponseDTO marcarLeido(Long idMensaje) {
         Mensaje mensaje = getMensajeOrThrow(idMensaje);
@@ -87,9 +87,9 @@ public class MensajePsicologoService {
     }
 
     /**
-     * Método delete.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void delete(Long idMensaje) {
         mensajeRepository.delete(getMensajeOrThrow(idMensaje));

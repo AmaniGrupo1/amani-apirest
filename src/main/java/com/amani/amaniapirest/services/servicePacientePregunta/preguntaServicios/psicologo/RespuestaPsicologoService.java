@@ -9,9 +9,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Servicio RespuestaPsicologoService.
+ * Servicio que implementa la lógica de negocio para RespuestaPsicologo.
  *
- * Proporciona la lógica de negocio asociada a RespuestaPsicologoService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de RespuestaPsicologoService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 @RequiredArgsConstructor

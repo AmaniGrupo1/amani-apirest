@@ -6,9 +6,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 /**
- * Servicio EmailService.
+ * Servicio que implementa la lógica de negocio para Email.
  *
- * Proporciona la lógica de negocio asociada a EmailService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de EmailService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 public class EmailService {
@@ -18,9 +22,9 @@ public class EmailService {
     private final JavaMailSender mailSender;
 
     /**
-     * Método EmailService.
+     * Ejecuta la operación correspondiente a EmailService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;

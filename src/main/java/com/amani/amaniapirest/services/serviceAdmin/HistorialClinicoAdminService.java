@@ -15,7 +15,12 @@ import java.util.stream.Collectors;
 /**
  * Servicio de administración para gestionar el historial clínico de todos los pacientes.
  *
- * @see com.amani.amaniapirest.dto.dtoAdmin.response.HistorialClinicoAdminResponseDTO
+ * <p>Proporciona operaciones CRUD sobre los registros de historial clínico desde el
+ * panel de administración, sin restricción de propietario. Cada operación de escritura
+ * valida la existencia del paciente referenciado antes de persistir.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 @Service
 public class HistorialClinicoAdminService {
@@ -23,11 +28,6 @@ public class HistorialClinicoAdminService {
     private final HistorialClinicoRepository historialClinicoRepository;
     private final PacientesRepository pacientesRepository;
 
-    /**
-     * Método HistorialClinicoAdminService.
-     *
-     * @return el resultado de la operación
-     */
     public HistorialClinicoAdminService(HistorialClinicoRepository historialClinicoRepository,
                                         PacientesRepository pacientesRepository) {
         this.historialClinicoRepository = historialClinicoRepository;
@@ -39,9 +39,9 @@ public class HistorialClinicoAdminService {
     // ============================
 
     /**
-     * Método findAllAdmin.
+     * Obtiene todos los registros de historial clínico del sistema.
      *
-     * @return el resultado de la operación
+     * @return lista de {@link HistorialClinicoAdminResponseDTO} con el detalle de cada registro.
      */
     public List<HistorialClinicoAdminResponseDTO> findAllAdmin() {
         return historialClinicoRepository.findAll()
@@ -51,9 +51,11 @@ public class HistorialClinicoAdminService {
     }
 
     /**
-     * Método findByIdAdmin.
+     * Obtiene un registro de historial clínico por su identificador.
      *
-     * @return el resultado de la operación
+     * @param idHistory identificador único del historial clínico.
+     * @return {@link HistorialClinicoAdminResponseDTO} con los datos del registro.
+     * @throws RuntimeException si no existe un historial con el identificador proporcionado.
      */
     public HistorialClinicoAdminResponseDTO findByIdAdmin(Long idHistory) {
         HistorialClinico historial = getHistorialOrThrow(idHistory);
@@ -61,9 +63,11 @@ public class HistorialClinicoAdminService {
     }
 
     /**
-     * Método createAdmin.
+     * Crea un nuevo registro de historial clínico para el paciente indicado.
      *
-     * @return el resultado de la operación
+     * @param request DTO con el ID del paciente, título, diagnóstico, tratamiento y observaciones.
+     * @return {@link HistorialClinicoAdminResponseDTO} con los datos del registro creado.
+     * @throws RuntimeException si el paciente referenciado no existe.
      */
     public HistorialClinicoAdminResponseDTO createAdmin(HistorialClinicoRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
@@ -80,9 +84,12 @@ public class HistorialClinicoAdminService {
     }
 
     /**
-     * Método updateAdmin.
+     * Actualiza un registro de historial clínico existente.
      *
-     * @return el resultado de la operación
+     * @param idHistory identificador del registro a actualizar.
+     * @param request   DTO con los nuevos valores del historial.
+     * @return {@link HistorialClinicoAdminResponseDTO} con los datos actualizados.
+     * @throws RuntimeException si el historial o el paciente referenciado no existen.
      */
     public HistorialClinicoAdminResponseDTO updateAdmin(Long idHistory, HistorialClinicoRequestDTO request) {
         HistorialClinico historial = getHistorialOrThrow(idHistory);
@@ -98,9 +105,10 @@ public class HistorialClinicoAdminService {
     }
 
     /**
-     * Método deleteAdmin.
+     * Elimina un registro de historial clínico por su identificador.
      *
-     * @return el resultado de la operación
+     * @param idHistory identificador del registro a eliminar.
+     * @throws RuntimeException si no existe un historial con el identificador proporcionado.
      */
     public void deleteAdmin(Long idHistory) {
         historialClinicoRepository.delete(getHistorialOrThrow(idHistory));

@@ -13,9 +13,13 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Servicio FileStorageService.
+ * Servicio que implementa la lógica de negocio para FileStorage.
  *
- * Proporciona la lógica de negocio asociada a FileStorageService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de FileStorageService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 public class FileStorageService {

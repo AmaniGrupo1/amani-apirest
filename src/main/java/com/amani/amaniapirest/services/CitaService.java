@@ -43,9 +43,9 @@ public class CitaService {
     private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * Método CitaService.
+     * Ejecuta la operación correspondiente a CitaService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public CitaService(CitaRepository citaRepository,
                        PacientesRepository pacientesRepository,

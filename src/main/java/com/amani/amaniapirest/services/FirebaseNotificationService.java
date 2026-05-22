@@ -25,9 +25,9 @@ public class FirebaseNotificationService {
     private final PushNotificationGateway pushGateway;
 
     /**
-     * Método FirebaseNotificationService.
+     * Ejecuta la operación correspondiente a FirebaseNotificationService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public FirebaseNotificationService(PushNotificationGateway pushGateway) {
         this.pushGateway = pushGateway;

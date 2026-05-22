@@ -20,9 +20,9 @@ public class DireccionPsicologoService {
     private final PacientesRepository pacientesRepository;
 
     /**
-     * Método DireccionPsicologoService.
+     * Ejecuta la operación correspondiente a DireccionPsicologoService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public DireccionPsicologoService(DireccionRepository direccionRepository, PacientesRepository pacientesRepository) {
         this.direccionRepository = direccionRepository;

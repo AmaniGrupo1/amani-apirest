@@ -12,7 +12,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Servicio de negocio para gestionar el diario emocional de los pacientes.
+ * Gestiona el ciclo de vida de las entradas del diario emocional de los pacientes.
+ *
+ * <p>Cada entrada registra la emoción predominante del día, su intensidad, un título
+ * y una nota libre. Las entradas se vinculan siempre a un {@link Paciente} existente
+ * y pueden filtrarse por paciente para obtener su historial emocional completo.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 @Service
 public class DiarioEmocionService {
@@ -21,9 +28,10 @@ public class DiarioEmocionService {
     private final PacientesRepository pacientesRepository;
 
     /**
-     * Método DiarioEmocionService.
+     * Construye el servicio con sus dependencias de repositorio.
      *
-     * @return el resultado de la operación
+     * @param diarioEmocionRepository repositorio JPA de {@link DiarioEmocion}
+     * @param pacientesRepository     repositorio JPA de {@link Paciente}
      */
     public DiarioEmocionService(DiarioEmocionRepository diarioEmocionRepository,
                                 PacientesRepository pacientesRepository) {

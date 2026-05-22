@@ -41,9 +41,9 @@ public class PaymentService {
     private static final BigDecimal DEFAULT_SESSION_PRICE = new BigDecimal("50.00");
 
     /**
-     * Método createPaymentIntent.
+     * Crea y persiste un nuevo registro en el sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     @Transactional
     public PaymentIntentResponse createPaymentIntent(CreatePaymentIntentRequest request, Long pacienteId) {
@@ -96,9 +96,9 @@ public class PaymentService {
     }
 
     /**
-     * Método refundPayment.
+     * Ejecuta la operación correspondiente a refundPayment.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     @Transactional
     public RefundResponse refundPayment(RefundRequest request) {

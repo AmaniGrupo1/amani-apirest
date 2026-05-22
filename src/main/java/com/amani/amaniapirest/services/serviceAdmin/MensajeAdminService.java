@@ -22,9 +22,9 @@ public class MensajeAdminService {
     private final UsuarioRepository usuarioRepository;
 
     /**
-     * Método MensajeAdminService.
+     * Ejecuta la operación correspondiente a MensajeAdminService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public MensajeAdminService(MensajeRepository mensajeRepository, UsuarioRepository usuarioRepository) {
         this.mensajeRepository = mensajeRepository;
@@ -32,9 +32,9 @@ public class MensajeAdminService {
     }
 
     /**
-     * Método findAll.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<MensajeAdminResponseDTO> findAll() {
         return mensajeRepository.findAll().stream()
@@ -42,9 +42,9 @@ public class MensajeAdminService {
     }
 
     /**
-     * Método findById.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public MensajeAdminResponseDTO findById(Long idMensaje) {
         return toResponse(getMensajeOrThrow(idMensaje));
@@ -65,9 +65,9 @@ public class MensajeAdminService {
     }
 
     /**
-     * Método marcarLeido.
+     * Actualiza el estado del registro indicado.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public MensajeAdminResponseDTO marcarLeido(Long idMensaje) {
         Mensaje mensaje = getMensajeOrThrow(idMensaje);
@@ -76,9 +76,9 @@ public class MensajeAdminService {
     }
 
     /**
-     * Método delete.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void delete(Long idMensaje) {
         mensajeRepository.delete(getMensajeOrThrow(idMensaje));

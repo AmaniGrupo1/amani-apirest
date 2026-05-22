@@ -28,9 +28,9 @@ public class CitaServicePsicologo {
     private final CitaRepository citaRepository;
 
     /**
-     * Método CitaServicePsicologo.
+     * Ejecuta la operación correspondiente a CitaServicePsicologo.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public CitaServicePsicologo(CitaRepository citaRepository) {
         this.citaRepository = citaRepository;
@@ -42,9 +42,9 @@ public class CitaServicePsicologo {
     // =========================================
 
     /**
-     * Método findAllByPsicologo.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<CitaPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
 
@@ -59,9 +59,9 @@ public class CitaServicePsicologo {
     // =========================================
 
     /**
-     * Método findByIdPsicologo.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public CitaPsicologoResponseDTO findByIdPsicologo(Long id) {
 
@@ -76,9 +76,9 @@ public class CitaServicePsicologo {
     // =========================================
 
     /**
-     * Método updateEstadoCita.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public CitaPsicologoResponseDTO updateEstadoCita(Long id, CitaRequestDTO request) {
 
@@ -97,9 +97,9 @@ public class CitaServicePsicologo {
 
     // Agenda mensual consolidada del psicólogo
     /**
-     * Método getAgendaPsicologoMes.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<AgendaPsicologoItemDTO> getAgendaPsicologoMes(Long idPsicologo, String month) {
         YearMonth yearMonth = YearMonth.parse(month);
@@ -126,9 +126,9 @@ public class CitaServicePsicologo {
 
     // Disponibilidad diaria del psicólogo
     /**
-     * Método getDisponibilidadPsicologo.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public DisponibilidadPsicologoDTO getDisponibilidadPsicologo(Long idPsicologo, LocalDate fecha) {
         // Franja de trabajo por defecto: 08:00 a 20:00
@@ -204,9 +204,9 @@ public class CitaServicePsicologo {
 
     // Cancela una cita (cambia su estado a cancelada)
     /**
-     * Método cancelarCita.
+     * Ejecuta la operación correspondiente a cancelarCita.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void cancelarCita(Long idCita) {
         Cita cita = citaRepository.findById(idCita)
@@ -217,9 +217,9 @@ public class CitaServicePsicologo {
     }
 
     /**
-     * Método cambiarEstado.
+     * Ejecuta la operación correspondiente a cambiarEstado.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     @Transactional
     public void cambiarEstado(Long idCita, EstadoCita nuevoEstado) {

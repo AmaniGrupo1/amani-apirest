@@ -21,9 +21,9 @@ public class UsuarioAdminService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Método UsuarioAdminService.
+     * Ejecuta la operación correspondiente a UsuarioAdminService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public UsuarioAdminService(UsuarioRepository usuarioRepository,
                                PasswordEncoder passwordEncoder) {
@@ -32,9 +32,9 @@ public class UsuarioAdminService {
     }
 
     /**
-     * Método findAll.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<UsuarioAdminResponseDTO> findAll() {
         return usuarioRepository.findAll()
@@ -44,9 +44,9 @@ public class UsuarioAdminService {
     }
 
     /**
-     * Método findById.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public UsuarioAdminResponseDTO findById(Long idUsuario) {
         return toResponse(getUsuario(idUsuario));
@@ -68,9 +68,9 @@ public class UsuarioAdminService {
     }
 
     /**
-     * Método update.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public UsuarioAdminResponseDTO update(Long idUsuario, UsuarioRequestDTO request) {
 
@@ -85,9 +85,9 @@ public class UsuarioAdminService {
     }
 
     /**
-     * Método delete.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void delete(Long idUsuario) {
 

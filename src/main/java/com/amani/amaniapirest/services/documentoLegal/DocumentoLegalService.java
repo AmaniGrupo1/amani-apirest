@@ -13,9 +13,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Servicio DocumentoLegalService.
+ * Servicio que implementa la lógica de negocio para DocumentoLegal.
  *
- * Proporciona la lógica de negocio asociada a DocumentoLegalService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de DocumentoLegalService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 @RequiredArgsConstructor
@@ -27,9 +31,9 @@ public class DocumentoLegalService {
     // CREAR
     // =========================
     /**
-     * Método crearDocumento.
+     * Ejecuta la operación correspondiente a crearDocumento.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public DocumentoLegalResponseDTO crearDocumento(
             DocumentoLegalRequestDTO request
@@ -54,9 +58,9 @@ public class DocumentoLegalService {
     // LISTAR TODOS
     // =========================
     /**
-     * Método obtenerTodos.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public List<DocumentoLegalResponseDTO> obtenerTodos() {
 
@@ -70,9 +74,9 @@ public class DocumentoLegalService {
     // OBTENER POR ID
     // =========================
     /**
-     * Método obtenerPorId.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public DocumentoLegalResponseDTO obtenerPorId(
             Long idDocumento
@@ -91,9 +95,9 @@ public class DocumentoLegalService {
     // EDITAR
     // =========================
     /**
-     * Método editarDocumento.
+     * Ejecuta la operación correspondiente a editarDocumento.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public DocumentoLegalResponseDTO editarDocumento(
             Long idDocumento,
@@ -125,9 +129,9 @@ public class DocumentoLegalService {
     // ELIMINAR
     // =========================
     /**
-     * Método eliminarDocumento.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void eliminarDocumento(
             Long idDocumento
@@ -166,9 +170,9 @@ public class DocumentoLegalService {
 
 
     /**
-     * Método obtenerPorTipo.
+     * Obtiene y retorna la información correspondiente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public DocumentoLegalResponseDTO obtenerPorTipo(
             TipoDocumentoLegal tipo

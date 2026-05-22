@@ -29,9 +29,9 @@ public class MensajeService {
     private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * Método MensajeService.
+     * Ejecuta la operación correspondiente a MensajeService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public MensajeService(MensajeRepository mensajeRepository,
                           UsuarioRepository usuarioRepository,

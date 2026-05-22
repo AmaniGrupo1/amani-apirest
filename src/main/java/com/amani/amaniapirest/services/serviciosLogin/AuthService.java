@@ -29,9 +29,16 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Servicio AuthService.
+ * Gestiona la autenticación y el registro de usuarios en la plataforma.
  *
- * Proporciona la lógica de negocio asociada a AuthService.
+ * <p>Centraliza la lógica de inicio de sesión (validación de credenciales y generación de JWT),
+ * el registro de pacientes con soporte para menores de edad (tutores, direcciones, consentimientos),
+ * el registro de administradores, y las operaciones de alta y baja de psicólogos.
+ * También permite a un psicólogo autenticado crear cuentas de paciente y asignarlos
+ * automáticamente a su cartera.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 @Log4j
 @Service
@@ -53,9 +60,21 @@ public class AuthService {
 
     // ================= LOGIN =================
     /**
-     * Método login.
+     * Autentica a un usuario validando sus credenciales y genera un token JWT.
      *
-     * @return el resultado de la operación
+     * <p>Verifica que el usuario exista, que su cuenta esté activa y que la contraseña
+     * coincida con el hash almacenado. Para el rol psicólogo, comprueba además que
+     * el perfil profesional esté activo. Incluye en la respuesta los identificadores
+     * de psicólogo y paciente relevantes según el rol, así como las preferencias
+     * de idioma y tema del usuario.</p>
+     *
+     * @param request DTO con el email y la contraseña del usuario.
+     * @return {@link LoginResponseDTO} con el token JWT, datos del usuario e identificadores
+     *         de psicólogo/paciente asociados.
+     * @throws org.springframework.security.authentication.BadCredentialsException
+     *         si el email no existe o la contraseña es incorrecta.
+     * @throws org.springframework.security.authentication.DisabledException
+     *         si la cuenta del usuario o del psicólogo está desactivada.
      */
     public LoginResponseDTO login(LoginRequestDTO request) {
 
@@ -184,9 +203,19 @@ public class AuthService {
     }
     // ================= REGISTER PACIENTE =================
     /**
-     * Método registerPaciente.
+     * Registra un nuevo paciente con todos sus datos personales, consentimientos y entidades asociadas.
      *
-     * @return el resultado de la operación
+     * <p>Valida que se haya proporcionado fecha de nacimiento, que se acepten los términos
+     * y que el correo no esté ya registrado. Si el paciente es menor de edad (menos de 18 años),
+     * exige al menos un tutor legal. Persiste en cascada: usuario, paciente, consentimiento,
+     * situaciones clínicas, tutores y direcciones. Al finalizar genera y devuelve un JWT
+     * para que el usuario quede autenticado de inmediato.</p>
+     *
+     * @param request DTO con los datos del usuario, paciente, tutores, direcciones, situaciones y consentimientos.
+     * @return {@link LoginResponseDTO} con el token JWT y los identificadores del nuevo paciente.
+     * @throws RuntimeException si la fecha de nacimiento es nula, no se aceptan los términos,
+     *                          el correo ya está registrado, un menor no tiene tutores,
+     *                          o alguna situación referenciada no existe.
      */
     @Transactional
     public LoginResponseDTO registerPaciente(PacienteRequestDTO request) {
@@ -356,9 +385,14 @@ public class AuthService {
 
     // ================= REGISTER ADMIN =================
     /**
-     * Método registerAdmin.
+     * Registra un nuevo usuario con rol administrador en el sistema.
      *
-     * @return el resultado de la operación
+     * <p>Crea el usuario con estado activo, codifica la contraseña y genera un token JWT
+     * para que el administrador quede autenticado de inmediato tras el registro.
+     * No requiere perfil de paciente ni de psicólogo.</p>
+     *
+     * @param request DTO con nombre, apellido, email y contraseña del nuevo administrador.
+     * @return {@link LoginResponseDTO} con el token JWT y los datos del administrador creado.
      */
     public LoginResponseDTO registerAdmin(RegistryRequestDTO request) {
 
@@ -419,18 +453,17 @@ public class AuthService {
                 usuario.getNombre(),
                 usuario.getRol().name(),
                 token,
-                idPsicologo,   // 👈 AQUÍ
-                idPaciente,   // 👈 AQUÍ
+                idPsicologo,
+                idPaciente,
                 idioma,
                 tema
         );
     }
 
-    //Listo los administradores
     /**
-     * Método listarAdministradores.
+     * Obtiene la lista de todos los usuarios con rol administrador registrados en el sistema.
      *
-     * @return el resultado de la operación
+     * @return lista de {@link AdministradorDTO} con los datos de cada administrador activo e inactivo.
      */
     public List<AdministradorDTO> listarAdministradores() {
         List<Usuario> usuarios = usuarioRepository.findByRol(RolUsuario.admin);
@@ -447,53 +480,18 @@ public class AuthService {
                 .toList();
     }
 
-    // ================= REGISTER PSICOLOGO =================
-
-    /**
-     * public LoginResponseDTO registerPsicologo(RegistryRequestDTO request) {
-     * <p>
-     * Usuario usuario = new Usuario();
-     * usuario.setNombre(request.getNombre());
-     * usuario.setApellido(request.getApellido());
-     * usuario.setEmail(request.getEmail());
-     * usuario.setPassword(securityConfig.passwordEncoder().encode(request.getPassword()));
-     * usuario.setRol(RolUsuario.psicologo);
-     * usuario.setActivo(true);
-     * usuarioRepository.save(usuario);
-     * <p>
-     * Psicologo psicologo = new Psicologo();
-     * psicologo.setUsuario(usuario);
-     * <p>
-     * // opcional: otros campos
-     * psicologo.setEspecialidad();
-     * psicologo.setExperiencia(0);
-     * <p>
-     * psicologo = psicologoRepository.save(psicologo);
-     * <p>
-     * Long idPsicologo = psicologo.getIdPsicologo(); // ✅ ESTE es el bueno
-     * UserDetails userDetails = new User(
-     * usuario.getEmail(),
-     * usuario.getPassword(),
-     * List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name().toUpperCase()))
-     * );
-     * <p>
-     * String token = jwtUtil.generateToken(userDetails, usuario.getRol().name());
-     * <p>
-     * return new LoginResponseDTO(
-     * usuario.getIdUsuario(),
-     * usuario.getNombre(),
-     * usuario.getRol().name(),
-     * token,
-     * idPsicologo   // 👈 AQUÍ
-     * );
-     * }
-     **/
+    // Registro de psicólogo eliminado: la creación se gestiona exclusivamente desde el panel de administración.
 
     // ================= BAJA =================
     /**
-     * Método darBajaPsicologo.
+     * Desactiva la cuenta de un psicólogo y libera a todos sus pacientes asignados.
      *
-     * @return el resultado de la operación
+     * <p>Marca el usuario como inactivo y registra la fecha de baja. Para cada relación
+     * psicólogo-paciente activa (sin fecha de fin), cierra el periodo de asignación
+     * y elimina la referencia al psicólogo del perfil del paciente, dejándolo sin asignar.</p>
+     *
+     * @param idPsicologo identificador del psicólogo a dar de baja.
+     * @throws RuntimeException si no existe un psicólogo con el identificador proporcionado.
      */
     @Transactional
     public void darBajaPsicologo(Long idPsicologo) {
@@ -537,9 +535,13 @@ public class AuthService {
 
 
     /**
-     * Método darAltaPsicologo.
+     * Reactiva la cuenta de un psicólogo previamente dado de baja.
      *
-     * @return el resultado de la operación
+     * <p>Establece el usuario como activo y limpia la fecha de baja. Si el psicólogo
+     * no tenía fecha de registro, la inicializa con la fecha actual.</p>
+     *
+     * @param idPsicologo identificador del psicólogo a reactivar.
+     * @throws RuntimeException si no existe un psicólogo con el identificador proporcionado.
      */
     @Transactional
     public void darAltaPsicologo(Long idPsicologo) {
@@ -568,9 +570,18 @@ public class AuthService {
     }
 
     /**
-     * Método crearPacienteDesdePsicologo.
+     * Crea un nuevo paciente y lo asigna directamente al psicólogo autenticado.
      *
-     * @return el resultado de la operación
+     * <p>Valida que el correo no esté registrado, crea el usuario y el perfil de paciente,
+     * registra la relación psicólogo-paciente en la tabla intermedia con fecha de inicio,
+     * y persiste opcionalmente situaciones clínicas, tutores y direcciones. Devuelve un
+     * JWT para que el paciente pueda autenticarse sin pasos adicionales.</p>
+     *
+     * @param request        DTO con todos los datos del nuevo paciente.
+     * @param emailPsicologo email del psicólogo autenticado que crea el paciente.
+     * @return {@link LoginResponseDTO} con el token JWT del paciente creado e identificadores relevantes.
+     * @throws RuntimeException si el psicólogo no existe, el correo ya está registrado,
+     *                          o alguna situación referenciada no existe.
      */
     @Transactional
     public LoginResponseDTO crearPacienteDesdePsicologo(PacienteRequestDTO request,String emailPsicologo) {
@@ -608,7 +619,7 @@ public class AuthService {
 
         paciente = pacienteRepository.save(paciente);
 
-        // 5. 🔥 ASIGNACIÓN CORRECTA (TABLA INTERMEDIA)
+        // Registro de la relación psicólogo-paciente en la tabla intermedia
         PsicologoPaciente relacion = new PsicologoPaciente();
         relacion.setPaciente(paciente);
         relacion.setPsicologo(psicologo);

@@ -10,9 +10,13 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * Servicio SituacionService.
+ * Servicio que implementa la lógica de negocio para Situacion.
  *
- * Proporciona la lógica de negocio asociada a SituacionService.
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de SituacionService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
  */
 @Service
 @RequiredArgsConstructor
@@ -22,9 +26,9 @@ public class SituacionService {
 
     // CREAR
     /**
-     * Método create.
+     * Crea y persiste un nuevo registro en el sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public SituacionDTO create(SituacionRequest request) {
         Situacion s = new Situacion();
@@ -38,9 +42,9 @@ public class SituacionService {
 
     // ACTUALIZAR
     /**
-     * Método update.
+     * Actualiza la información de un registro existente.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public SituacionDTO update(Long id, SituacionRequest request) {
         Situacion s = repository.findById(id)
@@ -56,9 +60,9 @@ public class SituacionService {
 
     // ELIMINAR (soft delete recomendado)
     /**
-     * Método delete.
+     * Elimina un registro del sistema.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void delete(Long id) {
         Situacion s = repository.findById(id)

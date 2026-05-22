@@ -21,9 +21,9 @@ public class DiarioEmocionPsicologoService {
     private final PacientesRepository pacientesRepository;
 
     /**
-     * Método DiarioEmocionPsicologoService.
+     * Ejecuta la operación correspondiente a DiarioEmocionPsicologoService.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public DiarioEmocionPsicologoService(DiarioEmocionRepository diarioEmocionRepository,
                                          PacientesRepository pacientesRepository) {

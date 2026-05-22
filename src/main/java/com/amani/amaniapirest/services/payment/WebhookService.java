@@ -25,9 +25,9 @@ public class WebhookService {
     private final WebhookEventProcessor webhookEventProcessor;
 
     /**
-     * Método processWebhook.
+     * Ejecuta la operación correspondiente a processWebhook.
      *
-     * @return el resultado de la operación
+     * @return Resultado de la operación o entidad procesada.
      */
     public void processWebhook(String payload, String sigHeader) {
         if (sigHeader == null || sigHeader.isBlank()) {
