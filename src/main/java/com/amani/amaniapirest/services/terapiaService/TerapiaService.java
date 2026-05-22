@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio TerapiaService.
+ *
+ * Proporciona la lógica de negocio asociada a TerapiaService.
+ */
 @Service
 @RequiredArgsConstructor
 public class TerapiaService {
@@ -28,6 +33,11 @@ public class TerapiaService {
     }
 
 
+    /**
+     * Método crearTerapia.
+     *
+     * @return el resultado de la operación
+     */
     public TerapiaResponseDTO crearTerapia(TerapiaRequestDTO request) {
 
         TiposTerapia terapia = new TiposTerapia();
@@ -47,6 +57,11 @@ public class TerapiaService {
     }
 
 
+    /**
+     * Método actualizarTerapia.
+     *
+     * @return el resultado de la operación
+     */
     public TerapiaResponseDTO actualizarTerapia(Long id, TerapiaRequestDTO request) {
 
         TiposTerapia terapia = terapiaRepository.findById(id)
@@ -66,6 +81,11 @@ public class TerapiaService {
         );
     }
 
+    /**
+     * Método eliminarTerapia.
+     *
+     * @return el resultado de la operación
+     */
     public void eliminarTerapia(Long id) {
 
         TiposTerapia terapia = terapiaRepository.findById(id)

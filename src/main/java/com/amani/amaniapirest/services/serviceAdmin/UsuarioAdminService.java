@@ -20,12 +20,22 @@ public class UsuarioAdminService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Método UsuarioAdminService.
+     *
+     * @return el resultado de la operación
+     */
     public UsuarioAdminService(UsuarioRepository usuarioRepository,
                                PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Método findAll.
+     *
+     * @return el resultado de la operación
+     */
     public List<UsuarioAdminResponseDTO> findAll() {
         return usuarioRepository.findAll()
                 .stream()
@@ -33,6 +43,11 @@ public class UsuarioAdminService {
                 .toList();
     }
 
+    /**
+     * Método findById.
+     *
+     * @return el resultado de la operación
+     */
     public UsuarioAdminResponseDTO findById(Long idUsuario) {
         return toResponse(getUsuario(idUsuario));
     }
@@ -52,6 +67,11 @@ public class UsuarioAdminService {
         return toResponse(usuarioRepository.save(usuario));
     }
 
+    /**
+     * Método update.
+     *
+     * @return el resultado de la operación
+     */
     public UsuarioAdminResponseDTO update(Long idUsuario, UsuarioRequestDTO request) {
 
         Usuario usuario = getUsuario(idUsuario);
@@ -64,6 +84,11 @@ public class UsuarioAdminService {
         return toResponse(usuarioRepository.save(usuario));
     }
 
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long idUsuario) {
 
         Usuario usuario = getUsuario(idUsuario);

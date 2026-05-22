@@ -1,222 +1,34 @@
-# =============================================================================
-# Reglas de Alerta Prometheus — Amani API REST Producción
-# =============================================================================
-
 groups:
-
-  # ---------------------------------------------------------------------------
-  # Disponibilidad de la aplicación
-  # ---------------------------------------------------------------------------
-  - name: amani.availability
+  - name: amani-alerts
     rules:
-
-      - alert: AmaniApiDown
-        expr: up{job="amani-api"} == 0
+      - alert: InstanceDown
+        expr: up == 0
         for: 1m
         labels:
           severity: critical
-          team: backend
         annotations:
-          summary: "🚨 Amani API está CAÍDA"
-          description: "La instancia {{ $labels.instance }} del job {{ $labels.job }} lleva más de 1 minuto sin responder."
-          runbook_url: "https://github.com/AmaniGrupo1/amani-apirest/wiki/runbook-api-down"
+          summary: "Instancia {{ $labels.instance }} caída"
 
-      - alert: AmaniApiHighRestartRate
-        expr: changes(process_start_time_seconds{job="amani-api"}[15m]) > 2
-        for: 0m
-        labels:
-          severity: warning
-          team: backend
-        annotations:
-          summary: "⚠️ Amani API reiniciándose frecuentemente"
-          description: "La aplicación se ha reiniciado {{ $value }} veces en los últimos 15 minutos."
-
-  # ---------------------------------------------------------------------------
-  # Rendimiento HTTP
-  # ---------------------------------------------------------------------------
-  - name: amani.http
-    rules:
-
-      - alert: AmaniHighErrorRate
-        expr: |
-          sum(rate(http_server_requests_seconds_count{job="amani-api",status=~"5.."}[5m]))
-          /
-          sum(rate(http_server_requests_seconds_count{job="amani-api"}[5m])) > 0.05
-        for: 5m
-        labels:
-          severity: critical
-          team: backend
-        annotations:
-          summary: "🚨 Tasa de errores HTTP 5xx alta"
-          description: "La tasa de errores 5xx está en {{ $value | humanizePercentage }} (umbral: 5%)."
-
-      - alert: AmaniHighLatency
-        expr: |
-          histogram_quantile(0.95,
-            sum(rate(http_server_requests_seconds_bucket{job="amani-api"}[5m])) by (le, uri)
-          ) > 2
+      - alert: HighCPU
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 80
         for: 5m
         labels:
           severity: warning
-          team: backend
         annotations:
-          summary: "⚠️ Latencia P95 alta en Amani API"
-          description: "El endpoint {{ $labels.uri }} tiene una latencia P95 de {{ $value | humanizeDuration }} (umbral: 2s)."
+          summary: "CPU alta en {{ $labels.instance }}: {{ $value }}%"
 
-      - alert: AmaniHighRequestVolume
-        expr: sum(rate(http_server_requests_seconds_count{job="amani-api"}[5m])) > 1000
-        for: 10m
-        labels:
-          severity: warning
-          team: backend
-        annotations:
-          summary: "⚠️ Volumen de requests muy elevado"
-          description: "La API está procesando {{ $value | humanize }} req/s (umbral: 1000)."
-
-  # ---------------------------------------------------------------------------
-  # JVM — Memoria y Threads
-  # ---------------------------------------------------------------------------
-  - name: amani.jvm
-    rules:
-
-      - alert: AmaniJvmHeapUsageHigh
-        expr: |
-          sum(jvm_memory_used_bytes{job="amani-api", area="heap"})
-          /
-          sum(jvm_memory_max_bytes{job="amani-api", area="heap"}) > 0.85
+      - alert: HighMemory
+        expr: (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 > 85
         for: 5m
         labels:
           severity: warning
-          team: backend
         annotations:
-          summary: "⚠️ JVM Heap al {{ $value | humanizePercentage }}"
-          description: "El uso de Heap JVM supera el 85%. Posible memory leak o necesidad de escalar."
+          summary: "Memoria alta en {{ $labels.instance }}: {{ $value }}%"
 
-      - alert: AmaniJvmHeapCritical
-        expr: |
-          sum(jvm_memory_used_bytes{job="amani-api", area="heap"})
-          /
-          sum(jvm_memory_max_bytes{job="amani-api", area="heap"}) > 0.95
-        for: 2m
-        labels:
-          severity: critical
-          team: backend
-        annotations:
-          summary: "🚨 JVM Heap CRÍTICO: {{ $value | humanizePercentage }}"
-          description: "El Heap JVM está casi lleno. Riesgo inminente de OutOfMemoryError."
-
-      - alert: AmaniGcPauseHigh
-        expr: rate(jvm_gc_pause_seconds_sum{job="amani-api"}[5m]) > 0.3
-        for: 5m
-        labels:
-          severity: warning
-          team: backend
-        annotations:
-          summary: "⚠️ Pausas GC frecuentes en Amani API"
-          description: "El GC está consumiendo {{ $value | humanizeDuration }} por segundo en pausas."
-
-  # ---------------------------------------------------------------------------
-  # Base de datos — HikariCP + PostgreSQL
-  # ---------------------------------------------------------------------------
-  - name: amani.database
-    rules:
-
-      - alert: AmaniDbConnectionPoolExhausted
-        expr: |
-          hikaricp_connections_pending{job="amani-api"} > 5
-        for: 2m
-        labels:
-          severity: critical
-          team: backend
-        annotations:
-          summary: "🚨 Pool de conexiones DB agotado"
-          description: "Hay {{ $value }} conexiones esperando en el pool de HikariCP. Posible bloqueo de DB."
-
-      - alert: AmaniDbDown
-        expr: up{job="postgres"} == 0
+      - alert: PostgresDown
+        expr: pg_up == 0
         for: 1m
         labels:
           severity: critical
-          team: backend
         annotations:
-          summary: "🚨 PostgreSQL CAÍDO"
-          description: "El exporter de PostgreSQL no responde. La base de datos puede estar caída."
-
-      - alert: AmaniDbHighConnections
-        expr: pg_stat_activity_count{datname="postgres"} > 80
-        for: 5m
-        labels:
-          severity: warning
-          team: backend
-        annotations:
-          summary: "⚠️ Muchas conexiones activas en PostgreSQL"
-          description: "Hay {{ $value }} conexiones activas (umbral: 80)."
-
-  # ---------------------------------------------------------------------------
-  # Host — CPU, Memoria, Disco
-  # ---------------------------------------------------------------------------
-  - name: amani.host
-    rules:
-
-      - alert: AmaniHostCpuHigh
-        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85
-        for: 10m
-        labels:
-          severity: warning
-          team: infra
-        annotations:
-          summary: "⚠️ CPU alta en el host"
-          description: "El CPU del host {{ $labels.instance }} está al {{ $value | humanize }}% (umbral: 85%)."
-
-      - alert: AmaniHostMemoryLow
-        expr: |
-          (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) < 0.15
-        for: 5m
-        labels:
-          severity: warning
-          team: infra
-        annotations:
-          summary: "⚠️ Memoria RAM baja en el host"
-          description: "Solo queda {{ $value | humanizePercentage }} de RAM disponible."
-
-      - alert: AmaniHostDiskFull
-        expr: |
-          (node_filesystem_avail_bytes{fstype!~"tmpfs|fuse.lxcfs"}
-          / node_filesystem_size_bytes{fstype!~"tmpfs|fuse.lxcfs"}) < 0.15
-        for: 5m
-        labels:
-          severity: critical
-          team: infra
-        annotations:
-          summary: "🚨 Disco casi lleno"
-          description: "El disco {{ $labels.mountpoint }} tiene solo {{ $value | humanizePercentage }} libre."
-
-  # ---------------------------------------------------------------------------
-  # Negocio — Métricas específicas de Amani
-  # ---------------------------------------------------------------------------
-  - name: amani.business
-    rules:
-
-      - alert: AmaniHighLoginFailureRate
-        expr: |
-          rate(amani_auth_login_failure_total[10m])
-          /
-          (rate(amani_auth_login_success_total[10m]) + rate(amani_auth_login_failure_total[10m]) + 0.001)
-          > 0.30
-        for: 5m
-        labels:
-          severity: warning
-          team: security
-        annotations:
-          summary: "⚠️ Tasa de fallos de login alta (posible ataque)"
-          description: "{{ $value | humanizePercentage }} de los intentos de login están fallando."
-
-      - alert: AmaniStripePaymentFailures
-        expr: rate(amani_payments_stripe_failure_total[10m]) > 0.1
-        for: 5m
-        labels:
-          severity: warning
-          team: backend
-        annotations:
-          summary: "⚠️ Fallos de pago Stripe detectados"
-          description: "Tasa de fallos de pago: {{ $value | humanize }} por segundo."
+          summary: "PostgreSQL no responde"

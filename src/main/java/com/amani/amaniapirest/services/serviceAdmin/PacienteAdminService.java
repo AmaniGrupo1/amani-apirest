@@ -22,6 +22,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio PacienteAdminService.
+ *
+ * Proporciona la lógica de negocio asociada a PacienteAdminService.
+ */
 @Service
 @RequiredArgsConstructor
 public class PacienteAdminService {

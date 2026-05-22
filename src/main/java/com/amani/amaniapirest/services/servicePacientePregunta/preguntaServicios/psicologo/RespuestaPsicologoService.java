@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio RespuestaPsicologoService.
+ *
+ * Proporciona la lógica de negocio asociada a RespuestaPsicologoService.
+ */
 @Service
 @RequiredArgsConstructor
 public class RespuestaPsicologoService {

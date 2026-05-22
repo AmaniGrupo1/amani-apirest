@@ -20,6 +20,11 @@ public class SesionAdminService {
 
     private final SesionRepository sesionRepository;
 
+    /**
+     * Método SesionAdminService.
+     *
+     * @return el resultado de la operación
+     */
     public SesionAdminService(SesionRepository sesionRepository) {
         this.sesionRepository = sesionRepository;
     }
@@ -28,6 +33,11 @@ public class SesionAdminService {
         return sesionRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Método findById.
+     *
+     * @return el resultado de la operación
+     */
     public SesionAdminResponseDTO findById(Long idSesion) {
         return toResponse(getSesionOrThrow(idSesion));
     }
@@ -44,6 +54,11 @@ public class SesionAdminService {
         return toResponse(sesionRepository.save(sesion));
     }
 
+    /**
+     * Método update.
+     *
+     * @return el resultado de la operación
+     */
     public SesionAdminResponseDTO update(Long idSesion, SesionRequestDTO request) {
         Sesion sesion = getSesionOrThrow(idSesion);
         sesion.setSessionDate(request.getSessionDate());
@@ -55,6 +70,11 @@ public class SesionAdminService {
         return toResponse(sesionRepository.save(sesion));
     }
 
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long idSesion) {
         sesionRepository.delete(getSesionOrThrow(idSesion));
     }

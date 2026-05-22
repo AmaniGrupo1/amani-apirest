@@ -22,22 +22,42 @@ public class MensajePsicologoService {
     private final UsuarioRepository usuarioRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Método MensajePsicologoService.
+     *
+     * @return el resultado de la operación
+     */
     public MensajePsicologoService(MensajeRepository mensajeRepository, UsuarioRepository usuarioRepository, ApplicationEventPublisher eventPublisher) {
         this.mensajeRepository = mensajeRepository;
         this.usuarioRepository = usuarioRepository;
         this.eventPublisher = eventPublisher;
     }
 
+    /**
+     * Método findEnviados.
+     *
+     * @return el resultado de la operación
+     */
     public List<MensajePsicologoResponseDTO> findEnviados(Long idUsuario) {
         return mensajeRepository.findBySender_IdUsuario(idUsuario)
                 .stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Método findRecibidos.
+     *
+     * @return el resultado de la operación
+     */
     public List<MensajePsicologoResponseDTO> findRecibidos(Long idUsuario) {
         return mensajeRepository.findByReceiver_IdUsuario(idUsuario)
                 .stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Método create.
+     *
+     * @return el resultado de la operación
+     */
     public MensajePsicologoResponseDTO create(MensajeRequestDTO request) {
         Usuario sender = getUsuarioOrThrow(request.getIdSender());
         Usuario receiver = getUsuarioOrThrow(request.getIdReceiver());
@@ -55,12 +75,22 @@ public class MensajePsicologoService {
         return toResponse(saved);
     }
 
+    /**
+     * Método marcarLeido.
+     *
+     * @return el resultado de la operación
+     */
     public MensajePsicologoResponseDTO marcarLeido(Long idMensaje) {
         Mensaje mensaje = getMensajeOrThrow(idMensaje);
         mensaje.setLeido(true);
         return toResponse(mensajeRepository.save(mensaje));
     }
 
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long idMensaje) {
         mensajeRepository.delete(getMensajeOrThrow(idMensaje));
     }

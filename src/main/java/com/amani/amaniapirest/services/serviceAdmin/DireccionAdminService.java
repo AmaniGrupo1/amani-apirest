@@ -21,11 +21,21 @@ public class DireccionAdminService {
     private final DireccionRepository direccionRepository;
     private final PacientesRepository pacientesRepository;
 
+    /**
+     * Método DireccionAdminService.
+     *
+     * @return el resultado de la operación
+     */
     public DireccionAdminService(DireccionRepository direccionRepository, PacientesRepository pacientesRepository) {
         this.direccionRepository = direccionRepository;
         this.pacientesRepository = pacientesRepository;
     }
 
+    /**
+     * Método findAll.
+     *
+     * @return el resultado de la operación
+     */
     public List<DireccionAdminResponseDTO> findAll() {
         return direccionRepository.findAll().stream().map(this::toResponse).toList();
     }
@@ -34,6 +44,11 @@ public class DireccionAdminService {
         return toResponse(getDireccionOrThrow(idDireccion));
     }
 
+    /**
+     * Método create.
+     *
+     * @return el resultado de la operación
+     */
     public DireccionAdminResponseDTO create(DireccionRequestDTO direccion) {
         // Validamos paciente
         Paciente paciente = pacientesRepository.findById(direccion.getIdPaciente()).orElse(null);
@@ -48,6 +63,11 @@ public class DireccionAdminService {
         return toResponse(direccionRepository.save(direccion1));
     }
 
+    /**
+     * Método update.
+     *
+     * @return el resultado de la operación
+     */
     public DireccionAdminResponseDTO update(Direccion direccion) {
         Direccion existing = getDireccionOrThrow(direccion.getIdDireccion());
 
@@ -66,6 +86,11 @@ public class DireccionAdminService {
         return toResponse(direccionRepository.save(existing));
     }
 
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long idDireccion) {
         direccionRepository.delete(getDireccionOrThrow(idDireccion));
     }

@@ -30,6 +30,11 @@ public class CitaRecordatorioScheduler {
     private final CitaRepository citaRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Método CitaRecordatorioScheduler.
+     *
+     * @return el resultado de la operación
+     */
     public CitaRecordatorioScheduler(CitaRepository citaRepository,
                                       ApplicationEventPublisher eventPublisher) {
         this.citaRepository = citaRepository;

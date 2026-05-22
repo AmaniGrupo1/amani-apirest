@@ -11,6 +11,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "notificaciones")
+/**
+ * Entidad Notificacion.
+ * 
+ * Representa la entidad Notificacion en el modelo de dominio.
+ */
 public class Notificacion {
 
     @Id

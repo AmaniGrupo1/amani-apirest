@@ -100,6 +100,11 @@ public class ArchivoService {
         archivoRepository.delete(getArchivoOrThrow(idArchivo));
     }
 
+    /**
+     * Método getBytes.
+     *
+     * @return el resultado de la operación
+     */
     public byte[] getBytes(Long idArchivo) {
         return getArchivoOrThrow(idArchivo).getDatos();
     }

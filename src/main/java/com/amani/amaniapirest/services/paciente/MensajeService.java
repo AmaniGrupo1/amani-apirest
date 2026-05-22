@@ -28,6 +28,11 @@ public class MensajeService {
     private final UsuarioRepository usuarioRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Método MensajeService.
+     *
+     * @return el resultado de la operación
+     */
     public MensajeService(MensajeRepository mensajeRepository,
                           UsuarioRepository usuarioRepository,
                           ApplicationEventPublisher eventPublisher) {

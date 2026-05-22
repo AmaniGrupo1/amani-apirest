@@ -38,6 +38,11 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio CitaAgendaService.
+ *
+ * Proporciona la lógica de negocio asociada a CitaAgendaService.
+ */
 @Service
 @RequiredArgsConstructor
 public class CitaAgendaService {
@@ -56,6 +61,11 @@ public class CitaAgendaService {
     // ─────────────────────────────────────────────────────────
     // GET /api/citas/paciente/{id}/agenda?month=YYYY-MM
     // ─────────────────────────────────────────────────────────
+    /**
+     * Método getAgendaPaciente.
+     *
+     * @return el resultado de la operación
+     */
     public List<AgendaItemDTO> getAgendaPaciente(Long idPaciente, String month) {
         var rango = rangoMes(month);
         return citaRepository
@@ -69,6 +79,11 @@ public class CitaAgendaService {
     // PATCH /api/citas/psicologo/{id}/duracion
     // Permite actualizar la duración por defecto de las citas para un psicólogo
     // ─────────────────────────────────────────────────────────
+    /**
+     * Método actualizarDuracionPsicologo.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public void actualizarDuracionPsicologo(Long idPsicologo, Integer duracion) {
 
@@ -84,6 +99,11 @@ public class CitaAgendaService {
     // Devuelve la duración por defecto de las citas para un psicólogo
     // ─────────────────────────────────────────────────────────
 
+    /**
+     * Método getDuracionDefault.
+     *
+     * @return el resultado de la operación
+     */
     public Integer getDuracionDefault(Long idPsicologo) {
         return psicologoRepository.findById(idPsicologo)
                 .orElseThrow()
@@ -93,6 +113,11 @@ public class CitaAgendaService {
     // ─────────────────────────────────────────────────────────
     // GET /api/citas/psicologo/{id}/agenda?month=YYYY-MM
     // ─────────────────────────────────────────────────────────
+    /**
+     * Método getAgendaPsicologo.
+     *
+     * @return el resultado de la operación
+     */
     public List<AgendaItemDTO> getAgendaPsicologo(Long idPsicologo, String month) {
 
         var rango = rangoMes(month);
@@ -119,6 +144,11 @@ public class CitaAgendaService {
     // GET /api/citas/psicologo/{id}/disponibilidad?fecha=YYYY-MM-DD
     // Versión original sin parámetro de duración (mantiene compatibilidad)
     // ─────────────────────────────────────────────────────────
+    /**
+     * Método getDisponibilidad.
+     *
+     * @return el resultado de la operación
+     */
     public DisponibilidadDTO getDisponibilidad(Long idPsicologo, String fechaStr) {
         return getDisponibilidadConDuracion(idPsicologo, fechaStr, SLOT_MINUTOS);
     }
@@ -127,6 +157,11 @@ public class CitaAgendaService {
     // Nuevo método sobrecargado que acepta duración personalizada
     // GET /api/citas/psicologo/{id}/disponibilidad?fecha=YYYY-MM-DD&duracion=60
     // ─────────────────────────────────────────────────────────
+    /**
+     * Método getDisponibilidadConDuracion.
+     *
+     * @return el resultado de la operación
+     */
     public DisponibilidadDTO getDisponibilidadConDuracion(Long idPsicologo, String fechaStr, Integer duracionMinutos) {
         LocalDate fecha = LocalDate.parse(fechaStr);
         int duracionSlot = resolverDuracion(idPsicologo, duracionMinutos);
@@ -211,6 +246,11 @@ public class CitaAgendaService {
     }
 
     // En CitaAgendaService.java - Agrega este método
+    /**
+     * Método editarCita.
+     *
+     * @return el resultado de la operación
+     */
     @PreAuthorize("hasRole('PACIENTE') or hasRole('ADMIN') or hasRole('PSICOLOGO')")
     @Transactional
     public AgendaItemDTO editarCita(Long idCita, CitaRequestDTO req) {
@@ -384,6 +424,11 @@ public class CitaAgendaService {
     // ─────────────────────────────────────────────────────────
     // POST /api/citas
     // ─────────────────────────────────────────────────────────
+    /**
+     * Método crearCita.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public AgendaItemDTO crearCita(CitaRequestDTO req) {
 
@@ -544,6 +589,11 @@ public class CitaAgendaService {
     // ─────────────────────────────────────────────────────────
     // PATCH /api/citas/{id}/cancelar
     // ─────────────────────────────────────────────────────────
+    /**
+     * Método cancelarCita.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public AgendaItemDTO cancelarCita(Long idCita) {
 
@@ -617,6 +667,11 @@ public class CitaAgendaService {
     // PUT /api/citas/psicologo/{id}/horario
     //   Reemplaza todo el horario semanal del psicólogo
     // ─────────────────────────────────────────────────────────
+    /**
+     * Método actualizarHorario.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public void actualizarHorario(Long idPsicologo, HorarioRequestDTO req) {
 
@@ -644,6 +699,11 @@ public class CitaAgendaService {
     // ─────────────────────────────────────────────────────────
     // POST /api/citas/psicologo/{id}/dias-no-disponibles
     // ─────────────────────────────────────────────────────────
+    /**
+     * Método addBloqueo.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public void addBloqueo(Long idPsicologo, BloqueoRequestDTO req) {
         Psicologo psicologo = psicologoRepository.findById(idPsicologo)
@@ -663,6 +723,11 @@ public class CitaAgendaService {
     // ─────────────────────────────────────────────────────────
     // DELETE /api/citas/psicologo/{id}/dias-no-disponibles/{fecha}
     // ─────────────────────────────────────────────────────────
+    /**
+     * Método removeBloqueo.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public void removeBloqueo(Long idPsicologo, String fechaStr) {
         LocalDate fecha = LocalDate.parse(fechaStr);
@@ -732,6 +797,11 @@ public class CitaAgendaService {
     }
 
 
+    /**
+     * Método getHorarioActual.
+     *
+     * @return el resultado de la operación
+     */
     public HorarioRequestDTO getHorarioActual(Long idPsicologo) {
 
         List<HorarioRequestDTO.FranjaHorarioDTO> franjas = horarioRepository

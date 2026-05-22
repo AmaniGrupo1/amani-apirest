@@ -20,6 +20,11 @@ public class DiarioEmocionService {
     private final DiarioEmocionRepository diarioEmocionRepository;
     private final PacientesRepository pacientesRepository;
 
+    /**
+     * Método DiarioEmocionService.
+     *
+     * @return el resultado de la operación
+     */
     public DiarioEmocionService(DiarioEmocionRepository diarioEmocionRepository,
                                 PacientesRepository pacientesRepository) {
         this.diarioEmocionRepository = diarioEmocionRepository;

@@ -24,6 +24,11 @@ public class WebhookService {
     private final StripeConfig stripeConfig;
     private final WebhookEventProcessor webhookEventProcessor;
 
+    /**
+     * Método processWebhook.
+     *
+     * @return el resultado de la operación
+     */
     public void processWebhook(String payload, String sigHeader) {
         if (sigHeader == null || sigHeader.isBlank()) {
             throw new IllegalArgumentException("Falta header Stripe-Signature");

@@ -51,6 +51,11 @@ public class CitaService {
                 .toList();
     }
 
+    /**
+     * Método obtenerIdPacienteDesdeAuth.
+     *
+     * @return el resultado de la operación
+     */
     public Long obtenerIdPacienteDesdeAuth(Authentication auth) {
         String email = auth.getName();
 
@@ -217,6 +222,11 @@ public class CitaService {
     }
 
     // Agenda mensual del paciente
+    /**
+     * Método getAgendaPacienteMes.
+     *
+     * @return el resultado de la operación
+     */
     public List<AgendaPacienteItemDTO> getAgendaPacienteMes(Long idPaciente, String month) {
 
         YearMonth yearMonth = YearMonth.parse(month);

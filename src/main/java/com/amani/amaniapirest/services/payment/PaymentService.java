@@ -40,6 +40,11 @@ public class PaymentService {
 
     private static final BigDecimal DEFAULT_SESSION_PRICE = new BigDecimal("50.00");
 
+    /**
+     * Método createPaymentIntent.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public PaymentIntentResponse createPaymentIntent(CreatePaymentIntentRequest request, Long pacienteId) {
         Cita cita = citaRepository.findById(request.getCitaId())
@@ -90,6 +95,11 @@ public class PaymentService {
                 .build();
     }
 
+    /**
+     * Método refundPayment.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public RefundResponse refundPayment(RefundRequest request) {
         Pago pago = paymentRepository.findByCitaIdCita(request.getCitaId())

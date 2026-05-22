@@ -28,6 +28,11 @@ public class FirebaseChatService {
     private final ChatGateway chatGateway;
     private final PushNotificationGateway pushGateway;
 
+    /**
+     * Método FirebaseChatService.
+     *
+     * @return el resultado de la operación
+     */
     public FirebaseChatService(ChatGateway chatGateway,
                                 PushNotificationGateway pushGateway) {
         this.chatGateway = chatGateway;

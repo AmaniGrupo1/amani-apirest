@@ -59,6 +59,11 @@ public class WebSocketPresenceTracker {
         });
     }
 
+    /**
+     * Método isConnected.
+     *
+     * @return el resultado de la operación
+     */
     public boolean isConnected(Long userId) {
         return userId != null && connectedUsers.contains(userId);
     }

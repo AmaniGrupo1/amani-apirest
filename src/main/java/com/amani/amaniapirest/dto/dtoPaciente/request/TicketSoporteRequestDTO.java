@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoPaciente.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import com.amani.amaniapirest.enums.CategoriaTicketSoporte;
 import com.amani.amaniapirest.enums.TipoTicketSoporte;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +17,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Objeto de transferencia de datos TicketSoporteRequestDTO")
 public class TicketSoporteRequestDTO {
 
     /** Titulo breve del ticket. */

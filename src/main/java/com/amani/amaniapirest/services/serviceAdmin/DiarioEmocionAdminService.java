@@ -18,6 +18,11 @@ public class DiarioEmocionAdminService {
 
     private final DiarioEmocionRepository diarioEmocionRepository;
 
+    /**
+     * Método DiarioEmocionAdminService.
+     *
+     * @return el resultado de la operación
+     */
     public DiarioEmocionAdminService(DiarioEmocionRepository diarioEmocionRepository) {
         this.diarioEmocionRepository = diarioEmocionRepository;
     }

@@ -28,6 +28,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Servicio AuthService.
+ *
+ * Proporciona la lógica de negocio asociada a AuthService.
+ */
 @Log4j
 @Service
 @RequiredArgsConstructor
@@ -47,6 +52,11 @@ public class AuthService {
     private final AjusteRepository ajustesRepository;
 
     // ================= LOGIN =================
+    /**
+     * Método login.
+     *
+     * @return el resultado de la operación
+     */
     public LoginResponseDTO login(LoginRequestDTO request) {
 
         // 1. Buscar usuario
@@ -173,6 +183,11 @@ public class AuthService {
         );
     }
     // ================= REGISTER PACIENTE =================
+    /**
+     * Método registerPaciente.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public LoginResponseDTO registerPaciente(PacienteRequestDTO request) {
 
@@ -340,6 +355,11 @@ public class AuthService {
     }
 
     // ================= REGISTER ADMIN =================
+    /**
+     * Método registerAdmin.
+     *
+     * @return el resultado de la operación
+     */
     public LoginResponseDTO registerAdmin(RegistryRequestDTO request) {
 
         Usuario usuario = new Usuario();
@@ -407,6 +427,11 @@ public class AuthService {
     }
 
     //Listo los administradores
+    /**
+     * Método listarAdministradores.
+     *
+     * @return el resultado de la operación
+     */
     public List<AdministradorDTO> listarAdministradores() {
         List<Usuario> usuarios = usuarioRepository.findByRol(RolUsuario.admin);
 
@@ -465,6 +490,11 @@ public class AuthService {
      **/
 
     // ================= BAJA =================
+    /**
+     * Método darBajaPsicologo.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public void darBajaPsicologo(Long idPsicologo) {
 
@@ -506,6 +536,11 @@ public class AuthService {
     }
 
 
+    /**
+     * Método darAltaPsicologo.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public void darAltaPsicologo(Long idPsicologo) {
 
@@ -532,6 +567,11 @@ public class AuthService {
         usuarioRepository.save(usuario);
     }
 
+    /**
+     * Método crearPacienteDesdePsicologo.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public LoginResponseDTO crearPacienteDesdePsicologo(PacienteRequestDTO request,String emailPsicologo) {
 

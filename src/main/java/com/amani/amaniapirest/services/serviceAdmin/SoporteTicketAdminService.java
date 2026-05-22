@@ -18,6 +18,11 @@ public class SoporteTicketAdminService {
 
     private final TicketSoporteRepository ticketSoporteRepository;
 
+    /**
+     * Método SoporteTicketAdminService.
+     *
+     * @return el resultado de la operación
+     */
     public SoporteTicketAdminService(TicketSoporteRepository ticketSoporteRepository) {
         this.ticketSoporteRepository = ticketSoporteRepository;
     }

@@ -18,6 +18,11 @@ public class HistorialClinicoPsicologoService {
 
     private final HistorialClinicoRepository historialClinicoRepository;
 
+    /**
+     * Método HistorialClinicoPsicologoService.
+     *
+     * @return el resultado de la operación
+     */
     public HistorialClinicoPsicologoService(HistorialClinicoRepository historialClinicoRepository) {
         this.historialClinicoRepository = historialClinicoRepository;
     }

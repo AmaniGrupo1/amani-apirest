@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio HistorialCitaService.
+ *
+ * Proporciona la lógica de negocio asociada a HistorialCitaService.
+ */
 @Service
 @RequiredArgsConstructor
 public class HistorialCitaService {

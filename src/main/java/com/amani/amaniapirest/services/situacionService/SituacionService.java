@@ -9,6 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+/**
+ * Servicio SituacionService.
+ *
+ * Proporciona la lógica de negocio asociada a SituacionService.
+ */
 @Service
 @RequiredArgsConstructor
 public class SituacionService {
@@ -16,6 +21,11 @@ public class SituacionService {
     private final SituacionRepository repository;
 
     // CREAR
+    /**
+     * Método create.
+     *
+     * @return el resultado de la operación
+     */
     public SituacionDTO create(SituacionRequest request) {
         Situacion s = new Situacion();
         s.setNombre(request.getNombre());
@@ -27,6 +37,11 @@ public class SituacionService {
     }
 
     // ACTUALIZAR
+    /**
+     * Método update.
+     *
+     * @return el resultado de la operación
+     */
     public SituacionDTO update(Long id, SituacionRequest request) {
         Situacion s = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Situación no encontrada"));
@@ -40,6 +55,11 @@ public class SituacionService {
     }
 
     // ELIMINAR (soft delete recomendado)
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long id) {
         Situacion s = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Situación no encontrada"));

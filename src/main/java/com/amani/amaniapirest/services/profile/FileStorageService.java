@@ -12,6 +12,11 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Servicio FileStorageService.
+ *
+ * Proporciona la lógica de negocio asociada a FileStorageService.
+ */
 @Service
 public class FileStorageService {
 

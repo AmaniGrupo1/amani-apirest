@@ -23,6 +23,11 @@ public class HistorialClinicoAdminService {
     private final HistorialClinicoRepository historialClinicoRepository;
     private final PacientesRepository pacientesRepository;
 
+    /**
+     * Método HistorialClinicoAdminService.
+     *
+     * @return el resultado de la operación
+     */
     public HistorialClinicoAdminService(HistorialClinicoRepository historialClinicoRepository,
                                         PacientesRepository pacientesRepository) {
         this.historialClinicoRepository = historialClinicoRepository;
@@ -33,6 +38,11 @@ public class HistorialClinicoAdminService {
     // MÉTODOS CRUD ADMIN
     // ============================
 
+    /**
+     * Método findAllAdmin.
+     *
+     * @return el resultado de la operación
+     */
     public List<HistorialClinicoAdminResponseDTO> findAllAdmin() {
         return historialClinicoRepository.findAll()
                 .stream()
@@ -40,11 +50,21 @@ public class HistorialClinicoAdminService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Método findByIdAdmin.
+     *
+     * @return el resultado de la operación
+     */
     public HistorialClinicoAdminResponseDTO findByIdAdmin(Long idHistory) {
         HistorialClinico historial = getHistorialOrThrow(idHistory);
         return toAdminResponse(historial);
     }
 
+    /**
+     * Método createAdmin.
+     *
+     * @return el resultado de la operación
+     */
     public HistorialClinicoAdminResponseDTO createAdmin(HistorialClinicoRequestDTO request) {
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
 
@@ -59,6 +79,11 @@ public class HistorialClinicoAdminService {
         return toAdminResponse(historialClinicoRepository.save(historial));
     }
 
+    /**
+     * Método updateAdmin.
+     *
+     * @return el resultado de la operación
+     */
     public HistorialClinicoAdminResponseDTO updateAdmin(Long idHistory, HistorialClinicoRequestDTO request) {
         HistorialClinico historial = getHistorialOrThrow(idHistory);
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
@@ -72,6 +97,11 @@ public class HistorialClinicoAdminService {
         return toAdminResponse(historialClinicoRepository.save(historial));
     }
 
+    /**
+     * Método deleteAdmin.
+     *
+     * @return el resultado de la operación
+     */
     public void deleteAdmin(Long idHistory) {
         historialClinicoRepository.delete(getHistorialOrThrow(idHistory));
     }

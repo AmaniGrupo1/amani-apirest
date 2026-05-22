@@ -16,6 +16,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+/**
+ * Entidad DocumentoLegal.
+ * 
+ * Representa la entidad DocumentoLegal en el modelo de dominio.
+ */
 public class DocumentoLegal {
 
     @Id

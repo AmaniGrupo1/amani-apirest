@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio DocumentoLegalService.
+ *
+ * Proporciona la lógica de negocio asociada a DocumentoLegalService.
+ */
 @Service
 @RequiredArgsConstructor
 public class DocumentoLegalService {
@@ -21,6 +26,11 @@ public class DocumentoLegalService {
     // =========================
     // CREAR
     // =========================
+    /**
+     * Método crearDocumento.
+     *
+     * @return el resultado de la operación
+     */
     public DocumentoLegalResponseDTO crearDocumento(
             DocumentoLegalRequestDTO request
     ) {
@@ -43,6 +53,11 @@ public class DocumentoLegalService {
     // =========================
     // LISTAR TODOS
     // =========================
+    /**
+     * Método obtenerTodos.
+     *
+     * @return el resultado de la operación
+     */
     public List<DocumentoLegalResponseDTO> obtenerTodos() {
 
         return documentoLegalRepository.findAll()
@@ -54,6 +69,11 @@ public class DocumentoLegalService {
     // =========================
     // OBTENER POR ID
     // =========================
+    /**
+     * Método obtenerPorId.
+     *
+     * @return el resultado de la operación
+     */
     public DocumentoLegalResponseDTO obtenerPorId(
             Long idDocumento
     ) {
@@ -70,6 +90,11 @@ public class DocumentoLegalService {
     // =========================
     // EDITAR
     // =========================
+    /**
+     * Método editarDocumento.
+     *
+     * @return el resultado de la operación
+     */
     public DocumentoLegalResponseDTO editarDocumento(
             Long idDocumento,
             DocumentoLegalRequestDTO request
@@ -99,6 +124,11 @@ public class DocumentoLegalService {
     // =========================
     // ELIMINAR
     // =========================
+    /**
+     * Método eliminarDocumento.
+     *
+     * @return el resultado de la operación
+     */
     public void eliminarDocumento(
             Long idDocumento
     ) {
@@ -135,6 +165,11 @@ public class DocumentoLegalService {
     }
 
 
+    /**
+     * Método obtenerPorTipo.
+     *
+     * @return el resultado de la operación
+     */
     public DocumentoLegalResponseDTO obtenerPorTipo(
             TipoDocumentoLegal tipo
     ) {

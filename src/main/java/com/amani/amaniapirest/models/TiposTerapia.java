@@ -16,6 +16,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @ToString
 @Entity
+/**
+ * Entidad TiposTerapia.
+ * 
+ * Representa la entidad TiposTerapia en el modelo de dominio.
+ */
 public class TiposTerapia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

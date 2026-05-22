@@ -19,6 +19,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "usuarios")
+/**
+ * Entidad Usuario.
+ * 
+ * Representa la entidad Usuario en el modelo de dominio.
+ */
 public class Usuario {
 
     /**

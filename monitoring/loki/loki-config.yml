@@ -1,13 +1,8 @@
-# =============================================================================
-# Loki — Configuración para Amani API REST
-# =============================================================================
-
 auth_enabled: false
 
 server:
   http_listen_port: 3100
   grpc_listen_port: 9096
-  log_level: warn
 
 common:
   instance_addr: 127.0.0.1
@@ -21,9 +16,16 @@ common:
     kvstore:
       store: inmemory
 
+query_range:
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 100
+
 schema_config:
   configs:
-    - from: 2024-01-01
+    - from: 2020-10-24
       store: tsdb
       object_store: filesystem
       schema: v13
@@ -31,37 +33,8 @@ schema_config:
         prefix: index_
         period: 24h
 
-ingester:
-  wal:
-    enabled: true
-    dir: /loki/wal
-  lifecycler:
-    address: 127.0.0.1
-    ring:
-      kvstore:
-        store: inmemory
-      replication_factor: 1
-    final_sleep: 0s
-  chunk_idle_period: 5m
-  chunk_retain_period: 30s
+ruler:
+  alertmanager_url: http://alertmanager:9093
 
 limits_config:
-  # Retención de 30 días para logs de producción
-  retention_period: 720h
-  # Máximo de entries por query
-  max_entries_limit_per_query: 5000
-  # Tasa de ingestión
-  ingestion_rate_mb: 10
-  ingestion_burst_size_mb: 20
-  # Volumen máximo de streams por tenant
-  max_streams_per_user: 1000
-
-compactor:
-  working_directory: /loki/compactor
-  compaction_interval: 10m
-  retention_enabled: true
-  retention_delete_delay: 2h
-  delete_request_store: filesystem
-
-analytics:
-  reporting_enabled: false
+  retention_period: 30d

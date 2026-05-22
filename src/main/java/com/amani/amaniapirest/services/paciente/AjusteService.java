@@ -170,6 +170,11 @@ public class AjusteService {
     }
 
 
+    /**
+     * Método actualizarIdioma.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public void actualizarIdioma(Long idUsuario, IdiomaRequestDTO request) {
         Ajuste ajuste = ajusteRepository.findByUsuario_IdUsuario(idUsuario)
@@ -185,6 +190,11 @@ public class AjusteService {
     }
 
 
+    /**
+     * Método actualizarTema.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public AjusteResponseDTO actualizarTema(Long idUsuario,UpdateTemaDTO dto) {
 

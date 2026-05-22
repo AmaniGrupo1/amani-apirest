@@ -16,6 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(name = "PacienteBasicoResponse", description = "Datos personales del paciente sin pagos ni info clínica avanzada")
+/**
+ * DTO para PacienteBasicoResponseDTO.
+ * 
+ * Representa los datos de transferencia para la operación correspondiente.
+ */
 public class PacienteBasicoResponseDTO {
 
     private Long idPaciente;

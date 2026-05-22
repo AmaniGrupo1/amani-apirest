@@ -27,6 +27,11 @@ public class CitaServicePsicologo {
 
     private final CitaRepository citaRepository;
 
+    /**
+     * Método CitaServicePsicologo.
+     *
+     * @return el resultado de la operación
+     */
     public CitaServicePsicologo(CitaRepository citaRepository) {
         this.citaRepository = citaRepository;
     }
@@ -36,6 +41,11 @@ public class CitaServicePsicologo {
     // LISTAR CITAS DEL PSICÓLOGO
     // =========================================
 
+    /**
+     * Método findAllByPsicologo.
+     *
+     * @return el resultado de la operación
+     */
     public List<CitaPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
 
         return citaRepository.findByPsicologo_IdPsicologo(idPsicologo)
@@ -48,6 +58,11 @@ public class CitaServicePsicologo {
     // OBTENER UNA CITA
     // =========================================
 
+    /**
+     * Método findByIdPsicologo.
+     *
+     * @return el resultado de la operación
+     */
     public CitaPsicologoResponseDTO findByIdPsicologo(Long id) {
 
         Cita cita = citaRepository.findById(id)
@@ -60,6 +75,11 @@ public class CitaServicePsicologo {
     // ACTUALIZAR ESTADO
     // =========================================
 
+    /**
+     * Método updateEstadoCita.
+     *
+     * @return el resultado de la operación
+     */
     public CitaPsicologoResponseDTO updateEstadoCita(Long id, CitaRequestDTO request) {
 
         Cita cita = citaRepository.findById(id)
@@ -76,6 +96,11 @@ public class CitaServicePsicologo {
     // =========================================
 
     // Agenda mensual consolidada del psicólogo
+    /**
+     * Método getAgendaPsicologoMes.
+     *
+     * @return el resultado de la operación
+     */
     public List<AgendaPsicologoItemDTO> getAgendaPsicologoMes(Long idPsicologo, String month) {
         YearMonth yearMonth = YearMonth.parse(month);
         LocalDateTime start = yearMonth.atDay(1).atStartOfDay();
@@ -100,6 +125,11 @@ public class CitaServicePsicologo {
     // =========================================
 
     // Disponibilidad diaria del psicólogo
+    /**
+     * Método getDisponibilidadPsicologo.
+     *
+     * @return el resultado de la operación
+     */
     public DisponibilidadPsicologoDTO getDisponibilidadPsicologo(Long idPsicologo, LocalDate fecha) {
         // Franja de trabajo por defecto: 08:00 a 20:00
         LocalTime inicioJornada = LocalTime.of(8, 0);
@@ -173,6 +203,11 @@ public class CitaServicePsicologo {
     }
 
     // Cancela una cita (cambia su estado a cancelada)
+    /**
+     * Método cancelarCita.
+     *
+     * @return el resultado de la operación
+     */
     public void cancelarCita(Long idCita) {
         Cita cita = citaRepository.findById(idCita)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
@@ -181,6 +216,11 @@ public class CitaServicePsicologo {
         citaRepository.save(cita);
     }
 
+    /**
+     * Método cambiarEstado.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public void cambiarEstado(Long idCita, EstadoCita nuevoEstado) {
 

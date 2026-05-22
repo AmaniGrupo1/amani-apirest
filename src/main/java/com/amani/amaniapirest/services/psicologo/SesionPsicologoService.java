@@ -22,16 +22,31 @@ public class SesionPsicologoService {
     private final SesionRepository sesionRepository;
     private final UsuarioRepository usuarioRepository;
 
+    /**
+     * Método SesionPsicologoService.
+     *
+     * @return el resultado de la operación
+     */
     public SesionPsicologoService(SesionRepository sesionRepository, UsuarioRepository usuarioRepository) {
         this.sesionRepository = sesionRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * Método findAllByPsicologo.
+     *
+     * @return el resultado de la operación
+     */
     public List<SesionPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
         return sesionRepository.findByPsicologo_IdPsicologo(idPsicologo)
                 .stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Método findById.
+     *
+     * @return el resultado de la operación
+     */
     public SesionPsicologoResponseDTO findById(Long idSesion) {
         return toResponse(getSesionOrThrow(idSesion));
     }
@@ -49,6 +64,11 @@ public class SesionPsicologoService {
         return toResponse(sesionRepository.save(sesion));
     }
 
+    /**
+     * Método update.
+     *
+     * @return el resultado de la operación
+     */
     public SesionPsicologoResponseDTO update(Long idSesion, SesionRequestDTO request) {
         Sesion sesion = getSesionOrThrow(idSesion);
         sesion.setSessionDate(request.getSessionDate());
@@ -58,6 +78,11 @@ public class SesionPsicologoService {
         return toResponse(sesionRepository.save(sesion));
     }
 
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long idSesion) {
         sesionRepository.delete(getSesionOrThrow(idSesion));
     }

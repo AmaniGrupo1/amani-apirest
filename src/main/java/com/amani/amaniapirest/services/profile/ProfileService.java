@@ -30,6 +30,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Servicio ProfileService.
+ *
+ * Proporciona la lógica de negocio asociada a ProfileService.
+ */
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
@@ -43,6 +48,11 @@ public class ProfileService {
     private final FileStorageService fileStorageService; // servicio para manejar almacenamiento de archivos
 
 
+    /**
+     * Método updateProfilePhoto.
+     *
+     * @return el resultado de la operación
+     */
     public PsicologoDTO updateProfilePhoto(Long idPsicologo, MultipartFile file) {
         Psicologo psicologo = psicologoRepository.findById(idPsicologo)
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
@@ -76,6 +86,11 @@ public class ProfileService {
     }
 
 
+    /**
+     * Método obtenerPsicologoAsignado.
+     *
+     * @return el resultado de la operación
+     */
     public PsicologoDTO obtenerPsicologoAsignado(Long idPaciente) {
 
         PsicologoPaciente pp = psicologoPacienteRepository
@@ -105,6 +120,11 @@ public class ProfileService {
         );
     }
 
+    /**
+     * Método updatePsicologoProfile.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public UpdatePsicologoResponseDTO updatePsicologoProfile(Long idPsicologo, UpdatePsicologoRequestDTO dto) {
 
@@ -157,6 +177,11 @@ public class ProfileService {
     // ADMIN
     //-------------------------------------------
 
+    /**
+     * Método getAdminProfile.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public AdminDTO getAdminProfile(Long idUsuario) {
 
@@ -176,6 +201,11 @@ public class ProfileService {
         );
     }
 
+    /**
+     * Método updateAdminProfile.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public AdminResponseDTO updateAdminProfile(Long idUsuario, UpdateAdminRequestDTO dto) {
 
@@ -223,6 +253,11 @@ public class ProfileService {
     }
 
 
+    /**
+     * Método updateAdminPhoto.
+     *
+     * @return el resultado de la operación
+     */
     public AdminDTO updateAdminPhoto(Long idUsuario, MultipartFile file) {
 
         Usuario usuario = usuarioRepository.findById(idUsuario)
@@ -253,6 +288,11 @@ public class ProfileService {
     //-------------------------------------------
     // PACIENTE
     //-------------------------------------------
+    /**
+     * Método getPacienteProfile.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public PacienteDTO getPacienteProfile(Long idPaciente) {
 
@@ -278,6 +318,11 @@ public class ProfileService {
         );
     }
 
+    /**
+     * Método updatePacienteProfile.
+     *
+     * @return el resultado de la operación
+     */
     @Transactional
     public PacienteResponseDTO updatePacienteProfile(Long idPaciente, UpdatePacienteRequestDTO dto) {
 
@@ -340,6 +385,11 @@ public class ProfileService {
     }
 
 
+    /**
+     * Método updatePacientePhoto.
+     *
+     * @return el resultado de la operación
+     */
     public PacienteDTO updatePacientePhoto(Long idPaciente, MultipartFile file) {
 
         Paciente paciente = pacientesRepository.findById(idPaciente)

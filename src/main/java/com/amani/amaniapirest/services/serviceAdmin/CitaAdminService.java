@@ -28,6 +28,11 @@ public class CitaAdminService {
     private final PacientesRepository pacientesRepository;
     private final PsicologoRepository psicologoRepository;
 
+    /**
+     * Método CitaAdminService.
+     *
+     * @return el resultado de la operación
+     */
     public CitaAdminService(CitaRepository citaRepository,
                             PacientesRepository pacientesRepository,
                             PsicologoRepository psicologoRepository) {
@@ -36,6 +41,11 @@ public class CitaAdminService {
         this.psicologoRepository = psicologoRepository;
     }
 
+    /**
+     * Método findAllAdmin.
+     *
+     * @return el resultado de la operación
+     */
     public List<CitaAdminResponseDTO> findAllAdmin() {
         return citaRepository.findAll()
                 .stream()

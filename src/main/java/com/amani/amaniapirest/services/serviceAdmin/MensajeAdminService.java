@@ -21,16 +21,31 @@ public class MensajeAdminService {
     private final MensajeRepository mensajeRepository;
     private final UsuarioRepository usuarioRepository;
 
+    /**
+     * Método MensajeAdminService.
+     *
+     * @return el resultado de la operación
+     */
     public MensajeAdminService(MensajeRepository mensajeRepository, UsuarioRepository usuarioRepository) {
         this.mensajeRepository = mensajeRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * Método findAll.
+     *
+     * @return el resultado de la operación
+     */
     public List<MensajeAdminResponseDTO> findAll() {
         return mensajeRepository.findAll().stream()
                 .map(this::toResponse).toList();
     }
 
+    /**
+     * Método findById.
+     *
+     * @return el resultado de la operación
+     */
     public MensajeAdminResponseDTO findById(Long idMensaje) {
         return toResponse(getMensajeOrThrow(idMensaje));
     }
@@ -49,12 +64,22 @@ public class MensajeAdminService {
         return toResponse(mensajeRepository.save(mensaje));
     }
 
+    /**
+     * Método marcarLeido.
+     *
+     * @return el resultado de la operación
+     */
     public MensajeAdminResponseDTO marcarLeido(Long idMensaje) {
         Mensaje mensaje = getMensajeOrThrow(idMensaje);
         mensaje.setLeido(true);
         return toResponse(mensajeRepository.save(mensaje));
     }
 
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long idMensaje) {
         mensajeRepository.delete(getMensajeOrThrow(idMensaje));
     }

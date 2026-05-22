@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoAgenda.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 
 import java.time.LocalDate;
@@ -16,6 +18,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Objeto de transferencia de datos DisponibilidadDTO")
 public class DisponibilidadDTO {
     private LocalDate fecha;
     private boolean diaCompleto;

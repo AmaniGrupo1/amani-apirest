@@ -18,6 +18,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio PreguntaPacienteService.
+ *
+ * Proporciona la lógica de negocio asociada a PreguntaPacienteService.
+ */
 @Service
 @RequiredArgsConstructor
 public class PreguntaPacienteService {
@@ -42,6 +47,11 @@ public class PreguntaPacienteService {
     }
 
     // Devuelve todas las preguntas convertidas a DTO
+    /**
+     * Método getPreguntas.
+     *
+     * @return el resultado de la operación
+     */
     public List<PreguntaPacienteResponseDTO> getPreguntas(){
         return preguntaRepository.findAllWithOpciones()
                 .stream()
@@ -49,6 +59,11 @@ public class PreguntaPacienteService {
                 .toList();
     }
 
+    /**
+     * Método responder.
+     *
+     * @return el resultado de la operación
+     */
     public ResultadoTestResponseDTO responder(
             Long idPaciente,
             List<RespuestasRequestDTO> respuestas

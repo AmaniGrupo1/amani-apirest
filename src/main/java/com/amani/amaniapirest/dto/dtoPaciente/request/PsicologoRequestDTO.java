@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoPaciente.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -28,6 +30,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Objeto de transferencia de datos PsicologoRequestDTO")
 public class PsicologoRequestDTO {
 
     @NotBlank

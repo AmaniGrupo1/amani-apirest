@@ -17,6 +17,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+/**
+ * Entidad Pago.
+ * 
+ * Representa la entidad Pago en el modelo de dominio.
+ */
 public class Pago {
 
     @Id

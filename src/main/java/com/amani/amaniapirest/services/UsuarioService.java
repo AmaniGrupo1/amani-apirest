@@ -30,6 +30,11 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Método UsuarioService.
+     *
+     * @return el resultado de la operación
+     */
     public UsuarioService(UsuarioRepository usuarioRepository,
                           PasswordEncoder passwordEncoder,
                           ApplicationEventPublisher eventPublisher) {
@@ -38,6 +43,11 @@ public class UsuarioService {
         this.eventPublisher = eventPublisher;
     }
 
+    /**
+     * Método findIdByEmail.
+     *
+     * @return el resultado de la operación
+     */
     public Optional<Long> findIdByEmail(String email) {
         return usuarioRepository.findByEmail(email)
                 .map(usuario -> usuario.getIdUsuario());
@@ -154,6 +164,11 @@ public class UsuarioService {
     // ─────────────────────────────────────
     // Activar / desactivar notificaciones
     // ─────────────────────────────────────
+    /**
+     * Método actualizarNotificaciones.
+     *
+     * @return el resultado de la operación
+     */
     public NotificacionConfigDTO actualizarNotificaciones(
             Long idUsuario,
             boolean activar
@@ -174,6 +189,11 @@ public class UsuarioService {
     // ─────────────────────────────────────
     // Obtener estado actual
     // ─────────────────────────────────────
+    /**
+     * Método obtenerEstadoNotificaciones.
+     *
+     * @return el resultado de la operación
+     */
     public boolean obtenerEstadoNotificaciones(
             Long idUsuario
     ) {

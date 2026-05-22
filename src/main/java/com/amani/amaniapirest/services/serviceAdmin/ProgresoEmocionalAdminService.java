@@ -21,18 +21,33 @@ public class ProgresoEmocionalAdminService {
     private final ProgresoEmocionalRepository progresoRepository;
     private final PacientesRepository pacientesRepository;
 
+    /**
+     * Método ProgresoEmocionalAdminService.
+     *
+     * @return el resultado de la operación
+     */
     public ProgresoEmocionalAdminService(ProgresoEmocionalRepository progresoRepository,
                                          PacientesRepository pacientesRepository) {
         this.progresoRepository = progresoRepository;
         this.pacientesRepository = pacientesRepository;
     }
 
+    /**
+     * Método findAll.
+     *
+     * @return el resultado de la operación
+     */
     public List<ProgresoEmocionalAdminResponseDTO> findAll() {
         return progresoRepository.findAll().stream()
                 .map(this::toResponse)
                 .toList();
     }
 
+    /**
+     * Método findById.
+     *
+     * @return el resultado de la operación
+     */
     public ProgresoEmocionalAdminResponseDTO findById(Long idProgreso) {
         return toResponse(getProgresoOrThrow(idProgreso));
     }
@@ -50,6 +65,11 @@ public class ProgresoEmocionalAdminService {
         return toResponse(progresoRepository.save(progreso));
     }
 
+    /**
+     * Método update.
+     *
+     * @return el resultado de la operación
+     */
     public ProgresoEmocionalAdminResponseDTO update(Long idProgreso, ProgresoEmocionalRequestDTO request) {
         ProgresoEmocional progreso = getProgresoOrThrow(idProgreso);
         progreso.setFecha(request.getFecha() != null ? request.getFecha() : progreso.getFecha());
@@ -60,6 +80,11 @@ public class ProgresoEmocionalAdminService {
         return toResponse(progresoRepository.save(progreso));
     }
 
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long idProgreso) {
         ProgresoEmocional progreso = getProgresoOrThrow(idProgreso);
         progresoRepository.delete(progreso);

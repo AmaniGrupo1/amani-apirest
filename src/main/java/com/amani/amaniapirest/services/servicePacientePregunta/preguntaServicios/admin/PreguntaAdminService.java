@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio PreguntaAdminService.
+ *
+ * Proporciona la lógica de negocio asociada a PreguntaAdminService.
+ */
 @Service
 @RequiredArgsConstructor
 public class PreguntaAdminService {
@@ -20,6 +25,11 @@ public class PreguntaAdminService {
     private final PreguntaRepository preguntaRepository;
 
 
+    /**
+     * Método findAll.
+     *
+     * @return el resultado de la operación
+     */
     public List<OpcionAdminResponseDTO> findAll() {
         return preguntaRepository.findAll()
                 .stream()
@@ -41,6 +51,11 @@ public class PreguntaAdminService {
                 .toList();
     }
 
+    /**
+     * Método create.
+     *
+     * @return el resultado de la operación
+     */
     public PreguntaPacienteResponseDTO create(OpcionAdminResDTO request) {
 
         Pregunta pregunta = new Pregunta();
@@ -62,6 +77,11 @@ public class PreguntaAdminService {
         return miPregunta(pregunta);
     }
 
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long idPregunta) {
 
         preguntaRepository.deleteById(idPregunta);

@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+/**
+ * Servicio ConsentimientoService.
+ *
+ * Proporciona la lógica de negocio asociada a ConsentimientoService.
+ */
 @Service
 @RequiredArgsConstructor
 public class ConsentimientoService {
@@ -18,6 +23,11 @@ public class ConsentimientoService {
     private static final String VERSION_TERMINOS = "v1.0";
 
 
+    /**
+     * Método guardarConsentimiento.
+     *
+     * @return el resultado de la operación
+     */
     public void guardarConsentimiento(
             Paciente paciente,
             boolean aceptaTerminos,

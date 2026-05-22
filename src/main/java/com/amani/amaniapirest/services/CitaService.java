@@ -42,6 +42,11 @@ public class CitaService {
     private final PsicologoRepository psicologoRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Método CitaService.
+     *
+     * @return el resultado de la operación
+     */
     public CitaService(CitaRepository citaRepository,
                        PacientesRepository pacientesRepository,
                        PsicologoRepository psicologoRepository,

@@ -7,6 +7,10 @@ import com.amani.amaniapirest.dto.payment.response.RefundResponse;
 import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.services.payment.PaymentService;
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
+@Tag(name = "Pagos", description = "Controlador REST para operaciones de pago de pacientes")
 public class PaymentController {
 
     private final PaymentService paymentService;
@@ -39,6 +44,14 @@ public class PaymentController {
      */
     @PostMapping("/create-intent")
     @PreAuthorize("hasRole('PACIENTE')")
+    @Operation(summary = "Crear intento de pago", description = "Crea un PaymentIntent en Stripe para una cita reservada y devuelve el client secret")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Intento de pago creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de petición incorrectos"),
+            @ApiResponse(responseCode = "401", description = "No autorizado"),
+            @ApiResponse(responseCode = "404", description = "Paciente no encontrado"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     public ResponseEntity<PaymentIntentResponse> createPaymentIntent(
             @Valid @RequestBody CreatePaymentIntentRequest request,
             Authentication auth) {
@@ -58,6 +71,14 @@ public class PaymentController {
      */
     @PostMapping("/refund")
     @PreAuthorize("hasAnyRole('ADMIN', 'PSICOLOGO')")
+    @Operation(summary = "Reembolsar pago", description = "Inicia un reembolso completo del pago asociado a una cita")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reembolso procesado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de petición incorrectos"),
+            @ApiResponse(responseCode = "401", description = "No autorizado"),
+            @ApiResponse(responseCode = "403", description = "No tiene permisos para esta acción"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     public ResponseEntity<RefundResponse> refundPayment(
             @Valid @RequestBody RefundRequest request) {
         log.info("Solicitud de reembolso: citaId={}", request.getCitaId());

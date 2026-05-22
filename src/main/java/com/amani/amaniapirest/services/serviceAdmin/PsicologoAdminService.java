@@ -19,6 +19,11 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servicio PsicologoAdminService.
+ *
+ * Proporciona la lógica de negocio asociada a PsicologoAdminService.
+ */
 @Service
 @RequiredArgsConstructor
 public class PsicologoAdminService {
@@ -27,6 +32,11 @@ public class PsicologoAdminService {
     private final PsicologoPacienteRepository psicologoPacienteRepository;
 
     // Actualizar psicólogo
+    /**
+     * Método update.
+     *
+     * @return el resultado de la operación
+     */
     public PsicologoConPacientesDTO update(Long idPsicologo, PsicologoRequestDTO request) {
         Psicologo psicologo = getPsicologoOrThrow(idPsicologo);
 
@@ -42,12 +52,22 @@ public class PsicologoAdminService {
     }
 
     // Eliminar psicólogo
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long idPsicologo) {
         Psicologo psicologo = getPsicologoOrThrow(idPsicologo);
         psicologoRepository.delete(psicologo);
     }
 
     // Listar psicólogos con sus pacientes
+    /**
+     * Método getPsicologosConPacientes.
+     *
+     * @return el resultado de la operación
+     */
     public List<PsicologoConPacientesDTO> getPsicologosConPacientes() {
 
         // SOLO psicólogos activos
@@ -140,6 +160,11 @@ public class PsicologoAdminService {
     // Otros métodos relacionados con psicólogos y pacientes pueden ir aquí
 
     //OBTNER PSICOLOGO LOGUEADO
+    /**
+     * Método getPsicologoLogueado.
+     *
+     * @return el resultado de la operación
+     */
     public Psicologo getPsicologoLogueado() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName(); // email del JWT
@@ -148,6 +173,11 @@ public class PsicologoAdminService {
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado con email: " + email));
     }
 
+    /**
+     * Método getPacientesDelPsicologoLogueado.
+     *
+     * @return el resultado de la operación
+     */
     public List<PacientePsicologoResponseDTO> getPacientesDelPsicologoLogueado() {
         Psicologo psicologo = getPsicologoLogueado();
 

@@ -28,6 +28,11 @@ public class NotificationServices {
     private final PushNotificationGateway pushGateway;
     private final NotificacionRepository notificacionRepository;
 
+    /**
+     * Método enviarNotificacion.
+     *
+     * @return el resultado de la operación
+     */
     public void enviarNotificacion(Usuario usuario, String titulo, String mensaje) {
         if (usuario == null) return;
         if (!usuario.isNotificacionesActivas()) return;
@@ -51,6 +56,11 @@ public class NotificationServices {
         }
     }
 
+    /**
+     * Método getNotificaciones.
+     *
+     * @return el resultado de la operación
+     */
     public List<NotificacionResponseDTO> getNotificaciones(Long idUsuario) {
         return notificacionRepository.findByUsuario_IdUsuarioOrderByCreadaEnDesc(idUsuario)
                 .stream()
@@ -58,6 +68,11 @@ public class NotificationServices {
                 .toList();
     }
 
+    /**
+     * Método marcarLeida.
+     *
+     * @return el resultado de la operación
+     */
     public NotificacionResponseDTO marcarLeida(Long id) {
         Notificacion n = notificacionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Notificación no encontrada"));
@@ -66,6 +81,11 @@ public class NotificationServices {
         return toDTO(notificacionRepository.save(n));
     }
 
+    /**
+     * Método marcarTodasLeidas.
+     *
+     * @return el resultado de la operación
+     */
     public void marcarTodasLeidas(Long idUsuario) {
         List<Notificacion> lista =
                 notificacionRepository.findByUsuario_IdUsuarioOrderByCreadaEnDesc(idUsuario);
@@ -75,6 +95,11 @@ public class NotificationServices {
         notificacionRepository.saveAll(lista);
     }
 
+    /**
+     * Método contarNoLeidas.
+     *
+     * @return el resultado de la operación
+     */
     public long contarNoLeidas(Long idUsuario) {
         return notificacionRepository.countByUsuario_IdUsuarioAndLeidaFalse(idUsuario);
     }

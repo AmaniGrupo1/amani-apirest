@@ -119,6 +119,11 @@ public class PacienteService {
     }
 
 
+    /**
+     * Método delete.
+     *
+     * @return el resultado de la operación
+     */
     public void delete(Long idPaciente) {
         Paciente paciente = getPacienteOrThrow(idPaciente);
         pacientesRepository.delete(paciente);
@@ -145,6 +150,11 @@ public class PacienteService {
     //----------------------------------------------------------------------------------------------------
     // LISTAR PACIENTES SIN PSICOLOGOS ASIGNADOS
     //----------------------------------------------------------------------------------------------------
+    /**
+     * Método getPacientesSinPsicologo.
+     *
+     * @return el resultado de la operación
+     */
     public List<PacienteBasicoResponseDTO> getPacientesSinPsicologo() {
 
         List<Paciente> pacientes = pacientesRepository.findPacientesSinPsicologo();

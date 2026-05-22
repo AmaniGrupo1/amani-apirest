@@ -5,6 +5,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio EmailService.
+ *
+ * Proporciona la lógica de negocio asociada a EmailService.
+ */
 @Service
 public class EmailService {
 
@@ -12,6 +17,11 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
+    /**
+     * Método EmailService.
+     *
+     * @return el resultado de la operación
+     */
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }

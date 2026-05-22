@@ -26,6 +26,11 @@ public class SoporteTicketService {
     private final TicketSoporteRepository ticketSoporteRepository;
     private final UsuarioRepository usuarioRepository;
 
+    /**
+     * Método SoporteTicketService.
+     *
+     * @return el resultado de la operación
+     */
     public SoporteTicketService(TicketSoporteRepository ticketSoporteRepository,
                                 UsuarioRepository usuarioRepository) {
         this.ticketSoporteRepository = ticketSoporteRepository;

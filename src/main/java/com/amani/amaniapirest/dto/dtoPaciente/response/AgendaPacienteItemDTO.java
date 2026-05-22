@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -9,6 +11,7 @@ import java.time.LocalTime;
  * <p>Contiene la información detallada de una cita o evento en la agenda
  * del paciente, incluyendo fecha, horario, estado y motivo.</p>
  */
+@Schema(description = "Objeto de transferencia de datos AgendaPacienteItemDTO")
 public class AgendaPacienteItemDTO {
     private LocalDate fecha;
     private LocalTime horaInicio;

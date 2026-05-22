@@ -19,6 +19,11 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio PsicologoSelfService.
+ *
+ * Proporciona la lógica de negocio asociada a PsicologoSelfService.
+ */
 @RequiredArgsConstructor
 @Service
 public class PsicologoSelfService {
@@ -38,6 +43,11 @@ public class PsicologoSelfService {
 
 
     // Listo todos los psicologos que se han dado de baja
+    /**
+     * Método findAllPsicologosBaja.
+     *
+     * @return el resultado de la operación
+     */
     public List<PsicologoSelfResponseDTO> findAllPsicologosBaja() {
         return psicologoRepository.findByUsuario_ActivoFalse().stream()
                 .map(this::toResponse)

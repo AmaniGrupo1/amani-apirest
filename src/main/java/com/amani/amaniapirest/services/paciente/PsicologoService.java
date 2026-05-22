@@ -17,6 +17,11 @@ public class PsicologoService {
 
     private final PsicologoRepository psicologoRepository;
 
+    /**
+     * Método PsicologoService.
+     *
+     * @return el resultado de la operación
+     */
     public PsicologoService(PsicologoRepository psicologoRepository) {
         this.psicologoRepository = psicologoRepository;
     }
@@ -25,6 +30,11 @@ public class PsicologoService {
         return psicologoRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Método findById.
+     *
+     * @return el resultado de la operación
+     */
     public PsicologoResponseDTO findById(Long idPsicologo) {
         return toResponse(getPsicologoOrThrow(idPsicologo));
     }
