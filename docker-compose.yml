@@ -53,6 +53,14 @@ services:
     profiles:
       - stripe
 
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: amani-cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+
 volumes:
   postgres_data:
     driver: local

@@ -959,7 +959,5 @@ VALUES
     );
 
 
-ALTER TABLE psicologos ADD COLUMN telefono VARCHAR(30);
 
-ALTER TABLE psicologos DROP COLUMN teleno;
 

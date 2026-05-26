@@ -3,117 +3,98 @@
 ## Arquitectura en Producción
 
 ```
-Cloud Run ──► Secret Manager ──► Firebase Admin SDK
-     │              │
-     │              └── firebase-service-account (JSON)
-     │
-     └──► Cloud SQL (PostgreSQL)
-     └──► Firebase RTDB + Auth + FCM
+GitHub Actions (CI/CD) ──► Artifact Registry (Docker)
+          │
+          └──► Cloud Run ──► Secret Manager ──► Firebase Admin SDK
+                   │              │
+                   │              └── firebase-service-account (JSON)
+                   │
+                   └──► Cloud SQL (PostgreSQL)
+                   └──► Firebase RTDB + Auth + FCM
 ```
 
 ---
 
-## Despliegue con perfil GCP
+## 1. Configurar Infraestructura (Primer despliegue)
+
+Para asegurar la **estabilidad, simplicidad y bajo coste**, hemos creado un script que levanta toda la infraestructura en GCP automáticamente (Cloud SQL, Artifact Registry, Secret Manager y Workload Identity para GitHub Actions).
+
+Ejecuta este script una única vez (requieres permisos de Owner/Editor en el proyecto):
 
 ```bash
-./mvnw spring-boot:run -Dspring.profiles.active=gcp
+./scripts/setup-gcp-infrastructure.sh
 ```
 
-### Variables de entorno requeridas
+El script mostrará al final una lista de variables que debes configurar en tu repositorio de GitHub (Settings > Secrets and variables > Actions):
 
-| Variable | Descripción | Ejemplo |
-|---|---|---|
-| `DB_URL` | URL de conexión a Cloud SQL | `jdbc:postgresql:///postgres?cloudSqlInstance=amani-160bf:europe-west1:amani-db` |
-| `DB_USERNAME` | Usuario de la base de datos | `postgres` |
-| `DB_PASSWORD` | Contraseña de la base de datos | (de Secret Manager) |
+**Variables (`Repository variables`):**
+- `GCP_PROJECT_ID`: amani-160bf
+- `GCP_REGION`: europe-west1
+- `GCP_WORKLOAD_IDENTITY_PROVIDER`: (El valor generado por el script)
+- `GCP_SERVICE_ACCOUNT`: github-actions-sa@amani-160bf.iam.gserviceaccount.com
+- `GCP_ARTIFACT_REGISTRY`: europe-west1-docker.pkg.dev/amani-160bf/docker-repo
 
-### Configuración automática
-
-En perfil `gcp`:
-- ✅ **ADC automático**: Cloud Run inyecta credenciales vía metadata server
-- ✅ **Secret Manager**: `spring.config.import=optional:sm://firebase-service-account`
-- ✅ **Firebase habilitado**: `firebase.enabled=true`
-- ✅ **Firebase RTDB**: URL configurada en `application-gcp.yml`
+**Secrets (`Repository secrets`):**
+- Crea el secreto de base de datos en GCP manualmente y añade la contraseña a Secret Manager:
+  ```bash
+  echo -n "tu_contraseña_fuerte" | gcloud secrets create db-password --data-file=-
+  ```
+  Y da permisos a la Service Account de Cloud Run (la por defecto o `github-actions-sa`):
+  ```bash
+  gcloud secrets add-iam-policy-binding db-password \
+    --member="serviceAccount:github-actions-sa@amani-160bf.iam.gserviceaccount.com" \
+    --role="roles/secretmanager.secretAccessor"
+  ```
 
 ---
 
-## Configurar IAM (script de un solo uso)
+## 2. Despliegue Automático (CI/CD)
 
-Un **administrador** del proyecto GCP debe ejecutar este script para conceder acceso al secreto:
+El despliegue está **100% automatizado** usando GitHub Actions.
 
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
+Al hacer `push` a la rama `main`:
+1. GitHub Actions se autentica de forma segura en GCP usando Workload Identity Federation (sin JSON keys).
+2. Construye la imagen Docker eficientemente usando `jib-maven-plugin`.
+3. Sube la imagen a Artifact Registry.
+4. Despliega la nueva versión en Cloud Run usando Cloud SQL Auth Proxy (nativo).
 
-PROJECT_ID="amani-160bf"
-SECRET_ID="firebase-service-account"
-SA_ID="firebase-secret-reader"
-SA_EMAIL="${SA_ID}@${PROJECT_ID}.iam.gserviceaccount.com"
+### Despliegue Manual (solo si es estrictamente necesario)
 
-# 1. Crear Service Account
-gcloud iam service-accounts create "${SA_ID}" \
-  --project="${PROJECT_ID}" \
-  --display-name="Lector de secreto Firebase"
-
-# 2. Conceder acceso al secreto (mínimo privilegio)
-gcloud secrets add-iam-policy-binding "${SECRET_ID}" \
-  --project="${PROJECT_ID}" \
-  --member="serviceAccount:${SA_EMAIL}" \
-  --role="roles/secretmanager.secretAccessor"
-
-# 3. Conceder acceso al usuario (desarrollo local)
-gcloud secrets add-iam-policy-binding "${SECRET_ID}" \
-  --project="${PROJECT_ID}" \
-  --member="user:felixpa2001@gmail.com" \
-  --role="roles/secretmanager.secretAccessor"
-
-# 4. Verificar acceso
-gcloud secrets versions access latest \
-  --secret="${SECRET_ID}" --project="${PROJECT_ID}" | head -c 80
-
-echo "✅ IAM configurado. Clave NO descargada (usar ADC en producción)."
-```
-
----
-
-## Despliegue en Cloud Run
-
-### Opción A: Workload Identity (recomendado)
-
-1. Asignar la Service Account `firebase-secret-reader` al servicio de Cloud Run
-2. No se necesitan claves JSON
+Si necesitas desplegar manualmente desde tu PC usando Jib:
 
 ```bash
+# 1. Autenticarse
+gcloud auth login
+gcloud auth configure-docker europe-west1-docker.pkg.dev
+
+# 2. Construir imagen
+./mvnw clean compile jib:build -Denv.REGISTRY_URL=europe-west1-docker.pkg.dev/amani-160bf/docker-repo
+
+# 3. Desplegar
 gcloud run deploy amani-api \
-  --source . \
+  --image europe-west1-docker.pkg.dev/amani-160bf/docker-repo/amani-apirest:latest \
   --region europe-west1 \
-  --service-account firebase-secret-reader@amani-160bf.iam.gserviceaccount.com \
-  --set-env-vars "SPRING_PROFILES_ACTIVE=gcp" \
-  --set-secrets "DB_PASSWORD=db-password:latest"
-```
-
-### Opción B: ADC con usuario (solo para staging)
-
-```bash
-# Configurar ADC localmente
-gcloud auth application-default login
-
-# Verificar
-gcloud auth application-default print-access-token
+  --allow-unauthenticated \
+  --set-env-vars=SPRING_PROFILES_ACTIVE=gcp \
+  --set-env-vars=DB_URL=jdbc:postgresql:///postgres?cloudSqlInstance=amani-160bf:europe-west1:amani-db \
+  --set-env-vars=DB_USERNAME=postgres \
+  --set-secrets=DB_PASSWORD=db-password:latest \
+  --add-cloudsql-instances=amani-160bf:europe-west1:amani-db \
+  --service-account=github-actions-sa@amani-160bf.iam.gserviceaccount.com
 ```
 
 ---
 
-## Desarrollo local con acceso a GCP
+## 3. Desarrollo local con acceso a GCP
 
-Si necesitas probar con Firebase real en local:
+Si necesitas probar con Firebase real y BD real en local:
 
 ```bash
 # Configurar ADC
 gcloud auth application-default login
 
 # Arrancar con perfil GCP
-./mvnw spring-boot:run -Dspring.profiles.active=gcp
+./mvnw spring-boot:run -Dspring.profiles.active=gcp -DDB_URL="jdbc:postgresql://IP_PUBLICA_CLOUD_SQL:5432/postgres" -DDB_USERNAME=postgres -DDB_PASSWORD=tu_password
 ```
 
 ---
@@ -124,16 +105,15 @@ gcloud auth application-default login
 
 - Subir claves JSON de Service Account al repositorio
 - Usar `GOOGLE_APPLICATION_CREDENTIALS` en producción
-- Asignar roles de Owner o Editor a Service Accounts
-- Hardcodear secretos en `application.yml`
+- Asignar roles de Owner o Editor a Service Accounts para despliegue
+- Hardcodear secretos en `application-gcp.properties`
 
 ### ✅ Siempre hacer
 
-- Usar ADC en GCP (automático en Cloud Run/GKE)
-- Usar Workload Identity Federation para CI/CD
-- Asignar `roles/secretmanager.secretAccessor` (mínimo privilegio)
-- Rotar Service Account Keys si se usan localmente
-- Mantener `firebase.enabled=false` en perfil local por defecto
+- Usar ADC en GCP (automático en Cloud Run).
+- Usar Workload Identity Federation para CI/CD (GitHub Actions).
+- Asignar `roles/secretmanager.secretAccessor` (mínimo privilegio).
+- Conectar a Cloud SQL mediante los sockets Unix inyectados (`--add-cloudsql-instances`).
 
 ---
 

@@ -93,6 +93,11 @@
         	<artifactId>postgresql</artifactId>
         	<scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.cloud.sql</groupId>
+            <artifactId>postgres-socket-factory</artifactId>
+            <version>1.16.0</version>
+        </dependency>
         <!-- JWT -->
 
         <dependency>
@@ -253,6 +258,28 @@
     <build>
         <finalName>amani-apirest</finalName>
         <plugins>
+
+            <!-- Jib for Docker image creation -->
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <to>
+                        <image>${env.REGISTRY_URL}/${project.artifactId}</image>
+                        <tags>
+                            <tag>latest</tag>
+                            <tag>${project.version}</tag>
+                        </tags>
+                    </to>
+                    <container>
+                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                        <jvmFlags>
+                            <jvmFlag>-Dspring.profiles.active=gcp</jvmFlag>
+                        </jvmFlags>
+                    </container>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -89,3 +89,4 @@ __pycache__/
 
 ### UV lockfile (opcional — se suele commitear, pero puedes ignorarlo si prefieres regenerarlo) ###
 # uv.lock
+!/.antigravitycli/
