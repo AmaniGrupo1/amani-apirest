@@ -58,7 +58,7 @@ jobs:
           flags: >
             --allow-unauthenticated
             --set-env-vars=SPRING_PROFILES_ACTIVE=gcp
-            --set-env-vars=DB_URL=jdbc:postgresql:///postgres?cloudSqlInstance=${{ env.PROJECT_ID }}:${{ env.REGION }}:amani-db
+            --set-env-vars="DB_URL=jdbc:postgresql:///postgres?cloudSqlInstance=${{ env.PROJECT_ID }}:${{ env.REGION }}:amani-db&socketFactory=com.google.cloud.sql.postgres.SocketFactory"
             --set-env-vars=DB_USERNAME=postgres
             --set-secrets=DB_PASSWORD=db-password:latest
             --add-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:amani-db
