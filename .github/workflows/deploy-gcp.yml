@@ -10,7 +10,7 @@ env:
   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
   REGION: ${{ vars.GCP_REGION }}
   SERVICE_NAME: amani-api
-  IMAGE_NAME: ${{ vars.GCP_ARTIFACT_REGISTRY }}/amani-api
+  IMAGE_NAME: ${{ vars.GCP_ARTIFACT_REGISTRY }}/amani-apirest
 
 jobs:
   build-and-deploy:
