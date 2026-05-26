@@ -265,6 +265,9 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>3.4.1</version>
                 <configuration>
+                    <from>
+                        <image>eclipse-temurin:21-jre</image>
+                    </from>
                     <to>
                         <image>${env.REGISTRY_URL}/${project.artifactId}</image>
                         <tags>
