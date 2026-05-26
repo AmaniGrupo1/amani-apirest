@@ -276,6 +276,7 @@
                         </tags>
                     </to>
                     <container>
+                        <mainClass>com.amani.amaniapirest.AmaniApirestApplication</mainClass>
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                         <jvmFlags>
                             <jvmFlag>-Dspring.profiles.active=gcp</jvmFlag>
