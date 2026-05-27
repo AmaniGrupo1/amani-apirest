@@ -20,8 +20,6 @@ public class AdminRoleController {
 
     private final AdminRoleService adminRoleService;
 
-
-
     @PutMapping("/cambiar-rol")
     public ResponseEntity<CambiarRolResponseDTO> cambiarRol(
             @Valid @RequestBody CambiarRolRequestDTO request

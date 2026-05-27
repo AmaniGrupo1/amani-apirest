@@ -256,6 +256,7 @@ public class AdminRoleService {
             usuarios = usuarioRepository.findAll();
         }
 
+        System.out.println("TOTAL USUARIOS: " + usuarios.size());
         return usuarios.stream()
                 .map(u -> new UsuarioDTO(
                         u.getIdUsuario(),

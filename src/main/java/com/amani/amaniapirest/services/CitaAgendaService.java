@@ -21,8 +21,6 @@ import com.amani.amaniapirest.services.notificacion.NotificationServices;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -623,18 +621,29 @@ public class CitaAgendaService {
         Psicologo psicologo = psicologoRepository.findById(idPsicologo)
                 .orElseThrow(() -> new NoSuchElementException("Psicólogo no encontrado"));
 
+        // borrar días afectados UNA sola vez
+        Set<Short> dias = req.getFranjas()
+                .stream()
+                .map(HorarioRequestDTO.FranjaHorarioDTO::getDiaSemana)
+                .collect(Collectors.toSet());
+
+        for (Short dia : dias) {
+            horarioRepository.deleteByPsicologoIdPsicologoAndDiaSemana(idPsicologo, dia);
+        }
+
+        // guardar solo activas
         for (var franja : req.getFranjas()) {
 
-            short dia = franja.getDiaSemana();
-
-            horarioRepository.deleteByPsicologoIdPsicologoAndDiaSemana(idPsicologo, dia);
+            if (!franja.isActivo()) {
+                continue;
+            }
 
             HorarioPsicologo nuevo = HorarioPsicologo.builder()
                     .psicologo(psicologo)
-                    .diaSemana(dia)
+                    .diaSemana(franja.getDiaSemana())
                     .horaInicio(LocalTime.parse(franja.getHoraInicio()))
                     .horaFin(LocalTime.parse(franja.getHoraFin()))
-                    .activo(franja.isActivo())
+                    .activo(true)
                     .build();
 
             horarioRepository.save(nuevo);
