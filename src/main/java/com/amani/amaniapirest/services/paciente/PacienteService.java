@@ -119,6 +119,11 @@ public class PacienteService {
     }
 
 
+    /**
+     * Elimina un registro del sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void delete(Long idPaciente) {
         Paciente paciente = getPacienteOrThrow(idPaciente);
         pacientesRepository.delete(paciente);
@@ -145,6 +150,11 @@ public class PacienteService {
     //----------------------------------------------------------------------------------------------------
     // LISTAR PACIENTES SIN PSICOLOGOS ASIGNADOS
     //----------------------------------------------------------------------------------------------------
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<PacienteBasicoResponseDTO> getPacientesSinPsicologo() {
 
         List<Paciente> pacientes = pacientesRepository.findPacientesSinPsicologo();

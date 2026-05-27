@@ -18,6 +18,11 @@ public class SoporteTicketAdminService {
 
     private final TicketSoporteRepository ticketSoporteRepository;
 
+    /**
+     * Ejecuta la operación correspondiente a SoporteTicketAdminService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public SoporteTicketAdminService(TicketSoporteRepository ticketSoporteRepository) {
         this.ticketSoporteRepository = ticketSoporteRepository;
     }

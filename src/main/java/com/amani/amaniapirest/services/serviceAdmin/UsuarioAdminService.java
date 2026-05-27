@@ -20,12 +20,22 @@ public class UsuarioAdminService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Ejecuta la operación correspondiente a UsuarioAdminService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public UsuarioAdminService(UsuarioRepository usuarioRepository,
                                PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<UsuarioAdminResponseDTO> findAll() {
         return usuarioRepository.findAll()
                 .stream()
@@ -33,6 +43,11 @@ public class UsuarioAdminService {
                 .toList();
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public UsuarioAdminResponseDTO findById(Long idUsuario) {
         return toResponse(getUsuario(idUsuario));
     }
@@ -52,6 +67,11 @@ public class UsuarioAdminService {
         return toResponse(usuarioRepository.save(usuario));
     }
 
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public UsuarioAdminResponseDTO update(Long idUsuario, UsuarioRequestDTO request) {
 
         Usuario usuario = getUsuario(idUsuario);
@@ -64,6 +84,11 @@ public class UsuarioAdminService {
         return toResponse(usuarioRepository.save(usuario));
     }
 
+    /**
+     * Elimina un registro del sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void delete(Long idUsuario) {
 
         Usuario usuario = getUsuario(idUsuario);

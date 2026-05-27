@@ -12,6 +12,11 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * Entidad PsicologoPaciente.
+ * 
+ * Representa la entidad PsicologoPaciente en el modelo de dominio.
+ */
 public class PsicologoPaciente {
 
     @Id

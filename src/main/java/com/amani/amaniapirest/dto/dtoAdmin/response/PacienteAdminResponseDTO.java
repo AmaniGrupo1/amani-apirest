@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoAdmin.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import com.amani.amaniapirest.dto.dtoAdmin.TutorResonseDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.DireccionResponseDTO;
 import com.amani.amaniapirest.dto.situacion.SituacionDTO;
@@ -15,6 +17,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * DTO para PacienteAdminResponseDTO.
+ * 
+ * Representa los datos de transferencia para la operación correspondiente.
+ */
+@Schema(description = "Objeto de transferencia de datos PacienteAdminResponseDTO")
 public class PacienteAdminResponseDTO {
 
     private Long idPaciente;

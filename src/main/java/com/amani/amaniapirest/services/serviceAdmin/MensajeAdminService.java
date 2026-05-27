@@ -21,16 +21,31 @@ public class MensajeAdminService {
     private final MensajeRepository mensajeRepository;
     private final UsuarioRepository usuarioRepository;
 
+    /**
+     * Ejecuta la operación correspondiente a MensajeAdminService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public MensajeAdminService(MensajeRepository mensajeRepository, UsuarioRepository usuarioRepository) {
         this.mensajeRepository = mensajeRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<MensajeAdminResponseDTO> findAll() {
         return mensajeRepository.findAll().stream()
                 .map(this::toResponse).toList();
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public MensajeAdminResponseDTO findById(Long idMensaje) {
         return toResponse(getMensajeOrThrow(idMensaje));
     }
@@ -49,12 +64,22 @@ public class MensajeAdminService {
         return toResponse(mensajeRepository.save(mensaje));
     }
 
+    /**
+     * Actualiza el estado del registro indicado.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public MensajeAdminResponseDTO marcarLeido(Long idMensaje) {
         Mensaje mensaje = getMensajeOrThrow(idMensaje);
         mensaje.setLeido(true);
         return toResponse(mensajeRepository.save(mensaje));
     }
 
+    /**
+     * Elimina un registro del sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void delete(Long idMensaje) {
         mensajeRepository.delete(getMensajeOrThrow(idMensaje));
     }

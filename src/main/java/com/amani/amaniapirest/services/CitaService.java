@@ -42,6 +42,11 @@ public class CitaService {
     private final PsicologoRepository psicologoRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Ejecuta la operación correspondiente a CitaService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public CitaService(CitaRepository citaRepository,
                        PacientesRepository pacientesRepository,
                        PsicologoRepository psicologoRepository,

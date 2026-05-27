@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoAgenda.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 
 import java.time.LocalTime;
@@ -15,6 +17,7 @@ import java.time.LocalTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Objeto de transferencia de datos SlotDTO")
 public class SlotDTO {
     private LocalTime hora;
     private LocalTime horaFin; // agregado

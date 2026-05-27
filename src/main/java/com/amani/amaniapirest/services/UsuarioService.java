@@ -30,6 +30,11 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Ejecuta la operación correspondiente a UsuarioService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public UsuarioService(UsuarioRepository usuarioRepository,
                           PasswordEncoder passwordEncoder,
                           ApplicationEventPublisher eventPublisher) {
@@ -38,6 +43,11 @@ public class UsuarioService {
         this.eventPublisher = eventPublisher;
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public Optional<Long> findIdByEmail(String email) {
         return usuarioRepository.findByEmail(email)
                 .map(usuario -> usuario.getIdUsuario());
@@ -154,6 +164,11 @@ public class UsuarioService {
     // ─────────────────────────────────────
     // Activar / desactivar notificaciones
     // ─────────────────────────────────────
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public NotificacionConfigDTO actualizarNotificaciones(
             Long idUsuario,
             boolean activar
@@ -174,6 +189,11 @@ public class UsuarioService {
     // ─────────────────────────────────────
     // Obtener estado actual
     // ─────────────────────────────────────
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public boolean obtenerEstadoNotificaciones(
             Long idUsuario
     ) {

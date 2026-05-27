@@ -12,6 +12,15 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio que implementa la lógica de negocio para DocumentoLegal.
+ *
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de DocumentoLegalService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class DocumentoLegalService {
@@ -21,6 +30,11 @@ public class DocumentoLegalService {
     // =========================
     // CREAR
     // =========================
+    /**
+     * Ejecuta la operación correspondiente a crearDocumento.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public DocumentoLegalResponseDTO crearDocumento(
             DocumentoLegalRequestDTO request
     ) {
@@ -43,6 +57,11 @@ public class DocumentoLegalService {
     // =========================
     // LISTAR TODOS
     // =========================
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<DocumentoLegalResponseDTO> obtenerTodos() {
 
         return documentoLegalRepository.findAll()
@@ -54,6 +73,11 @@ public class DocumentoLegalService {
     // =========================
     // OBTENER POR ID
     // =========================
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public DocumentoLegalResponseDTO obtenerPorId(
             Long idDocumento
     ) {
@@ -70,6 +94,11 @@ public class DocumentoLegalService {
     // =========================
     // EDITAR
     // =========================
+    /**
+     * Ejecuta la operación correspondiente a editarDocumento.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public DocumentoLegalResponseDTO editarDocumento(
             Long idDocumento,
             DocumentoLegalRequestDTO request
@@ -99,6 +128,11 @@ public class DocumentoLegalService {
     // =========================
     // ELIMINAR
     // =========================
+    /**
+     * Elimina un registro del sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void eliminarDocumento(
             Long idDocumento
     ) {
@@ -135,6 +169,11 @@ public class DocumentoLegalService {
     }
 
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public DocumentoLegalResponseDTO obtenerPorTipo(
             TipoDocumentoLegal tipo
     ) {

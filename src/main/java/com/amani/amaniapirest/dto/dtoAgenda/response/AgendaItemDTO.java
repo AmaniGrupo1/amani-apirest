@@ -1,5 +1,7 @@
     package com.amani.amaniapirest.dto.dtoAgenda.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
     import com.amani.amaniapirest.dto.terapiasDTO.TerapiaResponseDTO;
     import com.amani.amaniapirest.enums.EstadoCita;
     import com.amani.amaniapirest.enums.EstadoPago;
@@ -19,7 +21,13 @@
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public class AgendaItemDTO {
+    /**
+ * DTO para AgendaItemDTO.
+ * 
+ * Representa los datos de transferencia para la operación correspondiente.
+ */
+@Schema(description = "Objeto de transferencia de datos AgendaItemDTO")
+public class AgendaItemDTO {
         private Long id;
         private Long idPaciente;
         private LocalDate fecha;

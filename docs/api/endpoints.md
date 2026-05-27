@@ -1,124 +1,32 @@
-# Referencia de endpoints
+# API y Endpoints REST
 
-Listado de los endpoints REST principales de AMANI, organizados por dominio.
+La API de Amani adopta las mejores prácticas de **RESTful API Design**, utilizando verbos HTTP (`GET`, `POST`, `PUT`, `DELETE`) de forma semántica. 
 
-!!! note "Estado de la documentación"
-    La fuente de verdad más actualizada es la especificación **OpenAPI/Swagger** generada automáticamente por SpringDoc.
+## Especificación OpenAPI 3.0
 
----
+Todas las interacciones de red se auto-documentan utilizando **springdoc-openapi**.
 
-## 🔐 Autenticación
+### Accesos Swagger
+En el entorno local o de desarrollo, la especificación en vivo se puede consultar en:
+- Interfaz Gráfica UI: `http://localhost:8080/swagger-ui/index.html`
+- JSON Raw: `http://localhost:8080/v3/api-docs`
 
-| Método | Ruta | Descripción |
-|---|---|---|
-| `POST` | `/auth/login` | Login con email y password |
-| `POST` | `/auth/register` | Registro de nuevo usuario |
-| `POST` | `/auth/firebase-token` | Intercambio de token Firebase por JWT propio |
+> [!NOTE]
+> Para probar endpoints seguros desde la UI de Swagger, es imperativo hacer click en el candado superior "Authorize" e inyectar el Bearer Token devuelto por `/auth/login`.
 
----
+## Dominios de Operación
 
-## 👤 Usuarios y perfiles
+### 1. Autenticación (`/auth/**`)
+Expone la interfaz pública (desprotegida de JWT) para la generación de tokens, el registro de nuevos pacientes en el sistema y la rotación de claves.
 
-| Método | Ruta | Descripción |
-|---|---|---|
-| `GET` | `/api/usuarios/perfil` | Perfil del usuario autenticado |
-| `PUT` | `/api/usuarios/perfil` | Actualizar perfil |
-| `POST` | `/api/usuarios/avatar` | Subir avatar |
+### 2. Paciente (`/paciente/**`)
+Endpoints restringidos por rol de seguridad `ROLE_PACIENTE`. 
+Permiten interacciones orientadas a solicitar citas, cancelar horarios o llenar formularios terapéuticos y diarios emocionales.
 
----
+### 3. Psicólogo (`/psicologo/**`)
+Asegurados bajo `ROLE_PSICOLOGO`.
+Habilitan la capacidad para aceptar citas pendientes, bloquear horarios, consultar el expediente de pacientes adscritos o crear perfiles de paciente internamente.
 
-## 📅 Citas y agenda
-
-| Método | Ruta | Descripción |
-|---|---|---|
-| `GET` | `/api/citas` | Listar citas del usuario |
-| `POST` | `/api/citas` | Crear nueva cita |
-| `PUT` | `/api/citas/{id}` | Modificar cita |
-| `DELETE` | `/api/citas/{id}` | Cancelar cita |
-| `GET` | `/api/psicologos/{id}/agenda` | Disponibilidad de un psicólogo |
-
----
-
-## 🧠 Psicólogos
-
-| Método | Ruta | Descripción |
-|---|---|---|
-| `GET` | `/api/psicologos` | Listar psicólogos activos |
-| `GET` | `/api/psicologos/{id}` | Detalle de psicólogo |
-| `GET` | `/api/psicologos/{id}/pacientes` | Pacientes asignados |
-
----
-
-## 💬 Mensajes (chat)
-
-| Método | Ruta | Descripción |
-|---|---|---|
-| `GET` | `/api/chats/conversations` | Conversaciones del usuario |
-| `POST` | `/api/chats/messages` | Enviar mensaje (persiste en PostgreSQL y RTDB) |
-| `GET` | `/api/chats/history/{roomId}` | Historial de mensajes de una sala |
-
-!!! warning "Arquitectura dual"
-    El backend persiste en PostgreSQL y publica en Firebase RTDB.
-    La app Android puede leer/escribir directamente en RTDB para tiempo real.
-
----
-
-## 📔 Diario emocional
-
-| Método | Ruta | Descripción |
-|---|---|---|
-| `GET` | `/api/diario` | Entradas del diario del paciente |
-| `POST` | `/api/diario` | Nueva entrada |
-| `GET` | `/api/diario/{id}` | Detalle de entrada |
-
----
-
-## 📊 Progreso emocional
-
-| Método | Ruta | Descripción |
-|---|---|---|
-| `GET` | `/api/progreso` | Evolución emocional del paciente |
-| `POST` | `/api/progreso` | Registrar métrica |
-
----
-
-## 🏥 Historial clínico
-
-| Método | Ruta | Descripción |
-|---|---|---|
-| `GET` | `/api/historial/{pacienteId}` | Historial clínico de un paciente |
-| `POST` | `/api/historial` | Añadir nota clínica |
-
----
-
-## 🔔 Notificaciones
-
-| Método | Ruta | Descripción |
-|---|---|---|
-| `GET` | `/api/notificaciones` | Notificaciones del usuario |
-| `PUT` | `/api/notificaciones/{id}/leer` | Marcar como leída |
-
----
-
-## ⚙️ Administración
-
-| Método | Ruta | Descripción |
-|---|---|---|
-| `GET` | `/api/admin/usuarios` | Listar todos los usuarios |
-| `PUT` | `/api/admin/usuarios/{id}/estado` | Activar / desactivar usuario |
-| `GET` | `/api/admin/estadisticas` | Estadísticas del sistema |
-
----
-
-## 📎 Códigos de respuesta
-
-| Código | Significado |
-|---|---|
-| `200 OK` | Éxito |
-| `201 Created` | Recurso creado |
-| `400 Bad Request` | Datos inválidos |
-| `401 Unauthorized` | Token ausente o inválido |
-| `403 Forbidden` | Sin permisos para el recurso |
-| `404 Not Found` | Recurso no existe |
-| `409 Conflict` | Conflicto de negocio (ej. solapamiento de cita) |
-| `500 Internal Server Error` | Error inesperado del servidor |
+### 4. Administrador (`/admin/**`)
+Restringidos a `ROLE_ADMIN`.
+Acceso a todos los recursos del sistema sin delimitaciones, posibilitando la auditoría clínica completa y la gestión global.

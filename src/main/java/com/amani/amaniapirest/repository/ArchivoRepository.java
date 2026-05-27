@@ -6,18 +6,24 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * Repositorio JPA para operaciones de persistencia sobre la entidad {@link Archivo}.
+ * Repositorio de acceso a datos para la gestión de archivos adjuntos vinculados a sesiones terapéuticas.
  *
- * <p>Extiende {@link JpaRepository} para proveer operaciones CRUD basicas.
- * Incluye consulta para listar archivos por sesion.</p>
+ * <p>Los archivos pueden incluir documentos, informes o recursos multimedia que el psicólogo
+ * o el paciente comparten durante o después de una sesión. Extiende {@link JpaRepository}
+ * para proveer operaciones CRUD estándar.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 public interface ArchivoRepository extends JpaRepository<Archivo, Long> {
 
     /**
-     * Obtiene todos los archivos asociados a una sesion especifica.
+     * Recupera todos los archivos adjuntos pertenecientes a una sesión terapéutica específica.
      *
-     * @param idSesion identificador de la sesion
-     * @return lista de archivos pertenecientes a la sesion
+     * <p>Permite listar el material compartido dentro del contexto de una sesión concreta.</p>
+     *
+     * @param idSesion Identificador único de la sesión terapéutica.
+     * @return Lista de {@link Archivo} asociados a la sesión indicada; lista vacía si no hay archivos.
      */
     List<Archivo> findBySesion_IdSesion(Long idSesion);
 }

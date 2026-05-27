@@ -22,22 +22,42 @@ public class MensajePsicologoService {
     private final UsuarioRepository usuarioRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Ejecuta la operación correspondiente a MensajePsicologoService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public MensajePsicologoService(MensajeRepository mensajeRepository, UsuarioRepository usuarioRepository, ApplicationEventPublisher eventPublisher) {
         this.mensajeRepository = mensajeRepository;
         this.usuarioRepository = usuarioRepository;
         this.eventPublisher = eventPublisher;
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<MensajePsicologoResponseDTO> findEnviados(Long idUsuario) {
         return mensajeRepository.findBySender_IdUsuario(idUsuario)
                 .stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<MensajePsicologoResponseDTO> findRecibidos(Long idUsuario) {
         return mensajeRepository.findByReceiver_IdUsuario(idUsuario)
                 .stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Crea y persiste un nuevo registro en el sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public MensajePsicologoResponseDTO create(MensajeRequestDTO request) {
         Usuario sender = getUsuarioOrThrow(request.getIdSender());
         Usuario receiver = getUsuarioOrThrow(request.getIdReceiver());
@@ -55,12 +75,22 @@ public class MensajePsicologoService {
         return toResponse(saved);
     }
 
+    /**
+     * Actualiza el estado del registro indicado.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public MensajePsicologoResponseDTO marcarLeido(Long idMensaje) {
         Mensaje mensaje = getMensajeOrThrow(idMensaje);
         mensaje.setLeido(true);
         return toResponse(mensajeRepository.save(mensaje));
     }
 
+    /**
+     * Elimina un registro del sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void delete(Long idMensaje) {
         mensajeRepository.delete(getMensajeOrThrow(idMensaje));
     }

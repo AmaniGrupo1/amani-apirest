@@ -13,11 +13,15 @@ import java.util.Base64;
 import java.util.List;
 
 /**
- * Servicio de negocio para gestionar archivos adjuntos de sesiones terapéuticas.
+ * Gestiona los archivos adjuntos vinculados a sesiones terapéuticas.
  *
- * <p>Administra la subida, consulta y eliminación de archivos vinculados a
- * sesiones. El contenido se recibe en Base64 y se almacena como bytes en la
- * base de datos.</p>
+ * <p>Soporta la subida, consulta y eliminación de archivos. El contenido binario
+ * se recibe codificado en Base64 en el request y se decodifica antes de persistirse
+ * en la base de datos. Las respuestas no incluyen el contenido binario para mantener
+ * los payloads ligeros; el contenido se recupera mediante {@link #getBytes}.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 @Service
 public class ArchivoService {
@@ -100,6 +104,13 @@ public class ArchivoService {
         archivoRepository.delete(getArchivoOrThrow(idArchivo));
     }
 
+    /**
+     * Recupera el contenido binario de un archivo almacenado.
+     *
+     * @param idArchivo identificador del archivo
+     * @return array de bytes con el contenido del archivo
+     * @throws RuntimeException si no existe un archivo con el id proporcionado
+     */
     public byte[] getBytes(Long idArchivo) {
         return getArchivoOrThrow(idArchivo).getDatos();
     }

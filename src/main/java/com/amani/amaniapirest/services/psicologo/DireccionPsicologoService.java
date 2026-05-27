@@ -19,6 +19,11 @@ public class DireccionPsicologoService {
     private final DireccionRepository direccionRepository;
     private final PacientesRepository pacientesRepository;
 
+    /**
+     * Ejecuta la operación correspondiente a DireccionPsicologoService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public DireccionPsicologoService(DireccionRepository direccionRepository, PacientesRepository pacientesRepository) {
         this.direccionRepository = direccionRepository;
         this.pacientesRepository = pacientesRepository;

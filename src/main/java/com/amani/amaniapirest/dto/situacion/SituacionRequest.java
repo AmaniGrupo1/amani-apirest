@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.situacion;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Objeto de transferencia de datos SituacionRequest")
 public class SituacionRequest {
 
     private String nombre;

@@ -21,12 +21,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Servicio de negocio para gestionar citas entre pacientes y psicólogos.
+ * Gestiona las citas del paciente autenticado desde su perspectiva de uso.
  *
- * <p>Orquesta la creación, consulta, actualización y eliminación de citas,
- * validando la existencia de las entidades relacionadas ({@link Paciente} y
- * {@link Psicologo}) y resolviendo el estado de la cita a su valor enum
- * correspondiente.</p>
+ * <p>Expone operaciones de consulta de citas propias (por identificador, por mes)
+ * y la cancelación de citas pendientes. La resolución de la identidad del paciente
+ * se realiza a partir del contexto de seguridad JWT mediante
+ * {@link #obtenerIdPacienteDesdeAuth}.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 @Service
 @RequiredArgsConstructor
@@ -39,9 +42,10 @@ public class CitaService {
 
 
     /**
-     * Obtiene la lista completa de citas registradas.
+     * Obtiene las citas de un paciente ordenadas cronológicamente de más antigua a más reciente.
      *
-     * @return lista de {@link CitaPacienteViewResponseDTO} con todas las citas
+     * @param idPaciente identificador del paciente
+     * @return lista de {@link CitaPacienteViewResponseDTO} con las citas del paciente
      */
     public List<CitaPacienteViewResponseDTO> findByPaciente(Long idPaciente) {
         return citaRepository
@@ -51,6 +55,13 @@ public class CitaService {
                 .toList();
     }
 
+    /**
+     * Extrae el identificador del paciente vinculado al usuario autenticado mediante JWT.
+     *
+     * @param auth objeto de autenticación del contexto de seguridad
+     * @return identificador del paciente asociado al email del usuario autenticado
+     * @throws RuntimeException si no existe un paciente vinculado al usuario autenticado
+     */
     public Long obtenerIdPacienteDesdeAuth(Authentication auth) {
         String email = auth.getName();
 
@@ -191,7 +202,6 @@ public class CitaService {
                 .between(LocalDateTime.now(), start)
                 .toMinutes();
 
-        // ✅ OBTENER EL PAGO ASOCIADO A LA CITA
         Pago pago = cita.getPago();
 
         return CitaPacienteViewResponseDTO.builder()
@@ -210,13 +220,18 @@ public class CitaService {
                 )
                 .minutosRestantes(minutosRestantes)
                 .esProxima(minutosRestantes >= 0 && minutosRestantes <= 60)
-                // ✅ AÑADIR ESTAS DOS LÍNEAS
                 .metodoPago(pago != null ? pago.getMetodoPago() : null)
                 .estadoPago(pago != null ? pago.getEstadoPago() : null)
                 .build();
     }
 
-    // Agenda mensual del paciente
+    /**
+     * Devuelve la agenda mensual del paciente con las citas comprendidas en el mes indicado.
+     *
+     * @param idPaciente identificador del paciente
+     * @param month      mes en formato {@code YYYY-MM} (por ejemplo, {@code "2025-06"})
+     * @return lista de {@link AgendaPacienteItemDTO} ordenada cronológicamente
+     */
     public List<AgendaPacienteItemDTO> getAgendaPacienteMes(Long idPaciente, String month) {
 
         YearMonth yearMonth = YearMonth.parse(month);

@@ -19,6 +19,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio que implementa la lógica de negocio para HistorialClinico.
+ *
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de HistorialClinicoService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class HistorialClinicoService {

@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoPaciente.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import com.amani.amaniapirest.enums.CategoriaTicketSoporte;
 import com.amani.amaniapirest.enums.EstadoTicketSoporte;
 import com.amani.amaniapirest.enums.TipoTicketSoporte;
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Objeto de transferencia de datos TicketSoporteResponseDTO")
 public class TicketSoporteResponseDTO {
 
     /** Identificador unico del ticket. */

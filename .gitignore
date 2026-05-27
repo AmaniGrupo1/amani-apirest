@@ -16,6 +16,7 @@ target/
 
 ### IntelliJ IDEA ###
 .idea
+!.gitignore
 *.iws
 *.iml
 *.ipr
@@ -37,17 +38,30 @@ build/
 .claude/
 database/
 *.log
-skills-lock.json!/src/main/resources/serviceAccountKey.json
+skills-lock.json
+
+# IA / agentes
+.cursor/
+.cursorrules
+.windsurf/
+.roo/
+.aider*
+.copilot*
+.gemini/
+.codex/
+
+# Residuos temporales
+*.tmp
+*.bak
+*.old
+*.orig
+*.rej
 
 src/main/resources/serviceAccountKey.json
 ### Firebase / GCP Service Account Keys ###
 *serviceAccount*.json
+*service-account*.json
 firebase-*.json
-
-### Firebase / GCP Service Account Keys ###
-*serviceAccount*.json
-firebase-*.json
-!.gitignore
 *.key.json
 gcp-*.json
 
@@ -75,3 +89,4 @@ __pycache__/
 
 ### UV lockfile (opcional — se suele commitear, pero puedes ignorarlo si prefieres regenerarlo) ###
 # uv.lock
+!/.antigravitycli/

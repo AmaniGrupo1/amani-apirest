@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoPaciente.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import com.amani.amaniapirest.enums.EstadoPago;
 import com.amani.amaniapirest.enums.MetodoPago;
 import jakarta.validation.constraints.NotNull;
@@ -33,6 +35,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Objeto de transferencia de datos PacienteRequestDTO")
 public class PacienteRequestDTO {
     private Long idUsuario;
     private LocalDate fechaNacimiento;

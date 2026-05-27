@@ -16,6 +16,11 @@ public class UsuarioPacienteService {
 
     private final UsuarioRepository usuarioRepository;
 
+    /**
+     * Ejecuta la operación correspondiente a UsuarioPacienteService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public UsuarioPacienteService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }

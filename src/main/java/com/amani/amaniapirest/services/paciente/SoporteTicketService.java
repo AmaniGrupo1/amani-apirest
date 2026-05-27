@@ -26,6 +26,11 @@ public class SoporteTicketService {
     private final TicketSoporteRepository ticketSoporteRepository;
     private final UsuarioRepository usuarioRepository;
 
+    /**
+     * Ejecuta la operación correspondiente a SoporteTicketService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public SoporteTicketService(TicketSoporteRepository ticketSoporteRepository,
                                 UsuarioRepository usuarioRepository) {
         this.ticketSoporteRepository = ticketSoporteRepository;

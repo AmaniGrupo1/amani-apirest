@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoPaciente.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import com.amani.amaniapirest.enums.EstadoTicketSoporte;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -12,6 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Objeto de transferencia de datos TicketSoporteEstadoRequestDTO")
 public class TicketSoporteEstadoRequestDTO {
 
     /** Nuevo estado del ticket. */

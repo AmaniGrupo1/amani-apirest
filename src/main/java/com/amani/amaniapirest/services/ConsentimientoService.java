@@ -8,6 +8,15 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+/**
+ * Servicio que implementa la lógica de negocio para Consentimiento.
+ *
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de ConsentimientoService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class ConsentimientoService {
@@ -18,6 +27,11 @@ public class ConsentimientoService {
     private static final String VERSION_TERMINOS = "v1.0";
 
 
+    /**
+     * Crea y persiste un nuevo registro en el sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void guardarConsentimiento(
             Paciente paciente,
             boolean aceptaTerminos,

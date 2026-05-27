@@ -13,6 +13,15 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servicio que implementa la lógica de negocio para PreguntaAdmin.
+ *
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de PreguntaAdminService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class PreguntaAdminService {
@@ -20,6 +29,11 @@ public class PreguntaAdminService {
     private final PreguntaRepository preguntaRepository;
 
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<OpcionAdminResponseDTO> findAll() {
         return preguntaRepository.findAll()
                 .stream()
@@ -41,6 +55,11 @@ public class PreguntaAdminService {
                 .toList();
     }
 
+    /**
+     * Crea y persiste un nuevo registro en el sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public PreguntaPacienteResponseDTO create(OpcionAdminResDTO request) {
 
         Pregunta pregunta = new Pregunta();
@@ -62,6 +81,11 @@ public class PreguntaAdminService {
         return miPregunta(pregunta);
     }
 
+    /**
+     * Elimina un registro del sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void delete(Long idPregunta) {
 
         preguntaRepository.deleteById(idPregunta);

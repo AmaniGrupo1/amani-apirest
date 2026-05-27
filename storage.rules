@@ -1,0 +1,10 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /amani-chat/attachments/{chatId}/{fileName} {
+      allow read: if request.auth != null && (chatId.matches('^' + request.auth.uid + '_[0-9]+$') || chatId.matches('^[0-9]+_' + request.auth.uid + '$'));
+      allow write: if request.auth != null && (chatId.matches('^' + request.auth.uid + '_[0-9]+$') || chatId.matches('^[0-9]+_' + request.auth.uid + '$')) && request.resource.size < 25 * 1024 * 1024;
+    }
+  }
+}

@@ -6,18 +6,26 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * Repositorio JPA para operaciones de persistencia sobre la entidad {@link DiarioEmocion}.
+ * Repositorio de acceso a datos para la gestión de entradas del diario emocional de los pacientes.
  *
- * <p>Extiende {@link JpaRepository} para proveer operaciones CRUD basicas.
- * Incluye consulta para listar entradas por paciente.</p>
+ * <p>El diario emocional permite a los pacientes registrar su estado anímico y reflexiones
+ * entre sesiones. Este repositorio facilita la recuperación de dichas entradas para su
+ * revisión por parte del paciente o del psicólogo asignado. Extiende {@link JpaRepository}
+ * para proveer operaciones CRUD estándar.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 public interface DiarioEmocionRepository extends JpaRepository<DiarioEmocion, Long> {
 
     /**
-     * Obtiene todas las entradas del diario emocional de un paciente.
+     * Recupera todas las entradas del diario emocional registradas por un paciente concreto.
      *
-     * @param idPaciente identificador del paciente
-     * @return lista de entradas del diario del paciente
+     * <p>Permite al paciente consultar su historial emocional completo y al psicólogo
+     * analizar la evolución anímica del paciente entre sesiones.</p>
+     *
+     * @param idPaciente Identificador único del paciente autor de las entradas.
+     * @return Lista de {@link DiarioEmocion} del paciente; lista vacía si no tiene entradas.
      */
     List<DiarioEmocion> findByPaciente_IdPaciente(Long idPaciente);
 }

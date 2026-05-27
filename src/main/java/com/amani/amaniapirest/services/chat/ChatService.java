@@ -38,6 +38,11 @@ public class ChatService {
     private final UsuarioRepository usuarioRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Ejecuta la operación correspondiente a ChatService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public ChatService(MensajeRepository mensajeRepository,
                        UsuarioRepository usuarioRepository,
                        ApplicationEventPublisher eventPublisher) {

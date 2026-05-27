@@ -59,6 +59,11 @@ public class WebSocketPresenceTracker {
         });
     }
 
+    /**
+     * Ejecuta la operación correspondiente a isConnected.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public boolean isConnected(Long userId) {
         return userId != null && connectedUsers.contains(userId);
     }

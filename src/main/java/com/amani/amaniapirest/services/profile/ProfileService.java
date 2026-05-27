@@ -30,6 +30,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Servicio que implementa la lógica de negocio para Profile.
+ *
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de ProfileService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
@@ -43,6 +52,11 @@ public class ProfileService {
     private final FileStorageService fileStorageService; // servicio para manejar almacenamiento de archivos
 
 
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public PsicologoDTO updateProfilePhoto(Long idPsicologo, MultipartFile file) {
         Psicologo psicologo = psicologoRepository.findById(idPsicologo)
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado"));
@@ -76,6 +90,11 @@ public class ProfileService {
     }
 
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public PsicologoDTO obtenerPsicologoAsignado(Long idPaciente) {
 
         PsicologoPaciente pp = psicologoPacienteRepository
@@ -105,6 +124,11 @@ public class ProfileService {
         );
     }
 
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     @Transactional
     public UpdatePsicologoResponseDTO updatePsicologoProfile(Long idPsicologo, UpdatePsicologoRequestDTO dto) {
 
@@ -157,6 +181,11 @@ public class ProfileService {
     // ADMIN
     //-------------------------------------------
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     @Transactional
     public AdminDTO getAdminProfile(Long idUsuario) {
 
@@ -176,6 +205,11 @@ public class ProfileService {
         );
     }
 
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     @Transactional
     public AdminResponseDTO updateAdminProfile(Long idUsuario, UpdateAdminRequestDTO dto) {
 
@@ -223,6 +257,11 @@ public class ProfileService {
     }
 
 
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public AdminDTO updateAdminPhoto(Long idUsuario, MultipartFile file) {
 
         Usuario usuario = usuarioRepository.findById(idUsuario)
@@ -253,6 +292,11 @@ public class ProfileService {
     //-------------------------------------------
     // PACIENTE
     //-------------------------------------------
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     @Transactional
     public PacienteDTO getPacienteProfile(Long idPaciente) {
 
@@ -278,6 +322,11 @@ public class ProfileService {
         );
     }
 
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     @Transactional
     public PacienteResponseDTO updatePacienteProfile(Long idPaciente, UpdatePacienteRequestDTO dto) {
 
@@ -340,6 +389,11 @@ public class ProfileService {
     }
 
 
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public PacienteDTO updatePacientePhoto(Long idPaciente, MultipartFile file) {
 
         Paciente paciente = pacientesRepository.findById(idPaciente)

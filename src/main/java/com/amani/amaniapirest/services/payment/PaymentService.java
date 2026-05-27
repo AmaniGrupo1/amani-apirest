@@ -40,6 +40,11 @@ public class PaymentService {
 
     private static final BigDecimal DEFAULT_SESSION_PRICE = new BigDecimal("50.00");
 
+    /**
+     * Crea y persiste un nuevo registro en el sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     @Transactional
     public PaymentIntentResponse createPaymentIntent(CreatePaymentIntentRequest request, Long pacienteId) {
         Cita cita = citaRepository.findById(request.getCitaId())
@@ -90,6 +95,11 @@ public class PaymentService {
                 .build();
     }
 
+    /**
+     * Ejecuta la operación correspondiente a refundPayment.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     @Transactional
     public RefundResponse refundPayment(RefundRequest request) {
         Pago pago = paymentRepository.findByCitaIdCita(request.getCitaId())

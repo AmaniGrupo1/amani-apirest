@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoAdmin.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Objeto de transferencia de datos AdministradorDTO")
 public class AdministradorDTO {
 
     private Long idUsuario;

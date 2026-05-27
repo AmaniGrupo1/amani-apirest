@@ -41,14 +41,8 @@ theme:
 plugins:
   - search:
       lang: es
-  - awesome-pages
   - swagger-ui-tag
   - mermaid2
-  - minify:
-      minify_html: true
-  - git-revision-date-localized:
-      locale: es
-      type: timeago
 
 markdown_extensions:
   - admonition
@@ -80,7 +74,31 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/AmaniGrupo1/amani-apirest
-  version:
-    provider: mike
 
-copyright: Copyright © 2026 Amani Team — Todos los derechos reservados
+nav:
+  - Inicio: index.md
+  - Arquitectura:
+      - Vista General: arquitectura/overview.md
+      - Diagramas: arquitectura/diagramas.md
+  - Backend:
+      - Servicios Core: backend/servicios.md
+      - Entidades y Modelos: backend/modelos.md
+      - Objetos de Transferencia (DTOs): backend/dtos.md
+  - API:
+      - Endpoints REST: api/endpoints.md
+  - Seguridad:
+      - Autenticación JWT: seguridad/jwt.md
+      - Filtros y Roles: seguridad/filtros.md
+  - Observabilidad:
+      - Monitoreo (Prometheus/Grafana): observabilidad/monitoreo.md
+  - DevOps:
+      - Contenedores (Docker): devops/docker.md
+      - Flujos CI/CD: devops/cicd.md
+  - Despliegue:
+      - Guía de Producción: despliegue/produccion.md
+  - Testing:
+      - Pruebas e Informes: testing/informes.md
+  - Guías Anteriores:
+      - GCP Deploy: guides/gcp-deploy.md
+      - Local Setup: guides/local-setup.md
+      - Firebase Fixes: guides/FIREBASE-FIX-GUIDE.md

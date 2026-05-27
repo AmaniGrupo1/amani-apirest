@@ -28,6 +28,11 @@ public class FirebaseChatService {
     private final ChatGateway chatGateway;
     private final PushNotificationGateway pushGateway;
 
+    /**
+     * Ejecuta la operación correspondiente a FirebaseChatService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public FirebaseChatService(ChatGateway chatGateway,
                                 PushNotificationGateway pushGateway) {
         this.chatGateway = chatGateway;

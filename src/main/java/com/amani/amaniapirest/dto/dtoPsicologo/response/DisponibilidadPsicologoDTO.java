@@ -1,5 +1,7 @@
 package com.amani.amaniapirest.dto.dtoPsicologo.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +16,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@Schema(description = "Objeto de transferencia de datos DisponibilidadPsicologoDTO")
 public class DisponibilidadPsicologoDTO {
     private List<FranjaDisponible> franjas;
 

@@ -18,6 +18,11 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Builder
 @Schema(name = "CitaPacienteViewResponse", description = "Vista optimizada de cita para paciente")
+/**
+ * DTO para CitaPacienteViewResponseDTO.
+ * 
+ * Representa los datos de transferencia para la operación correspondiente.
+ */
 public class CitaPacienteViewResponseDTO {
 
     private Long idCita;

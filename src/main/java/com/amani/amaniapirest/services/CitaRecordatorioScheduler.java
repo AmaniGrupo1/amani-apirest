@@ -30,6 +30,11 @@ public class CitaRecordatorioScheduler {
     private final CitaRepository citaRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Ejecuta la operación correspondiente a CitaRecordatorioScheduler.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public CitaRecordatorioScheduler(CitaRepository citaRepository,
                                       ApplicationEventPublisher eventPublisher) {
         this.citaRepository = citaRepository;

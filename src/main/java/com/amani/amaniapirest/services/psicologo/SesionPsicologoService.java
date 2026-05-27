@@ -22,16 +22,31 @@ public class SesionPsicologoService {
     private final SesionRepository sesionRepository;
     private final UsuarioRepository usuarioRepository;
 
+    /**
+     * Ejecuta la operación correspondiente a SesionPsicologoService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public SesionPsicologoService(SesionRepository sesionRepository, UsuarioRepository usuarioRepository) {
         this.sesionRepository = sesionRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<SesionPsicologoResponseDTO> findAllByPsicologo(Long idPsicologo) {
         return sesionRepository.findByPsicologo_IdPsicologo(idPsicologo)
                 .stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public SesionPsicologoResponseDTO findById(Long idSesion) {
         return toResponse(getSesionOrThrow(idSesion));
     }
@@ -49,6 +64,11 @@ public class SesionPsicologoService {
         return toResponse(sesionRepository.save(sesion));
     }
 
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public SesionPsicologoResponseDTO update(Long idSesion, SesionRequestDTO request) {
         Sesion sesion = getSesionOrThrow(idSesion);
         sesion.setSessionDate(request.getSessionDate());
@@ -58,6 +78,11 @@ public class SesionPsicologoService {
         return toResponse(sesionRepository.save(sesion));
     }
 
+    /**
+     * Elimina un registro del sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void delete(Long idSesion) {
         sesionRepository.delete(getSesionOrThrow(idSesion));
     }

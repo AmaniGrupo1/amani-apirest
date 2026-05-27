@@ -19,6 +19,15 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servicio que implementa la lógica de negocio para PsicologoAdmin.
+ *
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de PsicologoAdminService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class PsicologoAdminService {
@@ -27,6 +36,11 @@ public class PsicologoAdminService {
     private final PsicologoPacienteRepository psicologoPacienteRepository;
 
     // Actualizar psicólogo
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public PsicologoConPacientesDTO update(Long idPsicologo, PsicologoRequestDTO request) {
         Psicologo psicologo = getPsicologoOrThrow(idPsicologo);
 
@@ -42,12 +56,22 @@ public class PsicologoAdminService {
     }
 
     // Eliminar psicólogo
+    /**
+     * Elimina un registro del sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void delete(Long idPsicologo) {
         Psicologo psicologo = getPsicologoOrThrow(idPsicologo);
         psicologoRepository.delete(psicologo);
     }
 
     // Listar psicólogos con sus pacientes
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<PsicologoConPacientesDTO> getPsicologosConPacientes() {
 
         // SOLO psicólogos activos
@@ -140,6 +164,11 @@ public class PsicologoAdminService {
     // Otros métodos relacionados con psicólogos y pacientes pueden ir aquí
 
     //OBTNER PSICOLOGO LOGUEADO
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public Psicologo getPsicologoLogueado() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName(); // email del JWT
@@ -148,6 +177,11 @@ public class PsicologoAdminService {
                 .orElseThrow(() -> new RuntimeException("Psicólogo no encontrado con email: " + email));
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<PacientePsicologoResponseDTO> getPacientesDelPsicologoLogueado() {
         Psicologo psicologo = getPsicologoLogueado();
 

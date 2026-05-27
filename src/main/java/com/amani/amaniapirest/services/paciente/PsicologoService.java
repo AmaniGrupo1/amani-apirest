@@ -17,6 +17,11 @@ public class PsicologoService {
 
     private final PsicologoRepository psicologoRepository;
 
+    /**
+     * Ejecuta la operación correspondiente a PsicologoService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public PsicologoService(PsicologoRepository psicologoRepository) {
         this.psicologoRepository = psicologoRepository;
     }
@@ -25,6 +30,11 @@ public class PsicologoService {
         return psicologoRepository.findAll().stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public PsicologoResponseDTO findById(Long idPsicologo) {
         return toResponse(getPsicologoOrThrow(idPsicologo));
     }

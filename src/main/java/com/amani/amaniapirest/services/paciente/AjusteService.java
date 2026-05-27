@@ -15,10 +15,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Servicio de negocio para gestionar los ajustes de configuración de los usuarios.
+ * Gestiona las preferencias personales de configuración de cada usuario de la plataforma.
  *
- * <p>Permite crear, consultar, actualizar y eliminar las preferencias personales
- * de cada usuario (idioma, notificaciones, modo oscuro, zona horaria).</p>
+ * <p>Cubre el ciclo de vida completo de los ajustes: idioma de la interfaz, activación
+ * de notificaciones, tema visual (oscuro/claro) y zona horaria. Si el usuario aún no
+ * tiene ajustes creados, los métodos de actualización parcial los generan con valores
+ * por defecto antes de aplicar el cambio solicitado.</p>
+ *
+ * @author Ivan Lopez
+ * @since 1.0
  */
 @Service
 public class AjusteService {
@@ -27,7 +32,7 @@ public class AjusteService {
     private final UsuarioRepository usuarioRepository;
 
     /**
-     * Construye el servicio inyectando sus repositorios.
+     * Construye el servicio con sus dependencias de repositorio.
      *
      * @param ajusteRepository  repositorio JPA de {@link Ajuste}
      * @param usuarioRepository repositorio JPA de {@link Usuario}
@@ -170,6 +175,16 @@ public class AjusteService {
     }
 
 
+    /**
+     * Actualiza el idioma preferido de un usuario, creando el registro de ajustes si aún no existe.
+     *
+     * <p>Si el usuario no tiene ajustes previos, se crea un nuevo registro vinculado
+     * antes de establecer el idioma solicitado.</p>
+     *
+     * @param idUsuario identificador del usuario cuyo idioma se actualizará
+     * @param request   DTO con el código de idioma a establecer (por ejemplo, {@code "es"}, {@code "en"})
+     * @throws RuntimeException si el usuario no existe
+     */
     @Transactional
     public void actualizarIdioma(Long idUsuario, IdiomaRequestDTO request) {
         Ajuste ajuste = ajusteRepository.findByUsuario_IdUsuario(idUsuario)
@@ -185,6 +200,18 @@ public class AjusteService {
     }
 
 
+    /**
+     * Cambia el tema visual del usuario entre modo oscuro ({@code true}) y modo claro ({@code false}).
+     *
+     * <p>Si el usuario no tiene ajustes previos, se crea un registro con valores por defecto
+     * (idioma {@code "es"}, notificaciones activadas, tema claro, zona horaria {@code "Europe/Madrid"})
+     * antes de aplicar el tema solicitado.</p>
+     *
+     * @param idUsuario identificador del usuario cuyo tema se actualizará
+     * @param dto       DTO con el valor booleano del nuevo tema
+     * @return {@link AjusteResponseDTO} con los datos del ajuste actualizado
+     * @throws RuntimeException si el usuario no existe
+     */
     @Transactional
     public AjusteResponseDTO actualizarTema(Long idUsuario,UpdateTemaDTO dto) {
 
@@ -199,7 +226,6 @@ public class AjusteService {
                     Ajuste nuevo = new Ajuste();
                     nuevo.setUsuario(usuario);
 
-                    // valores por defecto
                     nuevo.setIdioma("es");
                     nuevo.setNotificaciones(true);
                     nuevo.setTema(false);

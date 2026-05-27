@@ -21,12 +21,22 @@ public class ProgresoEmocionalPsicologoService {
     private final ProgresoEmocionalRepository progresoRepository;
     private final PacientesRepository pacientesRepository;
 
+    /**
+     * Ejecuta la operación correspondiente a ProgresoEmocionalPsicologoService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public ProgresoEmocionalPsicologoService(ProgresoEmocionalRepository progresoRepository,
                                              PacientesRepository pacientesRepository) {
         this.progresoRepository = progresoRepository;
         this.pacientesRepository = pacientesRepository;
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<ProgresoEmocionalPsicologoResponseDTO> findAllByPaciente(Long idPaciente) {
         getPacienteOrThrow(idPaciente);
         return progresoRepository.findByPaciente_IdPaciente(idPaciente)
@@ -35,6 +45,11 @@ public class ProgresoEmocionalPsicologoService {
                 .toList();
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public ProgresoEmocionalPsicologoResponseDTO findById(Long idProgreso) {
         return toResponse(getProgresoOrThrow(idProgreso));
     }
@@ -52,6 +67,11 @@ public class ProgresoEmocionalPsicologoService {
         return toResponse(progresoRepository.save(progreso));
     }
 
+    /**
+     * Actualiza la información de un registro existente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public ProgresoEmocionalPsicologoResponseDTO update(Long idProgreso, ProgresoEmocionalRequestDTO request) {
         ProgresoEmocional progreso = getProgresoOrThrow(idProgreso);
         progreso.setFecha(request.getFecha() != null ? request.getFecha() : progreso.getFecha());
@@ -62,6 +82,11 @@ public class ProgresoEmocionalPsicologoService {
         return toResponse(progresoRepository.save(progreso));
     }
 
+    /**
+     * Elimina un registro del sistema.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void delete(Long idProgreso) {
         ProgresoEmocional progreso = getProgresoOrThrow(idProgreso);
         progresoRepository.delete(progreso);

@@ -28,6 +28,11 @@ public class MensajeService {
     private final UsuarioRepository usuarioRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Ejecuta la operación correspondiente a MensajeService.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public MensajeService(MensajeRepository mensajeRepository,
                           UsuarioRepository usuarioRepository,
                           ApplicationEventPublisher eventPublisher) {

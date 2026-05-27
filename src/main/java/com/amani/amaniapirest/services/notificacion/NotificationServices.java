@@ -28,6 +28,11 @@ public class NotificationServices {
     private final PushNotificationGateway pushGateway;
     private final NotificacionRepository notificacionRepository;
 
+    /**
+     * Procesa y envía el elemento indicado.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void enviarNotificacion(Usuario usuario, String titulo, String mensaje) {
         if (usuario == null) return;
         if (!usuario.isNotificacionesActivas()) return;
@@ -51,6 +56,11 @@ public class NotificationServices {
         }
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<NotificacionResponseDTO> getNotificaciones(Long idUsuario) {
         return notificacionRepository.findByUsuario_IdUsuarioOrderByCreadaEnDesc(idUsuario)
                 .stream()
@@ -58,6 +68,11 @@ public class NotificationServices {
                 .toList();
     }
 
+    /**
+     * Actualiza el estado del registro indicado.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public NotificacionResponseDTO marcarLeida(Long id) {
         Notificacion n = notificacionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Notificación no encontrada"));
@@ -66,6 +81,11 @@ public class NotificationServices {
         return toDTO(notificacionRepository.save(n));
     }
 
+    /**
+     * Actualiza el estado del registro indicado.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public void marcarTodasLeidas(Long idUsuario) {
         List<Notificacion> lista =
                 notificacionRepository.findByUsuario_IdUsuarioOrderByCreadaEnDesc(idUsuario);
@@ -75,6 +95,11 @@ public class NotificationServices {
         notificacionRepository.saveAll(lista);
     }
 
+    /**
+     * Ejecuta la operación correspondiente a contarNoLeidas.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public long contarNoLeidas(Long idUsuario) {
         return notificacionRepository.countByUsuario_IdUsuarioAndLeidaFalse(idUsuario);
     }

@@ -24,6 +24,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio que implementa la lógica de negocio para AdminRole.
+ *
+ * <p>Coordina las operaciones principales y gestiona las reglas de dominio.</p>
+ *
+ * Servicio principal que implementa la lógica de negocio de AdminRoleService.
+ *
+ * <p>Responsable de gestionar las reglas de dominio y validaciones correspondientes.</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class AdminRoleService {
@@ -36,6 +45,11 @@ public class AdminRoleService {
     private final AjusteRepository ajustesRepository;
     private final SecurityConfig securityConfig;
 
+    /**
+     * Ejecuta la operación correspondiente a cambiarRol.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     @Transactional
     public CambiarRolResponseDTO cambiarRol(CambiarRolRequestDTO request) {
 
@@ -231,6 +245,11 @@ public class AdminRoleService {
                 .build();
     }
 
+    /**
+     * Obtiene y retorna la información correspondiente.
+     *
+     * @return Resultado de la operación o entidad procesada.
+     */
     public List<UsuarioDTO> getUsuarios(String rol, String dni) {
 
         RolUsuario rolEnum = null;
