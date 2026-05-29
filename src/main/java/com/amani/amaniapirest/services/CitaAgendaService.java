@@ -507,9 +507,6 @@ public class CitaAgendaService {
         cita.setDurationMinutes(duracion);
         cita.setMotivo(req.getMotivo());
         cita.setEstado(req.getEstado() != null ? req.getEstado() : EstadoCita.pendiente);
-        cita.setMotivo(req.getMotivo());
-        cita.setEstado(req.getEstado() != null ? req.getEstado() : EstadoCita.pendiente);
-
 // 👇 AÑADIR ESTO
         cita.setModalidad(
                 req.getModalidad() != null

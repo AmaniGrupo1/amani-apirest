@@ -5,7 +5,9 @@ import com.amani.amaniapirest.dto.dtoPaciente.response.AgendaPacienteItemDTO;
 import com.amani.amaniapirest.dto.dtoPaciente.response.CitaPacienteViewResponseDTO;
 import com.amani.amaniapirest.enums.EstadoCita;
 import com.amani.amaniapirest.models.*;
+import com.amani.amaniapirest.repositories.BloqueoAgendaRepository;
 import com.amani.amaniapirest.repository.CitaRepository;
+import com.amani.amaniapirest.repository.HorarioPsicologoRepository;
 import com.amani.amaniapirest.repository.PacientesRepository;
 import com.amani.amaniapirest.repository.PsicologoRepository;
 import com.amani.amaniapirest.repository.terapiaService.TerapiaRepository;
@@ -39,7 +41,8 @@ public class CitaService {
     private final PacientesRepository pacientesRepository;
     private final PsicologoRepository psicologoRepository;
     private final TerapiaRepository terapiaRepository;
-
+    private final HorarioPsicologoRepository horarioRepository;
+    private final BloqueoAgendaRepository bloqueoRepository;
 
     /**
      * Obtiene las citas de un paciente ordenadas cronológicamente de más antigua a más reciente.
@@ -51,6 +54,9 @@ public class CitaService {
         return citaRepository
                 .findByPaciente_IdPacienteOrderByStartDatetimeAsc(idPaciente)
                 .stream()
+                // 🔥 SOLO citas activas (NO canceladas, NO completadas)
+                .filter(cita -> cita.getEstado() != EstadoCita.cancelada
+                        && cita.getEstado() != EstadoCita.completada)
                 .map(this::toResponse)
                 .toList();
     }
@@ -89,24 +95,84 @@ public class CitaService {
      *                          o si el estado proporcionado no es válido
      */
     public CitaPacienteViewResponseDTO create(CitaRequestDTO request) {
+
         Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
+
         Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
 
+        if (request.getIdTipoTerapia() == null) {
+            throw new RuntimeException("Debe seleccionar un tipo de terapia");
+        }
+
+        TiposTerapia tipo = terapiaRepository.findById(
+                request.getIdTipoTerapia()
+        ).orElseThrow(() ->
+                new RuntimeException("Tipo de terapia no encontrado")
+        );
+
+        if (request.getStartDatetime() == null) {
+            throw new RuntimeException("La fecha de la cita es obligatoria");
+        }
+
+        int duracion = request.getDurationMinutes() != null
+                ? request.getDurationMinutes()
+                : tipo.getDuracionMinutos();
+
+        if (duracion <= 0) {
+            throw new RuntimeException("Duración inválida");
+        }
+
+        LocalDateTime start = request.getStartDatetime();
+
+        LocalDateTime end = start.plusMinutes(duracion);
+
+        validarHorario(
+                psicologo.getIdPsicologo(),
+                start,
+                end
+        );
+
+        validarBloqueos(
+                psicologo.getIdPsicologo(),
+                start,
+                end
+        );
+
+        validarSolapamiento(
+                psicologo.getIdPsicologo(),
+                start,
+                end,
+                null
+        );
+
         Cita cita = new Cita();
+
         cita.setPaciente(paciente);
         cita.setPsicologo(psicologo);
-        cita.setStartDatetime(request.getStartDatetime());
-        cita.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : 0);
-        cita.setEstado(request.getEstado());
-        cita.setMotivo(request.getMotivo());
-        cita.setCreatedAt(LocalDateTime.now());
-        cita.setUpdatedAt(LocalDateTime.now());
-        TiposTerapia tipo = terapiaRepository.findById(request.getIdTipoTerapia())
-                .orElseThrow(() -> new RuntimeException("Tipo de terapia no encontrado"));
 
         cita.setTipoTerapia(tipo);
+
+        cita.setStartDatetime(start);
+
+        cita.setDurationMinutes(duracion);
+
+        cita.setEstado(
+                request.getEstado() != null
+                        ? request.getEstado()
+                        : EstadoCita.pendiente
+        );
+
+        cita.setMotivo(request.getMotivo());
+
+        cita.setModalidad(request.getModalidad());
+
+        cita.setCreatedAt(LocalDateTime.now());
+
+        cita.setUpdatedAt(LocalDateTime.now());
+
         return toResponse(citaRepository.save(cita));
     }
+
 
     /**
      * Actualiza los datos de una cita existente.
@@ -117,17 +183,74 @@ public class CitaService {
      * @throws RuntimeException si la cita, el paciente o el psicólogo no existen,
      *                          o si el estado proporcionado no es válido
      */
-    public CitaPacienteViewResponseDTO update(Long idCita, CitaRequestDTO request) {
+    public CitaPacienteViewResponseDTO update(
+            Long idCita,
+            CitaRequestDTO request
+    ) {
+
         Cita cita = getCitaOrThrow(idCita);
-        Paciente paciente = getPacienteOrThrow(request.getIdPaciente());
-        Psicologo psicologo = getPsicologoOrThrow(request.getIdPsicologo());
+
+        if (cita.getEstado() == EstadoCita.cancelada) {
+            throw new RuntimeException(
+                    "No se puede editar una cita cancelada"
+            );
+        }
+
+        if (cita.getEstado() == EstadoCita.completada) {
+            throw new RuntimeException(
+                    "No se puede editar una cita completada"
+            );
+        }
+
+        Paciente paciente = getPacienteOrThrow(
+                request.getIdPaciente()
+        );
+
+        Psicologo psicologo = getPsicologoOrThrow(
+                request.getIdPsicologo()
+        );
+
+        LocalDateTime start = request.getStartDatetime();
+
+        int duracion = request.getDurationMinutes() != null
+                ? request.getDurationMinutes()
+                : cita.getDurationMinutes();
+
+        LocalDateTime end = start.plusMinutes(duracion);
+
+        validarHorario(
+                psicologo.getIdPsicologo(),
+                start,
+                end
+        );
+
+        validarBloqueos(
+                psicologo.getIdPsicologo(),
+                start,
+                end
+        );
+
+        validarSolapamiento(
+                psicologo.getIdPsicologo(),
+                start,
+                end,
+                cita.getIdCita()
+        );
 
         cita.setPaciente(paciente);
+
         cita.setPsicologo(psicologo);
-        cita.setStartDatetime(request.getStartDatetime());
-        cita.setDurationMinutes(request.getDurationMinutes() != null ? request.getDurationMinutes() : cita.getDurationMinutes());
-        cita.setEstado(request.getEstado());
+
+        cita.setStartDatetime(start);
+
+        cita.setDurationMinutes(duracion);
+
         cita.setMotivo(request.getMotivo());
+
+        if (request.getEstado() != null) {
+            cita.setEstado(request.getEstado());
+        }
+
         cita.setUpdatedAt(LocalDateTime.now());
 
         return toResponse(citaRepository.save(cita));
@@ -168,6 +291,100 @@ public class CitaService {
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + idPaciente));
     }
 
+    private void validarHorario(
+            Long idPsicologo,
+            LocalDateTime start,
+            LocalDateTime end
+    ) {
+
+        short diaSemana = (short) (start.getDayOfWeek().getValue() - 1);
+
+        boolean dentroHorario = horarioRepository
+                .findByPsicologoIdPsicologoAndActivoTrue(idPsicologo)
+                .stream()
+                .filter(h -> h.getDiaSemana() == diaSemana)
+                .anyMatch(h ->
+                        !start.toLocalTime().isBefore(h.getHoraInicio()) &&
+                                !end.toLocalTime().isAfter(h.getHoraFin())
+                );
+
+        if (!dentroHorario) {
+            throw new RuntimeException("Fuera del horario del psicólogo");
+        }
+    }
+
+    private void validarBloqueos(
+            Long idPsicologo,
+            LocalDateTime start,
+            LocalDateTime end
+    ) {
+
+        boolean bloqueado = bloqueoRepository
+                .findByPsicologoIdPsicologoAndFecha(
+                        idPsicologo,
+                        start.toLocalDate()
+                )
+                .stream()
+                .anyMatch(b -> {
+
+                    // día completo
+                    if (b.getHoraInicio() == null || b.getHoraFin() == null) {
+                        return true;
+                    }
+
+                    // bloqueo parcial
+                    return start.toLocalTime().isBefore(b.getHoraFin()) &&
+                            end.toLocalTime().isAfter(b.getHoraInicio());
+                });
+
+        if (bloqueado) {
+            throw new RuntimeException("Horario bloqueado");
+        }
+    }
+
+    private void validarSolapamiento(
+            Long idPsicologo,
+            LocalDateTime start,
+            LocalDateTime end,
+            Long idExcluir
+    ) {
+
+        LocalDateTime inicioDia = start.toLocalDate().atStartOfDay();
+        LocalDateTime finDia = start.toLocalDate()
+                .plusDays(1)
+                .atStartOfDay();
+
+        boolean conflicto = citaRepository
+                .findByPsicologo_IdPsicologoAndStartDatetimeBetweenAndEstadoNot(
+                        idPsicologo,
+                        inicioDia,
+                        finDia,
+                        EstadoCita.cancelada
+                )
+                .stream()
+                .filter(c ->
+                        idExcluir == null ||
+                                !c.getIdCita().equals(idExcluir)
+                )
+                .anyMatch(c -> {
+
+                    LocalDateTime existingStart = c.getStartDatetime();
+
+                    LocalDateTime existingEnd =
+                            existingStart.plusMinutes(
+                                    c.getDurationMinutes()
+                            );
+
+                    return existingStart.isBefore(end) &&
+                            existingEnd.isAfter(start);
+                });
+
+        if (conflicto) {
+            throw new RuntimeException("Ya existe una cita en ese horario");
+        }
+    }
+
+
     /**
      * Recupera un psicólogo por id o lanza excepción si no existe.
      *
@@ -206,22 +423,58 @@ public class CitaService {
 
         return CitaPacienteViewResponseDTO.builder()
                 .idCita(cita.getIdCita())
+
+                // IDS
+                .idPaciente(cita.getPaciente().getIdPaciente())
+                .idPsicologo(cita.getPsicologo().getIdPsicologo())
+                .idTipoTerapia(
+                        cita.getTipoTerapia() != null
+                                ? cita.getTipoTerapia().getIdTipo()
+                                : null
+                )
+
+                // FECHAS
                 .fecha(start.toLocalDate())
                 .horaInicio(start.toLocalTime())
                 .horaFin(end.toLocalTime())
+
+                // DURACIÓN
                 .durationMinutes(cita.getDurationMinutes())
+
+                // ENUMS
                 .estado(cita.getEstado())
                 .modalidad(cita.getModalidad())
+
+                // INFO
                 .motivo(cita.getMotivo())
+
                 .tipoTerapia(
                         cita.getTipoTerapia() != null
                                 ? cita.getTipoTerapia().getNombre()
                                 : null
                 )
+
+                // TIEMPO RESTANTE
                 .minutosRestantes(minutosRestantes)
-                .esProxima(minutosRestantes >= 0 && minutosRestantes <= 60)
-                .metodoPago(pago != null ? pago.getMetodoPago() : null)
-                .estadoPago(pago != null ? pago.getEstadoPago() : null)
+
+                .esProxima(
+                        minutosRestantes >= 0 &&
+                                minutosRestantes <= 60
+                )
+
+                // PAGO
+                .metodoPago(
+                        pago != null
+                                ? pago.getMetodoPago()
+                                : null
+                )
+
+                .estadoPago(
+                        pago != null
+                                ? pago.getEstadoPago()
+                                : null
+                )
+
                 .build();
     }
 

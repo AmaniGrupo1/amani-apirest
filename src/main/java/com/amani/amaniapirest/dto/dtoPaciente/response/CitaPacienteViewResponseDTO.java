@@ -27,6 +27,11 @@ public class CitaPacienteViewResponseDTO {
 
     private Long idCita;
 
+    // 🔥 NUEVOS CAMPOS
+    private Long idPaciente;
+    private Long idPsicologo;
+    private Long idTipoTerapia;
+
     private LocalDate fecha;
     private LocalTime horaInicio;
     private LocalTime horaFin;
