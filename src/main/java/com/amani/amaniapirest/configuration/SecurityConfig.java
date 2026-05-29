@@ -6,14 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -24,7 +22,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +62,7 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(List.of("http://localhost:*", "https://amani.org", "https://*.amani.org"));
+        config.setAllowedOriginPatterns(List.of("*"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
@@ -116,15 +113,15 @@ public class SecurityConfig {
                                 .requestMatchers("/api/admin/psicologos/create").hasRole("ADMIN") //creamos psicologo con admin
                                 .requestMatchers("/api/admin/psicologos/asignar-psicologo").hasRole("ADMIN") //Asignamos el paciente al psicologo
                                 .requestMatchers("/api/admin/psicologos/pacientes").hasRole("ADMIN") //creamos psicologo con admin
-                                .requestMatchers("/api/pacientes/admin").hasAnyRole("ADMIN","PSICOLOGO") //Listamos pacientes
+                                .requestMatchers("/api/pacientes/admin").hasAnyRole("ADMIN", "PSICOLOGO") //Listamos pacientes
                                 .requestMatchers("/api/pacientes/sin-psicologo").hasRole("ADMIN") //Listamos pacientes sin psicologos
-                                 //  PSICOLOGO + ADMIN
-                                .requestMatchers("/api/psicologo/update/*").hasRole( "PSICOLOGO")
+                                //  PSICOLOGO + ADMIN
+                                .requestMatchers("/api/psicologo/update/*").hasRole("PSICOLOGO")
                                 .requestMatchers("/api/citas/psicologo/*/horario").hasAnyRole("ADMIN", "PSICOLOGO")
                                 .requestMatchers("/api/psicologo/pacientes/getAll/**").hasRole("PSICOLOGO")
                                 .requestMatchers("/auth/registrar/pacienteDesde/psicologo").hasRole("PSICOLOGO")
-                                .requestMatchers("/api/citas/psicologo/cita").hasAnyRole("PACIENTE","PSICOLOGO","ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
-                                .requestMatchers("/api/citas/psicologo/terapias").hasAnyRole("PACIENTE","PSICOLOGO","ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
+                                .requestMatchers("/api/citas/psicologo/cita").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
+                                .requestMatchers("/api/citas/psicologo/terapias").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
                                 .requestMatchers("/api/citas/update/*").hasRole("ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
                                 .requestMatchers("/api/citas/delete/*").hasRole("ADMIN") // Endpoint para que el psicólogo cree una cita para un paciente asignado
 
@@ -132,12 +129,12 @@ public class SecurityConfig {
                                 .requestMatchers("/api/citas/psicologo/*/editar").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
 
                                 .requestMatchers("/api/citas/psicologo/terapias")
-                                .hasAnyRole("PACIENTE","PSICOLOGO", "ADMIN")
+                                .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
                                 .requestMatchers("/api/citas/psicologo/terapias/get")
-                                .hasAnyRole("PACIENTE","PSICOLOGO", "ADMIN")
+                                .hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
                                 .requestMatchers("/api/citas/psicologo/*/duracion").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo actualice la duración de una cita
                                 .requestMatchers("/api/citas/psicologo/*/duracion-obtenida").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo obtenga la duración de una cita
-                                .requestMatchers("/api/citas/psicologo/*/agenda").hasAnyRole("PACIENTE","PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
+                                .requestMatchers("/api/citas/psicologo/*/agenda").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
                                 .requestMatchers("/api/citas/psicologo/*/horario-actual").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
 // PACIENTE
                                 .requestMatchers("/api/citas/mis-citas").hasRole("PACIENTE")// CANCELAR CITA
@@ -165,10 +162,10 @@ public class SecurityConfig {
 
                                 .requestMatchers("/api/historial-clinico/paciente/*").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
                                 .requestMatchers("/api/documentos-legales").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN")
-                                .requestMatchers("/api/documentos-legales/crear").hasRole( "ADMIN")
-                                .requestMatchers("/api/documentos-legales/*").hasRole( "ADMIN")
-                                .requestMatchers("/api/documentos-legales/delete/*").hasRole( "ADMIN")
-                                .requestMatchers("/api/documentos-legales/tipo/*").hasAnyRole( "PSICOLOGO","PACIENTE")
+                                .requestMatchers("/api/documentos-legales/crear").hasRole("ADMIN")
+                                .requestMatchers("/api/documentos-legales/*").hasRole("ADMIN")
+                                .requestMatchers("/api/documentos-legales/delete/*").hasRole("ADMIN")
+                                .requestMatchers("/api/documentos-legales/tipo/*").hasAnyRole("PSICOLOGO", "PACIENTE")
 
 
                                 .requestMatchers("/api/webhooks/stripe").permitAll()

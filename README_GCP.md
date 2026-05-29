@@ -76,7 +76,7 @@ gcloud run deploy amani-api \
   --region europe-west1 \
   --allow-unauthenticated \
   --set-env-vars=SPRING_PROFILES_ACTIVE=gcp \
-  --set-env-vars=DB_URL=jdbc:postgresql:///postgres?cloudSqlInstance=amani-160bf:europe-west1:amani-db \
+  --set-env-vars=DB_URL=jdbc:postgresql:///postgres?cloudSqlInstance=amani-160bf:europe-west1:amani-db\\&socketFactory=com.google.cloud.sql.postgres.SocketFactory \
   --set-env-vars=DB_USERNAME=postgres \
   --set-secrets=DB_PASSWORD=db-password:latest \
   --add-cloudsql-instances=amani-160bf:europe-west1:amani-db \
