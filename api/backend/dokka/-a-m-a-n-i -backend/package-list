@@ -418,6 +418,10 @@ $dokka.location:com.amani.amaniapirest.controllers.tema////PointingToDeclaration
 $dokka.location:com.amani.amaniapirest.controllers.tema/TemaController///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.tema/-tema-controller/index.html
 $dokka.location:com.amani.amaniapirest.controllers.tema/TemaController/TemaController/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.tema/-tema-controller/-tema-controller.html
 $dokka.location:com.amani.amaniapirest.controllers.tema/TemaController/actualizarTema/#org.springframework.security.core.Authentication#com.amani.amaniapirest.dto.colorNegroBlanco.UpdateTemaDTO/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.tema/-tema-controller/actualizar-tema.html
+$dokka.location:com.amani.amaniapirest.controllers////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers/index.html
+$dokka.location:com.amani.amaniapirest.controllers/JitsiController///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers/-jitsi-controller/index.html
+$dokka.location:com.amani.amaniapirest.controllers/JitsiController/JitsiController/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers/-jitsi-controller/-jitsi-controller.html
+$dokka.location:com.amani.amaniapirest.controllers/JitsiController/getJitsiToken/#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers/-jitsi-controller/get-jitsi-token.html
 $dokka.location:com.amani.amaniapirest.dto.ajustes////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.ajustes/index.html
 $dokka.location:com.amani.amaniapirest.dto.ajustes/IdiomaRequestDTO///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.ajustes/-idioma-request-d-t-o/index.html
 $dokka.location:com.amani.amaniapirest.dto.ajustes/IdiomaRequestDTO/IdiomaRequestDTO/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.ajustes/-idioma-request-d-t-o/-idioma-request-d-t-o.html
@@ -1375,6 +1379,9 @@ $dokka.location:com.amani.amaniapirest.services/FirebaseChatService/userCanAcces
 $dokka.location:com.amani.amaniapirest.services/FirebaseNotificationService///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services/-firebase-notification-service/index.html
 $dokka.location:com.amani.amaniapirest.services/FirebaseNotificationService/FirebaseNotificationService/#com.amani.amaniapirest.gateway.PushNotificationGateway/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services/-firebase-notification-service/-firebase-notification-service.html
 $dokka.location:com.amani.amaniapirest.services/FirebaseNotificationService/enviarPush/#java.lang.String#java.lang.String#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services/-firebase-notification-service/enviar-push.html
+$dokka.location:com.amani.amaniapirest.services/JitsiService///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services/-jitsi-service/index.html
+$dokka.location:com.amani.amaniapirest.services/JitsiService/JitsiService/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services/-jitsi-service/-jitsi-service.html
+$dokka.location:com.amani.amaniapirest.services/JitsiService/generateToken/#java.lang.String#java.lang.String#java.lang.String#java.lang.String#boolean/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services/-jitsi-service/generate-token.html
 $dokka.location:com.amani.amaniapirest.services/UsuarioService///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services/-usuario-service/index.html
 $dokka.location:com.amani.amaniapirest.services/UsuarioService/UsuarioService/#com.amani.amaniapirest.repository.UsuarioRepository#org.springframework.security.crypto.password.PasswordEncoder#org.springframework.context.ApplicationEventPublisher/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services/-usuario-service/-usuario-service.html
 $dokka.location:com.amani.amaniapirest.services/UsuarioService/actualizarNotificaciones/#java.lang.Long#boolean/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services/-usuario-service/actualizar-notificaciones.html
@@ -1407,6 +1414,7 @@ $dokka.location:com.amani.amaniapirest/AmaniApirestApplication/main/#java.lang.S
 com.amani.amaniapirest
 com.amani.amaniapirest.configuration
 com.amani.amaniapirest.configuration.health
+com.amani.amaniapirest.controllers
 com.amani.amaniapirest.controllers.chat
 com.amani.amaniapirest.controllers.controladorAdministador
 com.amani.amaniapirest.controllers.controladorPaciente
