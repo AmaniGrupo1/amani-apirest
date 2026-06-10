@@ -135,6 +135,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/citas/psicologo/*/duracion").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo actualice la duración de una cita
                                 .requestMatchers("/api/citas/psicologo/*/duracion-obtenida").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo obtenga la duración de una cita
                                 .requestMatchers("/api/citas/psicologo/*/agenda").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
+                                .requestMatchers("/api/rag/upload").hasRole("ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
+                                .requestMatchers("/api/rag/ask").hasAnyRole("PACIENTE", "PSICOLOGO", "ADMIN") // Copiloto
                                 .requestMatchers("/api/citas/psicologo/*/horario-actual").hasAnyRole("PSICOLOGO", "ADMIN") // Endpoint para que el psicólogo vea su agenda mensual
 // PACIENTE
                                 .requestMatchers("/api/citas/mis-citas").hasRole("PACIENTE")// CANCELAR CITA

@@ -79,7 +79,6 @@ public class JwtUtil {
                 .getBody();
         return claimsResolver.apply(claims);
     }
-
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
