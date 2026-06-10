@@ -49,18 +49,21 @@ public class JitsiService {
         contextClaim.put("user", userClaim);
         contextClaim.put("features", featuresClaim);
 
+        long now = System.currentTimeMillis();
         Key key = Keys.hmacShaKeyFor(appSecret.getBytes(StandardCharsets.UTF_8));
 
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setAudience("jitsi")
+                .setAudience(appId)
                 .setIssuer(appId)
                 .setSubject(appDomain)
                 .claim("room", room)
                 .claim("context", contextClaim)
-                // El token expira en 2 horas
-                .setExpiration(new Date(System.currentTimeMillis() + 7200 * 1000))
+                .setIssuedAt(new Date(now))                        // ✅ iat
+                .setNotBefore(new Date(now - 30_000L))             // ✅ nbf = ahora - 30s
+                .setExpiration(new Date(now + 7_200_000L))         // ✅ 2 horas
                 .signWith(key)
                 .compact();
     }
+
 }

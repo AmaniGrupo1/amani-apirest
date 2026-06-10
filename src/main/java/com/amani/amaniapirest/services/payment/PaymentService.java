@@ -58,11 +58,10 @@ public class PaymentService {
             throw new PaymentProcessingException("No se puede pagar una cita cancelada");
         }
 
-        paymentRepository.findByCitaIdCita(cita.getIdCita()).ifPresent(existing -> {
-            if (existing.getEstadoPago() == EstadoPago.PAGADO) {
-                throw new PaymentProcessingException("La cita ya está pagada");
-            }
-        });
+        Pago pago = paymentRepository.findByCitaIdCita(cita.getIdCita()).orElse(null);
+        if (pago != null && pago.getEstadoPago() == EstadoPago.PAGADO) {
+            throw new PaymentProcessingException("La cita ya está pagada");
+        }
 
         BigDecimal amount = (cita.getPago() != null && cita.getPago().getMonto() != null)
                 ? cita.getPago().getMonto()
@@ -74,15 +73,23 @@ public class PaymentService {
 
         PaymentIntent stripeIntent = stripePaymentGateway.createPaymentIntent(amountInCents, currency, idempotencyKey);
 
-        Pago pago = Pago.builder()
-                .cita(cita)
-                .monto(amount)
-                .metodoPago(MetodoPago.TARJETA)
-                .estadoPago(EstadoPago.PENDIENTE)
-                .stripePaymentIntentId(stripeIntent.getId())
-                .idempotencyKey(idempotencyKey)
-                .currency(currency)
-                .build();
+        if (pago == null) {
+            pago = Pago.builder()
+                    .cita(cita)
+                    .monto(amount)
+                    .metodoPago(MetodoPago.TARJETA)
+                    .estadoPago(EstadoPago.PENDIENTE)
+                    .stripePaymentIntentId(stripeIntent.getId())
+                    .idempotencyKey(idempotencyKey)
+                    .currency(currency)
+                    .build();
+        } else {
+            pago.setMonto(amount);
+            pago.setEstadoPago(EstadoPago.PENDIENTE);
+            pago.setStripePaymentIntentId(stripeIntent.getId());
+            pago.setIdempotencyKey(idempotencyKey);
+            pago.setCurrency(currency);
+        }
         paymentRepository.save(pago);
 
         log.info("PaymentIntent creado: id={}, citaId={}, amount={}", stripeIntent.getId(), cita.getIdCita(), amount);
