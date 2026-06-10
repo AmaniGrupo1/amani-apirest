@@ -7,6 +7,10 @@ $dokka.location:com.amani.amaniapirest.configuration.health/DatabaseHealthIndica
 $dokka.location:com.amani.amaniapirest.configuration.health/FirebaseHealthIndicator///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.configuration.health/-firebase-health-indicator/index.html
 $dokka.location:com.amani.amaniapirest.configuration.health/FirebaseHealthIndicator/FirebaseHealthIndicator/#boolean#com.google.firebase.FirebaseApp/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.configuration.health/-firebase-health-indicator/-firebase-health-indicator.html
 $dokka.location:com.amani.amaniapirest.configuration.health/FirebaseHealthIndicator/health/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.configuration.health/-firebase-health-indicator/health.html
+$dokka.location:com.amani.amaniapirest.configuration.ia////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.configuration.ia/index.html
+$dokka.location:com.amani.amaniapirest.configuration.ia/DocumentIngestionService///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.configuration.ia/-document-ingestion-service/index.html
+$dokka.location:com.amani.amaniapirest.configuration.ia/DocumentIngestionService/DocumentIngestionService/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.configuration.ia/-document-ingestion-service/-document-ingestion-service.html
+$dokka.location:com.amani.amaniapirest.configuration.ia/DocumentIngestionService/ingest/#java.lang.Long#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.configuration.ia/-document-ingestion-service/ingest.html
 $dokka.location:com.amani.amaniapirest.configuration////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.configuration/index.html
 $dokka.location:com.amani.amaniapirest.configuration/AsyncConfig///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.configuration/-async-config/index.html
 $dokka.location:com.amani.amaniapirest.configuration/AsyncConfig/AsyncConfig/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.configuration/-async-config/-async-config.html
@@ -342,6 +346,14 @@ $dokka.location:com.amani.amaniapirest.controllers.historialCita////PointingToDe
 $dokka.location:com.amani.amaniapirest.controllers.historialCita/HistorialCitaController///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.historialCita/-historial-cita-controller/index.html
 $dokka.location:com.amani.amaniapirest.controllers.historialCita/HistorialCitaController/HistorialCitaController/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.historialCita/-historial-cita-controller/-historial-cita-controller.html
 $dokka.location:com.amani.amaniapirest.controllers.historialCita/HistorialCitaController/obtenerHistorial/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.historialCita/-historial-cita-controller/obtener-historial.html
+$dokka.location:com.amani.amaniapirest.controllers.iaInsert////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.iaInsert/index.html
+$dokka.location:com.amani.amaniapirest.controllers.iaInsert/RagController///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.iaInsert/-rag-controller/index.html
+$dokka.location:com.amani.amaniapirest.controllers.iaInsert/RagController/RagController/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.iaInsert/-rag-controller/-rag-controller.html
+$dokka.location:com.amani.amaniapirest.controllers.iaInsert/RagController/ask/#com.amani.amaniapirest.dto.copiloto.AskRequest/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.iaInsert/-rag-controller/ask.html
+$dokka.location:com.amani.amaniapirest.controllers.iaInsert/RagController/debugChunks/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.iaInsert/-rag-controller/debug-chunks.html
+$dokka.location:com.amani.amaniapirest.controllers.iaInsert/RagController/reprocessDocument/#java.lang.Long/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.iaInsert/-rag-controller/reprocess-document.html
+$dokka.location:com.amani.amaniapirest.controllers.iaInsert/RagController/testGreeting/#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.iaInsert/-rag-controller/test-greeting.html
+$dokka.location:com.amani.amaniapirest.controllers.iaInsert/RagController/upload/#org.springframework.web.multipart.MultipartFile/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.iaInsert/-rag-controller/upload.html
 $dokka.location:com.amani.amaniapirest.controllers.login////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.login/index.html
 $dokka.location:com.amani.amaniapirest.controllers.login/AuthController///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.login/-auth-controller/index.html
 $dokka.location:com.amani.amaniapirest.controllers.login/AuthController/AuthController/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.controllers.login/-auth-controller/-auth-controller.html
@@ -435,6 +447,13 @@ $dokka.location:com.amani.amaniapirest.dto.chat/SendMessageRequestDTO/SendMessag
 $dokka.location:com.amani.amaniapirest.dto.colorNegroBlanco////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.colorNegroBlanco/index.html
 $dokka.location:com.amani.amaniapirest.dto.colorNegroBlanco/UpdateTemaDTO///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.colorNegroBlanco/-update-tema-d-t-o/index.html
 $dokka.location:com.amani.amaniapirest.dto.colorNegroBlanco/UpdateTemaDTO/UpdateTemaDTO/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.colorNegroBlanco/-update-tema-d-t-o/-update-tema-d-t-o.html
+$dokka.location:com.amani.amaniapirest.dto.copiloto////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.copiloto/index.html
+$dokka.location:com.amani.amaniapirest.dto.copiloto/AskRequest///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.copiloto/-ask-request/index.html
+$dokka.location:com.amani.amaniapirest.dto.copiloto/AskRequest/AskRequest/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.copiloto/-ask-request/-ask-request.html
+$dokka.location:com.amani.amaniapirest.dto.copiloto/ChunkResponseDTO///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.copiloto/-chunk-response-d-t-o/index.html
+$dokka.location:com.amani.amaniapirest.dto.copiloto/ChunkResponseDTO/ChunkResponseDTO/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.copiloto/-chunk-response-d-t-o/-chunk-response-d-t-o.html
+$dokka.location:com.amani.amaniapirest.dto.copiloto/UploadResponse///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.copiloto/-upload-response/index.html
+$dokka.location:com.amani.amaniapirest.dto.copiloto/UploadResponse/UploadResponse/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.copiloto/-upload-response/-upload-response.html
 $dokka.location:com.amani.amaniapirest.dto.documentoLegales////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.documentoLegales/index.html
 $dokka.location:com.amani.amaniapirest.dto.documentoLegales/DocumentoLegalRequestDTO///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.documentoLegales/-documento-legal-request-d-t-o/index.html
 $dokka.location:com.amani.amaniapirest.dto.documentoLegales/DocumentoLegalRequestDTO/DocumentoLegalRequestDTO/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.dto.documentoLegales/-documento-legal-request-d-t-o/-documento-legal-request-d-t-o.html
@@ -716,6 +735,13 @@ $dokka.location:com.amani.amaniapirest.enums/ModalidadCita.PRESENCIAL///Pointing
 $dokka.location:com.amani.amaniapirest.enums/ModalidadCita///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-modalidad-cita/index.html
 $dokka.location:com.amani.amaniapirest.enums/ModalidadCita/valueOf/#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-modalidad-cita/value-of.html
 $dokka.location:com.amani.amaniapirest.enums/ModalidadCita/values/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-modalidad-cita/values.html
+$dokka.location:com.amani.amaniapirest.enums/NivelRiesgo.CRITICAL///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-nivel-riesgo/-c-r-i-t-i-c-a-l/index.html
+$dokka.location:com.amani.amaniapirest.enums/NivelRiesgo.HIGH///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-nivel-riesgo/-h-i-g-h/index.html
+$dokka.location:com.amani.amaniapirest.enums/NivelRiesgo.LOW///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-nivel-riesgo/-l-o-w/index.html
+$dokka.location:com.amani.amaniapirest.enums/NivelRiesgo.MEDIUM///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-nivel-riesgo/-m-e-d-i-u-m/index.html
+$dokka.location:com.amani.amaniapirest.enums/NivelRiesgo///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-nivel-riesgo/index.html
+$dokka.location:com.amani.amaniapirest.enums/NivelRiesgo/valueOf/#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-nivel-riesgo/value-of.html
+$dokka.location:com.amani.amaniapirest.enums/NivelRiesgo/values/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-nivel-riesgo/values.html
 $dokka.location:com.amani.amaniapirest.enums/RolUsuario.admin///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-rol-usuario/admin/index.html
 $dokka.location:com.amani.amaniapirest.enums/RolUsuario.paciente///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-rol-usuario/paciente/index.html
 $dokka.location:com.amani.amaniapirest.enums/RolUsuario.psicologo///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}-a-m-a-n-i -backend/com.amani.amaniapirest.enums/-rol-usuario/psicologo/index.html
@@ -812,6 +838,17 @@ $dokka.location:com.amani.amaniapirest.mappers/ProfileMapper/ProfileMapper/#/Poi
 $dokka.location:com.amani.amaniapirest.mappers/ProfileMapper/toPacienteDTO/#com.amani.amaniapirest.models.Paciente/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.mappers/-profile-mapper/to-paciente-d-t-o.html
 $dokka.location:com.amani.amaniapirest.mappers/ProfileMapper/toPsicologoDTO/#com.amani.amaniapirest.models.Psicologo/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.mappers/-profile-mapper/to-psicologo-d-t-o.html
 $dokka.location:com.amani.amaniapirest.mappers/ProfileMapper/toUsuarioDTO/#com.amani.amaniapirest.models.Usuario/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.mappers/-profile-mapper/to-usuario-d-t-o.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/index.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert/ChunkRag///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/-chunk-rag/index.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert/ChunkRag/ChunkRag/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/-chunk-rag/-chunk-rag.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert/ConversacionIa///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/-conversacion-ia/index.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert/ConversacionIa/ConversacionIa/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/-conversacion-ia/-conversacion-ia.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert/DocumentoRag///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/-documento-rag/index.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert/DocumentoRag/DocumentoRag/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/-documento-rag/-documento-rag.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert/EvaluacionRiesgo///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/-evaluacion-riesgo/index.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert/EvaluacionRiesgo/EvaluacionRiesgo/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/-evaluacion-riesgo/-evaluacion-riesgo.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert/MensajeIa///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/-mensaje-ia/index.html
+$dokka.location:com.amani.amaniapirest.models.iaInsert/MensajeIa/MensajeIa/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.iaInsert/-mensaje-ia/-mensaje-ia.html
 $dokka.location:com.amani.amaniapirest.models.modelPreguntasInicial////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.modelPreguntasInicial/index.html
 $dokka.location:com.amani.amaniapirest.models.modelPreguntasInicial/Opcion///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.modelPreguntasInicial/-opcion/index.html
 $dokka.location:com.amani.amaniapirest.models.modelPreguntasInicial/Opcion/Opcion/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.models.modelPreguntasInicial/-opcion/-opcion.html
@@ -891,6 +928,11 @@ $dokka.location:com.amani.amaniapirest.repositories/BloqueoAgendaRepository/find
 $dokka.location:com.amani.amaniapirest.repository.hostorialClinico////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.hostorialClinico/index.html
 $dokka.location:com.amani.amaniapirest.repository.hostorialClinico/HistorialClinicoRepository///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.hostorialClinico/-historial-clinico-repository/index.html
 $dokka.location:com.amani.amaniapirest.repository.hostorialClinico/HistorialClinicoRepository/findByPacienteIdPaciente/#java.lang.Long/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.hostorialClinico/-historial-clinico-repository/find-by-paciente-id-paciente.html
+$dokka.location:com.amani.amaniapirest.repository.iaInsert////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.iaInsert/index.html
+$dokka.location:com.amani.amaniapirest.repository.iaInsert/ChunkRagRepository///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.iaInsert/-chunk-rag-repository/index.html
+$dokka.location:com.amani.amaniapirest.repository.iaInsert/ChunkRagRepository/findByDocumento_IdDocumento/#java.lang.Long/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.iaInsert/-chunk-rag-repository/find-by-documento_-id-documento.html
+$dokka.location:com.amani.amaniapirest.repository.iaInsert/ChunkRagRepository/findByDocumento_IdDocumentoOrderByChunkIndexAsc/#java.lang.Long/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.iaInsert/-chunk-rag-repository/find-by-documento_-id-documento-order-by-chunk-index-asc.html
+$dokka.location:com.amani.amaniapirest.repository.iaInsert/DocumentoRepository///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.iaInsert/-documento-repository/index.html
 $dokka.location:com.amani.amaniapirest.repository.notificacion////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.notificacion/index.html
 $dokka.location:com.amani.amaniapirest.repository.notificacion/NotificacionRepository///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.notificacion/-notificacion-repository/index.html
 $dokka.location:com.amani.amaniapirest.repository.notificacion/NotificacionRepository/countByUsuario_IdUsuarioAndLeidaFalse/#java.lang.Long/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.repository.notificacion/-notificacion-repository/count-by-usuario_-id-usuario-and-leida-false.html
@@ -1010,10 +1052,29 @@ $dokka.location:com.amani.amaniapirest.services.documentoLegal/DocumentoLegalSer
 $dokka.location:com.amani.amaniapirest.services.documentoLegal/DocumentoLegalService/obtenerPorId/#java.lang.Long/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.documentoLegal/-documento-legal-service/obtener-por-id.html
 $dokka.location:com.amani.amaniapirest.services.documentoLegal/DocumentoLegalService/obtenerPorTipo/#com.amani.amaniapirest.enums.TipoDocumentoLegal/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.documentoLegal/-documento-legal-service/obtener-por-tipo.html
 $dokka.location:com.amani.amaniapirest.services.documentoLegal/DocumentoLegalService/obtenerTodos/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.documentoLegal/-documento-legal-service/obtener-todos.html
+$dokka.location:com.amani.amaniapirest.services.extractorPDF////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.extractorPDF/index.html
+$dokka.location:com.amani.amaniapirest.services.extractorPDF/PdfExtractorService///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.extractorPDF/-pdf-extractor-service/index.html
+$dokka.location:com.amani.amaniapirest.services.extractorPDF/PdfExtractorService/PdfExtractorService/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.extractorPDF/-pdf-extractor-service/-pdf-extractor-service.html
+$dokka.location:com.amani.amaniapirest.services.extractorPDF/PdfExtractorService/extractPdf/#org.springframework.web.multipart.MultipartFile/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.extractorPDF/-pdf-extractor-service/extract-pdf.html
 $dokka.location:com.amani.amaniapirest.services.historialCita////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.historialCita/index.html
 $dokka.location:com.amani.amaniapirest.services.historialCita/HistorialCitaService///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.historialCita/-historial-cita-service/index.html
 $dokka.location:com.amani.amaniapirest.services.historialCita/HistorialCitaService/HistorialCitaService/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.historialCita/-historial-cita-service/-historial-cita-service.html
 $dokka.location:com.amani.amaniapirest.services.historialCita/HistorialCitaService/obtenerHistorialCitas/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.historialCita/-historial-cita-service/obtener-historial-citas.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/index.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/EmbeddingService///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-embedding-service/index.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/EmbeddingService/EmbeddingService/#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-embedding-service/-embedding-service.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/EmbeddingService/getEmbedding/#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-embedding-service/get-embedding.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/RagIngestionService///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-rag-ingestion-service/index.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/RagIngestionService/RagIngestionService/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-rag-ingestion-service/-rag-ingestion-service.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/RagIngestionService/processDocument/#java.lang.Long#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-rag-ingestion-service/process-document.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/RagSearchService///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-rag-search-service/index.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/RagSearchService/RagSearchService/#com.amani.amaniapirest.services.iaInsert.EmbeddingService#com.amani.amaniapirest.repository.iaInsert.ChunkRagRepository/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-rag-search-service/-rag-search-service.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/RagSearchService/search/#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-rag-search-service/search.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/TextChunkService///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-text-chunk-service/index.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/TextChunkService/TextChunkService/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-text-chunk-service/-text-chunk-service.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/TextChunkService/split/#java.lang.String#int#int/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-text-chunk-service/split.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/TextChunkService/splitSemantic/#java.lang.String#int#int/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-text-chunk-service/split-semantic.html
+$dokka.location:com.amani.amaniapirest.services.iaInsert/TextChunkService/splitSemantic/#java.lang.String/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.iaInsert/-text-chunk-service/split-semantic.html
 $dokka.location:com.amani.amaniapirest.services.notificacion////PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.notificacion/index.html
 $dokka.location:com.amani.amaniapirest.services.notificacion/NotificationServices///PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.notificacion/-notification-services/index.html
 $dokka.location:com.amani.amaniapirest.services.notificacion/NotificationServices/NotificationServices/#/PointingToDeclaration/-a-m-a-n-i -backend/com.amani.amaniapirest.services.notificacion/-notification-services/-notification-services.html
@@ -1414,6 +1475,7 @@ $dokka.location:com.amani.amaniapirest/AmaniApirestApplication/main/#java.lang.S
 com.amani.amaniapirest
 com.amani.amaniapirest.configuration
 com.amani.amaniapirest.configuration.health
+com.amani.amaniapirest.configuration.ia
 com.amani.amaniapirest.controllers
 com.amani.amaniapirest.controllers.chat
 com.amani.amaniapirest.controllers.controladorAdministador
@@ -1421,6 +1483,7 @@ com.amani.amaniapirest.controllers.controladorPaciente
 com.amani.amaniapirest.controllers.controladorPsicologo
 com.amani.amaniapirest.controllers.documentoLegal
 com.amani.amaniapirest.controllers.historialCita
+com.amani.amaniapirest.controllers.iaInsert
 com.amani.amaniapirest.controllers.login
 com.amani.amaniapirest.controllers.notificacion
 com.amani.amaniapirest.controllers.payment
@@ -1432,6 +1495,7 @@ com.amani.amaniapirest.controllers.tema
 com.amani.amaniapirest.dto.ajustes
 com.amani.amaniapirest.dto.chat
 com.amani.amaniapirest.dto.colorNegroBlanco
+com.amani.amaniapirest.dto.copiloto
 com.amani.amaniapirest.dto.documentoLegales
 com.amani.amaniapirest.dto.dtoAdmin
 com.amani.amaniapirest.dto.dtoAdmin.response
@@ -1468,17 +1532,21 @@ com.amani.amaniapirest.gateway.noop
 com.amani.amaniapirest.listeners
 com.amani.amaniapirest.mappers
 com.amani.amaniapirest.models
+com.amani.amaniapirest.models.iaInsert
 com.amani.amaniapirest.models.modelPreguntasInicial
 com.amani.amaniapirest.repositories
 com.amani.amaniapirest.repository
 com.amani.amaniapirest.repository.hostorialClinico
+com.amani.amaniapirest.repository.iaInsert
 com.amani.amaniapirest.repository.notificacion
 com.amani.amaniapirest.repository.repositoryRespuesta
 com.amani.amaniapirest.repository.terapiaService
 com.amani.amaniapirest.services
 com.amani.amaniapirest.services.chat
 com.amani.amaniapirest.services.documentoLegal
+com.amani.amaniapirest.services.extractorPDF
 com.amani.amaniapirest.services.historialCita
+com.amani.amaniapirest.services.iaInsert
 com.amani.amaniapirest.services.notificacion
 com.amani.amaniapirest.services.paciente
 com.amani.amaniapirest.services.payment
