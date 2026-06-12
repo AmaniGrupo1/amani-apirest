@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -286,5 +285,51 @@ public class RagController {
         response.put("chunksEliminados", String.valueOf(existingChunks != null ? existingChunks.size() : 0));
 
         return ResponseEntity.ok(response);
+    }
+
+
+
+    @DeleteMapping("/documents/{idDocumento}")
+    public ResponseEntity<Map<String, String>> deleteDocument(
+            @PathVariable Long idDocumento) {
+
+        DocumentoRag documento = documentoRepo.findById(idDocumento)
+                .orElse(null);
+
+        if (documento == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        documentoRepo.delete(documento);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Documento eliminado correctamente");
+        response.put("idDocumento", idDocumento.toString());
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/documents")
+    public ResponseEntity<List<Map<String, Object>>> getDocuments() {
+
+        List<Map<String, Object>> documents = documentoRepo.findAll()
+                .stream()
+                .map(doc -> {
+                    Map<String, Object> item = new HashMap<>();
+
+                    item.put("idDocumento", doc.getIdDocumento());
+                    item.put("titulo", doc.getTitulo());
+                    item.put("categoria", doc.getCategoria());
+                    item.put("fuente", doc.getFuente());
+                    item.put("nombreArchivo", doc.getNombreArchivo());
+                    item.put("totalChunks", doc.getTotalChunks());
+                    item.put("creadoEn", doc.getCreadoEn());
+
+                    return item;
+                })
+                .toList();
+
+        return ResponseEntity.ok(documents);
     }
 }
