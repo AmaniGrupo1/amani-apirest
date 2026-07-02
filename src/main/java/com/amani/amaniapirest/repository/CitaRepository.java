@@ -179,4 +179,13 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     ORDER BY c.startDatetime DESC
 """)
     List<Cita> obtenerHistorialCitas();
+
+
+
+
+
+    List<Cita> findByPaciente_IdPacienteAndStartDatetimeAfterOrderByStartDatetimeAsc(
+            Long idPaciente,
+            LocalDateTime fecha
+    );
 }

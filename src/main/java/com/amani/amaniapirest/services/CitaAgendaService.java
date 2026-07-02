@@ -69,9 +69,12 @@ public class CitaAgendaService {
      * @return Resultado de la operación o entidad procesada.
      */
     public List<AgendaItemDTO> getAgendaPaciente(Long idPaciente, String month) {
-        var rango = rangoMes(month);
+
         return citaRepository
-                .findByPaciente_IdPacienteAndStartDatetimeBetween(idPaciente, rango[0], rango[1])
+                .findByPaciente_IdPacienteAndStartDatetimeAfterOrderByStartDatetimeAsc(
+                        idPaciente,
+                        LocalDateTime.now()
+                )
                 .stream()
                 .map(this::citaToAgendaItem)
                 .collect(Collectors.toList());
